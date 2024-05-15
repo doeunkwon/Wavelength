@@ -133,3 +133,52 @@ async def update_memory(mid: str, memory_data: dict):
         raise HTTPException(
             status_code=500, detail=f"Error updating memory: {str(e)}"
         )
+
+# Function to fetch all memories
+
+
+@router.get("/memories")
+async def get_memories():
+    driver = get_driver()
+    with driver.session() as session:
+        cypher_query = """
+        MATCH (m:Memory)
+        RETURN m
+        """
+        results = session.run(cypher_query)
+        memories = []
+        for record in results:
+            memory = record["m"]
+            memories.append(memory)
+    driver.close()
+    return memories
+
+# Function to fetch a single memory by MID
+
+
+@router.get("/memories/{mid}")
+async def get_memory(mid: str):
+    try:
+        driver = get_driver()
+        with driver.session() as session:
+            # Build Cypher query with identifier
+            cypher_query = f"""
+            MATCH (m:Memory {{mid: $mid}})
+            RETURN m
+            """
+
+            # Execute the query with identifier
+            result = session.run(cypher_query, {"mid": mid})
+            memory = result.single()
+
+            # Handle memory not found case
+            if not memory:
+                raise HTTPException(status_code=404, detail="Memory not found")
+
+            # Return the memory data
+            return memory["m"]
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching memory: {str(e)}"
+        )

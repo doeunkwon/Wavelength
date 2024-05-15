@@ -73,19 +73,7 @@ async def get_users():
         users = []
         for record in results:
             user = record["u"]
-            users.append(User(
-                firstName=user["firstName"],
-                lastName=user["lastName"],
-                birthday=user["birthday"],
-                username=user["username"],
-                email=user["email"],
-                password=user["password"],
-                location=user["location"],
-                interests=user["interests"],
-                emoji=user["emoji"],
-                color=user["color"],
-                qrCode=user["qrCode"]
-            ))
+            users.append(user)
     driver.close()
     return users
 
