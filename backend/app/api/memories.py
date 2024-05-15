@@ -76,3 +76,60 @@ async def delete_memory(mid: str):
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting memory: {str(e)}")
+
+# Function to update a memory
+
+
+@router.put("/memories/{mid}")
+async def update_memory(mid: str, memory_data: dict):
+    try:
+        driver = get_driver()
+        with driver.session() as session:
+            # Fetch existing memory data
+            cypher_query = f"""
+            MATCH (m:Memory {{mid: $mid}})
+            RETURN m
+            """
+            result = session.run(cypher_query, {"mid": mid})
+            existing_memory = result.single()
+
+            # Check if memory exists
+            if not existing_memory:
+                raise HTTPException(status_code=404, detail="Memory not found")
+
+            # Merge existing and update data
+            merged_data = {**existing_memory["m"], **memory_data}
+
+            # Build Cypher query with identifier and SET clause
+            cypher_query = f"""
+            MATCH (m:Memory {{mid: $mid}})
+            SET """
+
+            set_clauses = [f"m.{field} = $memory_{
+                field}" for field in merged_data if field != "mid"]
+
+            if not set_clauses:
+                raise HTTPException(
+                    status_code=400, detail="No valid update fields provided")
+
+            cypher_query += ", ".join(set_clauses)
+            cypher_query += """
+            RETURN m
+            """
+
+            # Prepare data with memory ID and merged update values
+            data = {"mid": mid}
+            for field, value in merged_data.items():
+                if field != "mid":
+                    data[f"memory_{field}"] = value
+
+            # Execute the query with identifier and data
+            result = session.run(cypher_query, data)
+            updated_memory = result.single()["m"]
+
+            driver.close()
+            return updated_memory
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error updating memory: {str(e)}"
+        )
