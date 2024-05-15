@@ -117,3 +117,56 @@ async def delete_user(uid: str):
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting user: {str(e)}")
+
+# Function to update a user
+
+
+@router.put("/users/{uid}")
+async def update_user(uid: str, new_data: dict):
+    try:
+        driver = get_driver()
+        with driver.session() as session:
+            # Fetch existing user data
+            cypher_query = f"""
+            MATCH (u:User {{uid: $uid}})
+            RETURN u
+            """
+            result = session.run(cypher_query, {"uid": uid})
+            existing_user = result.single()
+
+            # Check if user exists
+            if not existing_user:
+                raise HTTPException(status_code=404, detail="User not found")
+
+            merged_data = {**existing_user["u"], **new_data}
+
+            cypher_query = f"""
+            MATCH (u:User {{uid: $uid}})
+            SET """
+
+            set_clauses = [f"u.{field} = $user_{
+                field}" for field in merged_data if field != "uid"]
+
+            if not set_clauses:
+                raise HTTPException(
+                    status_code=400, detail="No valid update fields provided")
+
+            cypher_query += ", ".join(set_clauses)
+            cypher_query += """
+            RETURN u
+            """
+
+            data = {"uid": uid}
+            for field, value in merged_data.items():
+                if field != "uid":
+                    data[f"user_{field}"] = value
+
+            result = session.run(cypher_query, data)
+            updated_user = result.single()
+
+            driver.close()
+            return updated_user["u"]
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error updating user: {str(e)}"
+        )
