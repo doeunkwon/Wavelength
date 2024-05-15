@@ -89,6 +89,36 @@ async def get_users():
     driver.close()
     return users
 
+# Function to fetch a single user by UID
+
+
+@router.get("/users/{uid}")
+async def get_user(uid: str):
+    try:
+        driver = get_driver()
+        with driver.session() as session:
+            # Build Cypher query with identifier
+            cypher_query = f"""
+            MATCH (u:User {{uid: $uid}})
+            RETURN u
+            """
+
+            # Execute the query with identifier
+            result = session.run(cypher_query, {"uid": uid})
+            user = result.single()
+
+            # Handle user not found case
+            if not user:
+                raise HTTPException(status_code=404, detail="User not found")
+
+            # Return the user data
+            return user["u"]
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching user: {str(e)}"
+        )
+
 # Function to delete a user
 
 
