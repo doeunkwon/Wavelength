@@ -1,3 +1,4 @@
+import uuid
 from database import get_driver
 from fastapi import HTTPException, Body, APIRouter
 from app.models import User
@@ -12,36 +13,51 @@ async def create_user(user: User = Body(...)):
     try:
         driver = get_driver()
         with driver.session() as session:
-            # Cypher query to create a new user node
-            cypher_query = """
-            CREATE (u:User {
-                uid: $uid,
-                firstName: $firstName,
-                lastName: $lastName,
-                birthday: $birthday,
-                username: $username,
-                email: $email,
-                password: $password,
-                location: $location,
-                interests: $interests,
-                emoji: $emoji,
-                color: $color,
-                qrCode: $qrCode
-            })
-            RETURN u
-            """
+            while True:
+                # Generate a new UUID for the user ID
+                new_uid = str(uuid.uuid4())
 
-            # Execute the query with user data
-            result = session.run(cypher_query, user.dict())
-            # Assuming a single user is created
-            created_user = result.single()["u"]
+                # Check if the user ID already exists
+                check_query = """
+                MATCH (u:User {uid: $uid})
+                RETURN u
+                """
+                result = session.run(check_query, uid=new_uid)
+
+                # If no user found with the generated ID, proceed with creation
+                if not result.single():
+                    # Cypher query to create a new user node with generated ID
+                    cypher_query = """
+                    CREATE (u:User {
+                    uid: $uid,
+                    firstName: $firstName,
+                    lastName: $lastName,
+                    birthday: $birthday,
+                    username: $username,
+                    email: $email,
+                    password: $password,
+                    location: $location,
+                    interests: $interests,
+                    emoji: $emoji,
+                    color: $color,
+                    qrCode: $qrCode
+                    })
+                    RETURN u
+                    """
+                    # Execute the query with user data (including generated ID)
+                    result = session.run(
+                        cypher_query, {"uid": new_uid, **user.model_dump()})
+                    # Assuming a single user is created
+                    created_user = result.single()["u"]
+                    break  # Exit the loop after successful creation
 
             # Close the driver connection
             driver.close()
             return created_user
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Error creating user: {str(e)}")
+            status_code=500, detail=f"Error creating user: {str(e)}"
+        )
 
 
 # Function to fetch all users

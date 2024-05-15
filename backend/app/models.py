@@ -2,7 +2,6 @@ from pydantic import BaseModel
 
 
 class User(BaseModel):
-    uid: str
     firstName: str
     lastName: str
     birthday: str  # Might want to use a date type here
@@ -17,6 +16,4 @@ class User(BaseModel):
 
 
 class Memory(BaseModel):
-    mid: str
     content: str
-    timestamp: str
