@@ -2,7 +2,7 @@ import uuid
 from database import get_driver
 from fastapi import HTTPException, Body, APIRouter
 from app.models import Memory
-from backend.app.api.public.helper import get_neo4j_datetime
+from app.api.public.helper import get_neo4j_datetime
 
 router = APIRouter()
 

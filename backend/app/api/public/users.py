@@ -2,7 +2,7 @@ import uuid
 from database import get_driver
 from fastapi import HTTPException, Body, APIRouter
 from app.models import User
-from backend.app.api.private.auth import hash_password
+from app.api.private.auth import hash_password
 
 router = APIRouter()
 
