@@ -2,11 +2,9 @@ import uuid
 from database import get_driver
 from fastapi import HTTPException, Body, APIRouter
 from app.models import User
-from app.api.auth import hash_password
+from backend.app.api.private.auth import hash_password
 
 router = APIRouter()
-
-# Function to create a new user
 
 
 # Function to create a new user
