@@ -2,14 +2,14 @@ import uuid
 from database import get_driver
 from fastapi import HTTPException, Body, APIRouter
 from app.models import Memory
-from app.api.public.helper import get_neo4j_datetime
+from app.api.helper import get_neo4j_datetime
 
 router = APIRouter()
 
 # Function to create a new memory
 
 
-@router.post("/memories")
+@router.post("/public/memories")
 async def create_memory(memory: Memory = Body(...)):
     try:
         driver = get_driver()
@@ -56,7 +56,7 @@ async def create_memory(memory: Memory = Body(...)):
 # Function to delete a memory
 
 
-@router.delete("/memories/{mid}")
+@router.delete("/public/memories/{mid}")
 async def delete_memory(mid: str):
     try:
         driver = get_driver()
@@ -80,7 +80,7 @@ async def delete_memory(mid: str):
 # Function to update a memory
 
 
-@router.put("/memories/{mid}")
+@router.put("/public/memories/{mid}")
 async def update_memory(mid: str, memory_data: dict):
     try:
         driver = get_driver()
@@ -137,7 +137,7 @@ async def update_memory(mid: str, memory_data: dict):
 # Function to fetch all memories
 
 
-@router.get("/memories")
+@router.get("/public/memories")
 async def get_memories():
     driver = get_driver()
     with driver.session() as session:
@@ -156,7 +156,7 @@ async def get_memories():
 # Function to fetch a single memory by MID
 
 
-@router.get("/memories/{mid}")
+@router.get("/public/memories/{mid}")
 async def get_memory(mid: str):
     try:
         driver = get_driver()

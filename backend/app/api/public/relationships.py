@@ -5,7 +5,7 @@ from database import get_driver
 router = APIRouter()
 
 
-@router.post("/relationships/memory")
+@router.post("/public/relationships/memory")
 async def create_user_memory_relationship(
     relationship: dict,  # Capture data as a dictionary
 ):
@@ -30,7 +30,7 @@ async def create_user_memory_relationship(
         )
 
 
-@router.post("/relationships/friendship")
+@router.post("/public/relationships/friendship")
 async def create_user_friendship_relationship(
     relationship: dict,  # Capture data as a dictionary
 ):
@@ -55,7 +55,7 @@ async def create_user_friendship_relationship(
         )
 
 
-@router.delete("/relationships/friendship")
+@router.delete("/public/relationships/friendship")
 async def create_user_friendship_relationship(
     relationship: dict,  # Capture data as a dictionary
 ):
