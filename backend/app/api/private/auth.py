@@ -75,8 +75,6 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
                     status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
                 )
 
-            print("oh yeah")
-
             access_token = create_access_token(data={"sub": user["uid"]})
 
             return {"access_token": access_token, "token_type": "bearer"}
