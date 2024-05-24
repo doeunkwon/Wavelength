@@ -33,13 +33,13 @@ def create_access_token(data: dict):
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        uid: str = payload.get("sub")
+        if uid is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials",
             )
-        user = await get_user_by_username(username)
+        user = await get_user_by_uid(uid)
         return user
     except JWTError:
         raise HTTPException(
@@ -50,34 +50,56 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 @router.post("/private/login")
 async def login(form: OAuth2PasswordRequestForm = Depends()):
-    user = await get_user_by_username(form.username)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
-        )
-    if not verify_password(form.password, user["password"]):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
-        )
-
-    access_token = create_access_token(data={"sub": user["username"]})
-
-    return {"access_token": access_token, "token_type": "bearer"}
-
-
-# Function to retrieve user by username
-async def get_user_by_username(username: str):
     try:
         driver = get_driver()
         with driver.session() as session:
-            # Build Cypher query with identifier
+            # Build Cypher query with username
             cypher_query = """
             MATCH (u:User {username: $username})
             RETURN u
             """
 
-            # Execute the query with identifier
-            result = session.run(cypher_query, {"username": username})
+            # Execute the query with username from form
+            result = session.run(cypher_query, {"username": form.username})
+            user = result.single()["u"]
+
+            # Handle user not found case
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
+                )
+
+            # Verify password directly from user object
+            if not verify_password(form.password, user["password"]):
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
+                )
+
+            print("oh yeah")
+
+            access_token = create_access_token(data={"sub": user["uid"]})
+
+            return {"access_token": access_token, "token_type": "bearer"}
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching user: {str(e)}"
+        )
+
+
+# Function to retrieve user by username
+async def get_user_by_uid(uid: str):
+    try:
+        driver = get_driver()
+        with driver.session() as session:
+            # Build Cypher query with uid
+            cypher_query = """
+            MATCH (u:User {uid: $uid})
+            RETURN u
+            """
+
+            # Execute the query with uid
+            result = session.run(cypher_query, {"uid": uid})
             user = result.single()
 
             # Handle user not found case
