@@ -85,6 +85,14 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
         )
 
 
+@router.post("/private/logout")
+async def logout():
+    # Logout by relying on token expiration
+    # No additional logic needed as tokens expire after a set time (ACCESS_TOKEN_EXPIRE_MINUTES)
+
+    return {"message": "Successfully logged out"}
+
+
 # Function to retrieve user by username
 async def get_user_by_uid(uid: str):
     try:
