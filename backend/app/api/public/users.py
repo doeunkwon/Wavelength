@@ -2,13 +2,13 @@ import uuid
 from database import get_driver
 from fastapi import HTTPException, Body, APIRouter
 from app.models import User
+from app.api.private.auth import hash_password
 
 router = APIRouter()
 
+
 # Function to create a new user
-
-
-@router.post("/users")
+@router.post("/public/users")
 async def create_user(user: User = Body(...)):
     try:
         driver = get_driver()
@@ -26,6 +26,9 @@ async def create_user(user: User = Body(...)):
 
                 # If no user found with the generated ID, proceed with creation
                 if not result.single():
+                    # Hash the password before storing
+                    hashed_password = hash_password(user.password)
+
                     # Cypher query to create a new user node with generated ID
                     cypher_query = """
                     CREATE (u:User {
@@ -35,7 +38,7 @@ async def create_user(user: User = Body(...)):
                     birthday: $birthday,
                     username: $username,
                     email: $email,
-                    password: $password,
+                    password: $hashed_password,
                     location: $location,
                     interests: $interests,
                     emoji: $emoji,
@@ -44,9 +47,11 @@ async def create_user(user: User = Body(...)):
                     })
                     RETURN u
                     """
-                    # Execute the query with user data (including generated ID)
+                    # Execute the query with user data (including hashed password)
                     result = session.run(
-                        cypher_query, {"uid": new_uid, **user.model_dump()})
+                        cypher_query, {
+                            "uid": new_uid, "hashed_password": hashed_password, **user.model_dump()}
+                    )
                     # Assuming a single user is created
                     created_user = result.single()["u"]
                     break  # Exit the loop after successful creation
@@ -61,7 +66,7 @@ async def create_user(user: User = Body(...)):
 
 
 # Function to fetch all users
-@router.get("/users")
+@router.get("/public/users")
 async def get_users():
     driver = get_driver()
     with driver.session() as session:
@@ -80,7 +85,7 @@ async def get_users():
 # Function to fetch a single user by UID
 
 
-@router.get("/users/{uid}")
+@router.get("/public/users/{uid}")
 async def get_user(uid: str):
     try:
         driver = get_driver()
@@ -110,7 +115,7 @@ async def get_user(uid: str):
 # Function to delete a user
 
 
-@router.delete("/users/{uid}")
+@router.delete("/public/users/{uid}")
 async def delete_user(uid: str):
     try:
         driver = get_driver()
@@ -139,7 +144,7 @@ async def delete_user(uid: str):
 # Function to update a user
 
 
-@router.put("/users/{uid}")
+@router.put("/public/users/{uid}")
 async def update_user(uid: str, new_data: dict):
     try:
         driver = get_driver()
