@@ -99,7 +99,8 @@ def delete_user(uid: str):
             # Build Cypher query with identifier
             cypher_query = f"""
             MATCH (u:User {{uid: $uid}})
-            DETACH DELETE u
+            -[:HAS]-> (m:Memory)
+            DETACH DELETE u, m
             RETURN COUNT(u) AS usersDeleted
             """
 
@@ -112,7 +113,7 @@ def delete_user(uid: str):
                 raise HTTPException(status_code=404, detail="User not found")
 
             driver.close()
-            return {"message": f"Successfully deleted {users_deleted} user(s) and their relationships."}
+            return {"message": f"Successfully deleted {users_deleted} user(s) and their associated memories."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting user: {str(e)}"
