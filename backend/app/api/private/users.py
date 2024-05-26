@@ -1,7 +1,6 @@
 from database import get_driver
 from fastapi import Depends, HTTPException, APIRouter
-# Assuming this function verifies the token
-from app.api.private.auth import get_current_user
+from app.api.private.auth import get_current_user, hash_password
 
 router = APIRouter()
 
@@ -88,6 +87,11 @@ async def update_user(token: str = Depends(get_current_user), new_data: dict = {
             # Check if user exists
             if not existing_user:
                 raise HTTPException(status_code=404, detail="User not found")
+
+            # If the updated fields contains "password", then hash the password
+            if "password" in new_data.keys():
+                hashed_password = hash_password(new_data["password"])
+                new_data["password"] = hashed_password
 
             merged_data = {**existing_user["u"], **new_data}
 
