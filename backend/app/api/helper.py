@@ -2,6 +2,14 @@ from datetime import datetime
 from neo4j.time import datetime as neo4j_datetime  # Import directly from neo4j
 from database import get_driver
 from fastapi import HTTPException
+import os
+
+
+def get_env_variable(var: str):
+    value = os.getenv(var)
+    if value is None:
+        raise ValueError(f"Environment variable '{var}' not found.")
+    return value
 
 
 def get_neo4j_datetime():
@@ -96,11 +104,12 @@ def delete_user(uid: str):
     try:
         driver = get_driver()
         with driver.session() as session:
-            # Build Cypher query with identifier
+            # Build Cypher query with identifier and both relationship matches
             cypher_query = f"""
             MATCH (u:User {{uid: $uid}})
-            -[:HAS]-> (m:Memory)
-            DETACH DELETE u, m
+            OPTIONAL MATCH (u)-[:HAS]->(m1:Memory)
+            OPTIONAL MATCH (m2:Memory)-[:ABOUT]->(u)
+            DETACH DELETE u, m1, m2
             RETURN COUNT(u) AS usersDeleted
             """
 
@@ -112,8 +121,12 @@ def delete_user(uid: str):
             if users_deleted == 0:
                 raise HTTPException(status_code=404, detail="User not found")
 
+            message = f"Successfully deleted {users_deleted} user(s)"
+            if users_deleted > 0:
+                message += " and their associated memories."
+
             driver.close()
-            return {"message": f"Successfully deleted {users_deleted} user(s) and their associated memories."}
+            return {"message": message}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting user: {str(e)}"
