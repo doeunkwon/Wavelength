@@ -5,7 +5,7 @@ from app.api.public.relationships import router as pub_relationships_router
 
 from app.api.private.auth import router as pri_auth_router
 from app.api.private.users import router as pri_users_router
-# from app.api.private.llm import router as pri_llm_router
+from app.api.private.llm import router as pri_llm_router
 
 app = FastAPI()
 
@@ -15,4 +15,4 @@ app.include_router(pub_relationships_router)
 
 app.include_router(pri_auth_router)
 app.include_router(pri_users_router)
-# app.include_router(pri_llm_router)
+app.include_router(pri_llm_router)

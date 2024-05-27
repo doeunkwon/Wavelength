@@ -1,12 +1,29 @@
-# from fastapi import APIRouter
-# from app.api.helper import get_env_variable
+from fastapi import APIRouter, Body
+from dotenv import load_dotenv
+from huggingface_hub import InferenceClient
+from app.models import Prompt
+import json
 
-# from transformers import pipeline
+load_dotenv()
 
-# from dotenv import load_dotenv
+router = APIRouter()
 
-# load_dotenv()
+model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
 
-# router = APIRouter()
+inference_client = InferenceClient(
+    model=model_id,
+    timeout=120
+)
 
-# api_token = get_env_variable("HUGGINGFACEHUB_API_TOKEN")
+
+@router.post("/private/answer")
+async def answer(prompt: Prompt = Body(...)):
+    response = inference_client.post(
+        json={
+            "inputs": prompt.content,
+            "parameters": {"max_new_tokens": 200},
+            "task": "text-generation",
+        }
+    )
+    generated_text = json.loads(response.decode())[0]["generated_text"]
+    return generated_text
