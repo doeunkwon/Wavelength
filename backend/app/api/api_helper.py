@@ -2,14 +2,6 @@ from datetime import datetime
 from neo4j.time import datetime as neo4j_datetime  # Import directly from neo4j
 from database import get_driver
 from fastapi import HTTPException
-import os
-
-
-def get_env_variable(var: str):
-    value = os.getenv(var)
-    if value is None:
-        raise ValueError(f"Environment variable '{var}' not found.")
-    return value
 
 
 def get_neo4j_datetime():

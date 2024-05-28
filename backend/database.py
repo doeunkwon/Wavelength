@@ -1,10 +1,16 @@
 from neo4j import GraphDatabase
-from config import URI, AUTH
+from config import AUTH
 from fastapi import HTTPException
+from dotenv import load_dotenv
+from backend_helper import get_env_variable
+
+load_dotenv()
+
+uri = get_env_variable("URI")
 
 
 def get_driver():
-    driver = GraphDatabase.driver(URI, auth=AUTH)
+    driver = GraphDatabase.driver(uri, auth=AUTH)
     try:
         driver.verify_connectivity()
         return driver

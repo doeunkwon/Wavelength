@@ -4,12 +4,14 @@ from huggingface_hub import InferenceClient
 from app.models import Prompt
 import json
 from app.api.private.auth import get_current_user
+from backend_helper import get_env_variable
 
 load_dotenv()
 
 router = APIRouter()
 
-model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+
+model_id = get_env_variable("MODEL_ID")
 
 inference_client = InferenceClient(
     model=model_id,
