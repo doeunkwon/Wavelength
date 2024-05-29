@@ -4,7 +4,7 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from config import SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
-from database import get_driver
+from database.neo4j import graph
 from dotenv import load_dotenv
 from backend_helper import get_env_variable
 
@@ -57,33 +57,31 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 @router.post("/private/login")
 async def login(form: OAuth2PasswordRequestForm = Depends()):
     try:
-        driver = get_driver()
-        with driver.session() as session:
-            # Build Cypher query with username
-            cypher_query = """
-            MATCH (u:User {username: $username})
-            RETURN u
-            """
+        # Build Cypher query with username
+        cypher_query = """
+        MATCH (u:User {username: $username})
+        RETURN u
+        """
 
-            # Execute the query with username from form
-            result = session.run(cypher_query, {"username": form.username})
-            user = result.single()["u"]
+        # Execute the query with username from form
+        result = graph.query(cypher_query, {"username": form.username})
+        user = result[0]["u"]
 
-            # Handle user not found case
-            if not user:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
-                )
+        # Handle user not found case
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
+            )
 
-            # Verify password directly from user object
-            if not verify_password(form.password, user["password"]):
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
-                )
+        # Verify password directly from user object
+        if not verify_password(form.password, user["password"]):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
+            )
 
-            access_token = create_access_token(data={"sub": user["uid"]})
+        access_token = create_access_token(data={"sub": user["uid"]})
 
-            return {"access_token": access_token, "token_type": "bearer"}
+        return {"access_token": access_token, "token_type": "bearer"}
 
     except Exception as e:
         raise HTTPException(
@@ -102,24 +100,22 @@ async def logout():
 # Function to retrieve user by username
 async def get_user_by_uid(uid: str):
     try:
-        driver = get_driver()
-        with driver.session() as session:
-            # Build Cypher query with uid
-            cypher_query = """
-            MATCH (u:User {uid: $uid})
-            RETURN u
-            """
+        # Build Cypher query with uid
+        cypher_query = """
+        MATCH (u:User {uid: $uid})
+        RETURN u
+        """
 
-            # Execute the query with uid
-            result = session.run(cypher_query, {"uid": uid})
-            user = result.single()
+        # Execute the query with uid
+        result = graph.query(cypher_query, {"uid": uid})
+        user = result[0]
 
-            # Handle user not found case
-            if not user:
-                raise HTTPException(status_code=404, detail="User not found")
+        # Handle user not found case
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
 
-            # Return the user data
-            return user["u"]
+        # Return the user data
+        return user["u"]
 
     except Exception as e:
         raise HTTPException(
