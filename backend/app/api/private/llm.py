@@ -1,25 +1,33 @@
 from fastapi import APIRouter, Body, Depends, HTTPException
 from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
+from langchain.chains import GraphCypherQAChain
+from langchain_google_genai import ChatGoogleGenerativeAI
 from app.models import Prompt
-import json
 from app.api.private.auth import get_current_user
 from backend_helper import get_env_variable
+from database.neo4j import graph
+import json
 
 load_dotenv()
 
 router = APIRouter()
 
+llama_model_id = get_env_variable("LLAMA_MODEL_ID")
+gemini_api_key = get_env_variable("GEMINI_API_KEY")
 
-model_id = get_env_variable("MODEL_ID")
-
-inference_client = InferenceClient(
-    model=model_id,
+llama = InferenceClient(
+    model=llama_model_id,
     timeout=120
 )
 
+gemini = ChatGoogleGenerativeAI(
+    model="gemini-pro", google_api_key=gemini_api_key, temperature=0)
 
-@router.post("/private/answer")
+chain = GraphCypherQAChain.from_llm(graph=graph, llm=gemini, verbose=True)
+
+
+@router.post("/private/llm")
 async def answer(
     token: str = Depends(get_current_user),
     prompt: Prompt = Body(...),
@@ -29,7 +37,7 @@ async def answer(
         return HTTPException(status_code=401, detail="Unauthorized access")
 
     try:
-        response = inference_client.post(
+        response = llama.post(
             json={
                 "inputs": prompt.content,
                 "parameters": {"max_new_tokens": 200},
@@ -38,5 +46,23 @@ async def answer(
         )
         generated_text = json.loads(response.decode())[0]["generated_text"]
         return generated_text
+
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error generating answer: {str(e)}")
+
+
+@router.post("/private/llm/rag")
+async def answer_with_rag(
+    token: str = Depends(get_current_user),
+    prompt: Prompt = Body(...),
+):
+    if not token.get("uid"):
+        # Use 401 for unauthorized
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+        # response = chain.invoke(prompt.content)['result']
+        response = chain.invoke(prompt.content)
+        return response
     except Exception as e:
         raise HTTPException(500, detail=f"Error generating answer: {str(e)}")
