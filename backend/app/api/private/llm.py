@@ -24,7 +24,8 @@ llama = InferenceClient(
 gemini = ChatGoogleGenerativeAI(
     model="gemini-pro", google_api_key=gemini_api_key, temperature=0)
 
-chain = GraphCypherQAChain.from_llm(graph=graph, llm=gemini, verbose=True)
+chain = GraphCypherQAChain.from_llm(
+    graph=graph, llm=gemini, verbose=True, return_intermediate_steps=True)
 
 
 @router.post("/private/llm")
@@ -61,8 +62,18 @@ async def answer_with_rag(
         return HTTPException(status_code=401, detail="Unauthorized access")
 
     try:
-        # response = chain.invoke(prompt.content)['result']
-        response = chain.invoke(prompt.content)
-        return response
+        response = chain.invoke({"query": prompt.content})
+        context = response["intermediate_steps"][1]["context"]
+
+        # Inject context into the prompt
+        response_prompt = f'''The answer to the question {prompt.content} is {context}.
+        Present the answer in natural language.'''
+
+        # Use LLM to analyze context and generate natural language response
+        response = gemini.invoke(response_prompt)
+        answer = response.content
+
+        return answer
+
     except Exception as e:
         raise HTTPException(500, detail=f"Error generating answer: {str(e)}")
