@@ -6,7 +6,7 @@ from langchain_core.prompts import FewShotPromptTemplate, PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 from app.models import Prompt
 from app.api.private.auth import get_current_user
-from backend_helper import get_env_variable
+from helper import get_env_variable
 from database.neo4j import graph
 from app.api.helpers.llm import examples, example_prompt, prompt_prefix, prompt_suffix, uid_modified_prompt, rag_response_prompt, gen_response_prompt
 from app.api.helpers.functions import test_print
@@ -77,7 +77,7 @@ async def answer_with_rag(
             return answer
 
     except Exception as e:
-        # If the question is irrelevant from Neo4j DB, then do a general QA
+        # If the LLM fails to generate a legal Cypher statement
         if "Generated Cypher Statement is not valid" in str(e):
             try:
                 response_prompt = gen_response_prompt(prompt.content)

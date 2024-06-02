@@ -6,7 +6,7 @@ from jose import JWTError, jwt
 from config import SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
 from database.neo4j import graph
 from dotenv import load_dotenv
-from backend_helper import get_env_variable
+from helper import get_env_variable
 
 load_dotenv()
 

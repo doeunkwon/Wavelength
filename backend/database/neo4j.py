@@ -1,6 +1,6 @@
 from langchain_community.graphs import Neo4jGraph
 from dotenv import load_dotenv
-from backend_helper import get_env_variable
+from helper import get_env_variable
 
 load_dotenv()
 
