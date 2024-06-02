@@ -17,3 +17,7 @@ class User(BaseModel):
 
 class Memory(BaseModel):
     content: str
+
+
+class Prompt(BaseModel):
+    content: str

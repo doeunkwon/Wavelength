@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 # Assuming you have a function to get the Neo4j driver
-from database import get_driver
+from database.neo4j import graph
 
 router = APIRouter()
 
@@ -10,19 +10,17 @@ async def create_user_memory_relationship(
     relationship: dict,  # Capture data as a dictionary
 ):
     try:
-        driver = get_driver()
-        with driver.session() as session:
-            uid1 = relationship["uid1"]  # Access data from the dictionary
-            mid = relationship["mid"]
-            uid2 = relationship["uid2"]
+        uid1 = relationship["uid1"]  # Access data from the dictionary
+        mid = relationship["mid"]
+        uid2 = relationship["uid2"]
 
-            cypher_query = """
-            MATCH (user1:User {uid: $uid1}), (user2:User {uid: $uid2}), (memory:Memory {mid: $mid})
-            CREATE (user1)-[has:HAS]->(memory)-[about:ABOUT]->(user2)
-            RETURN user1, memory, user2
-            """
-            session.run(cypher_query, {"uid1": uid1, "mid": mid, "uid2": uid2})
-            print(f"Cypher Query Executed: {cypher_query}")
+        cypher_query = """
+        MATCH (user1:User {uid: $uid1}), (user2:User {uid: $uid2}), (memory:Memory {mid: $mid})
+        CREATE (user1)-[has:HAS]->(memory)-[about:ABOUT]->(user2)
+        RETURN user1, memory, user2
+        """
+        graph.query(cypher_query, {"uid1": uid1, "mid": mid, "uid2": uid2})
+        print(f"Cypher Query Executed: {cypher_query}")
         return {"message": "Relationship created successfully."}
     except Exception as e:
         raise HTTPException(
@@ -35,19 +33,17 @@ async def create_user_friendship_relationship(
     relationship: dict,  # Capture data as a dictionary
 ):
     try:
-        driver = get_driver()
-        with driver.session() as session:
-            uid1 = relationship["uid1"]  # Access data from the dictionary
-            uid2 = relationship["uid2"]
+        uid1 = relationship["uid1"]  # Access data from the dictionary
+        uid2 = relationship["uid2"]
 
-            cypher_query = """
-            MATCH (user1:User {uid: $uid1}), (user2:User {uid: $uid2})
-            CREATE (user1)-[:FRIENDS_WITH]->(user2)
-            CREATE (user2)-[:FRIENDS_WITH]->(user1)
-            RETURN user1, user2
-            """
-            session.run(cypher_query, {"uid1": uid1, "uid2": uid2})
-            print(f"Cypher Query Executed: {cypher_query}")
+        cypher_query = """
+        MATCH (user1:User {uid: $uid1}), (user2:User {uid: $uid2})
+        CREATE (user1)-[:FRIENDS_WITH]->(user2)
+        CREATE (user2)-[:FRIENDS_WITH]->(user1)
+        RETURN user1, user2
+        """
+        graph.query(cypher_query, {"uid1": uid1, "uid2": uid2})
+        print(f"Cypher Query Executed: {cypher_query}")
         return {"message": "Relationship created successfully."}
     except Exception as e:
         raise HTTPException(
@@ -60,20 +56,18 @@ async def create_user_friendship_relationship(
     relationship: dict,  # Capture data as a dictionary
 ):
     try:
-        driver = get_driver()
-        with driver.session() as session:
-            uid1 = relationship["uid1"]  # Access data from the dictionary
-            uid2 = relationship["uid2"]
+        uid1 = relationship["uid1"]  # Access data from the dictionary
+        uid2 = relationship["uid2"]
 
-            cypher_query = """
-            MATCH (user1:User {uid: $uid1})-[r:FRIENDS_WITH]->(user2:User {uid: $uid2})
-            DELETE r
-            UNION
-            MATCH (user2:User {uid: $uid2})-[r:FRIENDS_WITH]->(user1:User {uid: $uid1})
-            DELETE r
-            """
-            session.run(cypher_query, {"uid1": uid1, "uid2": uid2})
-            print(f"Cypher Query Executed: {cypher_query}")
+        cypher_query = """
+        MATCH (user1:User {uid: $uid1})-[r:FRIENDS_WITH]->(user2:User {uid: $uid2})
+        DELETE r
+        UNION
+        MATCH (user2:User {uid: $uid2})-[r:FRIENDS_WITH]->(user1:User {uid: $uid1})
+        DELETE r
+        """
+        graph.query(cypher_query, {"uid1": uid1, "uid2": uid2})
+        print(f"Cypher Query Executed: {cypher_query}")
         return {"message": "Relationship deleted successfully."}
     except Exception as e:
         raise HTTPException(
