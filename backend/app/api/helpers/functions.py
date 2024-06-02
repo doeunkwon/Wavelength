@@ -4,6 +4,13 @@ from database.neo4j import graph
 from fastapi import HTTPException
 
 
+def test_print(var: str, case=0):
+    if case == 0:
+        return print(f'\n\n{var}\n\n')
+    else:
+        return print(f'\n\nCase {case}\n{var}\n\n')
+
+
 def get_neo4j_datetime():
     """
     This function gets the current timestamp as a Neo4j datetime object
