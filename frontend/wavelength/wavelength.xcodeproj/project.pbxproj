@@ -81,23 +81,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E47657D92C1ACC3E00844246 /* Friends */ = {
+		E40F68362C1B7266005FBAC4 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				E49215ED2C17F4EC00A52F45 /* ChatView.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		E40F68372C1B72B5005FBAC4 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				E49215EB2C17C09800A52F45 /* SettingsView.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		E47657D92C1ACC3E00844246 /* Friend */ = {
 			isa = PBXGroup;
 			children = (
 				E49215E92C17BBAC00A52F45 /* FriendsView.swift */,
 				E47CFDD52C1AC017000C1F8D /* FriendCardView.swift */,
 				E47657DA2C1ACDF800844246 /* FriendCardsRowView.swift */,
 			);
-			path = Friends;
+			path = Friend;
 			sourceTree = "<group>";
 		};
 		E47CFDD72C1ACBC5000C1F8D /* View */ = {
 			isa = PBXGroup;
 			children = (
 				E49215C12C17AEF200A52F45 /* ContentView.swift */,
-				E47657D92C1ACC3E00844246 /* Friends */,
-				E49215EB2C17C09800A52F45 /* SettingsView.swift */,
-				E49215ED2C17F4EC00A52F45 /* ChatView.swift */,
+				E40F68372C1B72B5005FBAC4 /* Setting */,
+				E47657D92C1ACC3E00844246 /* Friend */,
+				E40F68362C1B7266005FBAC4 /* Chat */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -125,8 +141,8 @@
 		E49215BE2C17AEF200A52F45 /* wavelength */ = {
 			isa = PBXGroup;
 			children = (
-				E47CFDD72C1ACBC5000C1F8D /* View */,
 				E49215BF2C17AEF200A52F45 /* wavelengthApp.swift */,
+				E47CFDD72C1ACBC5000C1F8D /* View */,
 				E49215C32C17AEF300A52F45 /* Assets.xcassets */,
 				E49215C52C17AEF300A52F45 /* Preview Content */,
 			);

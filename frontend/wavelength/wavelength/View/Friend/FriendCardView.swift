@@ -31,7 +31,7 @@ struct FriendCardView: View {
                         .foregroundColor(Color.wavelengthBlack)
                     Text(username)
                         .font(.system(size: 12))
-                        .foregroundColor(Color.wavelengthGrey)
+                        .foregroundColor(Color.wavelengthDarkGrey)
                 }
             }
             .padding(10)

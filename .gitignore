@@ -2,3 +2,11 @@ config.py
 __pycache__/
 .DS_Store
 .env
+xcuserdata/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+timeline.xctimeline
+playground.xcworkspace
+.build/
