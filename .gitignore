@@ -2,7 +2,6 @@ config.py
 __pycache__/
 .DS_Store
 .env
-.xcuserdata/
 *.hmap
 *.ipa
 *.dSYM.zip
@@ -10,4 +9,4 @@ __pycache__/
 timeline.xctimeline
 playground.xcworkspace
 .build/
-*.xcuserstate
+**/xcuserdata/*
