@@ -2,7 +2,7 @@ config.py
 __pycache__/
 .DS_Store
 .env
-xcuserdata/
+.xcuserdata/
 *.hmap
 *.ipa
 *.dSYM.zip
