@@ -10,16 +10,34 @@ import SwiftUI
 struct ChatView: View {
     
     @State var chatMessages: [ChatMessage] = ChatMessage.sampleMessages
+    @State var textMessage: String = ""
     
     var body: some View {
-        ScrollView(.vertical) {
-            LazyVStack {
-                ForEach(chatMessages, id: \.id) { message in
-                    messageView(message: message)
+        VStack {
+            ScrollView(.vertical, showsIndicators: false) {
+                LazyVStack {
+                    ForEach(chatMessages, id: \.id) { message in
+                        messageView(message: message)
+                    }
                 }
             }
+            .padding(.horizontal)
+            HStack {
+                TextField("Message", text: $textMessage)
+                    .padding()
+                    .background(Color.wavelengthLightGrey)
+                    .cornerRadius(30)
+                Button {
+                    
+                } label: {
+                    Image(systemName: "paperplane")
+                        .font(.system(size: 24))
+                        .accentColor(.wavelengthPurple)
+                }
+            }
+            .padding()
+            .padding(.top, 0)
         }
-        .padding(.horizontal)
         .background(Color.background)
     }
     
@@ -51,10 +69,14 @@ enum MessageSender {
 
 extension ChatMessage {
     static let sampleMessages = [
-        ChatMessage(id: UUID().uuidString, content: "Hello world! This is from Doeun.", dateCreated: Date(), sender: .user),
-        ChatMessage(id: UUID().uuidString, content: "Hello world! This is from AI.", dateCreated: Date(), sender: .ai),
-        ChatMessage(id: UUID().uuidString, content: "Hello world! This is from Doeun.", dateCreated: Date(), sender: .user),
-        ChatMessage(id: UUID().uuidString, content: "Hello world! This is from AI.", dateCreated: Date(), sender: .ai)]
+        ChatMessage(id: UUID().uuidString, content: "Hello! I'm Doeun.", dateCreated: Date(), sender: .user),
+        ChatMessage(id: UUID().uuidString, content: "Hey Doeun! How can I help you?", dateCreated: Date(), sender: .ai),
+        ChatMessage(id: UUID().uuidString, content: "What's the meaning of the universe?", dateCreated: Date(), sender: .user),
+        ChatMessage(id: UUID().uuidString, content: "Deep question!  Universe = everything, all space & time. Science studies how it works, but meaning is more philosophical. Maybe it's out there, maybe it's for us to decide.", dateCreated: Date(), sender: .ai),
+        ChatMessage(id: UUID().uuidString, content: "What should I get Andrea for her birthday?", dateCreated: Date(), sender: .user),
+        ChatMessage(id: UUID().uuidString, content: "Andrea likes crafts, swimming & volleyball! For crafts, maybe a gift certificate to a store or a new kit like jewelry making or painting. For swimming, a new swimsuit, beach towel, goggles or fun floats could be cool! Volleyball ideas are a new ball, kneepads, or a volleyball t-shirt. Anything else you'd like to know about her interests? Might help narrow down the gift! ", dateCreated: Date(), sender: .ai),
+        ChatMessage(id: UUID().uuidString, content: "Thanks!", dateCreated: Date(), sender: .user),
+        ChatMessage(id: UUID().uuidString, content: "Always.", dateCreated: Date(), sender: .ai)]
 }
 
 #Preview {
