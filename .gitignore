@@ -10,3 +10,4 @@ timeline.xctimeline
 playground.xcworkspace
 .build/
 **/xcuserdata/*
+project.pbxproj

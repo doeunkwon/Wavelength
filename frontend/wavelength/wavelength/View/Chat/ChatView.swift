@@ -28,17 +28,17 @@ struct ChatView: View {
                     .background(Color.wavelengthLightGrey)
                     .cornerRadius(30)
                 Button {
-                    
+                    print("Sent!")
                 } label: {
                     Image(systemName: "paperplane")
-                        .font(.system(size: 24))
+                        .font(.system(size: Fonts.title))
                         .accentColor(.wavelengthPurple)
                 }
             }
             .padding()
             .padding(.top, 0)
         }
-        .background(Color.background)
+        .background(Color.wavelengthBackground)
     }
     
     func messageView(message: ChatMessage) -> some View {

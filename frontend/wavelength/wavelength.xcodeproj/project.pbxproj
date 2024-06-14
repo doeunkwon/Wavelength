@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E40F683D2C1BE2F6005FBAC4 /* SettingsCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40F683C2C1BE2F6005FBAC4 /* SettingsCellView.swift */; };
+		E40F68402C1BE370005FBAC4 /* EmojiCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40F683F2C1BE370005FBAC4 /* EmojiCircleView.swift */; };
+		E40F68422C1BE583005FBAC4 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40F68412C1BE583005FBAC4 /* Fonts.swift */; };
+		E40F68442C1C0FDE005FBAC4 /* SettingsPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40F68432C1C0FDE005FBAC4 /* SettingsPanelView.swift */; };
 		E47657DB2C1ACDF800844246 /* FriendCardsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47657DA2C1ACDF800844246 /* FriendCardsRowView.swift */; };
 		E47CFDD62C1AC017000C1F8D /* FriendCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47CFDD52C1AC017000C1F8D /* FriendCardView.swift */; };
 		E49215C02C17AEF200A52F45 /* wavelengthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49215BF2C17AEF200A52F45 /* wavelengthApp.swift */; };
@@ -39,6 +43,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E40F683C2C1BE2F6005FBAC4 /* SettingsCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellView.swift; sourceTree = "<group>"; };
+		E40F683F2C1BE370005FBAC4 /* EmojiCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCircleView.swift; sourceTree = "<group>"; };
+		E40F68412C1BE583005FBAC4 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		E40F68432C1C0FDE005FBAC4 /* SettingsPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPanelView.swift; sourceTree = "<group>"; };
 		E47657DA2C1ACDF800844246 /* FriendCardsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCardsRowView.swift; sourceTree = "<group>"; };
 		E47CFDD52C1AC017000C1F8D /* FriendCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCardView.swift; sourceTree = "<group>"; };
 		E49215BC2C17AEF200A52F45 /* wavelength.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wavelength.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,8 +101,19 @@
 			isa = PBXGroup;
 			children = (
 				E49215EB2C17C09800A52F45 /* SettingsView.swift */,
+				E40F68432C1C0FDE005FBAC4 /* SettingsPanelView.swift */,
+				E40F683C2C1BE2F6005FBAC4 /* SettingsCellView.swift */,
 			);
 			path = Setting;
+			sourceTree = "<group>";
+		};
+		E40F683E2C1BE355005FBAC4 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E40F683F2C1BE370005FBAC4 /* EmojiCircleView.swift */,
+				E40F68412C1BE583005FBAC4 /* Fonts.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		E47657D92C1ACC3E00844246 /* Friend */ = {
@@ -110,6 +129,7 @@
 		E47CFDD72C1ACBC5000C1F8D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E40F683E2C1BE355005FBAC4 /* Shared */,
 				E49215C12C17AEF200A52F45 /* ContentView.swift */,
 				E40F68372C1B72B5005FBAC4 /* Setting */,
 				E47657D92C1ACC3E00844246 /* Friend */,
@@ -306,9 +326,13 @@
 			files = (
 				E49215EA2C17BBAC00A52F45 /* FriendsView.swift in Sources */,
 				E49215C22C17AEF200A52F45 /* ContentView.swift in Sources */,
+				E40F68442C1C0FDE005FBAC4 /* SettingsPanelView.swift in Sources */,
 				E49215EE2C17F4EC00A52F45 /* ChatView.swift in Sources */,
 				E49215EC2C17C09800A52F45 /* SettingsView.swift in Sources */,
 				E47CFDD62C1AC017000C1F8D /* FriendCardView.swift in Sources */,
+				E40F683D2C1BE2F6005FBAC4 /* SettingsCellView.swift in Sources */,
+				E40F68422C1BE583005FBAC4 /* Fonts.swift in Sources */,
+				E40F68402C1BE370005FBAC4 /* EmojiCircleView.swift in Sources */,
 				E49215C02C17AEF200A52F45 /* wavelengthApp.swift in Sources */,
 				E47657DB2C1ACDF800844246 /* FriendCardsRowView.swift in Sources */,
 			);

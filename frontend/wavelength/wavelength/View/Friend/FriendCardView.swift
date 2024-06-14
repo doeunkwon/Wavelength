@@ -20,23 +20,23 @@ struct FriendCardView: View {
                 ZStack {
                     color.frame(width: .infinity, height: 150)
                     Text(emoji)
-                        .font(.system(size: 40))
+                        .font(.system(size: Fonts.icon))
                 }
                 .cornerRadius(8)
                 
                 // Name and username below the emoji
                 VStack(alignment: .leading) {
                     Text(firstName)
-                        .font(.system(size: 16))
+                        .font(.system(size: Fonts.body))
                         .foregroundColor(Color.wavelengthBlack)
                     Text(username)
-                        .font(.system(size: 12))
+                        .font(.system(size: Fonts.body2))
                         .foregroundColor(Color.wavelengthDarkGrey)
                 }
             }
             .padding(10)
         }
-        .background(Color.background)
+        .background(Color.wavelengthOffWhite)
     }
 }
 
