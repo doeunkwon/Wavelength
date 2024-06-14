@@ -18,7 +18,7 @@ struct FriendCardView: View {
             VStack(alignment: .leading) {
                 // Emoji in a colored square
                 ZStack {
-                    color.frame(width: .infinity, height: 150)
+                    color.frame(width: 150, height: 150)
                     Text(emoji)
                         .font(.system(size: Fonts.icon))
                 }
@@ -37,6 +37,7 @@ struct FriendCardView: View {
             .padding(10)
         }
         .background(Color.wavelengthOffWhite)
+        .cornerRadius(10)
     }
 }
 

@@ -21,14 +21,13 @@ struct FriendsView: View {
                         FriendCardsRowView(card1: card1, card2: card2)
                     }
                 }
-                .padding(.horizontal)
             }
             .background(Color.wavelengthBackground)
             .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 10, x: 0, y: 4)
             
             ZStack {
                 Circle()
-                    .frame(width: 45, height: 45)
+                    .frame(width: 45)
                     .foregroundColor(.wavelengthOffWhite)
                     .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 8, x: 0, y: 4)
                 Button {

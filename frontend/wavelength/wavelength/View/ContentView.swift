@@ -11,17 +11,18 @@ struct ContentView: View {
     
     @State var selectedTab = 1
     
+    let friendCards = [
+        FriendCardView(firstName: "Doeun", username: "billthemuffer", emoji: "🌎", color: Color.wavelengthBlue),
+        FriendCardView(firstName: "Andrea", username: "andrea.funggg", emoji: "🪷", color: Color.wavelengthPink),
+        FriendCardView(firstName: "Austin", username: "austtnl", emoji: "🌲", color: Color.wavelengthGreen)
+    ]
+    
     var body: some View {
         TabView(selection: $selectedTab) {
             SettingsView()
                 .tabItem { Image(systemName: "gearshape") }
                 .tag(0)
-            FriendsView(friendCards: [
-                FriendCardView(firstName: "Doeun", username: "billthemuffer", emoji: "🌎", color: Color.wavelengthBlue),
-                FriendCardView(firstName: "Andrea", username: "andrea.funggg", emoji: "🪷", color: Color.wavelengthPink),
-                FriendCardView(firstName: "Austin", username: "austtnl", emoji: "🌲", color: Color.wavelengthGreen)
-                // Add more FriendCardViews here
-            ])
+            FriendsView(friendCards: friendCards)
             .tabItem { Image(systemName: "square.grid.2x2") }
             .tag(1)
             ChatView()
