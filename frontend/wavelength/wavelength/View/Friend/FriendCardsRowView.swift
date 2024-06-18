@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct FriendCardsRowView: View {
-    let card1: FriendCardView
-    let card2: FriendCardView? // Optional for the second card
+    let user1: User
+    let user2: User? // Optional for the second user
     
     var body: some View {
         HStack {
-            card1
+            FriendCardView(user: user1)
             Spacer()
-            if let card2 = card2 {
-                card2
+            if let user2 = user2 {
+                FriendCardView(user: user2)
             }
         }
         .padding(.horizontal, 20)
@@ -26,5 +26,5 @@ struct FriendCardsRowView: View {
 
 
 #Preview {
-    FriendCardsRowView(card1: FriendCardView(user: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "bkwon38@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue)), card2: FriendCardView(user: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "bkwon38@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue)))
+    FriendCardsRowView(user1: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "bkwon38@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue), user2: User(uid: "2", firstName: "Andrea", lastName: "Fung", birthday: "06-22-2001", username: "andy pandy", email: "andrea@gmail.com", password: "Abc123", location: "Burnaby", interests: ["Travelling", "Swimming", "Volleyball"], emoji: "🪷", color: Color.wavelengthPink))
 }

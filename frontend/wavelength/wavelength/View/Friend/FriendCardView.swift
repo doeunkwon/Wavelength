@@ -38,7 +38,7 @@ struct FriendCardView: View {
             showFriendProfileViewModal.toggle()
         }
         .sheet(isPresented: $showFriendProfileViewModal) {
-            FriendProfileView(user: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "doeun@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue))
+            FriendProfileView(user: user)
         }
     }
 }
