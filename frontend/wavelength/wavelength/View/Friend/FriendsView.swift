@@ -37,7 +37,7 @@ struct FriendsView: View {
                     print("Add new friend!")
                     showNewFriendViewModal.toggle()
                 } label: {
-                    Image(systemName: "plus")
+                    Image(systemName: Strings.icons.plus)
                         .font(.system(size: Fonts.title))
                         .accentColor(.wavelengthPurple)
                 }

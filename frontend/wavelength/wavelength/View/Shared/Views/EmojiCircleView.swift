@@ -26,7 +26,7 @@ struct EmojiCircleView: View {
             if (emoji != nil) {
                 Text(emoji ?? "😂")
             } else if (icon != nil) {
-                Image(systemName: icon ?? "gear")
+                Image(systemName: icon ?? Strings.icons.gear)
                     .font(.system(size: Fonts.subtitle))
                     .foregroundStyle(.wavelengthPurple)
             }
@@ -35,5 +35,5 @@ struct EmojiCircleView: View {
 }
 
 #Preview {
-    EmojiCircleView(icon: "gearshape")
+    EmojiCircleView(icon: Strings.icons.gearshape)
 }

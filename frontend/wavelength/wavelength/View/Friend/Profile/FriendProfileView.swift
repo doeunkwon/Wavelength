@@ -12,7 +12,7 @@ struct FriendProfileView: View {
     let user: User
     
     var body: some View {
-        ZStack {
+        VStack(alignment: .leading) {
             HStack {
                 ProfilePictureView(emoji: user.emoji, color: user.color, frameSize: FrameSizes.medium, emojiSize: Fonts.header)
                 VStack(alignment: .leading) {
@@ -20,8 +20,14 @@ struct FriendProfileView: View {
                         .font(.system(size: Fonts.title))
                     Text(user.birthday)
                         .font(.system(size: Fonts.body))
+                        .foregroundStyle(.wavelengthDarkGrey)
                 }
-                .padding(.leading)
+                .padding(.leading, 12)
+            }
+            VStack(alignment: .leading) {
+                Text(Strings.profile.location)
+                
+                Text(user.location)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -30,5 +36,5 @@ struct FriendProfileView: View {
 }
 
 #Preview {
-    FriendProfileView(user: User(uid: "2", firstName: "Andrea", lastName: "Fung", birthday: "06-22-2001", username: "andy pandy", email: "andrea@gmail.com", password: "Abc123", location: "Burnaby", interests: ["Travelling", "Swimming", "Volleyball"], emoji: "🪷", color: Color.wavelengthPink))
+    FriendProfileView(user: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "April 12, 2001", username: "billthemuffer", email: "doeun@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue))
 }

@@ -23,7 +23,7 @@ struct ChatView: View {
             }
             .padding(.horizontal)
             HStack {
-                TextField("Message", text: $textMessage)
+                TextField(Strings.chat.message, text: $textMessage)
                     .padding()
                     .background(Color.wavelengthLightGrey)
                     .cornerRadius(30)

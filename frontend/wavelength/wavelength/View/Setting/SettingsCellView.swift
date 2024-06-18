@@ -24,7 +24,7 @@ struct SettingsCellView: View {
             Text(title)
                 .font(.system(size: Fonts.body))
             Spacer()
-            Image(systemName: "arrow.right")
+            Image(systemName: Strings.icons.arrowRight)
                 .font(.system(size: Fonts.subtitle))
                 .foregroundColor(.wavelengthGrey)
         }
@@ -35,5 +35,5 @@ struct SettingsCellView: View {
 }
 
 #Preview {
-    SettingsCellView(title: "Profile", icon: "person")
+    SettingsCellView(title: Strings.settings.profile, icon: Strings.icons.person)
 }
