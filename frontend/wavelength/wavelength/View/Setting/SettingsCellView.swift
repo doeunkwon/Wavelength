@@ -18,19 +18,24 @@ struct SettingsCellView: View {
     }
     
     var body: some View {
-        HStack {
-            EmojiCircleView(icon: icon)
-                .padding(.trailing, 2)
-            Text(title)
-                .font(.system(size: Fonts.body))
-            Spacer()
-            Image(systemName: Strings.icons.arrowRight)
-                .font(.system(size: Fonts.subtitle))
-                .foregroundColor(.wavelengthGrey)
+        Button {
+            print("Settings Cell Tapped!")
+        } label: {
+            HStack {
+                EmojiCircleView(icon: icon)
+                    .padding(.trailing, 2)
+                Text(title)
+                    .font(.system(size: Fonts.body))
+                    .foregroundColor(.wavelengthBlack)
+                Spacer()
+                Image(systemName: Strings.icons.arrowRight)
+                    .font(.system(size: Fonts.subtitle))
+                    .foregroundColor(.wavelengthGrey)
+            }
+            .padding(.horizontal)
+            .frame(height: 80)
+            .background(Color.wavelengthOffWhite)
         }
-        .padding(.horizontal)
-        .frame(height: 80)
-        .background(Color.wavelengthOffWhite)
     }
 }
 
