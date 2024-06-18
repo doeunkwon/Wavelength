@@ -20,6 +20,8 @@ struct Strings {
     
     struct profile {
         
+        static let username: String = "Username"
+        static let email: String = "Email"
         static let location: String = "Location"
         
     }

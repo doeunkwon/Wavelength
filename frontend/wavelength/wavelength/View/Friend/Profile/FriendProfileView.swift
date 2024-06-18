@@ -13,23 +13,29 @@ struct FriendProfileView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                ProfilePictureView(emoji: user.emoji, color: user.color, frameSize: FrameSizes.medium, emojiSize: Fonts.header)
-                VStack(alignment: .leading) {
-                    Text(user.firstName + " " + user.lastName)
-                        .font(.system(size: Fonts.title))
-                    Text(user.birthday)
-                        .font(.system(size: Fonts.body))
-                        .foregroundStyle(.wavelengthDarkGrey)
-                }
-                .padding(.leading, 12)
-            }
-            VStack(alignment: .leading) {
-                Text(Strings.profile.location)
-                
-                Text(user.location)
-            }
+            
+            HeaderView(emoji: user.emoji, color: user.color, firstName: user.firstName, lastName: user.lastName, birthday: user.birthday)
+                .padding(.bottom)
+            
+            BasicFieldView(field: Strings.profile.username, userData: user.username)
+                .padding(.bottom)
+            
+            Divider()
+            
+            BasicFieldView(field: Strings.profile.email, userData: user.email)
+                .padding(.vertical)
+            
+            Divider()
+            
+            BasicFieldView(field: Strings.profile.location, userData: user.location)
+                .padding(.vertical)
+            
+            Divider()
+            
+            Spacer()
+            
         }
+        .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.wavelengthBackground)
     }
