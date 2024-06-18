@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct FriendsView: View {
-    let friendCards: [FriendCardView] // Array of FriendCardViews
+    
+    @State private var showNewFriendViewModal = false
+    
+    let friendCards: [FriendCardView]
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -32,12 +35,16 @@ struct FriendsView: View {
                     .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 8, x: 0, y: 4)
                 Button {
                     print("Add new friend!")
+                    showNewFriendViewModal.toggle()
                 } label: {
                     Image(systemName: "plus")
                         .font(.system(size: Fonts.title))
                         .accentColor(.wavelengthPurple)
                 }
                 .padding(.vertical, 30)
+                .sheet(isPresented: $showNewFriendViewModal) {
+                    NewFriendView()
+                }
             }
         }
     }
@@ -45,9 +52,9 @@ struct FriendsView: View {
 
 #Preview {
     FriendsView(friendCards: [
-        FriendCardView(firstName: "Doeun", username: "billthemuffer", emoji: "🌎", color: Color.wavelengthBlue),
-        FriendCardView(firstName: "Andrea", username: "andrea.funggg", emoji: "🪷", color: Color.wavelengthPink),
-        FriendCardView(firstName: "Austin", username: "austtnl", emoji: "🌲", color: Color.wavelengthGreen),
+        FriendCardView(user: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "bkwon38@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue)),
+        FriendCardView(user: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "bkwon38@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue)),
+        FriendCardView(user: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "bkwon38@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue)),
         // Add more FriendCardViews here
     ])
 }

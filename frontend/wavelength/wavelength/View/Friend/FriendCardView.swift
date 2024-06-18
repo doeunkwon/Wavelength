@@ -8,28 +8,23 @@
 import SwiftUI
 
 struct FriendCardView: View {
-    let firstName: String
-    let username: String
-    let emoji: String
-    let color: Color
+    
+    @State private var showFriendProfileViewModal = false
+    
+    let user: User
     
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
-                // Emoji in a colored square
-                ZStack {
-                    color.frame(width: 150, height: 150)
-                    Text(emoji)
-                        .font(.system(size: Fonts.icon))
-                }
-                .cornerRadius(8)
+                
+                ProfilePictureView(emoji: user.emoji, color: user.color, frameSize: FrameSizes.large, emojiSize: Fonts.icon)
                 
                 // Name and username below the emoji
                 VStack(alignment: .leading) {
-                    Text(firstName)
+                    Text(user.firstName)
                         .font(.system(size: Fonts.body))
                         .foregroundColor(Color.wavelengthBlack)
-                    Text(username)
+                    Text(user.username)
                         .font(.system(size: Fonts.body2))
                         .foregroundColor(Color.wavelengthDarkGrey)
                 }
@@ -38,9 +33,16 @@ struct FriendCardView: View {
         }
         .background(Color.wavelengthOffWhite)
         .cornerRadius(10)
+        .onTapGesture {
+            print("\(user.firstName)'s card tapped")
+            showFriendProfileViewModal.toggle()
+        }
+        .sheet(isPresented: $showFriendProfileViewModal) {
+            FriendProfileView(user: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "doeun@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue))
+        }
     }
 }
 
 #Preview {
-    FriendCardView(firstName: "Doeun", username: "billthemuffer", emoji: "🌎", color: Color.wavelengthBlue)
+    FriendCardView(user: User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "bkwon38@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue))
 }
