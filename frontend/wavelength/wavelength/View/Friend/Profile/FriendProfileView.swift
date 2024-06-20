@@ -14,8 +14,20 @@ struct FriendProfileView: View {
     var body: some View {
         VStack(alignment: .leading) {
             
-            HeaderView(emoji: user.emoji, color: user.color, firstName: user.firstName, lastName: user.lastName, birthday: user.birthday)
-                .padding(.bottom)
+            HStack(alignment: .top) {
+                HeaderView(emoji: user.emoji, color: user.color, firstName: user.firstName, lastName: user.lastName, birthday: user.birthday)
+                    .padding(.bottom)
+                
+                Spacer()
+                
+                Button {
+                    print("Relationship options tapped!")
+                } label: {
+                    Image(systemName: Strings.icons.sliderHorizontalThree)
+                        .font(.system(size: Fonts.subtitle))
+                        .foregroundColor(.wavelengthGrey)
+                }
+            }
             
             BasicFieldView(field: Strings.profile.username, userData: user.username)
                 .padding(.bottom)
@@ -33,6 +45,11 @@ struct FriendProfileView: View {
             Divider()
             
             InterestFieldView(interests: user.interests, tagColor: user.color)
+                .padding(.vertical)
+            
+            Divider()
+            
+            MemoryFieldView(memories: ["Wants to go camping this summer 2024 with all the boys from HWSS.", "Has a grad exhibition on May 9."])
                 .padding(.vertical)
             
             Spacer()

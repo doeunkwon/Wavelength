@@ -10,13 +10,13 @@ import SwiftUI
 struct SettingsPanelView: View {
     var body: some View {
         VStack(spacing: 0) {
-            SettingsCellView(title: Strings.settings.profile, icon: Strings.icons.person)
+            SettingsCellView(title: Strings.settings.profile, icon: Strings.icons.person, action: {print("Profile tapped!")})
             Divider()
-            SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock)
+            SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock, action: {print("Change Password tapped!")})
             Divider()
-            SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash)
+            SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash, action: {print("Delete Profile tapped!")})
             Divider()
-            SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen)
+            SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {print("Log out tapped!")})
         }
     }
 }

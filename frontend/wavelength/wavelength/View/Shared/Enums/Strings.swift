@@ -24,6 +24,7 @@ struct Strings {
         static let email: String = "Email"
         static let location: String = "Location"
         static let interests: String = "Interests"
+        static let memories: String = "Memories"
         
     }
 
@@ -45,6 +46,7 @@ struct Strings {
         static let doorLeftHandOpen: String = "door.left.hand.open"
         static let arrowRight: String = "arrow.right"
         static let plus: String = "plus"
+        static let sliderHorizontalThree: String = "slider.horizontal.3"
 
     }
 }

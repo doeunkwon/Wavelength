@@ -77,8 +77,6 @@ struct TagsView: View {
                     }
                 }
             }
-            
-            Spacer()
         }
     }
     

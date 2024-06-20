@@ -10,16 +10,12 @@ import SwiftUI
 struct SettingsCellView: View {
     
     let title: String
-    let icon: String?
-    
-    init(title: String, icon: String?) {
-        self.title = title
-        self.icon = icon
-    }
+    let icon: String
+    let action: () -> Void
     
     var body: some View {
         Button {
-            print("Settings Cell Tapped!")
+            action()
         } label: {
             HStack {
                 EmojiCircleView(icon: icon)
@@ -40,5 +36,5 @@ struct SettingsCellView: View {
 }
 
 #Preview {
-    SettingsCellView(title: Strings.settings.profile, icon: Strings.icons.person)
+    SettingsCellView(title: Strings.settings.profile, icon: Strings.icons.person, action: { print("hello") })
 }
