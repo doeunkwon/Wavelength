@@ -103,12 +103,14 @@ async def create_friend_friendship_relationship(
     try:
         uid = relationship["uid"]  # Access data from the dictionary
         fid = relationship["fid"]
+        compatibility = relationship["compatibility"]
 
         cypher_query = """
         MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid})
-        CREATE (user)-[:FRIENDS_WITH]->(friend)
+        CREATE (user)-[:FRIENDS_WITH {compatibility: $compatibility}]->(friend)
         """
-        graph.query(cypher_query, {"uid": uid, "fid": fid})
+        graph.query(cypher_query, {"uid": uid,
+                    "fid": fid, "compatibility": compatibility})
         print(f"Cypher Query Executed: {cypher_query}")
         return {"message": "Relationship created successfully."}
     except Exception as e:
@@ -124,12 +126,14 @@ async def create_friend_friendship_relationship(
     try:
         uid = relationship["uid"]  # Access data from the dictionary
         fid = relationship["fid"]
+        compatibility = relationship["compatibility"]
 
         cypher_query = """
-        MATCH (user:User {uid: $uid})-[r:FRIENDS_WITH]->(friend:Friend {fid: $fid})
+        MATCH (user:User {uid: $uid})-[r:FRIENDS_WITH {compatibility: $compatibility}]->(friend:Friend {fid: $fid})
         DELETE r
         """
-        graph.query(cypher_query, {"uid": uid, "fid": fid})
+        graph.query(cypher_query, {"uid": uid,
+                    "fid": fid, "compatibility": compatibility})
         print(f"Cypher Query Executed: {cypher_query}")
         return {"message": "Relationship deleted successfully."}
     except Exception as e:
