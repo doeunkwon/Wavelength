@@ -21,6 +21,18 @@ class User(BaseModel):
     interests: list[str]
 
 
+class Friend(BaseModel):
+    emoji: str
+    color: str
+    firstName: str
+    lastName: str
+    birthday: str  # Might want to use a date type here
+    passion: str
+    workEthic: str
+    personality: list[str]
+    interests: list[str]
+
+
 class Memory(BaseModel):
     content: str
 

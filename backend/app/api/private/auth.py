@@ -9,8 +9,7 @@ from dotenv import load_dotenv
 from helper import get_env_variable
 
 '''
-Handles user login and authorization for accessing protected data (e.g., birthdays).
-Private to ensure security and separation of concerns.
+Handles user login and authorization for users to access their own protected data.
 '''
 
 load_dotenv()

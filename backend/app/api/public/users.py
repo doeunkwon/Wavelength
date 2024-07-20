@@ -7,8 +7,8 @@ from database.neo4j import graph
 
 '''
 Master endpoints.
-These endpoints should be strictly restricted to admin.
-No consumer should have access to these endpoints.
+These endpoints can do pretty much everything.
+Should mainly be restricted to admin use.
 '''
 
 router = APIRouter()
