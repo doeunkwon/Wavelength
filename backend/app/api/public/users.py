@@ -2,7 +2,7 @@ import uuid
 from fastapi import HTTPException, Body, APIRouter
 from app.models import User
 from app.api.private.auth import hash_password
-from app.api.helpers.functions import delete_user as delete_user_helper, update_user as update_user_helper, get_user as get_user_helper
+from app.api.helpers.users import delete_user as delete_user_helper, update_user as update_user_helper, get_user as get_user_helper
 from database.neo4j import graph
 
 '''

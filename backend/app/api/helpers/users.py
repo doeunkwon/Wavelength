@@ -1,25 +1,5 @@
-from datetime import datetime
-from neo4j.time import datetime as neo4j_datetime  # Import directly from neo4j
 from database.neo4j import graph
 from fastapi import HTTPException
-
-
-def test_print(var: str, case=0):
-    if case == 0:
-        return print(f'\n\n{var}\n\n')
-    else:
-        return print(f'\n\nCase {case}\n{var}\n\n')
-
-
-def get_neo4j_datetime():
-    """
-    This function gets the current timestamp as a Neo4j datetime object
-    """
-    python_datetime = datetime.now()
-    neo4j_dt = neo4j_datetime(python_datetime.year, python_datetime.month, python_datetime.day,
-                              python_datetime.hour, python_datetime.minute, python_datetime.second,
-                              python_datetime.microsecond)
-    return neo4j_dt
 
 
 def get_user(uid: str):
@@ -111,12 +91,10 @@ def delete_user(uid: str):
         users_deleted = result[0]["usersDeleted"]
 
         # Handle deletion result
-        if users_deleted == 0:
+        if users_deleted != 1:
             raise HTTPException(status_code=404, detail="User not found")
 
-        message = f"Successfully deleted {users_deleted} user(s)"
-        if users_deleted > 0:
-            message += " and their associated memories."
+        message = f"Successfully deleted the user and the user's associated relationships."
 
         return {"message": message}
     except Exception as e:

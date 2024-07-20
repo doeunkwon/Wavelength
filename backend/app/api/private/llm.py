@@ -9,7 +9,7 @@ from app.api.private.auth import get_current_user
 from helper import get_env_variable
 from database.neo4j import graph
 from app.api.helpers.llm import examples, example_prompt, prompt_prefix, prompt_suffix, uid_modified_prompt, rag_response_prompt, gen_response_prompt
-from app.api.helpers.functions import test_print
+from app.api.helpers.general import test_print
 # import json
 
 load_dotenv()
@@ -39,6 +39,8 @@ chain = GraphCypherQAChain.from_llm(
     graph=graph, llm=gemini, cypher_prompt=prompt, verbose=True, return_intermediate_steps=True)
 
 # This function tries to query the Neo4j KG if the question is relevant, otherwise, it answers generally as trained.
+
+
 @router.post("/private/llm/rag")
 async def answer_with_rag(
     token: str = Depends(get_current_user),

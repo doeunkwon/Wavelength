@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+
 from app.api.public.users import router as pub_users_router
+from app.api.public.friends import router as pub_friends_router
 from app.api.public.memories import router as pub_memories_router
 from app.api.public.relationships import router as pub_relationships_router
 
@@ -10,6 +12,7 @@ from app.api.private.llm import router as pri_llm_router
 app = FastAPI()
 
 app.include_router(pub_users_router)
+app.include_router(pub_friends_router)
 app.include_router(pub_memories_router)
 app.include_router(pub_relationships_router)
 
