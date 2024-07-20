@@ -38,7 +38,7 @@ gemini = ChatGoogleGenerativeAI(
 chain = GraphCypherQAChain.from_llm(
     graph=graph, llm=gemini, cypher_prompt=prompt, verbose=True, return_intermediate_steps=True)
 
-
+# This function tries to query the Neo4j KG if the question is relevant, otherwise, it answers generally as trained.
 @router.post("/private/llm/rag")
 async def answer_with_rag(
     token: str = Depends(get_current_user),

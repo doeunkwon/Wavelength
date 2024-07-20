@@ -2,6 +2,11 @@ from fastapi import Depends, APIRouter
 from app.api.private.auth import get_current_user, hash_password
 from app.api.helpers.functions import delete_user as delete_user_helper, update_user as update_user_helper, get_user as get_user_helper
 
+'''
+Handles user requests to access PROTECTED data (hence user must be authenticated and requires a token).
+Ex) User A requests to view a friend's interests
+'''
+
 router = APIRouter()
 
 

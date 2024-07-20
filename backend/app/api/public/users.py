@@ -5,6 +5,12 @@ from app.api.private.auth import hash_password
 from app.api.helpers.functions import delete_user as delete_user_helper, update_user as update_user_helper, get_user as get_user_helper
 from database.neo4j import graph
 
+'''
+Master endpoints.
+These endpoints should be strictly restricted to admin.
+No consumer should have access to these endpoints.
+'''
+
 router = APIRouter()
 
 
@@ -31,17 +37,18 @@ async def create_user(user: User = Body(...)):
                 cypher_query = """
                 CREATE (u:User {
                     uid: $uid,
+                    emoji: $emoji,
+                    color: $color,
                     firstName: $firstName,
                     lastName: $lastName,
                     birthday: $birthday,
                     username: $username,
                     email: $email,
                     password: $hashed_password,
-                    location: $location,
-                    interests: $interests,
-                    emoji: $emoji,
-                    color: $color,
-                    qrCode: $qrCode
+                    passion: $passion,
+                    workEthic: $workEthic,
+                    personality: $personality,
+                    interests: $interests
                 })
                 RETURN u
                 """
