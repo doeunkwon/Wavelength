@@ -46,8 +46,11 @@ async def create_user(user: User = Body(...)):
                     email: $email,
                     password: $hashed_password,
                     passion: $passion,
-                    workEthic: $workEthic,
-                    personality: $personality,
+                    goal: $goal,
+                    discipline: $discipline,
+                    honesty: $honesty,
+                    positivity: $positivity,
+                    growth: $growth,
                     interests: $interests
                 })
                 RETURN u

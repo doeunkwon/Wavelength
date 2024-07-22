@@ -16,8 +16,11 @@ class User(BaseModel):
     email: str
     password: str  # Hash passwords before storing
     passion: str
-    workEthic: str
-    personality: list[str]
+    goal: str
+    discipline: int
+    honesty: int
+    positivity: int
+    growth: int
     interests: list[str]
 
 
@@ -28,8 +31,11 @@ class Friend(BaseModel):
     lastName: str
     birthday: str  # Might want to use a date type here
     passion: str
-    workEthic: str
-    personality: list[str]
+    goal: str
+    discipline: int
+    honesty: int
+    positivity: int
+    growth: int
     interests: list[str]
 
 
