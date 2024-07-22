@@ -5,7 +5,7 @@ from langchain.chains import GraphCypherQAChain
 from langchain_core.prompts import FewShotPromptTemplate, PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 from app.models import Prompt
-from app.api.private.auth import get_current_user
+from app.api.helpers.auth import get_current_user
 from helper import get_env_variable
 from database.neo4j import graph
 from app.api.helpers.llm import examples, example_prompt, prompt_prefix, prompt_suffix, uid_modified_prompt, rag_response_prompt, gen_response_prompt
