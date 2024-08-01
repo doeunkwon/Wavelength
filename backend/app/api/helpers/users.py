@@ -80,21 +80,24 @@ def delete_user(uid: str):
         # Build Cypher query with identifier and both relationship matches
         cypher_query = f"""
         MATCH (u:User {{uid: $uid}})
-        OPTIONAL MATCH (u)-[:HAS]->(m1:Memory)
-        OPTIONAL MATCH (m2:Memory)-[:ABOUT]->(u)
-        DETACH DELETE u, m1, m2
-        RETURN COUNT(u) AS usersDeleted
+        OPTIONAL MATCH (u)-[:HAS_MEMORY]->(m:Memory)
+        OPTIONAL MATCH (u)-[:FRIENDS_WITH]->(f:Friend)
+        OPTIONAL MATCH (u)-[:HAS_SCORE]->(s:Score)
+        OPTIONAL MATCH (u)-[:HAS_VALUE]->(v:Value)
+        WITH u, u as user_to_delete
+        DETACH DELETE u, m, f, s, v
+        return userToDelete
         """
 
         # Execute the query with identifier
         result = graph.query(cypher_query, {"uid": uid})
-        users_deleted = result[0]["usersDeleted"]
+        user_to_delete = result[0]["userToDelete"]
 
         # Handle deletion result
-        if users_deleted != 1:
+        if user_to_delete is None:
             raise HTTPException(status_code=404, detail="User not found")
 
-        message = f"Successfully deleted the user and the user's associated relationships."
+        message = f"Successfully deleted the {user_to_delete.firstName}."
 
         return {"message": message}
     except Exception as e:

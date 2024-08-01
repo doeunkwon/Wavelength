@@ -41,17 +41,13 @@ async def create_user(user: User = Body(...)):
                     color: $color,
                     firstName: $firstName,
                     lastName: $lastName,
-                    birthday: $birthday,
                     username: $username,
                     email: $email,
                     password: $hashed_password,
-                    passion: $passion,
-                    goal: $goal,
-                    discipline: $discipline,
-                    honesty: $honesty,
-                    positivity: $positivity,
-                    growth: $growth,
-                    interests: $interests
+                    goals: $goals,
+                    interests: $interests,
+                    tokenCount: $tokenCount,
+                    memoryCount: $memoryCount
                 })
                 RETURN u
                 """

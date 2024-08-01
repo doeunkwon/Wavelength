@@ -35,14 +35,10 @@ async def create_friend(friend: Friend = Body(...)):
                     color: $color,
                     firstName: $firstName,
                     lastName: $lastName,
-                    birthday: $birthday,
-                    passion: $passion,
-                    goal: $goal,
-                    discipline: $discipline,
-                    honesty: $honesty,
-                    positivity: $positivity,
-                    growth: $growth,
-                    interests: $interests
+                    goals: $goals,
+                    interests: $interests,
+                    tokenCount: $tokenCount,
+                    memoryCount: $memoryCount
                 })
                 RETURN f
                 """
@@ -70,7 +66,7 @@ async def create_friend(friend: Friend = Body(...)):
 # The final "return" statement is removed since we already return inside the loop <- (July 20, 2024: Again, what does "loop" mean?)
 
 
-# Function to fetch all friends
+# Function to fetch all friend instances in DB
 @router.get("/public/friends")
 async def get_friends():
     cypher_query = """
@@ -122,19 +118,24 @@ async def delete_friend(fid: str):
         cypher_query = f"""
         MATCH (f:Friend {{fid: $fid}})
         OPTIONAL MATCH (m:Memory)-[:ABOUT]->(f)
-        DETACH DELETE f, m
-        RETURN COUNT(f) AS friendsDeleted
+        OPTIONAL MATCH (f)-[:HAS_SCORE]->(s:Score)
+        OPTIONAL MATCH (f)-[:HAS_VALUE]->(v:Value)
+        WITH f, count(m)
+        DETACH DELETE f, m, s, v
+        RETURN f IS NOT NULL AS friendExists, memoriesDeleted
         """
 
         # Execute the query with identifier
         result = graph.query(cypher_query, {"fid": fid})
-        friends_deleted = result[0]["friendsDeleted"]
+        friend_exists = result[0]["friendExists"]
+        memories_deleted = result[0]["memoriesDeleted"]
 
         # Handle deletion result
-        if friends_deleted != 1:
+        if friend_exists:
             raise HTTPException(status_code=404, detail="Friend not found")
 
-        message = f"Successfully deleted the friend and the friend's associated relationships."
+        message = f"Successfully deleted friend and {
+            memories_deleted} associated relationships."
 
         return {"message": message}
     except Exception as e:

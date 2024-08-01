@@ -31,15 +31,18 @@ async def create_memory(memory: Memory = Body(...)):
                 cypher_query = """
                 CREATE (m:Memory {
                     mid: $mid,
+                    date: $date,
+                    title: $title,
                     content: $content,
-                    timestamp: $timestamp
+                    tokens: $tokens
                 })
                 RETURN m
                 """
-                # Execute the query with memory data (including timestamp)
+                # Execute the query with memory data
                 result = graph.query(
                     cypher_query, {
-                        "mid": new_mid, "timestamp": neo4j_timestamp, **memory.model_dump()}
+                        "mid": new_mid,
+                        **memory.model_dump()}
                 )
                 # Assuming a single memory is created
                 created_memory = result[0]["m"]

@@ -1,15 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 # Assuming you have a function to get the Neo4j driver
 from database.neo4j import graph
+from typing import List, Union
+from app.models import Score
 
 router = APIRouter()
 
-# Endpoints related to relationship with Friend model
+# Relationship endpoints related to MEMORY
 
 
-@router.post("/public/relationships/friend_memory")
-async def create_friend_memory_relationship(
-    relationship: dict,  # Capture data as a dictionary
+@router.post("/public/relationships/memory")
+async def create_memory_relationship(
+    relationship: dict[str, str],  # Capture data as a dictionary
 ):
     try:
         uid = relationship["uid"]  # Access data from the dictionary
@@ -18,125 +20,138 @@ async def create_friend_memory_relationship(
 
         cypher_query = """
         MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid}), (memory:Memory {mid: $mid})
-        CREATE (user)-[has:HAS]->(memory)-[about:ABOUT]->(friend)
+        CREATE (user)-[has:HAS_MEMORY]->(memory)-[about:ABOUT]->(friend)
         """
         graph.query(cypher_query, {"uid": uid, "mid": mid, "fid": fid})
-        return {"message": "Relationship created successfully."}
+        return {"message": "Relationship successfully created."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
         )
 
 
-@router.post("/public/relationships/friend_friendship")
-async def create_friend_friendship_relationship(
-    relationship: dict,  # Capture data as a dictionary
+# Relationship endpoints related to Friendship
+
+@router.post("/public/relationships/friendship")
+async def create_friendship_relationship(
+    # Capture data as a dictionary
+    relationship: dict[str, str],
 ):
     try:
         uid = relationship["uid"]  # Access data from the dictionary
         fid = relationship["fid"]
-        score = relationship["score"]
 
         cypher_query = """
         MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid})
-        CREATE (user)-[:FRIENDS_WITH {score: $score}]->(friend)
+        CREATE (user)-[:FRIENDS_WITH]->(friend)
         """
-        graph.query(cypher_query, {"uid": uid,
-                    "fid": fid, "score": score})
-        print(f"Cypher Query Executed: {cypher_query}")
-        return {"message": "Relationship created successfully."}
+        graph.query(cypher_query, {"uid": uid, "fid": fid})
+        return {"message": "Friendship successfully created."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
         )
 
 
-@router.delete("/public/relationships/friend_friendship")
-async def create_friend_friendship_relationship(
-    relationship: dict,  # Capture data as a dictionary
+@router.delete("/public/relationships/friendship")
+async def delete_friendship_relationship(
+    relationship: dict[str, str],  # Capture data as a dictionary
 ):
     try:
         uid = relationship["uid"]  # Access data from the dictionary
         fid = relationship["fid"]
-        score = relationship["score"]
 
         cypher_query = """
-        MATCH (user:User {uid: $uid})-[r:FRIENDS_WITH {score: $score}]->(friend:Friend {fid: $fid})
-        DELETE r
+        MATCH (user:User {uid: $uid})-[r:FRIENDS_WITH]->(friend:Friend {fid: $fid})
+        DETACH DELETE friend, r
         """
-        graph.query(cypher_query, {"uid": uid,
-                    "fid": fid, "score": score})
-        print(f"Cypher Query Executed: {cypher_query}")
-        return {"message": "Relationship deleted successfully."}
+        graph.query(cypher_query, {"uid": uid, "fid": fid})
+        return {"message": "Friendship and friend successfully deleted."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting relationship: {str(e)}"
         )
 
-# Endpoints related to relationship with User model
+
+# Relationship endpoints related to SCORE
+
+@router.post("/public/relationships/user_score")
+async def create_user_score_relationship(
+    relationship: dict[str, str],  # Capture data as a dictionary
+):
+    try:
+        uid = relationship["uid"]  # Access data from the dictionary
+        sid = relationship["sid"]
+
+        cypher_query = """
+        MATCH (user:User {uid: $uid}), (score:Score {sid: $sid})
+        CREATE (user)-[has:HAS_SCORE]->(score)
+        """
+        graph.query(cypher_query, {"uid": uid, "sid": sid})
+        return {"message": "Relationship successfully created."}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error creating relationship: {str(e)}"
+        )
 
 
-# @router.post("/public/relationships/user_memory")
-# async def create_user_memory_relationship(
-#     relationship: dict,  # Capture data as a dictionary
-# ):
-#     try:
-#         uid1 = relationship["uid1"]  # Access data from the dictionary
-#         mid = relationship["mid"]
-#         uid2 = relationship["uid2"]
+@router.post("/public/relationships/friend_score")
+async def create_friend_score_relationship(
+    relationship: dict[str, str],  # Capture data as a dictionary
+):
+    try:
+        fid = relationship["fid"]  # Access data from the dictionary
+        sid = relationship["sid"]
 
-#         cypher_query = """
-#         MATCH (user1:User {uid: $uid1}), (user2:User {uid: $uid2}), (memory:Memory {mid: $mid})
-#         CREATE (user1)-[has:HAS]->(memory)-[about:ABOUT]->(user2)
-#         """
-#         graph.query(cypher_query, {"uid1": uid1, "mid": mid, "uid2": uid2})
-#         return {"message": "Relationship created successfully."}
-#     except Exception as e:
-#         raise HTTPException(
-#             status_code=500, detail=f"Error creating relationship: {str(e)}"
-#         )
+        cypher_query = """
+        MATCH (friend:Friend {fid: $fid}), (score:Score {sid: $sid})
+        CREATE (friend)-[has:HAS_SCORE]->(score)
+        """
+        graph.query(cypher_query, {"fid": fid, "sid": sid})
+        return {"message": "Relationship successfully created."}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error creating relationship: {str(e)}"
+        )
 
-
-# @router.post("/public/relationships/user_friendship")
-# async def create_user_friendship_relationship(
-#     relationship: dict,  # Capture data as a dictionary
-# ):
-#     try:
-#         uid1 = relationship["uid1"]  # Access data from the dictionary
-#         uid2 = relationship["uid2"]
-
-#         cypher_query = """
-#         MATCH (user1:User {uid: $uid1}), (user2:User {uid: $uid2})
-#         CREATE (user1)-[:FRIENDS_WITH]->(user2)
-#         CREATE (user2)-[:FRIENDS_WITH]->(user1)
-#         """
-#         graph.query(cypher_query, {"uid1": uid1, "uid2": uid2})
-#         return {"message": "Relationship created successfully."}
-#     except Exception as e:
-#         raise HTTPException(
-#             status_code=500, detail=f"Error creating relationship: {str(e)}"
-#         )
+# Relationship endpoints related to VALUE
 
 
-# @router.delete("/public/relationships/user_friendship")
-# async def create_user_friendship_relationship(
-#     relationship: dict,  # Capture data as a dictionary
-# ):
-#     try:
-#         uid1 = relationship["uid1"]  # Access data from the dictionary
-#         uid2 = relationship["uid2"]
+@router.post("/public/relationships/user_value")
+async def create_user_value_relationship(
+    relationship: dict[str, str],  # Capture data as a dictionary
+):
+    try:
+        uid = relationship["uid"]  # Access data from the dictionary
+        vid = relationship["vid"]
 
-#         cypher_query = """
-#         MATCH (user1:User {uid: $uid1})-[r:FRIENDS_WITH]->(user2:User {uid: $uid2})
-#         DELETE r
-#         UNION
-#         MATCH (user2:User {uid: $uid2})-[r:FRIENDS_WITH]->(user1:User {uid: $uid1})
-#         DELETE r
-#         """
-#         graph.query(cypher_query, {"uid1": uid1, "uid2": uid2})
-#         print(f"Cypher Query Executed: {cypher_query}")
-#         return {"message": "Relationship deleted successfully."}
-#     except Exception as e:
-#         raise HTTPException(
-#             status_code=500, detail=f"Error deleting relationship: {str(e)}"
-#         )
+        cypher_query = """
+        MATCH (user:User {uid: $uid}), (value:Value {vid: $vid})
+        CREATE (user)-[has:HAS_VALUE]->(value)
+        """
+        graph.query(cypher_query, {"uid": uid, "vid": vid})
+        return {"message": "Relationship successfully created."}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error creating relationship: {str(e)}"
+        )
+
+
+@router.post("/public/relationships/friend_value")
+async def create_friend_value_relationship(
+    relationship: dict[str, str],  # Capture data as a dictionary
+):
+    try:
+        fid = relationship["fid"]  # Access data from the dictionary
+        vid = relationship["vid"]
+
+        cypher_query = """
+        MATCH (friend:Friend {fid: $fid}), (value:Value {vid: $vid})
+        CREATE (friend)-[has:HAS_VALUE]->(value)
+        """
+        graph.query(cypher_query, {"fid": fid, "vid": vid})
+        return {"message": "Relationship successfully created."}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error creating relationship: {str(e)}"
+        )

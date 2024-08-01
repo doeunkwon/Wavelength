@@ -1,3 +1,4 @@
+from typing import Optional, List
 from pydantic import BaseModel
 
 '''
@@ -6,22 +7,28 @@ For instance, User is missing uid because when a new user is signing up, we don'
 '''
 
 
+class Value(BaseModel):
+    title: str
+    percentage: int
+
+
+class Score(BaseModel):
+    percentage: int
+    analysis: Optional[str]
+
+
 class User(BaseModel):
     emoji: str
     color: str
     firstName: str
     lastName: str
-    birthday: str  # Might want to use a date type here
     username: str
     email: str
     password: str  # Hash passwords before storing
-    passion: str
-    goal: str
-    discipline: int
-    honesty: int
-    positivity: int
-    growth: int
-    interests: list[str]
+    goals: str
+    interests: List[str]
+    tokenCount: int
+    memoryCount: int
 
 
 class Friend(BaseModel):
@@ -29,18 +36,17 @@ class Friend(BaseModel):
     color: str
     firstName: str
     lastName: str
-    birthday: str  # Might want to use a date type here
-    passion: str
-    goal: str
-    discipline: int
-    honesty: int
-    positivity: int
-    growth: int
-    interests: list[str]
+    goals: str
+    interests: List[str]
+    tokenCount: int
+    memoryCount: int
 
 
 class Memory(BaseModel):
+    date: str  # !!! change to some Date datatype
+    title: str
     content: str
+    tokens: int
 
 
 class Prompt(BaseModel):
