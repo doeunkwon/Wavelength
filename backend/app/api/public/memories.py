@@ -50,7 +50,7 @@ async def create_memory(memory: Memory = Body(...)):
             else:
                 # Handle duplicate memory ID case (optional)
                 raise HTTPException(
-                    status_code=409, detail="Memory ID already exists"
+                    status_code=409, detail="Memory ID already exists."
                 )
 
     except Exception as e:
@@ -76,7 +76,7 @@ async def delete_memory(mid: str):
         # Execute the query with memory ID
         graph.query(cypher_query, {"mid": mid})
 
-        return {"message": "Memory deleted successfully"}
+        return {"message": "Memory successfully deleted."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting memory: {str(e)}")
@@ -97,7 +97,7 @@ async def update_memory(mid: str, memory_data: dict):
 
         # Check if memory exists
         if not existing_memory:
-            raise HTTPException(status_code=404, detail="Memory not found")
+            raise HTTPException(status_code=404, detail="Memory not found.")
 
         # Merge existing and update data
         merged_data = {**existing_memory["m"], **memory_data}
@@ -112,7 +112,7 @@ async def update_memory(mid: str, memory_data: dict):
 
         if not set_clauses:
             raise HTTPException(
-                status_code=400, detail="No valid update fields provided")
+                status_code=400, detail="No valid update fields provided.")
 
         cypher_query += ", ".join(set_clauses)
         cypher_query += """
@@ -170,7 +170,7 @@ async def get_memory(mid: str):
 
         # Handle memory not found case
         if not memory:
-            raise HTTPException(status_code=404, detail="Memory not found")
+            raise HTTPException(status_code=404, detail="Memory not found.")
 
         # Return the memory data
         return memory["m"]

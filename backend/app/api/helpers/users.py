@@ -16,7 +16,7 @@ def get_user(uid: str):
 
         # Handle user not found case
         if not user:
-            raise HTTPException(status_code=404, detail="User not found")
+            raise HTTPException(status_code=404, detail="User not found.")
 
         # Return the user data
         return user["u"]
@@ -39,7 +39,7 @@ def update_user(uid: str, new_data: dict):
 
         # Check if user exists
         if not existing_user:
-            raise HTTPException(status_code=404, detail="User not found")
+            raise HTTPException(status_code=404, detail="User not found.")
 
         merged_data = {**existing_user["u"], **new_data}
 
@@ -52,7 +52,7 @@ def update_user(uid: str, new_data: dict):
 
         if not set_clauses:
             raise HTTPException(
-                status_code=400, detail="No valid update fields provided")
+                status_code=400, detail="No valid update fields provided.")
 
         cypher_query += ", ".join(set_clauses)
         cypher_query += """
@@ -84,20 +84,13 @@ def delete_user(uid: str):
         OPTIONAL MATCH (u)-[:FRIENDS_WITH]->(f:Friend)
         OPTIONAL MATCH (u)-[:HAS_SCORE]->(s:Score)
         OPTIONAL MATCH (u)-[:HAS_VALUE]->(v:Value)
-        WITH u, u as user_to_delete
         DETACH DELETE u, m, f, s, v
-        return userToDelete
         """
 
         # Execute the query with identifier
         result = graph.query(cypher_query, {"uid": uid})
-        user_to_delete = result[0]["userToDelete"]
 
-        # Handle deletion result
-        if user_to_delete is None:
-            raise HTTPException(status_code=404, detail="User not found")
-
-        message = f"Successfully deleted the {user_to_delete.firstName}."
+        message = f"Successfully deleted user."
 
         return {"message": message}
     except Exception as e:

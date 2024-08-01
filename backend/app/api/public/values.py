@@ -45,7 +45,7 @@ async def create_value(value: Value = Body(...)):
             else:
                 # Handle duplicate value ID case (optional)
                 raise HTTPException(
-                    status_code=409, detail="Value ID already exists"
+                    status_code=409, detail="Value ID already exists."
                 )
 
     except Exception as e:
@@ -71,7 +71,7 @@ async def delete_value(vid: str):
         # Execute the query with value ID
         graph.query(cypher_query, {"vid": vid})
 
-        return {"message": "Value successfully deleted"}
+        return {"message": "Value successfully deleted."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting value: {str(e)}")

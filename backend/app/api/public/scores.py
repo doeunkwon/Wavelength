@@ -47,7 +47,7 @@ async def create_score(score: Score = Body(...)):
             else:
                 # Handle duplicate score ID case (optional)
                 raise HTTPException(
-                    status_code=409, detail="Score ID already exists"
+                    status_code=409, detail="Score ID already exists."
                 )
 
     except Exception as e:
@@ -73,7 +73,7 @@ async def delete_score(sid: str):
         # Execute the query with score ID
         graph.query(cypher_query, {"sid": sid})
 
-        return {"message": "Score successfully deleted"}
+        return {"message": "Score successfully deleted."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting score: {str(e)}")

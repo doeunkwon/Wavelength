@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, Body
+from fastapi import APIRouter, HTTPException
 # Assuming you have a function to get the Neo4j driver
 from database.neo4j import graph
-from typing import List, Union
-from app.models import Score
+from app.api.helpers.friends import delete_friend as delete_friend_helper
 
 router = APIRouter()
 
@@ -23,7 +22,7 @@ async def create_memory_relationship(
         CREATE (user)-[has:HAS_MEMORY]->(memory)-[about:ABOUT]->(friend)
         """
         graph.query(cypher_query, {"uid": uid, "mid": mid, "fid": fid})
-        return {"message": "Relationship successfully created."}
+        return {"message": "Memory relationship successfully created."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
@@ -63,9 +62,14 @@ async def delete_friendship_relationship(
 
         cypher_query = """
         MATCH (user:User {uid: $uid})-[r:FRIENDS_WITH]->(friend:Friend {fid: $fid})
-        DETACH DELETE friend, r
+        DELETE r
         """
+        # Delete the friendship
         graph.query(cypher_query, {"uid": uid, "fid": fid})
+
+        # Delete the friend
+        delete_friend_helper(fid)
+
         return {"message": "Friendship and friend successfully deleted."}
     except Exception as e:
         raise HTTPException(
@@ -88,7 +92,7 @@ async def create_user_score_relationship(
         CREATE (user)-[has:HAS_SCORE]->(score)
         """
         graph.query(cypher_query, {"uid": uid, "sid": sid})
-        return {"message": "Relationship successfully created."}
+        return {"message": "User score relationship successfully created."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
@@ -108,7 +112,7 @@ async def create_friend_score_relationship(
         CREATE (friend)-[has:HAS_SCORE]->(score)
         """
         graph.query(cypher_query, {"fid": fid, "sid": sid})
-        return {"message": "Relationship successfully created."}
+        return {"message": "Friend score relationship successfully created."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
@@ -130,7 +134,7 @@ async def create_user_value_relationship(
         CREATE (user)-[has:HAS_VALUE]->(value)
         """
         graph.query(cypher_query, {"uid": uid, "vid": vid})
-        return {"message": "Relationship successfully created."}
+        return {"message": "User value relationship successfully created."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
@@ -150,7 +154,7 @@ async def create_friend_value_relationship(
         CREATE (friend)-[has:HAS_VALUE]->(value)
         """
         graph.query(cypher_query, {"fid": fid, "vid": vid})
-        return {"message": "Relationship successfully created."}
+        return {"message": "Friend value relationship successfully created."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"

@@ -2,6 +2,7 @@ import uuid
 from fastapi import HTTPException, Body, APIRouter
 from app.models import Friend
 from database.neo4j import graph
+from app.api.helpers.friends import delete_friend as delete_friend_helper
 
 '''
 Public (no log-in required) operations on Friend model.
@@ -55,7 +56,7 @@ async def create_friend(friend: Friend = Body(...)):
             else:
                 # Handle duplicate user ID case (optional)
                 raise HTTPException(
-                    status_code=409, detail="Friend ID already exists"
+                    status_code=409, detail="Friend ID already exists."
                 )
 
     except Exception as e:
@@ -98,7 +99,7 @@ async def get_friend(fid: str):
 
         # Handle friend not found case
         if not friend:
-            raise HTTPException(status_code=404, detail="Friend not found")
+            raise HTTPException(status_code=404, detail="Friend not found.")
 
         # Return the friend data
         return friend["f"]
@@ -113,35 +114,7 @@ async def get_friend(fid: str):
 
 @router.delete("/public/friends/{fid}")
 async def delete_friend(fid: str):
-    try:
-        # Build Cypher query with identifier and both relationship matches
-        cypher_query = f"""
-        MATCH (f:Friend {{fid: $fid}})
-        OPTIONAL MATCH (m:Memory)-[:ABOUT]->(f)
-        OPTIONAL MATCH (f)-[:HAS_SCORE]->(s:Score)
-        OPTIONAL MATCH (f)-[:HAS_VALUE]->(v:Value)
-        WITH f, count(m)
-        DETACH DELETE f, m, s, v
-        RETURN f IS NOT NULL AS friendExists, memoriesDeleted
-        """
-
-        # Execute the query with identifier
-        result = graph.query(cypher_query, {"fid": fid})
-        friend_exists = result[0]["friendExists"]
-        memories_deleted = result[0]["memoriesDeleted"]
-
-        # Handle deletion result
-        if friend_exists:
-            raise HTTPException(status_code=404, detail="Friend not found")
-
-        message = f"Successfully deleted friend and {
-            memories_deleted} associated relationships."
-
-        return {"message": message}
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error deleting friend: {str(e)}"
-        )
+    return delete_friend_helper(fid)
 
 # Function to update a friend
 
@@ -159,7 +132,7 @@ async def update_friend(fid: str, new_data: dict):
 
         # Check if friend exists
         if not existing_friend:
-            raise HTTPException(status_code=404, detail="Friend not found")
+            raise HTTPException(status_code=404, detail="Friend not found.")
 
         merged_data = {**existing_friend["f"], **new_data}
 
@@ -172,7 +145,7 @@ async def update_friend(fid: str, new_data: dict):
 
         if not set_clauses:
             raise HTTPException(
-                status_code=400, detail="No valid update fields provided")
+                status_code=400, detail="No valid update fields provided.")
 
         cypher_query += ", ".join(set_clauses)
         cypher_query += """

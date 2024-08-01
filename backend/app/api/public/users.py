@@ -65,7 +65,7 @@ async def create_user(user: User = Body(...)):
             else:
                 # Handle duplicate user ID case (optional)
                 raise HTTPException(
-                    status_code=409, detail="User ID already exists"
+                    status_code=409, detail="User ID already exists."
                 )
 
     except Exception as e:
