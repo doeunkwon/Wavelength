@@ -90,7 +90,7 @@ def delete_user(uid: str):
         # Execute the query with identifier
         result = graph.query(cypher_query, {"uid": uid})
 
-        message = f"Successfully deleted user."
+        message = f"User successfully deleted."
 
         return {"message": message}
     except Exception as e:
