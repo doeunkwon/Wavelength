@@ -1,4 +1,5 @@
 import uuid
+from app.api.helpers.general import test_print
 from database.neo4j import graph
 from fastapi import HTTPException, Body, APIRouter
 from app.models import Value
@@ -75,3 +76,36 @@ async def delete_value(vid: str):
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting value: {str(e)}")
+
+
+@router.patch("/public/values/{vid}/{new_percentage}")
+async def update_value(vid: str, new_percentage: int):
+    try:
+        # Fetch existing user data
+        cypher_query = f"""
+        MATCH (v:Value {{vid: $vid}})
+        RETURN v
+        """
+        result = graph.query(cypher_query, {"vid": vid})
+        existing_value = result[0]
+
+        # Check if user exists
+        if not existing_value:
+            raise HTTPException(status_code=404, detail="Value not found.")
+
+        cypher_query = f"""
+        MATCH (v:Value {{vid: $vid}})
+        SET v.percentage = $percentage
+        RETURN v
+        """
+
+        result = graph.query(
+            cypher_query, {"vid": vid, "percentage": new_percentage})
+
+        updated_user = result[0]
+        return updated_user["v"]
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error updating user: {str(e)}"
+        )
+    return
