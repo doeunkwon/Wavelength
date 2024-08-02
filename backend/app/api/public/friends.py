@@ -2,7 +2,7 @@ import uuid
 from fastapi import HTTPException, Body, APIRouter
 from app.models import Friend
 from database.neo4j import graph
-from app.api.helpers.friends import delete_friend as delete_friend_helper
+from app.api.helpers.friends import delete_friend as delete_friend_helper, get_friend as get_friend_helper
 
 '''
 Public (no log-in required) operations on Friend model.
@@ -86,28 +86,7 @@ async def get_friends():
 
 @router.get("/public/friends/{fid}")
 async def get_friend(fid: str):
-    try:
-        # Build Cypher query with identifier
-        cypher_query = f"""
-        MATCH (f:Friend {{fid: $fid}})
-        RETURN f
-        """
-
-        # Execute the query with identifier
-        result = graph.query(cypher_query, {"fid": fid})
-        friend = result[0]
-
-        # Handle friend not found case
-        if not friend:
-            raise HTTPException(status_code=404, detail="Friend not found.")
-
-        # Return the friend data
-        return friend["f"]
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error fetching friend: {str(e)}"
-        )
+    return get_friend_helper(fid)
 
 # Function to delete a friend
 

@@ -47,7 +47,3 @@ class Memory(BaseModel):
     title: str
     content: str
     tokens: int
-
-
-class Prompt(BaseModel):
-    content: str

@@ -1,8 +1,10 @@
+from app.models import User
 from database.neo4j import graph
 from fastapi import HTTPException
+from typing import Optional
 
 
-def get_user(uid: str):
+def get_user(uid: str) -> Optional[User]:
     try:
         # Build Cypher query with identifier
         cypher_query = f"""
