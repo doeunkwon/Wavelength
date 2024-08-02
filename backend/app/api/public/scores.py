@@ -31,6 +31,7 @@ async def create_score(score: Score = Body(...)):
                 cypher_query = """
                 CREATE (s:Score {
                     sid: $sid,
+                    timestamp: $timestamp,
                     percentage: $percentage,
                     analysis: $analysis
                 })
