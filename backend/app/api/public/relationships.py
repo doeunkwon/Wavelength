@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 # Assuming you have a function to get the Neo4j driver
 from database.neo4j import graph
 from app.api.helpers.friends import delete_friend as delete_friend_helper
+from app.api.helpers.relationships import get_value_relationship as get_value_relationship_helper
 
 router = APIRouter()
 
@@ -159,3 +160,10 @@ async def create_friend_value_relationship(
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
         )
+
+
+@router.get("/public/relationships/friend_value/{fid}")
+async def get_user_value_relationship(
+    fid: str
+):
+    return get_value_relationship_helper(fid, 'Friend')

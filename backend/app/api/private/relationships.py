@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from app.api.helpers.friends import delete_friend as delete_friend_helper
+from app.api.helpers.relationships import get_value_relationship as get_value_relationship_helper
 
 router = APIRouter()
 
@@ -122,3 +123,11 @@ async def create_user_value_relationship(
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
         )
+
+
+@router.get("/private/relationships/user_value")
+async def get_user_value_relationship(
+    token: str = Depends(get_current_user)
+):
+    uid = token["uid"]
+    return get_value_relationship_helper(uid, 'User')
