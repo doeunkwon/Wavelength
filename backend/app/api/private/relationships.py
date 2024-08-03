@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from app.api.helpers.friends import delete_friend as delete_friend_helper
-from app.api.helpers.relationships import get_value_relationship as get_value_relationship_helper
+from app.api.helpers.relationships import get_value_relationships as get_value_relationships_helper, update_value_relationship as update_value_relationship_helper
 
 router = APIRouter()
 
@@ -105,19 +105,22 @@ async def create_user_score_relationship(
 # Relationship endpoints related to VALUE
 
 
-@router.post("/private/relationships/user_value/{vid}")
+@router.post("/private/relationships/user_value")
 async def create_user_value_relationship(
-    vid: str,  # Capture data as a dictionary
+    data: dict,
     token: str = Depends(get_current_user)
 ):
     try:
         uid = token["uid"]
+        vid = data["vid"]
+        percentage = data["percentage"]
 
         cypher_query = """
         MATCH (user:User {uid: $uid}), (value:Value {vid: $vid})
-        CREATE (user)-[has:HAS_VALUE]->(value)
+        CREATE (user)-[has:HAS_VALUE {percentage: $percentage}]->(value)
         """
-        graph.query(cypher_query, {"uid": uid, "vid": vid})
+        graph.query(cypher_query, {"uid": uid,
+                    "vid": vid, "percentage": percentage})
         return {"message": "User value relationship successfully created."}
     except Exception as e:
         raise HTTPException(
@@ -126,8 +129,23 @@ async def create_user_value_relationship(
 
 
 @router.get("/private/relationships/user_value")
-async def get_user_value_relationship(
+async def get_user_value_relationships(
     token: str = Depends(get_current_user)
 ):
     uid = token["uid"]
-    return get_value_relationship_helper(uid, 'User')
+    return get_value_relationships_helper(uid, 'User')
+
+
+@router.patch("/private/relationships/user_value")
+async def update_value(
+        data: dict,
+        token: str = Depends(get_current_user)):
+    try:
+        uid = token["uid"]
+        vid = data["vid"]
+        percentage = data["percentage"]
+        return update_value_relationship_helper(uid, 'User', vid, percentage)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching data: {str(e)}"
+        )

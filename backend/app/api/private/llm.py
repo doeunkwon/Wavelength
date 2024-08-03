@@ -8,7 +8,7 @@ from app.api.helpers.friends import get_friend
 from helper import get_env_variable
 from database.neo4j import graph
 from app.api.helpers.llm import score_prompt
-from app.api.helpers.relationships import get_value_relationship
+from app.api.helpers.relationships import get_value_relationships
 from app.api.helpers.general import test_print
 
 load_dotenv()
@@ -39,11 +39,11 @@ async def score(
 
         # Fetch user info
         user = get_user(uid)
-        user_values = get_value_relationship(uid, 'User')
+        user_values = get_value_relationships(uid, 'User')
 
         # Fetch friend info
         friend = get_friend(fid)
-        friend_values = get_value_relationship(fid, 'Friend')
+        friend_values = get_value_relationships(fid, 'Friend')
 
         prompt = score_prompt(user, user_values, friend, friend_values)
 

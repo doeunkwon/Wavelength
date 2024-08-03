@@ -9,7 +9,6 @@ For instance, User is missing uid because when a new user is signing up, we don'
 
 class Value(BaseModel):
     title: str
-    percentage: int
 
 
 class Score(BaseModel):
