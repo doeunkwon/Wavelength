@@ -3,6 +3,26 @@ from app.models import Friend, User
 from database.neo4j import graph
 from fastapi import HTTPException
 
+# Functions related to Memory
+
+
+def get_memory_relationships(uid: str, fid: str):
+    try:
+
+        cypher_query = """
+        MATCH (:User {uid: $uid})-[:HAS_MEMORY]->(m:Memory)-[:ABOUT]->(:Friend {fid: $fid})
+        RETURN m.content AS content
+        """
+        result = graph.query(cypher_query, {"uid": uid, "fid": fid})
+        memories = [memory['content'] for memory in result]
+        return memories
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching relationships: {str(e)}"
+        )
+
+# Functions related to VALUE
+
 
 def get_value_relationships(general_id: str, model: str):
     try:

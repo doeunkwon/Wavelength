@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from app.api.helpers.friends import delete_friend as delete_friend_helper
-from app.api.helpers.relationships import get_value_relationships as get_value_relationships_helper, update_value_relationship as update_value_relationship_helper
+from app.api.helpers.relationships import get_value_relationships as get_value_relationships_helper, update_value_relationship as update_value_relationship_helper, get_memory_relationships as get_memory_relationships_helper
 
 router = APIRouter()
 
@@ -30,6 +30,15 @@ async def create_memory_relationship(
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
         )
+
+
+@router.get("/private/relationships/memory/{fid}")
+async def get_memory_relationships(
+    fid: str,
+    token: str = Depends(get_current_user)
+):
+    uid = token["uid"]
+    return get_memory_relationships_helper(uid, fid)
 
 
 # Relationship endpoints related to Friendship
