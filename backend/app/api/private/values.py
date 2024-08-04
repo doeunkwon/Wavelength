@@ -80,16 +80,29 @@ async def delete_value(
 
         uid = token["uid"]
 
-        # Cypher query to delete a value with the given ID using DETACH
-        cypher_query = """
-        MATCH (:User {uid: $uid})-[:HAS_VALUE]->(v:Value {vid: $vid})
-        DETACH DELETE v
-        """
+        # Handle value not found case
+        try:
+            cypher_query = """
+            MATCH (:User {uid: $uid})-[:HAS_VALUE]->(v:Value {vid: $vid})
+            RETURN v
+            """
 
-        # Execute the query with value ID
-        graph.query(cypher_query, {"uid": uid, "vid": vid})
+            result = graph.query(cypher_query, {"uid": uid, "vid": vid})
+            value = result[0]
 
-        return {"message": "Value successfully deleted."}
+            # Cypher query to delete a value with the given ID using DETACH
+            cypher_query = """
+            MATCH (:User {uid: $uid})-[:HAS_VALUE]->(v:Value {vid: $vid})
+            DETACH DELETE v
+            """
+
+            # Execute the query with value ID
+            graph.query(cypher_query, {"uid": uid, "vid": vid})
+
+            return {"message": "Value successfully deleted."}
+
+        except Exception as e:
+            raise HTTPException(status_code=404, detail="Value not found.")
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting value: {str(e)}")

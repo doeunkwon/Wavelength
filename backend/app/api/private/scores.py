@@ -83,16 +83,29 @@ async def delete_score(
 
         uid = token["uid"]
 
-        # Cypher query to delete a score with the given ID using DETACH
-        cypher_query = """
-        MATCH (:User {uid: $uid})-[:HAS_SCORE]->(s:Score {sid: $sid})
-        DETACH DELETE s
-        """
+        # Handle score not found case
+        try:
+            cypher_query = """
+            MATCH (:User {uid: $uid})-[:HAS_SCORE]->(s:Score {sid: $sid})
+            RETURN s
+            """
 
-        # Execute the query with score ID
-        graph.query(cypher_query, {"uid": uid, "sid": sid})
+            result = graph.query(cypher_query, {"uid": uid, "sid": sid})
+            score = result[0]
 
-        return {"message": "Score successfully deleted."}
+            # Cypher query to delete a score with the given ID using DETACH
+            cypher_query = """
+            MATCH (:User {uid: $uid})-[:HAS_SCORE]->(s:Score {sid: $sid})
+            DETACH DELETE s
+            """
+
+            # Execute the query with score ID
+            graph.query(cypher_query, {"uid": uid, "sid": sid})
+
+            return {"message": "Score successfully deleted."}
+
+        except Exception as e:
+            raise HTTPException(status_code=404, detail="Score not found.")
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting score: {str(e)}")
