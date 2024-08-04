@@ -1,18 +1,22 @@
 import uuid
-from fastapi import HTTPException, Body, APIRouter
+from fastapi import Depends, HTTPException, Body, APIRouter
 from app.models import Friend
+from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from app.api.helpers.friends import delete_friend as delete_friend_helper, get_friend as get_friend_helper
-
-'''
-Public (no log-in required) operations on Friend model.
-'''
 
 router = APIRouter()
 
 
-@router.post("/public/friends")
-async def create_friend(friend: Friend = Body(...)):
+@router.post("/private/friends")
+async def create_friend(
+        friend: Friend = Body(...),
+        token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
     try:
         while True:
             # Generate a new UUID for the friend ID
@@ -68,45 +72,100 @@ async def create_friend(friend: Friend = Body(...)):
 
 
 # Function to fetch all friend instances in DB
-@router.get("/public/friends")
-async def get_friends():
-    cypher_query = """
-    MATCH (f:Friend)
-    RETURN f
-    """
-    results = graph.query(cypher_query)
-    friends = []
-    for record in results:
-        friend = record["f"]
-        friends.append(friend)
-    return friends
+@router.get("/private/friends")
+async def get_friends(token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+
+        uid = token["uid"]
+
+        cypher_query = """
+        MATCH (:User {uid: $uid})-[:FRIENDS_WITH]->(f:Friend)
+        RETURN f
+        """
+        results = graph.query(cypher_query, {"uid": uid})
+        friends = []
+        for record in results:
+            friend = record["f"]
+            friends.append(friend)
+        return friends
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching friends: {str(e)}"
+        )
+
 
 # Function to fetch a single friend by FID
 
 
-@router.get("/public/friends/{fid}")
-async def get_friend(fid: str):
-    return get_friend_helper(fid)
+@router.get("/private/friends/{fid}")
+async def get_friend(
+        fid: str,
+        token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+
+        uid = token["uid"]
+        return get_friend_helper(uid, fid)
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching friend: {str(e)}"
+        )
 
 # Function to delete a friend
 
 
-@router.delete("/public/friends/{fid}")
-async def delete_friend(fid: str):
-    return delete_friend_helper(fid)
+@router.delete("/private/friends/{fid}")
+async def delete_friend(
+        fid: str,
+        token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+
+        uid = token["uid"]
+
+        return delete_friend_helper(uid, fid)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error deleting friend: {str(e)}"
+        )
 
 # Function to update a friend
 
 
-@router.put("/public/friends/{fid}")
-async def update_friend(fid: str, new_data: dict):
+@router.put("/private/friends/{fid}")
+async def update_friend(
+        fid: str,
+        new_data: dict,
+        token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
     try:
+
+        uid = token["uid"]
+
         # Fetch existing friend data
         cypher_query = f"""
-        MATCH (f:Friend {{fid: $fid}})
+        MATCH (:User {{uid:$uid}})-[:FRIENDS_WITH]->(f:Friend {{fid: $fid}})
         RETURN f
         """
-        result = graph.query(cypher_query, {"fid": fid})
+        result = graph.query(cypher_query, {"uid": uid, "fid": fid})
         existing_friend = result[0]
 
         # Check if friend exists

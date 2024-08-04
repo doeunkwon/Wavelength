@@ -1,72 +1,61 @@
-from typing import Type
-from app.models import Friend, User
 from database.neo4j import graph
-from fastapi import HTTPException
 
-# Functions related to Memory
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
+# Relationship endpoints related to MEMORY
 
 
 def get_memory_relationships(uid: str, fid: str):
-    try:
+    cypher_query = """
+    MATCH (:User {uid: $uid})-[:HAS_MEMORY]->(m:Memory)-[:ABOUT]->(:Friend {fid: $fid})
+    RETURN m.content AS content
+    """
+    result = graph.query(cypher_query, {"uid": uid, "fid": fid})
+    memories = [memory['content'] for memory in result]
+    return memories
 
-        cypher_query = """
-        MATCH (:User {uid: $uid})-[:HAS_MEMORY]->(m:Memory)-[:ABOUT]->(:Friend {fid: $fid})
-        RETURN m.content AS content
-        """
-        result = graph.query(cypher_query, {"uid": uid, "fid": fid})
-        memories = [memory['content'] for memory in result]
-        return memories
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error fetching relationships: {str(e)}"
-        )
-
-# Functions related to VALUE
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
+# Relationship endpoints related to VALUE
 
 
 def get_value_relationships(general_id: str, model: str):
-    try:
-
-        cypher_query = f"""
-        MATCH (:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}})-[h:HAS_VALUE]->(v:Value)
-        RETURN v.title AS title, h.percentage AS percentage
-        """
-        result = graph.query(cypher_query, {"general_id": general_id})
-        value_pairs = [{value['title']: value['percentage']}
-                       for value in result]
-        return value_pairs
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error fetching relationships: {str(e)}"
-        )
+    cypher_query = f"""
+    MATCH (:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}})-[h:HAS_VALUE]->(v:Value)
+    RETURN v.title AS title, h.percentage AS percentage
+    """
+    result = graph.query(cypher_query, {"general_id": general_id})
+    value_pairs = [{value['title']: value['percentage']}
+                   for value in result]
+    return value_pairs
 
 
 def update_value_relationship(general_id: str, model: str, vid: str, percentage: int):
-    try:
+    cypher_query = f"""
+    MATCH (:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}})-[h:HAS_VALUE]->(:Value {{vid: $vid}})
+    SET h.percentage = $percentage
+    """
 
-        # # Fetch existing value data
-        # cypher_query = f"""
-        # MATCH (v:Value {{vid: $vid}})
-        # RETURN v
-        # """
-        # result = graph.query(cypher_query, {"vid": vid})
-        # existing_value = result[0]
+    graph.query(cypher_query, {
+                "general_id": general_id, "vid": vid, "percentage": percentage})
 
-        # # Check if value exists
-        # if not existing_value:
-        #     raise HTTPException(status_code=404, detail="Value not found.")
+    return {"message": "Value successfully updated."}
 
-        cypher_query = f"""
-        MATCH (:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}})-[h:HAS_VALUE]->(:Value {{vid: $vid}})
-        SET h.percentage = $percentage
-        """
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
+# Relationship endpoints related to SCORE
 
-        graph.query(cypher_query, {
-                    "general_id": general_id, "vid": vid, "percentage": percentage})
 
-        return {"message": "Value successfully updated."}
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error updating user: {str(e)}"
-        )
-    return
+def create_score_relationships(general_id: str, sid: str, model: str):
+    cypher_query = f"""
+    MATCH (user:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}}), (score:Score {{sid: $sid}})
+    CREATE (user)-[has:HAS_SCORE]->(score)
+    """
+    graph.query(cypher_query, {"general_id": general_id, "sid": sid})
+    return {"message": "Score relationship successfully created."}

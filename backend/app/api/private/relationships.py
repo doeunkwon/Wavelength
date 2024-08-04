@@ -3,10 +3,14 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from app.api.helpers.friends import delete_friend as delete_friend_helper
-from app.api.helpers.relationships import get_value_relationships as get_value_relationships_helper, update_value_relationship as update_value_relationship_helper, get_memory_relationships as get_memory_relationships_helper
+from app.api.helpers.relationships import get_value_relationships as get_value_relationships_helper, update_value_relationship as update_value_relationship_helper, get_memory_relationships as get_memory_relationships_helper, create_score_relationships as create_score_relationship_helper
 
 router = APIRouter()
 
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
 # Relationship endpoints related to MEMORY
 
 
@@ -19,6 +23,22 @@ async def create_memory_relationship(
         uid = token["uid"]
         mid = relationship["mid"]
         fid = relationship["fid"]
+
+        # This is checking whether or not Friend is FRIENDS_WITH User
+        # We don't allow a User to have a Memory about a Friend unless they're FRIENDS_WITH
+        cypher_query = """
+        MATCH (:User {uid: $uid})-[:FRIENDS_WITH]->(f:Friend {fid: $fid})
+        RETURN f
+        """
+
+        result = graph.query(cypher_query, {"uid": uid, "fid": fid})
+        friend = result[0]["f"]
+
+        # Handle friend not found case
+        if not friend:
+            raise HTTPException(
+                status_code=404, detail="Friend not found"
+            )
 
         cypher_query = """
         MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid}), (memory:Memory {mid: $mid})
@@ -37,11 +57,27 @@ async def get_memory_relationships(
     fid: str,
     token: str = Depends(get_current_user)
 ):
-    uid = token["uid"]
-    return get_memory_relationships_helper(uid, fid)
 
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
 
+    try:
+
+        uid = token["uid"]
+
+        return get_memory_relationships_helper(uid, fid)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching relationships: {str(e)}"
+        )
+
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
 # Relationship endpoints related to Friendship
+
 
 @router.post("/private/relationships/friendship/{fid}")
 async def create_friendship_relationship(
@@ -49,6 +85,11 @@ async def create_friendship_relationship(
     fid: str,
     token: str = Depends(get_current_user)
 ):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
     try:
         uid = token["uid"]
 
@@ -69,6 +110,11 @@ async def delete_friendship_relationship(
     fid: str,  # Capture data as a dictionary
     token: str = Depends(get_current_user)
 ):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
     try:
         uid = token["uid"]
 
@@ -88,73 +134,106 @@ async def delete_friendship_relationship(
             status_code=500, detail=f"Error deleting relationship: {str(e)}"
         )
 
-
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
 # Relationship endpoints related to SCORE
 
-@router.post("/private/relationships/user_score/{sid}")
-async def create_user_score_relationship(
-    sid: str,  # Capture data as a dictionary
-    token: str = Depends(get_current_user)
-):
-    try:
-        uid = token["uid"]
 
-        cypher_query = """
-        MATCH (user:User {uid: $uid}), (score:Score {sid: $sid})
-        CREATE (user)-[has:HAS_SCORE]->(score)
-        """
-        graph.query(cypher_query, {"uid": uid, "sid": sid})
-        return {"message": "User score relationship successfully created."}
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error creating relationship: {str(e)}"
-        )
-
-
-# Relationship endpoints related to VALUE
-
-
-@router.post("/private/relationships/user_value")
-async def create_user_value_relationship(
+@router.post("/private/relationships/score")
+async def create_score_relationship(
     data: dict,
     token: str = Depends(get_current_user)
 ):
-    try:
-        uid = token["uid"]
-        vid = data["vid"]
-        percentage = data["percentage"]
 
-        cypher_query = """
-        MATCH (user:User {uid: $uid}), (value:Value {vid: $vid})
-        CREATE (user)-[has:HAS_VALUE {percentage: $percentage}]->(value)
-        """
-        graph.query(cypher_query, {"uid": uid,
-                    "vid": vid, "percentage": percentage})
-        return {"message": "User value relationship successfully created."}
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+        sid = data["sid"]
+        model = data["model"]
+        general_id = token["uid"] if model == "User" else data["fid"]
+        return create_score_relationship_helper(general_id, sid, model)
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
         )
 
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
+# Relationship endpoints related to VALUE
 
-@router.get("/private/relationships/user_value")
-async def get_user_value_relationships(
+
+@router.post("/private/relationships/value")
+async def create_value_relationship(
+    data: dict,
     token: str = Depends(get_current_user)
 ):
-    uid = token["uid"]
-    return get_value_relationships_helper(uid, 'User')
 
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
 
-@router.patch("/private/relationships/user_value")
-async def update_value(
-        data: dict,
-        token: str = Depends(get_current_user)):
     try:
-        uid = token["uid"]
         vid = data["vid"]
         percentage = data["percentage"]
-        return update_value_relationship_helper(uid, 'User', vid, percentage)
+        model = data["model"]
+        general_id = token["uid"] if model == "User" else data["fid"]
+
+        cypher_query = f"""
+        MATCH (user:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}}), (value:Value {{vid: $vid}})
+        CREATE (user)-[has:HAS_VALUE {{percentage: $percentage}}]->(value)
+        """
+        graph.query(cypher_query, {"general_id": general_id,
+                    "vid": vid, "percentage": percentage})
+        return {"message": "Value relationship successfully created."}
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Error fetching data: {str(e)}"
+            status_code=500, detail=f"Error creating value relationship: {str(e)}"
+        )
+
+
+@router.get("/private/relationships/value")
+async def get_value_relationships(
+    data: dict,
+    token: str = Depends(get_current_user)
+):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+
+        model = data["model"]
+        general_id = token["uid"] if model == "User" else data["fid"]
+        return get_value_relationships_helper(general_id, model)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching value relationships: {str(e)}"
+        )
+
+
+@router.patch("/private/relationships/value")
+async def update_value_relationship(
+        data: dict,
+        token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+        vid = data["vid"]
+        percentage = data["percentage"]
+        model = data["model"]
+        general_id = token["uid"] if model == "User" else data["fid"]
+        return update_value_relationship_helper(general_id, model, vid, percentage)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error updating value relationship: {str(e)}"
         )

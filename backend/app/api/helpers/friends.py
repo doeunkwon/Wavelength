@@ -4,49 +4,35 @@ from fastapi import HTTPException
 from typing import Optional
 
 
-def get_friend(fid: str) -> Optional[Friend]:
-    try:
-        # Build Cypher query with identifier
-        cypher_query = f"""
-        MATCH (f:Friend {{fid: $fid}})
-        RETURN f
-        """
+def get_friend(uid: str, fid: str) -> Optional[Friend]:
 
-        # Execute the query with identifier
-        result = graph.query(cypher_query, {"fid": fid})
-        friend = result[0]
+    cypher_query = """
+    MATCH (:User {uid: $uid})-[:FRIENDS_WITH]->(f:Friend {fid: $fid})
+    RETURN f
+    """
 
-        # Handle friend not found case
-        if not friend:
-            raise HTTPException(status_code=404, detail="Friend not found.")
+    result = graph.query(cypher_query, {"uid": uid, "fid": fid})
+    friend = result[0]
 
-        # Return the friend data
-        return friend["f"]
+    # Handle friend not found case
+    if not friend:
+        raise HTTPException(status_code=404, detail="Friend not found.")
 
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error fetching friend: {str(e)}"
-        )
+    # Return the friend data
+    return friend["f"]
 
 
-def delete_friend(fid: str):
-    try:
-        # Build Cypher query with identifier and both relationship matches
-        cypher_query = f"""
-        MATCH (f:Friend {{fid: $fid}})
-        OPTIONAL MATCH (m:Memory)-[:ABOUT]->(f)
-        OPTIONAL MATCH (f)-[:HAS_SCORE]->(s:Score)
-        OPTIONAL MATCH (f)-[:HAS_VALUE]->(v:Value)
-        DETACH DELETE s, v, m, f
-        """
+def delete_friend(uid: str, fid: str):
+    # Build Cypher query with identifier and both relationship matches
+    cypher_query = f"""
+    MATCH (:User {{uid: $uid}})-[:FRIENDS_WITH]->(f:Friend {{fid: $fid}})
+    OPTIONAL MATCH (m:Memory)-[:ABOUT]->(f)
+    OPTIONAL MATCH (f)-[:HAS_SCORE]->(s:Score)
+    OPTIONAL MATCH (f)-[:HAS_VALUE]->(v:Value)
+    DETACH DELETE s, v, m, f
+    """
 
-        # Execute the query with identifier
-        result = graph.query(cypher_query, {"fid": fid})
+    # Execute the query with identifier
+    graph.query(cypher_query, {"uid": uid, "fid": fid})
 
-        message = f"Friend and associated relationships successfully deleted."
-
-        return {"message": message}
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error deleting friend: {str(e)}"
-        )
+    return {"message": "Friend and associated relationships successfully deleted."}

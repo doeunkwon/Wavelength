@@ -1,6 +1,7 @@
 import uuid
+from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
-from fastapi import HTTPException, Body, APIRouter
+from fastapi import Depends, HTTPException, Body, APIRouter
 from app.models import Memory
 from app.api.helpers.general import get_neo4j_datetime
 
@@ -9,9 +10,17 @@ router = APIRouter()
 # Function to create a new memory
 
 
-@router.post("/public/memories")
-async def create_memory(memory: Memory = Body(...)):
+@router.post("/private/memories")
+async def create_memory(
+        memory: Memory = Body(...),
+        token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
     try:
+
         while True:
             # Generate a new UUID for the memory ID
             new_mid = str(uuid.uuid4())
@@ -58,23 +67,31 @@ async def create_memory(memory: Memory = Body(...)):
             status_code=500, detail=f"Error creating memory: {str(e)}"
         )
 
-# The final "return" statement is removed since we already return inside the loop
-
 
 # Function to delete a memory
 
 
-@router.delete("/public/memories/{mid}")
-async def delete_memory(mid: str):
+@router.delete("/private/memories/{mid}")
+async def delete_memory(
+        mid: str,
+        token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
     try:
+
+        uid = token["uid"]
+
         # Cypher query to delete a memory with the given ID using DETACH
         cypher_query = """
-        MATCH (m:Memory {mid: $mid})
+        MATCH (:User {uid:$uid})-[:HAS_MEMORY]->(m:Memory {mid: $mid})
         DETACH DELETE m
         """
 
         # Execute the query with memory ID
-        graph.query(cypher_query, {"mid": mid})
+        graph.query(cypher_query, {"uid": uid, "mid": mid})
 
         return {"message": "Memory successfully deleted."}
     except Exception as e:
@@ -84,15 +101,26 @@ async def delete_memory(mid: str):
 # Function to update a memory
 
 
-@router.put("/public/memories/{mid}")
-async def update_memory(mid: str, memory_data: dict):
+@router.put("/private/memories/{mid}")
+async def update_memory(
+        mid: str,
+        memory_data: dict,
+        token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
     try:
+
+        uid = token["uid"]
+
         # Fetch existing memory data
         cypher_query = f"""
-        MATCH (m:Memory {{mid: $mid}})
+        MATCH (:User {{uid: $uid}})-[:HAS_MEMORY]->(m:Memory {{mid: $mid}})
         RETURN m
         """
-        result = graph.query(cypher_query, {"mid": mid})
+        result = graph.query(cypher_query, {"uid": uid, "mid": mid})
         existing_memory = result[0]
 
         # Check if memory exists
@@ -136,36 +164,30 @@ async def update_memory(mid: str, memory_data: dict):
         )
     return
 
-# Function to fetch all memories
-
-
-@router.get("/public/memories")
-async def get_memories():
-    cypher_query = """
-    MATCH (m:Memory)
-    RETURN m
-    """
-    results = graph.query(cypher_query)
-    memories = []
-    for record in results:
-        memory = record["m"]
-        memories.append(memory)
-    return memories
-
 # Function to fetch a single memory by MID
 
 
-@router.get("/public/memories/{mid}")
-async def get_memory(mid: str):
+@router.get("/private/memories/{mid}")
+async def get_memory(
+        mid: str,
+        token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
     try:
+
+        uid = token["uid"]
+
         # Build Cypher query with identifier
         cypher_query = f"""
-        MATCH (m:Memory {{mid: $mid}})
+        MATCH (:User {{uid: $uid}})-[:HAS_MEMORY]->(m:Memory {{mid: $mid}})
         RETURN m
         """
 
         # Execute the query with identifier
-        result = graph.query(cypher_query, {"mid": mid})
+        result = graph.query(cypher_query, {"uid": uid, "mid": mid})
         memory = result[0]
 
         # Handle memory not found case
