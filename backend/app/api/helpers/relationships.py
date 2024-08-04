@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from database.neo4j import graph
 
 #
@@ -53,9 +54,20 @@ def update_value_relationship(general_id: str, model: str, vid: str, percentage:
 
 
 def create_score_relationships(general_id: str, sid: str, model: str):
-    cypher_query = f"""
-    MATCH (user:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}}), (score:Score {{sid: $sid}})
-    CREATE (user)-[has:HAS_SCORE]->(score)
-    """
-    graph.query(cypher_query, {"general_id": general_id, "sid": sid})
-    return {"message": "Score relationship successfully created."}
+    # Handle score not found case
+    try:
+        cypher_query = """
+        MATCH (s:Score {sid: $sid})
+        RETURN s
+        """
+
+        result = graph.query(cypher_query, {"sid": sid})
+        score = result[0]
+        cypher_query = f"""
+        MATCH (user:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}}), (score:Score {{sid: $sid}})
+        CREATE (user)-[has:HAS_SCORE]->(score)
+        """
+        graph.query(cypher_query, {"general_id": general_id, "sid": sid})
+        return {"message": "Score relationship successfully created."}
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="Score not found.")

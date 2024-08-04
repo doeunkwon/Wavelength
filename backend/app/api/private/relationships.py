@@ -94,12 +94,25 @@ async def create_friendship_relationship(
     try:
         uid = token["uid"]
 
-        cypher_query = """
-        MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid})
-        CREATE (user)-[:FRIENDS_WITH]->(friend)
-        """
-        graph.query(cypher_query, {"uid": uid, "fid": fid})
-        return {"message": "Friendship successfully created."}
+        # Handle friend not found case
+        try:
+            cypher_query = """
+            MATCH (f:Friend {fid: $fid})
+            RETURN f
+            """
+
+            result = graph.query(cypher_query, {"fid": fid})
+            friend = result[0]
+
+            cypher_query = """
+            MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid})
+            CREATE (user)-[:FRIENDS_WITH]->(friend)
+            """
+            graph.query(cypher_query, {"uid": uid, "fid": fid})
+            return {"message": "Friendship successfully created."}
+
+        except Exception as e:
+            raise HTTPException(status_code=404, detail="Friend not found.")
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
@@ -155,13 +168,26 @@ async def create_value_relationship(
         model = data["model"]
         general_id = token["uid"] if model == "User" else data["fid"]
 
-        cypher_query = f"""
-        MATCH (user:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}}), (value:Value {{vid: $vid}})
-        CREATE (user)-[has:HAS_VALUE {{percentage: $percentage}}]->(value)
-        """
-        graph.query(cypher_query, {"general_id": general_id,
-                    "vid": vid, "percentage": percentage})
-        return {"message": "Value relationship successfully created."}
+        # Handle value not found case
+        try:
+            cypher_query = """
+            MATCH (v:Value {vid: $vid})
+            RETURN v
+            """
+
+            result = graph.query(cypher_query, {"vid": vid})
+            value = result[0]
+
+            cypher_query = f"""
+            MATCH (user:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}}), (value:Value {{vid: $vid}})
+            CREATE (user)-[has:HAS_VALUE {{percentage: $percentage}}]->(value)
+            """
+            graph.query(cypher_query, {"general_id": general_id,
+                        "vid": vid, "percentage": percentage})
+            return {"message": "Value relationship successfully created."}
+
+        except Exception as e:
+            raise HTTPException(status_code=404, detail="Value not found.")
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating value relationship: {str(e)}"
