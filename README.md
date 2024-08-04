@@ -1,2 +1,2 @@
 # Wavelength
-### KG-enhanced LLM for relationship management.
+### Your social circle curated by AI.
