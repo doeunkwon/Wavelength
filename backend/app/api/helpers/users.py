@@ -11,16 +11,17 @@ def get_user(uid: str) -> Optional[User]:
     RETURN u
     """
 
-    # Execute the query with identifier
-    result = graph.query(cypher_query, {"uid": uid})
-    user = result[0]
-
     # Handle user not found case
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found.")
+    try:
+        # Execute the query with identifier
+        result = graph.query(cypher_query, {"uid": uid})
+        user = result[0]
 
-    # Return the user data
-    return user["u"]
+        # Return the user data
+        return user["u"]
+
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="User not found.")
 
 
 def update_user(uid: str, new_data: dict):
@@ -77,8 +78,6 @@ def delete_user(uid: str):
     """
 
     # Execute the query with identifier
-    result = graph.query(cypher_query, {"uid": uid})
+    graph.query(cypher_query, {"uid": uid})
 
-    message = f"User successfully deleted."
-
-    return {"message": message}
+    return {"message": "User successfully deleted."}

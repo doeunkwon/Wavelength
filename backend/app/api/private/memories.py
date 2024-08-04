@@ -186,16 +186,17 @@ async def get_memory(
         RETURN m
         """
 
-        # Execute the query with identifier
-        result = graph.query(cypher_query, {"uid": uid, "mid": mid})
-        memory = result[0]
-
         # Handle memory not found case
-        if not memory:
-            raise HTTPException(status_code=404, detail="Memory not found.")
+        try:
+            # Execute the query with identifier
+            result = graph.query(cypher_query, {"uid": uid, "mid": mid})
+            memory = result[0]
 
-        # Return the memory data
-        return memory["m"]
+            # Return the memory data
+            return memory["m"]
+
+        except Exception as e:
+            raise HTTPException(status_code=404, detail="Memory not found.")
 
     except Exception as e:
         raise HTTPException(

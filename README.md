@@ -1,2 +1,2 @@
 # Wavelength
-### Your social circle curated by AI.
+### Your inner circle curated by AI.

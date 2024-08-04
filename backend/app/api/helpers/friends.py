@@ -1,4 +1,5 @@
 from app.models import Friend
+from app.api.helpers.general import test_print
 from database.neo4j import graph
 from fastapi import HTTPException
 from typing import Optional
@@ -11,15 +12,16 @@ def get_friend(uid: str, fid: str) -> Optional[Friend]:
     RETURN f
     """
 
-    result = graph.query(cypher_query, {"uid": uid, "fid": fid})
-    friend = result[0]
-
     # Handle friend not found case
-    if not friend:
-        raise HTTPException(status_code=404, detail="Friend not found.")
+    try:
+        result = graph.query(cypher_query, {"uid": uid, "fid": fid})
+        friend = result[0]
 
-    # Return the friend data
-    return friend["f"]
+        # Return the friend data
+        return friend["f"]
+
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="Friend not found.")
 
 
 def delete_friend(uid: str, fid: str):

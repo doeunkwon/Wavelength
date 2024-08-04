@@ -31,21 +31,22 @@ async def create_memory_relationship(
         RETURN f
         """
 
-        result = graph.query(cypher_query, {"uid": uid, "fid": fid})
-        friend = result[0]["f"]
-
         # Handle friend not found case
-        if not friend:
+        try:
+            result = graph.query(cypher_query, {"uid": uid, "fid": fid})
+            friend = result[0]["f"]
+
+            cypher_query = """
+            MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid}), (memory:Memory {mid: $mid})
+            CREATE (user)-[has:HAS_MEMORY]->(memory)-[about:ABOUT]->(friend)
+            """
+            graph.query(cypher_query, {"uid": uid, "mid": mid, "fid": fid})
+            return {"message": "Memory relationship successfully created."}
+
+        except Exception as e:
             raise HTTPException(
                 status_code=404, detail="Friend not found"
             )
-
-        cypher_query = """
-        MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid}), (memory:Memory {mid: $mid})
-        CREATE (user)-[has:HAS_MEMORY]->(memory)-[about:ABOUT]->(friend)
-        """
-        graph.query(cypher_query, {"uid": uid, "mid": mid, "fid": fid})
-        return {"message": "Memory relationship successfully created."}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
@@ -102,36 +103,6 @@ async def create_friendship_relationship(
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"
-        )
-
-
-@router.delete("/private/relationships/friendship/{fid}")
-async def delete_friendship_relationship(
-    fid: str,  # Capture data as a dictionary
-    token: str = Depends(get_current_user)
-):
-
-    # Check if user is authorized
-    if not token.get("uid"):
-        return HTTPException(status_code=401, detail="Unauthorized access")
-
-    try:
-        uid = token["uid"]
-
-        cypher_query = """
-        MATCH (user:User {uid: $uid})-[r:FRIENDS_WITH]->(friend:Friend {fid: $fid})
-        DELETE r
-        """
-        # Delete the friendship
-        graph.query(cypher_query, {"uid": uid, "fid": fid})
-
-        # Delete the friend
-        delete_friend_helper(fid)
-
-        return {"message": "Friendship and friend successfully deleted."}
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error deleting relationship: {str(e)}"
         )
 
 #
