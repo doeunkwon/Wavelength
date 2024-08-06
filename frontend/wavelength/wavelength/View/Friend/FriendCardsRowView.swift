@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct FriendCardsRowView: View {
-    let user1: User
-    let user2: User? // Optional for the second user
+    let friend1: Friend
+    let friend2: Friend? // Optional for the second friend
     
     var body: some View {
         HStack {
-            FriendCardView(user: user1)
+            FriendCardView(friend: friend1)
             Spacer()
-            if let user2 = user2 {
-                FriendCardView(user: user2)
+            if let friend2 = friend2 {
+                FriendCardView(friend: friend2)
             }
         }
         .padding(.horizontal, Padding.large)
@@ -26,5 +26,5 @@ struct FriendCardsRowView: View {
 
 
 #Preview {
-    FriendCardsRowView(user1: User(emoji: "🌎", color: Color.wavelengthBlue, uid: "1", firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12), user2: User(emoji: "🌎", color: Color.wavelengthBlue, uid: "1", firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12))
+    FriendCardsRowView(friend1: Friend(emoji: "🌎", color: Color.wavelengthBlue, uid: "1", firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12), friend2: Friend(emoji: "🌎", color: Color.wavelengthBlue, uid: "1", firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12))
 }

@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  Friend.swift
 //  wavelength
 //
 //  Created by Doeun Kwon on 2024-06-18.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct User {
+struct Friend {
     
     let emoji: String
     let color: Color

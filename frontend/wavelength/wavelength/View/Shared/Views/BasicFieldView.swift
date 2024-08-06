@@ -10,7 +10,7 @@ import SwiftUI
 struct BasicFieldView: View {
     
     let field: String
-    let userData: String
+    let friendData: String
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -18,7 +18,7 @@ struct BasicFieldView: View {
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthDarkGrey)
                 .padding(.bottom, Padding.xsmall)
-            Text(userData)
+            Text(friendData)
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthBlack)
         }
@@ -26,5 +26,5 @@ struct BasicFieldView: View {
 }
 
 #Preview {
-    BasicFieldView(field: Strings.profile.goals, userData: "Port Moody")
+    BasicFieldView(field: Strings.profile.goals, friendData: "Port Moody")
 }
