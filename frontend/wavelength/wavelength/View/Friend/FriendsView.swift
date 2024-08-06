@@ -14,39 +14,42 @@ struct FriendsView: View {
     let friends: [User]
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            
-            ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(alignment: .leading) {
-                    ForEach(Array(stride(from: friends.startIndex, to: friends.endIndex, by: 2)), id: \.self) { index in
-                        let user1 = friends[index]
-                        let user2 = index + 1 < friends.endIndex ? friends[index + 1] : nil
-                        FriendCardsRowView(user1: user1, user2: user2)
+        NavigationStack {
+            ZStack(alignment: .bottom) {
+                
+                ScrollView(.vertical, showsIndicators: false) {
+                    LazyVStack(alignment: .leading) {
+                        ForEach(Array(stride(from: friends.startIndex, to: friends.endIndex, by: 2)), id: \.self) { index in
+                            let user1 = friends[index]
+                            let user2 = index + 1 < friends.endIndex ? friends[index + 1] : nil
+                            FriendCardsRowView(user1: user1, user2: user2)
+                        }
+                    }
+                }
+                .background(Color.wavelengthBackground)
+                .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 10, x: 0, y: 4)
+                
+                ZStack {
+                    Circle()
+                        .frame(width: 45)
+                        .foregroundColor(.wavelengthOffWhite)
+                        .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 8, x: 0, y: 4)
+                    Button {
+                        print("Add new friend!")
+                        showNewFriendViewModal.toggle()
+                    } label: {
+                        Image(systemName: Strings.icons.plus)
+                            .font(.system(size: Fonts.title))
+                            .accentColor(.wavelengthPurple)
+                    }
+                    .padding(.vertical, 30)
+                    .sheet(isPresented: $showNewFriendViewModal) {
+                        NewFriendView()
                     }
                 }
             }
-            .background(Color.wavelengthBackground)
-            .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 10, x: 0, y: 4)
-            
-            ZStack {
-                Circle()
-                    .frame(width: 45)
-                    .foregroundColor(.wavelengthOffWhite)
-                    .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 8, x: 0, y: 4)
-                Button {
-                    print("Add new friend!")
-                    showNewFriendViewModal.toggle()
-                } label: {
-                    Image(systemName: Strings.icons.plus)
-                        .font(.system(size: Fonts.title))
-                        .accentColor(.wavelengthPurple)
-                }
-                .padding(.vertical, 30)
-                .sheet(isPresented: $showNewFriendViewModal) {
-                    NewFriendView()
-                }
-            }
         }
+        .accentColor(.blue)
     }
 }
 

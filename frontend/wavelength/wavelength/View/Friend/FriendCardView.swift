@@ -9,15 +9,10 @@ import SwiftUI
 
 struct FriendCardView: View {
     
-    @State private var showFriendProfileViewModal = false
-    
     let user: User
     
     var body: some View {
-        Button {
-            print("\(user.firstName)'s card tapped")
-            showFriendProfileViewModal.toggle()
-        } label: {
+        NavigationLink(destination: FriendProfileView(user: user)) {
             ZStack {
                 VStack(alignment: .leading) {
                     
@@ -37,9 +32,6 @@ struct FriendCardView: View {
             }
             .background(Color.wavelengthOffWhite)
             .cornerRadius(10)
-        }
-        .sheet(isPresented: $showFriendProfileViewModal) {
-            FriendProfileView(user: user)
         }
     }
 }
