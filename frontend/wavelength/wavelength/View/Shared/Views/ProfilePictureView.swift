@@ -20,7 +20,7 @@ struct ProfilePictureView: View {
                 .frame(width: frameSize, height: frameSize)
                 .foregroundColor(color)
             Text(emoji)
-                .font(.system(size: Fonts.icon))
+                .font(.system(size: emojiSize))
         }
         .cornerRadius(CornerRadius.medium)
     }
