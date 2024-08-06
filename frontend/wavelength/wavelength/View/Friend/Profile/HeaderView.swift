@@ -17,7 +17,7 @@ struct HeaderView: View {
     
     var body: some View {
         HStack {
-            ProfilePictureView(emoji: emoji, color: color, frameSize: FrameSizes.medium, emojiSize: Fonts.header)
+            ProfilePictureView(emoji: emoji, color: color, frameSize: Frame.medium, emojiSize: Fonts.header)
             VStack(alignment: .leading) {
                 Text(firstName + " " + lastName)
                     .font(.system(size: Fonts.subtitle))

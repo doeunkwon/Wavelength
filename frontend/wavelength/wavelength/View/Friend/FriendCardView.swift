@@ -17,7 +17,7 @@ struct FriendCardView: View {
             ZStack {
                 VStack(alignment: .leading) {
                     
-                    ProfilePictureView(emoji: friend.emoji, color: friend.color, frameSize: FrameSizes.large, emojiSize: Fonts.icon)
+                    ProfilePictureView(emoji: friend.emoji, color: friend.color, frameSize: Frame.large, emojiSize: Fonts.icon)
                     
                     // Name and username below the emoji
                     HStack(alignment: .center) {
@@ -33,8 +33,8 @@ struct FriendCardView: View {
                 .padding(Padding.medium)
             }
             .background(Color.wavelengthOffWhite)
-            .cornerRadius(10)
-            .frame(width: FrameSizes.large + (Padding.medium * 2))
+            .cornerRadius(CornerRadius.medium)
+            .frame(width: Frame.large + (Padding.medium * 2))
         }
     }
 }

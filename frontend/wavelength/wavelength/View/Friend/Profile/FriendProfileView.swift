@@ -16,7 +16,18 @@ struct FriendProfileView: View {
             VStack(alignment: .leading) {
                 
                 HeaderView(emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, tokenCount: friend.tokenCount)
-                    .padding(.bottom, Padding.large)
+                    .padding(.bottom, Padding.medium)
+                
+                HStack(alignment: .center, spacing: Padding.large) {
+                    ButtonView(title: String(friend.scorePercentage) + "% match", color: intToColor(value: friend.scorePercentage), action: {print("Score button tapped")})
+                    ButtonView(title: String(friend.memoryCount) + " memories", color: .wavelengthBlack, action: {print("Memory button tapped")})
+                }
+                .padding(.bottom, Padding.large)
+                .shadow(
+                    color: ShadowStyle.subtle.color,
+                    radius: ShadowStyle.subtle.radius,
+                    x: ShadowStyle.subtle.x,
+                    y: ShadowStyle.subtle.y)
                 
                 Divider()
                 

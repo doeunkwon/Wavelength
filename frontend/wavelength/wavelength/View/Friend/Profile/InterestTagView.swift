@@ -17,7 +17,7 @@ struct InterestTagView: View {
             .font(.system(size: Fonts.body))
             .padding(Padding.medium)
             .overlay( /// apply a rounded border
-                RoundedRectangle(cornerRadius: 100)
+                RoundedRectangle(cornerRadius: CornerRadius.max)
                     .stroke(color, lineWidth: 2))
     }
 }

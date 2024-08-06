@@ -22,10 +22,10 @@ struct ProfilePictureView: View {
             Text(emoji)
                 .font(.system(size: Fonts.icon))
         }
-        .cornerRadius(8)
+        .cornerRadius(CornerRadius.medium)
     }
 }
 
 #Preview {
-    ProfilePictureView(emoji: "🌎", color: Color.wavelengthBlue, frameSize: FrameSizes.medium, emojiSize: Fonts.header)
+    ProfilePictureView(emoji: "🌎", color: Color.wavelengthBlue, frameSize: Frame.medium, emojiSize: Fonts.header)
 }

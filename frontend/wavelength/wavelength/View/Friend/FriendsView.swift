@@ -27,13 +27,21 @@ struct FriendsView: View {
                     }
                 }
                 .background(Color.wavelengthBackground)
-                .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 10, x: 0, y: 4)
+                .shadow(
+                    color: ShadowStyle.standard.color,
+                    radius: ShadowStyle.standard.radius,
+                    x: ShadowStyle.standard.x,
+                    y: ShadowStyle.standard.y)
                 
                 ZStack {
                     Circle()
                         .frame(width: 45)
                         .foregroundColor(.wavelengthOffWhite)
-                        .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 8, x: 0, y: 4)
+                        .shadow(
+                            color: ShadowStyle.standard.color,
+                            radius: ShadowStyle.standard.radius,
+                            x: ShadowStyle.standard.x,
+                            y: ShadowStyle.standard.y)
                     Button {
                         print("Add new friend!")
                         showNewFriendViewModal.toggle()

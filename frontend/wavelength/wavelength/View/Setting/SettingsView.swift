@@ -11,8 +11,12 @@ struct SettingsView: View {
     var body: some View {
         VStack {
             SettingsPanelView()
-                .cornerRadius(10)
-                .shadow(color: Color(white: 0.0, opacity: 0.06), radius: 10, x: 0, y: 4)
+                .cornerRadius(CornerRadius.medium)
+                .shadow(
+                    color: ShadowStyle.standard.color,
+                    radius: ShadowStyle.standard.radius,
+                    x: ShadowStyle.standard.x,
+                    y: ShadowStyle.standard.y)
             Spacer()
         }
         .padding()
