@@ -42,7 +42,7 @@ struct FriendsView: View {
                             .font(.system(size: Fonts.title))
                             .accentColor(.wavelengthPurple)
                     }
-                    .padding(.vertical, 30)
+                    .padding(.vertical, Padding.xlarge)
                     .sheet(isPresented: $showNewFriendViewModal) {
                         NewFriendView()
                     }
@@ -55,8 +55,6 @@ struct FriendsView: View {
 
 #Preview {
     FriendsView(friends: [
-        User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "04-12-2001", username: "billthemuffer", email: "doeun@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue),
-        User(uid: "2", firstName: "Andrea", lastName: "Fung", birthday: "06-22-2001", username: "andy pandy", email: "andrea@gmail.com", password: "Abc123", location: "Burnaby", interests: ["Travelling", "Swimming", "Volleyball"], emoji: "🪷", color: Color.wavelengthPink),
-        User(uid: "3", firstName: "Austin", lastName: "Lee", birthday: "03-15-2001", username: "leezy", email: "austin@gmail.com", password: "Abc123", location: "Coquitlam", interests: ["Camping", "Fishing", "Climbing"], emoji: "🌲", color: Color.wavelengthGreen)
+        User(emoji: "🌎", color: Color.wavelengthBlue, uid: "1", firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 50, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12)
     ])
 }

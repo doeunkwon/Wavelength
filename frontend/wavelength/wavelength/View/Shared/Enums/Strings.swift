@@ -22,7 +22,7 @@ struct Strings {
         
         static let username: String = "Username"
         static let email: String = "Email"
-        static let location: String = "Location"
+        static let goals: String = "Goals"
         static let interests: String = "Interests"
         static let memories: String = "Memories"
         

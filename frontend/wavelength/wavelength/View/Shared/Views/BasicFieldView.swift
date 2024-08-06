@@ -15,15 +15,16 @@ struct BasicFieldView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(field)
-                .font(.system(size: Fonts.subtitle))
-                .padding(.bottom, 0.1)
-            Text(userData)
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthDarkGrey)
+                .padding(.bottom, Padding.xsmall)
+            Text(userData)
+                .font(.system(size: Fonts.body))
+                .foregroundColor(.wavelengthBlack)
         }
     }
 }
 
 #Preview {
-    BasicFieldView(field: Strings.profile.location, userData: "Port Moody")
+    BasicFieldView(field: Strings.profile.goals, userData: "Port Moody")
 }

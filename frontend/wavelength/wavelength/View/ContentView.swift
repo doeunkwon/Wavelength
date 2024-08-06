@@ -12,7 +12,9 @@ struct ContentView: View {
     @State var selectedTab = 1
     
     let friends = [
-        User(uid: "1", firstName: "Doeun", lastName: "Kwon", birthday: "April 12, 2001", username: "billthemuffer", email: "doeun@gmail.com", password: "Abc123", location: "Port Moody", interests: ["Programming", "Travelling", "Boxing"], emoji: "🌎", color: Color.wavelengthBlue)
+        User(emoji: "🌞", color: Color.wavelengthYellow, uid: "1", firstName: "Austin", lastName: "Lee", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 23, memoryCount: 12),
+        User(emoji: "🦄", color: Color.wavelengthViolet, uid: "1", firstName: "Patrick", lastName: "Ruszyzck", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 84, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12),
+        User(emoji: "🌎", color: Color.wavelengthBlue, uid: "1", firstName: "Carson", lastName: "Guillemet", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 79, scoreAnalysis: "Amazing friendship!", tokenCount: -7, memoryCount: 12)
     ]
     
     var body: some View {

@@ -15,8 +15,8 @@ struct InterestFieldView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(Strings.profile.interests)
-                .font(.system(size: Fonts.subtitle))
-                .padding(.bottom, 0.1)
+                .font(.system(size: Fonts.body))
+                .foregroundColor(.wavelengthDarkGrey)
             TagsView(items: interests, color: tagColor)
         }
     }
@@ -73,7 +73,7 @@ struct TagsView: View {
                 HStack {
                     ForEach(subItems, id: \.self) { word in
                         InterestTagView(interest: word, color: color)
-                            .padding(2)
+                            .padding(Padding.small)
                     }
                 }
             }

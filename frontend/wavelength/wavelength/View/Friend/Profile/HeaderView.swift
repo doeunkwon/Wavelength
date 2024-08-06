@@ -13,23 +13,23 @@ struct HeaderView: View {
     let color: Color
     let firstName: String
     let lastName: String
-    let birthday: String
+    let tokenCount: Int
     
     var body: some View {
         HStack {
             ProfilePictureView(emoji: emoji, color: color, frameSize: FrameSizes.medium, emojiSize: Fonts.header)
             VStack(alignment: .leading) {
                 Text(firstName + " " + lastName)
-                    .font(.system(size: Fonts.title))
-                Text(birthday)
+                    .font(.system(size: Fonts.subtitle))
+                Text((tokenCount > 0 ? "+" : "") + String(tokenCount) + " tokens")
                     .font(.system(size: Fonts.body))
-                    .foregroundStyle(.wavelengthDarkGrey)
+                    .foregroundStyle(.wavelengthTokenOrange)
             }
-            .padding(.leading, 12)
+            .padding(.leading, Padding.medium)
         }
     }
 }
 
 #Preview {
-    HeaderView(emoji: "🌎", color: Color.wavelengthBlue, firstName: "Doeun", lastName: "Kwon", birthday: "April 12, 2001")
+    HeaderView(emoji: "🌎", color: Color.wavelengthBlue, firstName: "Doeun", lastName: "Kwon", tokenCount: 17)
 }

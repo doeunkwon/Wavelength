@@ -15,8 +15,7 @@ struct InterestTagView: View {
     var body: some View {
         Text(interest)
             .font(.system(size: Fonts.body))
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(Padding.medium)
             .overlay( /// apply a rounded border
                 RoundedRectangle(cornerRadius: 100)
                     .stroke(color, lineWidth: 2))

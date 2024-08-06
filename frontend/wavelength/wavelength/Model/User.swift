@@ -9,16 +9,16 @@ import SwiftUI
 
 struct User {
     
+    let emoji: String
+    let color: Color
     let uid: String
     let firstName: String
     let lastName: String
-    let birthday: String
-    let username: String
-    let email: String
-    let password: String
-    let location: String
+    let goals: String
     let interests: [String]
-    let emoji: String
-    let color: Color
+    let scorePercentage: Int
+    let scoreAnalysis: String
+    let tokenCount: Int
+    let memoryCount: Int
     
 }
