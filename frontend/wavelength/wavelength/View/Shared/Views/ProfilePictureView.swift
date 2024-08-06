@@ -17,12 +17,13 @@ struct ProfilePictureView: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .frame(width: frameSize, height: frameSize)
+                .aspectRatio(1, contentMode: .fit)
+                .frame(width: frameSize)
                 .foregroundColor(color)
+                .cornerRadius(CornerRadius.medium)
             Text(emoji)
                 .font(.system(size: emojiSize))
         }
-        .cornerRadius(CornerRadius.medium)
     }
 }
 

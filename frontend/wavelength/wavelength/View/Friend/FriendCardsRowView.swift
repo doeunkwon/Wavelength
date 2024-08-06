@@ -12,15 +12,16 @@ struct FriendCardsRowView: View {
     let friend2: Friend? // Optional for the second friend
     
     var body: some View {
-        HStack {
+        HStack (spacing: Padding.large) {
             FriendCardView(friend: friend1)
-            Spacer()
             if let friend2 = friend2 {
                 FriendCardView(friend: friend2)
+            } else {
+                Spacer()
             }
         }
         .padding(.horizontal, Padding.large)
-        .padding(.vertical, Padding.small)
+        .padding(.vertical, Padding.medium / 2)
     }
 }
 

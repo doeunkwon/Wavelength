@@ -16,7 +16,7 @@ struct HeaderView: View {
     let tokenCount: Int
     
     var body: some View {
-        HStack {
+        HStack(alignment: .center) {
             ProfilePictureView(emoji: emoji, color: color, frameSize: Frame.medium, emojiSize: Fonts.header)
             VStack(alignment: .leading) {
                 Text(firstName + " " + lastName)
