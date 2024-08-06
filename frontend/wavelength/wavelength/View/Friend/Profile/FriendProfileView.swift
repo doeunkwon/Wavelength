@@ -29,12 +29,17 @@ struct FriendProfileView: View {
                     x: ShadowStyle.subtle.x,
                     y: ShadowStyle.subtle.y)
                 
-                Divider()
+                DividerLine()
                 
                 BasicFieldView(field: Strings.profile.goals, friendData: friend.goals)
                     .padding(.vertical, Padding.large)
                 
-                Divider()
+                DividerLine()
+                
+                ValueFieldView(values: ["Discipline": 89, "Integrity": 76, "Growth": 81])
+                    .padding(.vertical, Padding.large)
+                
+                DividerLine()
                 
                 InterestFieldView(interests: friend.interests, tagColor: friend.color)
                     .padding(.vertical, Padding.large)
