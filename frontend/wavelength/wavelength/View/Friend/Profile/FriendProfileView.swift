@@ -36,12 +36,12 @@ struct FriendProfileView: View {
                 
                 DividerLine()
                 
-                ValueFieldView(values: friend.values)
+                InterestFieldView(interests: friend.interests, tagColor: friend.color)
                     .padding(.vertical, Padding.large)
                 
                 DividerLine()
                 
-                InterestFieldView(interests: friend.interests, tagColor: friend.color)
+                ValueFieldView(values: friend.values)
                     .padding(.vertical, Padding.large)
                 
                 Spacer()
