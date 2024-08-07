@@ -8,14 +8,18 @@
 import SwiftUI
 
 struct DividerLine: View {
+    var vertical: Bool?
     let color: Color = .wavelengthLightGrey
     let width: CGFloat = 1
     var body: some View {
         Rectangle()
             .fill(color)
-            .frame(height: width)
-            .edgesIgnoringSafeArea(.horizontal)
+            .frame(height: vertical ?? false ? nil : width)
+            .frame(width: vertical ?? false ? width : nil)
+            .edgesIgnoringSafeArea(vertical ?? false ? .vertical : .horizontal)
+
     }
+    
 }
 
 #Preview {

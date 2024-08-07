@@ -18,6 +18,14 @@ struct Strings {
         
     }
     
+    struct dashboard {
+        
+        static let score: String = "Score"
+        static let tokens: String = "Tokens"
+        static let memories: String = "Memories"
+        
+    }
+    
     struct profile {
         
         static let username: String = "Username"

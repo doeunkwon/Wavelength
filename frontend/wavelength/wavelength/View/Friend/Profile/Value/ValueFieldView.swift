@@ -31,6 +31,8 @@ struct ValueFieldView: View {
                 RoundedRectangle(cornerRadius: CornerRadius.medium)
                     .stroke(.wavelengthLightGrey, lineWidth: 1)
             )
+            .background(Color.wavelengthOffWhite)
+            .cornerRadius(CornerRadius.medium)
         }
     }
 }

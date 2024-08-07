@@ -12,7 +12,7 @@ struct FriendProfileView: View {
     let friend: Friend
     
     var body: some View {
-        ScrollView {
+        ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading) {
                 
                 HeaderView(emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, tokenCount: friend.tokenCount)
@@ -36,7 +36,7 @@ struct FriendProfileView: View {
                 
                 DividerLine()
                 
-                ValueFieldView(values: ["Discipline": 89, "Integrity": 76, "Growth": 81])
+                ValueFieldView(values: friend.values)
                     .padding(.vertical, Padding.large)
                 
                 DividerLine()
@@ -55,5 +55,5 @@ struct FriendProfileView: View {
 }
 
 #Preview {
-    FriendProfileView(friend: Friend(emoji: "🌎", color: Color.wavelengthBlue, uid: "1", firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12))
+    FriendProfileView(friend: Friend(emoji: "🌎", color: Color.wavelengthBlue, uid: "1", firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12, values: ["Discipline": 89, "Integrity": 76, "Growth": 81]))
 }
