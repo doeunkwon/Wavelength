@@ -23,7 +23,7 @@ struct FriendsView: View {
             ZStack(alignment: .bottom) {
                 
                 ScrollView(.vertical, showsIndicators: false) {
-                    DashboardView(scorePercentage: 67, tokenCount: 74, memoryCount: 210, data: {
+                    DashboardView(scorePercentage: 75, tokenCount: 74, memoryCount: 210, data: {
                         let sampleDate = Date().startOfDay.adding(.day, value: -10)!
                         var temp = [LineChartData]()
                         
@@ -72,7 +72,7 @@ struct FriendsView: View {
                     } label: {
                         Image(systemName: Strings.icons.plus)
                             .font(.system(size: Fonts.title))
-                            .accentColor(.wavelengthPurple)
+                            .accentColor(.wavelengthGrey)
                     }
                     .padding(.vertical, Padding.xlarge)
                     .sheet(isPresented: $showNewFriendViewModal) {
