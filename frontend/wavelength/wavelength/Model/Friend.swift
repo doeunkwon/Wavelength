@@ -20,6 +20,6 @@ struct Friend {
     let scoreAnalysis: String
     let tokenCount: Int
     let memoryCount: Int
-    let values: [String: Int]
+    let values: [String]
     
 }

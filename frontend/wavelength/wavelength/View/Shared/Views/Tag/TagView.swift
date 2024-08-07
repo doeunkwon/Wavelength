@@ -1,5 +1,5 @@
 //
-//  InterestTagView.swift
+//  TagView.swift
 //  wavelength
 //
 //  Created by Doeun Kwon on 2024-06-19.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InterestTagView: View {
+struct TagView: View {
     
     let interest: String
     let color: Color
@@ -26,5 +26,5 @@ struct InterestTagView: View {
 }
 
 #Preview {
-    InterestTagView(interest: "Muay Thai", color: Color.wavelengthViolet)
+    TagView(interest: "Muay Thai", color: Color.wavelengthViolet)
 }

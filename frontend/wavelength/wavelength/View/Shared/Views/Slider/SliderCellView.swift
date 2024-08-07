@@ -1,5 +1,5 @@
 //
-//  ValueCellView.swift
+//  SliderCellView.swift
 //  wavelength
 //
 //  Created by Doeun Kwon on 2024-08-06.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ValueCellView: View {
+struct SliderCellView: View {
     
     let title: String
     let percentage: Int
@@ -30,5 +30,5 @@ struct ValueCellView: View {
 }
 
 #Preview {
-    ValueCellView(title: "Growth", percentage: 80)
+    SliderCellView(title: "Growth", percentage: 80)
 }

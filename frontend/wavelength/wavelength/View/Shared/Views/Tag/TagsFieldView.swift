@@ -1,5 +1,5 @@
 //
-//  InterestFieldView.swift
+//  TagsFieldView.swift
 //  wavelength
 //
 //  Created by Doeun Kwon on 2024-06-19.
@@ -7,17 +7,18 @@
 
 import SwiftUI
 
-struct InterestFieldView: View {
+struct TagsFieldView: View {
     
-    let interests: [String]
+    let title: String
+    let items: [String]
     let tagColor: Color
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(Strings.profile.interests)
+            Text(title)
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthDarkGrey)
-            TagsView(items: interests, color: tagColor)
+            TagsView(items: items, color: tagColor)
         }
     }
 }
@@ -72,8 +73,8 @@ struct TagsView: View {
             ForEach(groupedItems, id: \.self) { subItems in
                 HStack {
                     ForEach(subItems, id: \.self) { word in
-                        InterestTagView(interest: word, color: color)
-                            .padding(Padding.small)
+                        TagView(interest: word, color: color)
+                            .padding(Padding.xsmall)
                     }
                 }
             }
@@ -83,5 +84,5 @@ struct TagsView: View {
 }
 
 #Preview {
-    InterestFieldView(interests: ["Programming", "Travelling", "Boxing", "EDM", "Reading"], tagColor: .wavelengthBlue)
+    TagsFieldView(title: Strings.profile.interests, items: ["Programming", "Travelling", "Boxing", "EDM", "Reading"], tagColor: .wavelengthBlue)
 }

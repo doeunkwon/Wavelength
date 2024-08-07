@@ -17,7 +17,7 @@ struct BasicFieldView: View {
             Text(field)
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthDarkGrey)
-                .padding(.bottom, Padding.xsmall)
+                .padding(.bottom, Padding.xxsmall)
             Text(friendData)
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthBlack)
@@ -26,5 +26,5 @@ struct BasicFieldView: View {
 }
 
 #Preview {
-    BasicFieldView(field: Strings.profile.goals, friendData: "Port Moody")
+    BasicFieldView(field: Strings.profile.about, friendData: "Port Moody")
 }

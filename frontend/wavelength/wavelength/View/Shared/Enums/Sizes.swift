@@ -30,7 +30,8 @@ enum Padding {
     static let large: CGFloat = 20
     static let medium: CGFloat = 10
     static let small: CGFloat = 5
-    static let xsmall: CGFloat = 1
+    static let xsmall: CGFloat = 3
+    static let xxsmall: CGFloat = 1
 }
 
 enum CornerRadius {
@@ -40,5 +41,5 @@ enum CornerRadius {
 
 enum Border {
     static let small: CGFloat = 1
-    static let medium: CGFloat = 2
+    static let medium: CGFloat = 3
 }
