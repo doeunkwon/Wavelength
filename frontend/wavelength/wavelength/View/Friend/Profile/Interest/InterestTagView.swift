@@ -20,6 +20,8 @@ struct InterestTagView: View {
             .overlay( /// apply a rounded border
                 RoundedRectangle(cornerRadius: CornerRadius.max)
                     .stroke(color, lineWidth: Border.medium))
+            .background(.wavelengthOffWhite)
+            .cornerRadius(CornerRadius.max)
     }
 }
 
