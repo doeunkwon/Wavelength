@@ -23,38 +23,40 @@ struct FriendsView: View {
             ZStack(alignment: .bottom) {
                 
                 ScrollView(.vertical, showsIndicators: false) {
-                    DashboardView(scorePercentage: 75, tokenCount: 74, memoryCount: 210, data: {
-                        let sampleDate = Date().startOfDay.adding(.day, value: -10)!
-                        var temp = [LineChartData]()
-                        
-                        for i in 0..<20 {
-                            let value = Double.random(in: 5...20)
-                            temp.append(
-                                LineChartData(
-                                    date: sampleDate.adding(.day, value: i)!,
-                                    value: value
+                    VStack(spacing: 0) {
+                        DashboardView(scorePercentage: 75, tokenCount: 74, memoryCount: 210, data: {
+                            let sampleDate = Date().startOfDay.adding(.day, value: -10)!
+                            var temp = [LineChartData]()
+                            
+                            for i in 0..<20 {
+                                let value = Double.random(in: 5...20)
+                                temp.append(
+                                    LineChartData(
+                                        date: sampleDate.adding(.day, value: i)!,
+                                        value: value
+                                    )
                                 )
-                            )
-                        }
+                            }
+                            
+                            return temp
+                        }())
+                        .padding(.top, Padding.large)
+                        .padding(.horizontal, Padding.large)
                         
-                        return temp
-                    }())
-                    .padding(.top, Padding.large)
-                    .padding(.horizontal, Padding.large)
-                    .padding(.bottom, Padding.large / 2)
-                    
-                    LazyVStack(alignment: .leading) {
-                        ForEach(Array(stride(from: friends.startIndex, to: friends.endIndex, by: 2)), id: \.self) { index in
-                            let friend1 = friends[index]
-                            let friend2 = index + 1 < friends.endIndex ? friends[index + 1] : nil
-                            FriendCardsRowView(friend1: friend1, friend2: friend2)
+                        LazyVStack(alignment: .leading, spacing: Padding.large) {
+                            ForEach(Array(stride(from: friends.startIndex, to: friends.endIndex, by: 2)), id: \.self) { index in
+                                let friend1 = friends[index]
+                                let friend2 = index + 1 < friends.endIndex ? friends[index + 1] : nil
+                                FriendCardsRowView(friend1: friend1, friend2: friend2)
+                            }
                         }
+                        .shadow(
+                            color: ShadowStyle.standard.color,
+                            radius: ShadowStyle.standard.radius,
+                            x: ShadowStyle.standard.x,
+                            y: ShadowStyle.standard.y)
+                        .padding(Padding.large)
                     }
-                    .shadow(
-                        color: ShadowStyle.standard.color,
-                        radius: ShadowStyle.standard.radius,
-                        x: ShadowStyle.standard.x,
-                        y: ShadowStyle.standard.y)
                 }
                 
                 ZStack {

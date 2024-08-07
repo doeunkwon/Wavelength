@@ -29,7 +29,7 @@ struct ValueFieldView: View {
             }
             .overlay( /// apply a rounded border
                 RoundedRectangle(cornerRadius: CornerRadius.medium)
-                    .stroke(.wavelengthLightGrey, lineWidth: 1)
+                    .stroke(.wavelengthLightGrey, lineWidth: Border.small)
             )
             .background(Color.wavelengthOffWhite)
             .cornerRadius(CornerRadius.medium)

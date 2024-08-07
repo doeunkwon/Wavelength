@@ -20,8 +20,6 @@ struct FriendCardsRowView: View {
                 Spacer()
             }
         }
-        .padding(.horizontal, Padding.large)
-        .padding(.vertical, Padding.large / 3)
     }
 }
 

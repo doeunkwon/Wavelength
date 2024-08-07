@@ -18,43 +18,49 @@ struct DashboardView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-                VStack(alignment: .leading) {
-                    Text(Strings.dashboard.score)
-                        .font(.system(size: Fonts.body2))
-                        .foregroundColor(.wavelengthDarkGrey)
-                        .padding(.bottom, Padding.xsmall)
-                    Text("\(scorePercentage)%")
-                        .font(.system(size: Fonts.subtitle))
-                        .foregroundColor(intToColor(value: scorePercentage))
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(Strings.dashboard.score)
+                            .font(.system(size: Fonts.body2))
+                            .foregroundColor(.wavelengthDarkGrey)
+                            .padding(.bottom, Padding.xsmall)
+                        Text("\(scorePercentage)%")
+                            .font(.system(size: Fonts.subtitle))
+                            .foregroundColor(intToColor(value: scorePercentage))
+                    }
+                    .padding(Padding.medium)
+                    Spacer()
                 }
-                .padding(Padding.medium)
-                Spacer()
                 DividerLine(vertical: true)
-                VStack(alignment: .leading) {
-                    Text(Strings.dashboard.tokens)
-                        .font(.system(size: Fonts.body2))
-                        .foregroundColor(.wavelengthDarkGrey)
-                        .padding(.bottom, Padding.xsmall)
-                    Text((tokenCount > 0 ? "+" : "") + String(tokenCount))
-                        .font(.system(size: Fonts.subtitle))
-                        .foregroundColor(.wavelengthTokenOrange)
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(Strings.dashboard.tokens)
+                            .font(.system(size: Fonts.body2))
+                            .foregroundColor(.wavelengthDarkGrey)
+                            .padding(.bottom, Padding.xsmall)
+                        Text((tokenCount > 0 ? "+" : "") + String(tokenCount))
+                            .font(.system(size: Fonts.subtitle))
+                            .foregroundColor(.wavelengthTokenOrange)
+                    }
+                    .padding(Padding.medium)
+                    Spacer()
                 }
-                .padding(Padding.medium)
-                Spacer()
                 DividerLine(vertical: true)
-                VStack(alignment: .leading) {
-                    Text(Strings.dashboard.memories)
-                        .font(.system(size: Fonts.body2))
-                        .foregroundColor(.wavelengthDarkGrey)
-                        .padding(.bottom, Padding.xsmall)
-                    Text(String(memoryCount))
-                        .font(.system(size: Fonts.subtitle))
-                        .foregroundColor(.wavelengthBlack)
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(Strings.dashboard.memories)
+                            .font(.system(size: Fonts.body2))
+                            .foregroundColor(.wavelengthDarkGrey)
+                            .padding(.bottom, Padding.xsmall)
+                        Text(String(memoryCount))
+                            .font(.system(size: Fonts.subtitle))
+                            .foregroundColor(.wavelengthBlack)
+                    }
+                    .padding(Padding.medium)
+                    Spacer()
                 }
-                .padding(Padding.medium)
-                Spacer()
             }
-            .frame(height:64)
+            .frame(height:Frame.dashboardTop)
             DividerLine()
             Chart {
                 ForEach(data, id: \.id) { item in
@@ -74,14 +80,14 @@ struct DashboardView: View {
                 AxisMarks(position: .bottom) { _ in
                 }
             }
-            .frame(height:100)
+            .frame(height:Frame.dashboardBottom)
             .padding(.top, Padding.large)
             .padding(.horizontal, Padding.large)
             
         }
         .overlay( /// apply a rounded border
             RoundedRectangle(cornerRadius: CornerRadius.medium)
-                .stroke(.wavelengthLightGrey, lineWidth: 1)
+                .stroke(.wavelengthLightGrey, lineWidth: Border.small)
         )
         .background(Color.wavelengthOffWhite)
         .cornerRadius(CornerRadius.medium)
