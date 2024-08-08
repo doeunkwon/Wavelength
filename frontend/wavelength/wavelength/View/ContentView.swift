@@ -14,16 +14,20 @@ struct ContentView: View {
     let friends = Mock.friends
     
     var body: some View {
-        FriendsView(friends: friends)
-//        TabView(selection: $selectedTab) {
-//            SettingsView()
-//                .tabItem { Image(systemName: Strings.icons.gearshape) }
-//                .tag(0)
-//            FriendsView(friends: friends)
-//                .tabItem { Image(systemName: Strings.icons.squareGrid2by2) }
-//                .tag(1)
-//        }
-//        .accentColor(Color.wavelengthPurple)
+        NavigationStack {
+            TabView(selection: $selectedTab) {
+                SettingsView()
+                    .tabItem { Image(systemName: Strings.icons.gearshape) }
+                    .tag(0)
+                FriendsView(friends: friends)
+                    .tabItem { Image(systemName: Strings.icons.squareGrid2by2) }
+                    .tag(1)
+//                ChatView()
+//                    .tabItem { Image(systemName: Strings.icons.bubble) }
+//                    .tag(2)
+            }
+            .accentColor(Color.wavelengthPurple)
+        }
     }
 }
 

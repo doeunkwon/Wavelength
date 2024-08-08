@@ -32,10 +32,10 @@ struct FriendProfileView: View {
                 BasicFieldView(field: Strings.profile.about, friendData: friend.goals)
                     .padding(.bottom, Padding.large)
                 
-                TagsFieldView(title: Strings.profile.interests, items: friend.interests, tagColor: friend.color)
+                TagsFieldView(title: Strings.profile.values, items: friend.values, tagColor: friend.color)
                     .padding(.bottom, Padding.large)
                 
-                TagsFieldView(title: Strings.profile.values, items: friend.values, tagColor: friend.color)
+                TagsFieldView(title: Strings.profile.interests, items: friend.interests, tagColor: friend.color)
                     .padding(.bottom, Padding.large)
 //
 //                DividerLine()

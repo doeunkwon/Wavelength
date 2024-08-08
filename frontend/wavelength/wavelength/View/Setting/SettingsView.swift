@@ -19,7 +19,7 @@ struct SettingsView: View {
                     y: ShadowStyle.standard.y)
             Spacer()
         }
-        .padding()
+        .padding(Padding.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.wavelengthBackground)
     }

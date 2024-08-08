@@ -19,7 +19,7 @@ struct FriendsView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        
             ZStack(alignment: .bottom) {
                 
                 ScrollView(.vertical, showsIndicators: false) {
@@ -83,8 +83,6 @@ struct FriendsView: View {
                 }
             }
             .background(Color.wavelengthBackground)
-        }
-        .accentColor(.blue)
     }
 }
 
