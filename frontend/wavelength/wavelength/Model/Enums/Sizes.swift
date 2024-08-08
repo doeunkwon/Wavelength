@@ -21,7 +21,7 @@ enum Fonts {
 enum Frame {
     static let large: CGFloat = 150
     static let medium: CGFloat = 80
-    static let dashboardTop: CGFloat = 64
+    static let dashboardTop: CGFloat = 60
     static let dashboardBottom: CGFloat = 100
 }
 
@@ -31,7 +31,6 @@ enum Padding {
     static let medium: CGFloat = 10
     static let small: CGFloat = 5
     static let xsmall: CGFloat = 3
-    static let xxsmall: CGFloat = 1
 }
 
 enum CornerRadius {

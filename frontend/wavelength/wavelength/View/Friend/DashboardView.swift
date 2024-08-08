@@ -19,11 +19,10 @@ struct DashboardView: View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 HStack {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: Padding.small) {
                         Text(Strings.dashboard.score)
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
-                            .padding(.bottom, Padding.xxsmall)
                         Text("\(scorePercentage)%")
                             .font(.system(size: Fonts.subtitle))
                             .foregroundColor(intToColor(value: scorePercentage))
@@ -33,11 +32,10 @@ struct DashboardView: View {
                 }
                 DividerLineView(vertical: true)
                 HStack {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: Padding.small) {
                         Text(Strings.dashboard.tokens)
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
-                            .padding(.bottom, Padding.xxsmall)
                         Text((tokenCount > 0 ? "+" : "") + String(tokenCount))
                             .font(.system(size: Fonts.subtitle))
                             .foregroundColor(.wavelengthTokenOrange)
@@ -47,11 +45,10 @@ struct DashboardView: View {
                 }
                 DividerLineView(vertical: true)
                 HStack {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: Padding.small) {
                         Text(Strings.dashboard.memories)
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
-                            .padding(.bottom, Padding.xxsmall)
                         Text(String(memoryCount))
                             .font(.system(size: Fonts.subtitle))
                             .foregroundColor(.wavelengthBlack)
