@@ -1,23 +1,25 @@
 //
-//  Friend.swift
+//  User.swift
 //  wavelength
 //
-//  Created by Doeun Kwon on 2024-06-18.
+//  Created by Doeun Kwon on 2024-08-08.
 //
 
 import SwiftUI
 
-struct Friend {
+struct User {
     
-    let fid: String
+    let uid: String
     let emoji: String
     let color: Color
     let firstName: String
     let lastName: String
+    let username: String
+    let email: String
+    let password: String
     let goals: String
     let interests: [String]
     let scorePercentage: Int
-    let scoreAnalysis: String
     let tokenCount: Int
     let memoryCount: Int
     let values: [String]

@@ -29,7 +29,7 @@ struct FriendProfileView: View {
                     y: ShadowStyle.subtle.y)
                 .padding(.bottom, Padding.large)
                 
-                BasicFieldView(field: Strings.profile.about, friendData: friend.goals)
+                BasicFieldView(field: Strings.profile.goals, friendData: friend.goals)
                     .padding(.bottom, Padding.large)
                 
                 TagsFieldView(title: Strings.profile.values, items: friend.values, tagColor: friend.color)
@@ -54,5 +54,5 @@ struct FriendProfileView: View {
 }
 
 #Preview {
-    FriendProfileView(friend: Friend(emoji: "🌎", color: Color.wavelengthBlue, uid: "1", firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12, values: ["Discipline", "Integrity", "Growth", "Positivity"]))
+    FriendProfileView(friend: Friend(fid: "1", emoji: "🌎", color: Color.wavelengthBlue, firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12, values: ["Discipline", "Integrity", "Growth", "Positivity"]))
 }

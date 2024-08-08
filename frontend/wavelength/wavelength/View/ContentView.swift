@@ -11,6 +11,8 @@ struct ContentView: View {
     
     @State var selectedTab = 1
     
+    let user = Mock.user
+    
     let friends = Mock.friends
     
     var body: some View {
@@ -19,7 +21,7 @@ struct ContentView: View {
                 SettingsView()
                     .tabItem { Image(systemName: Strings.icons.gearshape) }
                     .tag(0)
-                FriendsView(friends: friends)
+                FriendsView(user: user, friends: friends)
                     .tabItem { Image(systemName: Strings.icons.squareGrid2by2) }
                     .tag(1)
 //                ChatView()
