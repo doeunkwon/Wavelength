@@ -9,6 +9,12 @@ import SwiftUI
 
 struct Strings {
     
+    struct general {
+        
+        static let tokens: String = "tokens"
+        
+    }
+    
     struct settings {
         
         static let profile: String = "Profile"
@@ -33,7 +39,13 @@ struct Strings {
         static let goals: String = "Goals"
         static let interests: String = "Interests"
         static let values: String = "Values"
-        static let memories: String = "Memories"
+        static let percentageMatch: String = "% match"
+        
+    }
+    
+    struct memories {
+        
+        static let memories: String = "memories"
         
     }
 

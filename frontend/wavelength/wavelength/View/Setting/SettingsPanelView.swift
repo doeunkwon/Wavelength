@@ -11,11 +11,11 @@ struct SettingsPanelView: View {
     var body: some View {
         VStack(spacing: 0) {
             SettingsCellView(title: Strings.settings.profile, icon: Strings.icons.person, action: {print("Profile tapped!")})
-            DividerLine()
+            DividerLineView()
             SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock, action: {print("Change Password tapped!")})
-            DividerLine()
+            DividerLineView()
             SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash, action: {print("Delete Profile tapped!")})
-            DividerLine()
+            DividerLineView()
             SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {print("Log out tapped!")})
         }
     }

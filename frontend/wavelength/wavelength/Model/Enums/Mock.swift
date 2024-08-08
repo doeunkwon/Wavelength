@@ -18,4 +18,9 @@ enum Mock {
         Friend(fid: "2", emoji: "👽", color: Color.wavelengthViolet, firstName: "Jasper", lastName: "Chen", goals: "Jasper dreams of creating groundbreaking software solutions that revolutionize industries. He is driven by a passion for coding and problem-solving, and aims to become a leading figure in the tech world.", interests: ["Coding", "Gaming", "Science Fiction", "Music", "Racing", "Travelling"], scorePercentage: 82, scoreAnalysis: "", tokenCount: -5, memoryCount: 23, values: ["Money", "Status", "Growth", "Learning"]),
         Friend(fid: "3", emoji: "🤖", color: Color.wavelengthBlue, firstName: "Orion", lastName: "Patel", goals: "With a deep love for storytelling, Orion aspires to write captivating novels that transport readers to different worlds. He seeks to develop his writing craft and share his unique perspective with the world.", interests: ["Writing", "Reading", "Philosophy", "AI", "Quantum Computing", "Bouldering", "Cooking", "Coffee"], scorePercentage: 34, scoreAnalysis: "Amazing friendship!", tokenCount: 18, memoryCount: 45, values: ["Discipline", "Integrity", "Growth", "Positivity"])
     ]
+        
+        static let memories: [Memory] = [
+            Memory(mid: "1", date: "January 1, 2000", title: "Text message during my Asia trip 2024.", content: "He asked me to hang out after my Asia trip. I thought it was quite nice that he thought of me while I was on my trip because it’s easy to forget these things!", tokens: 2),
+            Memory(mid: "2", date: "January 3, 2000", title: "Bought me a coffee.", content: "He’d already left the office when I realized I’d forgotten my wallet. Figuring I’d have to skip my usual coffee run, I was about to head back to my desk when he appeared in the doorway, grinning and holding out a steaming cup. It was a small gesture, but it made my day.", tokens: 1)
+        ]
 }

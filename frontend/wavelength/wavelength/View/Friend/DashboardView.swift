@@ -31,7 +31,7 @@ struct DashboardView: View {
                     .padding(Padding.medium)
                     Spacer()
                 }
-                DividerLine(vertical: true)
+                DividerLineView(vertical: true)
                 HStack {
                     VStack(alignment: .leading) {
                         Text(Strings.dashboard.tokens)
@@ -45,7 +45,7 @@ struct DashboardView: View {
                     .padding(Padding.medium)
                     Spacer()
                 }
-                DividerLine(vertical: true)
+                DividerLineView(vertical: true)
                 HStack {
                     VStack(alignment: .leading) {
                         Text(Strings.dashboard.memories)
@@ -61,7 +61,7 @@ struct DashboardView: View {
                 }
             }
             .frame(height:Frame.dashboardTop)
-            DividerLine()
+            DividerLineView()
             Chart {
                 ForEach(data, id: \.id) { item in
                     LineMark(

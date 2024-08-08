@@ -22,7 +22,7 @@ struct SliderFieldView: View {
                 let sortedValues = pairs.sorted { $0.key < $1.key }
                 ForEach(Array(sortedValues.enumerated()), id: \.offset) { index, value in
                     if index != 0 {
-                        DividerLine()
+                        DividerLineView()
                     }
                     SliderCellView(title: value.key, percentage: value.value)
                         .padding(.vertical, Padding.xlarge)
