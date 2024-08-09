@@ -78,11 +78,11 @@ struct FriendsView: View {
                             .font(.system(size: Fonts.title))
                             .accentColor(.wavelengthGrey)
                     }
-                    .padding(.vertical, Padding.xlarge)
                     .sheet(isPresented: $showNewFriendViewModal) {
                         NewFriendView()
                     }
                 }
+                .padding(.vertical, Padding.large)
             }
             .background(Color.wavelengthBackground)
     }

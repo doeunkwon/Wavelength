@@ -68,6 +68,9 @@ struct Strings {
         static let arrowRight: String = "arrow.right"
         static let plus: String = "plus"
         static let sliderHorizontalThree: String = "slider.horizontal.3"
+        static let chevronDown: String = "chevron.down"
+        static let chevronLeft: String = "chevron.left"
+        static let chevronRight: String = "chevron.right"
 
     }
 }

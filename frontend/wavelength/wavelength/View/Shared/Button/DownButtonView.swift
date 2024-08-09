@@ -12,7 +12,7 @@ struct DownButtonView: View {
 
         var body: some View {
             Button(action: action) {
-                Image(systemName: "chevron.down")
+                Image(systemName: Strings.icons.chevronDown)
                     .foregroundColor(.blue)
                     .font(Font.body.weight(.semibold))
             }
