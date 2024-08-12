@@ -9,23 +9,26 @@ import SwiftUI
 
 struct TagView: View {
     
-    let interest: String
+    let text: String
     let color: Color
     let editable: Bool
     
     var body: some View {
         HStack {
-            Text(interest)
+            Text(text)
             if editable {
-                Image(systemName: Strings.icons.xmark)
-                    .font(.system(size: Fonts.body))
-                    .foregroundColor(.wavelengthGrey)
-                    .padding(.leading, Padding.xsmall)
+                Button {
+                    
+                } label: {
+                    Image(systemName: Strings.icons.xmark)
+                        .font(.system(size: Fonts.body))
+                        .foregroundColor(.wavelengthGrey)
+                        .padding(.leading, Padding.xsmall)
+                }
             }
         }
             .font(.system(size: Fonts.body))
-            .padding(.horizontal, Padding.medium + 3)
-            .padding(.vertical, Padding.medium)
+            .padding(Padding.medium)
             .overlay( /// apply a rounded border
                 RoundedRectangle(cornerRadius: CornerRadius.max)
                     .stroke(color, lineWidth: Border.medium))
@@ -35,5 +38,5 @@ struct TagView: View {
 }
 
 #Preview {
-    TagView(interest: "Muay Thai", color: Color.wavelengthViolet, editable: true)
+    TagView(text: "Muay Thai", color: Color.wavelengthViolet, editable: true)
 }

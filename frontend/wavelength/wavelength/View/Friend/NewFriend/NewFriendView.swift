@@ -17,12 +17,12 @@ struct NewFriendView: View {
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     @State private var goals: String = ""
-    @State private var values: [String] = ["Discipline", "Growth"]
-    @State private var interests: [String] = ["Programming", "Nature"]
+    @State private var values: [String] = []
+    @State private var interests: [String] = []
     
     var body: some View {
         NavigationStack {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack (alignment: .leading, spacing: Padding.xlarge) {
                     HStack {
                         Text(Strings.friend.newFriend)
@@ -63,11 +63,11 @@ struct NewFriendView: View {
                     
                     DividerLineView()
                     
-                    TagsFieldInputView(title: Strings.general.values, binding: $values, color: color)
+                    TagsFieldInputView(title: Strings.general.values, placeholder: Strings.general.addAValue, items: $values, color: color)
                     
                     DividerLineView()
                     
-                    TagsFieldInputView(title: Strings.general.interests, binding: $interests, color: color)
+                    TagsFieldInputView(title: Strings.general.interests, placeholder: Strings.general.addAnInterest, items: $interests, color: color)
                     
                     Spacer()
                 }

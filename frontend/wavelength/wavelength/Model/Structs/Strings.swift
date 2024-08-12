@@ -21,6 +21,8 @@ struct Strings {
         static let email: String = "Email"
         static let interests: String = "Interests"
         static let emoji: String = "Emoji"
+        static let addAValue: String = "Add a value"
+        static let addAnInterest: String = "Add an interest"
         
     }
     

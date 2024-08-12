@@ -15,9 +15,6 @@ struct TagsView: View {
     let screenWidth = UIScreen.main.bounds.width
     let editable: Bool
     
-    @State private var isAddingTag: Bool = false
-    @State private var newTagText: String = ""
-    
     init(items: [String], color: Color, editable: Bool) {
         self.items = items
         self.color = color
@@ -37,9 +34,13 @@ struct TagsView: View {
             label.text = word
             label.sizeToFit()
             
-            let labelWidth = label.frame.size.width + 30
+            /// This value is added to the width of each label (tag) to account for padding or extra space around the text. It ensures that the tags do not appear cramped and have sufficient spacing inside the UI component.
+            /// If editable, then we must also account for the space taken up by the xmark
+            let textCushion = (Padding.medium * 2) + (Padding.xsmall * 2) + (editable ? Padding.large : 0)
+            let labelWidth = label.frame.size.width + textCushion
             
-            if (width + labelWidth + 55) < screenWidth {
+            /// Makes sure width + labelWidth is less than screenWidth including the edges paddings
+            if (width + labelWidth) < screenWidth - (Padding.large * 2) {
                 width += labelWidth
                 tempItems.append(word)
             } else {
@@ -53,12 +54,6 @@ struct TagsView: View {
         
         groupedItems.append(tempItems)
         
-        // If editable, add space for the plus button at the end of the last group
-        if editable, var lastGroup = groupedItems.last {
-            lastGroup.append("+")
-            groupedItems[groupedItems.count - 1] = lastGroup
-        }
-        
         return groupedItems
         
     }
@@ -69,31 +64,10 @@ struct TagsView: View {
             ForEach(groupedItems, id: \.self) { subItems in
                 HStack {
                     ForEach(subItems, id: \.self) { word in
-                        if word == "+" {
-                            ZStack {
-                                Circle()
-                                    .frame(width: Frame.xsmall)
-                                    .foregroundColor(.wavelengthOffWhite)
-                                    .shadow(
-                                        color: ShadowStyle.standard.color,
-                                        radius: ShadowStyle.standard.radius,
-                                        x: ShadowStyle.standard.x,
-                                        y: ShadowStyle.standard.y)
-                                Button {
-                                    print("Add new tag!")
-                                    isAddingTag.toggle()
-                                } label: {
-                                    Image(systemName: Strings.icons.plus)
-                                        .font(.system(size: Fonts.body))
-                                        .accentColor(.wavelengthGrey)
-                                }
-                                .padding(.vertical, Padding.xsmall)
-                                .padding(.horizontal, Padding.medium * 1.5)
-                            }
-                        } else {
-                            TagView(interest: word, color: color, editable: editable)
-                                .padding(Padding.xsmall)
-                        }
+                        
+                        TagView(text: word, color: color, editable: editable)
+                            .padding(Padding.xsmall)
+                        
                     }
                 }
             }
