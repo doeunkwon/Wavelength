@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct TagsFieldInputView: View {
+    
+    @EnvironmentObject var valueTagManager: ValueTagManager
+    @EnvironmentObject var interestTagManager: InterestTagManager
+    
     let title: String
     let placeholder: String
-    let items: Binding<[String]>
     let color: Color
     
     @State private var newItem: String = ""
@@ -32,7 +35,11 @@ struct TagsFieldInputView: View {
                         .foregroundColor(.wavelengthDarkGrey)
                     Spacer()
                     Button {
-                        items.wrappedValue.append(newItem)
+                        if title == Strings.general.values {
+                            valueTagManager.tags.append(newItem)
+                        } else {
+                            interestTagManager.tags.append(newItem)
+                        }
                         newItem = ""
                     } label: {
                         Image(systemName: Strings.icons.plus)
@@ -42,10 +49,14 @@ struct TagsFieldInputView: View {
                 }
                 .padding(Padding.medium)
             }
-            .padding(.bottom, items.wrappedValue.count > 0 ? Padding.large : Padding.medium)
+            .padding(.bottom,
+                     title == Strings.general.values ?
+                     (valueTagManager.tags.count > 0 ? Padding.large : Padding.medium)
+                     : (interestTagManager.tags.count > 0 ? Padding.large : Padding.medium)
+            )
             
             // Keep in mind that .wrappedValue just copies the underlying VALUE of the binding, NOT the reference.
-            TagsView(items: items.wrappedValue, color: color, editable: true)
+            TagsView(items: (title == Strings.general.values ? valueTagManager.tags : interestTagManager.tags), color: color, editable: true)
         }
     }
 }

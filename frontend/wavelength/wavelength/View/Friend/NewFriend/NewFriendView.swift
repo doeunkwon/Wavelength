@@ -8,7 +8,27 @@
 import SwiftUI
 import MCEmojiPicker
 
+class ValueTagManager: ObservableObject {
+    @Published var tags: [String] = []
+
+    func removeValueTag(tag: String) {
+        tags.removeAll { $0 == tag }
+    }
+}
+
+class InterestTagManager: ObservableObject {
+    @Published var tags: [String] = []
+    
+    func removeInterestTag(tag: String) {
+        tags.removeAll { $0 == tag }
+    }
+}
+
+
 struct NewFriendView: View {
+    
+    @StateObject var valueTagManager = ValueTagManager()
+    @StateObject var interestTagManager = InterestTagManager()
     
     @Environment(\.dismiss) private var dismiss
     @State private var isPresented: Bool = false
@@ -17,7 +37,6 @@ struct NewFriendView: View {
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     @State private var goals: String = ""
-    @State private var values: [String] = []
     @State private var interests: [String] = []
     
     var body: some View {
@@ -63,11 +82,13 @@ struct NewFriendView: View {
                     
                     DividerLineView()
                     
-                    TagsFieldInputView(title: Strings.general.values, placeholder: Strings.general.addAValue, items: $values, color: color)
+                    TagsFieldInputView(title: Strings.general.values, placeholder: Strings.general.addAValue, color: color)
+                        .environmentObject(valueTagManager)
                     
                     DividerLineView()
                     
-                    TagsFieldInputView(title: Strings.general.interests, placeholder: Strings.general.addAnInterest, items: $interests, color: color)
+                    TagsFieldInputView(title: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: color)
+                        .environmentObject(interestTagManager)
                     
                     Spacer()
                 }

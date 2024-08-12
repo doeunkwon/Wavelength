@@ -9,6 +9,9 @@ import SwiftUI
 
 struct TagView: View {
     
+    @EnvironmentObject var valueTagManager: ValueTagManager
+    @EnvironmentObject var interestTagManager: InterestTagManager
+    
     let text: String
     let color: Color
     let editable: Bool
@@ -18,7 +21,7 @@ struct TagView: View {
             Text(text)
             if editable {
                 Button {
-                    
+                    valueTagManager.removeValueTag(tag: text)
                 } label: {
                     Image(systemName: Strings.icons.xmark)
                         .font(.system(size: Fonts.body))
