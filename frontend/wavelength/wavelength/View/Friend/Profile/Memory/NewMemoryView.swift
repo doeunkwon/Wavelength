@@ -19,8 +19,8 @@ struct NewMemoryView: View {
         NavigationStack {
             ZStack (alignment: .bottom) {
                 ScrollView {
-                    VStack (spacing: Padding.large) {
                         
+                    VStack (alignment: .leading, spacing: Padding.xlarge) {
                         HStack {
                             Text("New memory")
                                 .font(.system(size: Fonts.title))
@@ -33,8 +33,12 @@ struct NewMemoryView: View {
                             displayedComponents: [.date]
                         )
                         
+                        DividerLineView()
+                        
                         TextField("Title", text: $title, axis: .vertical)
                             .font(.system(size: Fonts.body))
+                        
+                        DividerLineView()
                         
                         TextField("Content", text: $content, axis: .vertical)
                             .font(.system(size: Fonts.body))

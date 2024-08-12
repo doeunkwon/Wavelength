@@ -71,6 +71,7 @@ struct Strings {
         static let chevronDown: String = "chevron.down"
         static let chevronLeft: String = "chevron.left"
         static let chevronRight: String = "chevron.right"
+        static let ellipsis: String = "ellipsis"
 
     }
 }

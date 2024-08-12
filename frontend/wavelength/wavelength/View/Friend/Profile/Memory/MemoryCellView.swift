@@ -9,39 +9,51 @@ import SwiftUI
 
 struct MemoryCellView: View {
     
-    let title: String
-    let content: String
-    let tokens: Int
-    let action: () -> Void
+    @State private var showMemoryViewModal = false
+    
+    let memory: Memory
     
     var body: some View {
         Button {
-            action()
+            showMemoryViewModal.toggle()
         } label: {
             VStack(alignment: .leading, spacing: Padding.medium) {
-                Text(title)
+                HStack {
+                    
+                    
+                    Text(String(memory.date.formatted(date: .abbreviated, time: .omitted)))
+                        .font(.system(size: Fonts.body2))
+                        .foregroundColor(.wavelengthDarkGrey)
+                    
+                    Spacer()
+                    
+                    Text((memory.tokens > 0 ? "+" : "") + String(memory.tokens) + " " + Strings.general.tokens)
+                        .font(.system(size: Fonts.body2))
+                        .foregroundColor(.wavelengthTokenOrange)
+                }
+                Text(memory.title)
                     .multilineTextAlignment(.leading)
                     .font(.system(size: Fonts.body))
                     .foregroundColor(.wavelengthBlack)
                     .frame(height: 20)
-                Text(content)
+                Text(memory.content)
                     .multilineTextAlignment(.leading)
                     .font(.system(size: Fonts.body))
                     .foregroundColor(.wavelengthDarkGrey)
                     .frame(height: 40)
-                Text((tokens > 0 ? "+" : "") + String(tokens) + " " + Strings.general.tokens)
-                    .font(.system(size: Fonts.body))
-                    .foregroundColor(.wavelengthTokenOrange)
             }
             .padding(Padding.large)
             .frame(maxWidth: .infinity)
             .background(.wavelengthOffWhite) // Set text color
             .cornerRadius(CornerRadius.medium) // Add corner radius
         }
+        .sheet(isPresented: $showMemoryViewModal) {
+            MemoryView(memory: memory)
+        }
     }
     
 }
 
 #Preview {
-    MemoryCellView(title: "Text message during my Asia trip 2024 to Tokyo, Japan.", content: "He asked me to hang out after my Asia trip. I thought it was quite nice that he thought of me while I was on my trip because it’s easy to forget these things!", tokens: 2, action: {print("Memory cell tapped!")})
+    MemoryCellView(memory: Mock.memory)
 }

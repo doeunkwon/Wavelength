@@ -1,18 +1,18 @@
 //
-//  DownButtonView.swift
+//  EllipsisButtonView.swift
 //  wavelength
 //
-//  Created by Doeun Kwon on 2024-08-08.
+//  Created by Doeun Kwon on 2024-08-09.
 //
 
 import SwiftUI
 
-struct DownButtonView: View {
+struct EllipsisButtonView: View {
     var action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: Strings.icons.chevronDown)
+            Image(systemName: Strings.icons.ellipsis)
                 .foregroundColor(.blue)
                 .font(Font.body.weight(.semibold))
         }
@@ -20,5 +20,5 @@ struct DownButtonView: View {
 }
 
 #Preview {
-    DownButtonView(action: {print("hello")})
+    EllipsisButtonView(action: {print("hi")})
 }

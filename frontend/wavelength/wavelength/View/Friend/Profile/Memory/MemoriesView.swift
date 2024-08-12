@@ -25,11 +25,13 @@ struct MemoriesView: View {
                                 .font(.system(size: Fonts.title))
                             Spacer()
                         }
-                        .padding(Padding.large)
+                        .padding(.horizontal, Padding.large)
+                        .padding(.top, Padding.large)
+                        .padding(.bottom, Padding.xlarge)
                         
                         LazyVStack(alignment: .leading, spacing: Padding.large) {
                             ForEach(Array(memories), id: \.self) { memory in
-                                MemoryCellView(title: memory.title, content: memory.content, tokens: memory.tokens, action: {print("Show memory modal!")})
+                                MemoryCellView(memory: memory)
                             }
                         }
                         .shadow(

@@ -10,7 +10,7 @@ import SwiftUI
 struct Memory: Hashable {
     
     let mid: String
-    let date: String
+    let date: Date
     let title: String
     let content: String
     let tokens: Int
