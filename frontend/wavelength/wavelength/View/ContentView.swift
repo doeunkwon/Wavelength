@@ -17,19 +17,19 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            FriendsView(user: user, friends: friends)
-//            TabView(selection: $selectedTab) {
-//                SettingsView()
-//                    .tabItem { Image(systemName: Strings.icons.gearshape) }
-//                    .tag(0)
-//                FriendsView(user: user, friends: friends)
-//                    .tabItem { Image(systemName: Strings.icons.squareGrid2by2) }
-//                    .tag(1)
+//            FriendsView(user: user, friends: friends)
+            TabView(selection: $selectedTab) {
+                SettingsView()
+                    .tag(0)
+                FriendsView(user: user, friends: friends)
+                    .tag(1)
 //                ChatView()
 //                    .tabItem { Image(systemName: Strings.icons.bubble) }
 //                    .tag(2)
-//            }
+            }
 //            .accentColor(Color.wavelengthPurple)
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .background(.wavelengthBackground)
         }
     }
 }
