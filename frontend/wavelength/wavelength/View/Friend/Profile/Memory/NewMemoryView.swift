@@ -22,25 +22,25 @@ struct NewMemoryView: View {
                         
                     VStack (alignment: .leading, spacing: Padding.xlarge) {
                         HStack {
-                            Text("New memory")
+                            Text(Strings.memory.newMemory)
                                 .font(.system(size: Fonts.title))
                             Spacer()
                         }
                         
                         DatePicker(
-                            "Date",
+                            Strings.memory.date,
                             selection: $date,
                             displayedComponents: [.date]
                         )
                         
                         DividerLineView()
                         
-                        TextField("Title", text: $title, axis: .vertical)
+                        TextField(Strings.memory.title, text: $title, axis: .vertical)
                             .font(.system(size: Fonts.body))
                         
                         DividerLineView()
                         
-                        TextField("Content", text: $content, axis: .vertical)
+                        TextField(Strings.memory.content, text: $content, axis: .vertical)
                             .font(.system(size: Fonts.body))
                         
                         Spacer()
@@ -62,19 +62,19 @@ struct NewMemoryView: View {
                         Button {
                             tokens -= 1
                         } label: {
-                            Image(systemName: "chevron.left")
+                            Image(systemName: Strings.icons.chevronLeft)
                                 .font(Font.body.weight(.semibold))
                                 .foregroundColor(.wavelengthTokenOrange)
                         }
                         
-                        Text((tokens > 0 ? "+" : "") + "\($tokens.wrappedValue) tokens")
+                        Text((tokens > 0 ? "+" : "") + "\($tokens.wrappedValue) \(Strings.general.tokens)")
                             .font(.system(size: Fonts.body))
                             .foregroundColor(.wavelengthTokenOrange)
                         
                         Button {
                             tokens += 1
                         } label: {
-                            Image(systemName: "chevron.right")
+                            Image(systemName: Strings.icons.chevronRight)
                                 .font(Font.body.weight(.semibold))
                                 .foregroundColor(.wavelengthTokenOrange)
                         }
@@ -83,7 +83,7 @@ struct NewMemoryView: View {
                 .padding(.vertical, Padding.large)
             }
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: DownButtonView(action: {dismiss()}), trailing: Button("Create") {
+            .navigationBarItems(leading: DownButtonView(action: {dismiss()}), trailing: Button(Strings.general.create) {
                 print("Create memory tapped!")
             })
             .background(.wavelengthBackground)

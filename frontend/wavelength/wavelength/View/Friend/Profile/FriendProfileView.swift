@@ -22,7 +22,7 @@ struct FriendProfileView: View {
                     
                     HStack(alignment: .center, spacing: Padding.large) {
                         ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageMatch, color: intToColor(value: friend.scorePercentage), action: {print("Score button tapped")})
-                        ButtonView(title: String(friend.memoryCount) + " " + Strings.memories.memories, color: .wavelengthText) {
+                        ButtonView(title: String(friend.memoryCount) + " " + Strings.memory.memories, color: .wavelengthText) {
                             showMemoriesViewSheet.toggle()
                             }
                     }
@@ -36,13 +36,13 @@ struct FriendProfileView: View {
                         MemoriesView(memoryCount: friend.memoryCount, memories: Mock.memories)
                     }
                     
-                    BasicFieldView(field: Strings.profile.goals, friendData: friend.goals)
+                    BasicFieldView(field: Strings.general.goals, friendData: friend.goals)
                         .padding(.bottom, Padding.large)
                     
-                    TagsFieldView(title: Strings.profile.values, items: friend.values, tagColor: friend.color)
+                    TagsFieldView(title: Strings.general.values, items: friend.values, tagColor: friend.color)
                         .padding(.bottom, Padding.large)
                     
-                    TagsFieldView(title: Strings.profile.interests, items: friend.interests, tagColor: friend.color)
+                    TagsFieldView(title: Strings.general.interests, items: friend.interests, tagColor: friend.color)
                         .padding(.bottom, Padding.large)
     //
     //                DividerLineView()

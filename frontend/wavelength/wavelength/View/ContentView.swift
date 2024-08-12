@@ -30,6 +30,7 @@ struct ContentView: View {
 //            .accentColor(Color.wavelengthPurple)
             .tabViewStyle(.page(indexDisplayMode: .never))
             .background(.wavelengthBackground)
+            .ignoresSafeArea()
         }
     }
 }

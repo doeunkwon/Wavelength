@@ -21,7 +21,7 @@ struct MemoriesView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         HStack {
-                            Text(String(memoryCount) + " " + Strings.memories.memories)
+                            Text(String(memoryCount) + " " + Strings.memory.memories)
                                 .font(.system(size: Fonts.title))
                             Spacer()
                         }

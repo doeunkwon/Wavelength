@@ -13,7 +13,7 @@ struct MemoryFieldView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(Strings.memories.memories)
+            Text(Strings.memory.memories)
                 .font(.system(size: Fonts.subtitle))
             ForEach(memories, id: \.self) { memory in
                 HStack(alignment: .top) {

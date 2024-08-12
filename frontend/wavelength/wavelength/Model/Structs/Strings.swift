@@ -12,6 +12,14 @@ struct Strings {
     struct general {
         
         static let tokens: String = "tokens"
+        static let create: String = "Create"
+        static let firstName: String = "First name"
+        static let lastName: String = "Last name"
+        static let goals: String = "Goals"
+        static let values: String = "Values"
+        static let username: String = "Username"
+        static let email: String = "Email"
+        static let interests: String = "Interests"
         
     }
     
@@ -32,20 +40,25 @@ struct Strings {
         
     }
     
-    struct profile {
+    struct friend {
         
-        static let username: String = "Username"
-        static let email: String = "Email"
-        static let goals: String = "Goals"
-        static let interests: String = "Interests"
-        static let values: String = "Values"
+        static let addNewFriend: String = "New friend"
+        
+    }
+    
+    struct profile {
+
         static let percentageMatch: String = "% match"
         
     }
     
-    struct memories {
+    struct memory {
         
         static let memories: String = "memories"
+        static let newMemory: String = "New memory"
+        static let title: String = "Title"
+        static let content: String = "Content"
+        static let date: String = "Date"
         
     }
 

@@ -25,5 +25,5 @@ struct BasicFieldView: View {
 }
 
 #Preview {
-    BasicFieldView(field: Strings.profile.goals, friendData: "Port Moody")
+    BasicFieldView(field: Strings.general.goals, friendData: "Port Moody")
 }

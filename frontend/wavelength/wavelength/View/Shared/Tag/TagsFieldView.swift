@@ -84,5 +84,5 @@ struct TagsView: View {
 }
 
 #Preview {
-    TagsFieldView(title: Strings.profile.interests, items: ["Programming", "Travelling", "Boxing", "EDM", "Reading"], tagColor: .wavelengthBlue)
+    TagsFieldView(title: Strings.general.interests, items: ["Programming", "Travelling", "Boxing", "EDM", "Reading"], tagColor: .wavelengthBlue)
 }
