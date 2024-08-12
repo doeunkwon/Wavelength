@@ -34,7 +34,7 @@ struct MemoryCellView: View {
                 Text(memory.title)
                     .multilineTextAlignment(.leading)
                     .font(.system(size: Fonts.body))
-                    .foregroundColor(.wavelengthBlack)
+                    .foregroundColor(.wavelengthText)
                     .frame(height: 20)
                 Text(memory.content)
                     .multilineTextAlignment(.leading)

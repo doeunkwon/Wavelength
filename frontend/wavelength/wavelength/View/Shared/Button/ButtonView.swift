@@ -26,5 +26,5 @@ struct ButtonView: View {
 
 
 #Preview {
-    ButtonView(title: "2 memories", color: .wavelengthBlack, action: {print("Button pressed")})
+    ButtonView(title: "2 memories", color: .wavelengthText, action: {print("Button pressed")})
 }

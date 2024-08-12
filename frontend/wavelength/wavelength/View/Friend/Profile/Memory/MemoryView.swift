@@ -36,14 +36,23 @@ struct MemoryView: View {
                     
                     Text(memory.content)
                         .font(.system(size: Fonts.body))
-                        .foregroundStyle(.wavelengthBlack)
+                        .foregroundStyle(.wavelengthText)
 
                     Spacer()
                 }
                 .padding(Padding.large)
             }
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: DownButtonView(action: {dismiss()}), trailing: EllipsisButtonView(action: {print("edit button tapped")}))
+            .navigationBarItems(leading: DownButtonView(action: {dismiss()}), trailing: Menu {
+                Button(action: {print("Edit tapped!")}) {
+                    Label("Edit memory", systemImage: Strings.icons.pencil)
+                }
+                Button(role: .destructive, action: {print("Delete tapped!")}) {
+                    Label("Delete", systemImage: Strings.icons.trash)
+                }
+            } label: {
+                EllipsisButtonView(action: {print("edit button tapped")})
+            })
             .background(.wavelengthBackground)
         }
     }

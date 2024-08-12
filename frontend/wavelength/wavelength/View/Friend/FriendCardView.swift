@@ -37,7 +37,7 @@ struct FriendCardView: View {
                         HStack(alignment: .center) {
                             Text(friend.firstName)
                                 .font(.system(size: Fonts.body))
-                                .foregroundColor(Color.wavelengthBlack)
+                                .foregroundColor(Color.wavelengthText)
                             Spacer()
                             Text(String(friend.scorePercentage) + "%")
                                 .font(.system(size: Fonts.body))

@@ -22,7 +22,7 @@ struct SettingsCellView: View {
                     .padding(.trailing, 2)
                 Text(title)
                     .font(.system(size: Fonts.body))
-                    .foregroundColor(.wavelengthBlack)
+                    .foregroundColor(.wavelengthText)
                 Spacer()
                 Image(systemName: Strings.icons.arrowRight)
                     .font(.system(size: Fonts.subtitle))

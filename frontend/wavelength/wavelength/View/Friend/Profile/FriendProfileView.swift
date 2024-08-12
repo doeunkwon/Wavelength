@@ -22,7 +22,7 @@ struct FriendProfileView: View {
                     
                     HStack(alignment: .center, spacing: Padding.large) {
                         ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageMatch, color: intToColor(value: friend.scorePercentage), action: {print("Score button tapped")})
-                        ButtonView(title: String(friend.memoryCount) + " " + Strings.memories.memories, color: .wavelengthBlack) {
+                        ButtonView(title: String(friend.memoryCount) + " " + Strings.memories.memories, color: .wavelengthText) {
                             showMemoriesViewSheet.toggle()
                             }
                     }
@@ -56,6 +56,16 @@ struct FriendProfileView: View {
                 .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
+            .navigationBarItems(trailing: Menu {
+                Button(action: {print("Edit tapped!")}) {
+                    Label("Edit profile", systemImage: Strings.icons.person)
+                }
+                Button(role: .destructive, action: {print("Delete tapped!")}) {
+                    Label("Delete", systemImage: Strings.icons.trash)
+                }
+            } label: {
+                EllipsisButtonView(action: {print("edit button tapped")})
+            })
             .background(Color.wavelengthBackground)
         }
     }

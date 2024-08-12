@@ -51,7 +51,7 @@ struct DashboardView: View {
                             .foregroundColor(.wavelengthDarkGrey)
                         Text(String(memoryCount))
                             .font(.system(size: Fonts.subtitle))
-                            .foregroundColor(.wavelengthBlack)
+                            .foregroundColor(.wavelengthText)
                     }
                     .padding(Padding.medium)
                     Spacer()

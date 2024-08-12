@@ -13,8 +13,8 @@ enum ShadowStyle {
 
     var color: Color {
         switch self {
-        case .standard: return Color(white: 0.0, opacity: 0.06)
-        case .subtle: return Color(white: 0.0, opacity: 0.05)
+        case .standard: return .shadowStandard
+        case .subtle: return .shadowSubtle
         }
     }
 

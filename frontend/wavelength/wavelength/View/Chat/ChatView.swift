@@ -45,7 +45,7 @@ struct ChatView: View {
         HStack {
             if message.sender == .user { Spacer() }
             Text(message.content)
-                .foregroundColor(message.sender == .user ? .wavelengthBlack : .wavelengthOffWhite)
+                .foregroundColor(message.sender == .user ? .wavelengthText : .wavelengthOffWhite)
                 .padding()
                 .background(message.sender == .user ? .wavelengthLightGrey : .wavelengthLightPurple)
                 .cornerRadius(10)

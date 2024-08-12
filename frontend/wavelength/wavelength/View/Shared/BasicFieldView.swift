@@ -19,7 +19,7 @@ struct BasicFieldView: View {
                 .foregroundColor(.wavelengthDarkGrey)
             Text(friendData)
                 .font(.system(size: Fonts.body))
-                .foregroundColor(.wavelengthBlack)
+                .foregroundColor(.wavelengthText)
         }
     }
 }
