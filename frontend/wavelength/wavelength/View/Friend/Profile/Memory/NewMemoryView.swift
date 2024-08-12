@@ -35,13 +35,11 @@ struct NewMemoryView: View {
                         
                         DividerLineView()
                         
-                        TextField(Strings.memory.title, text: $title, axis: .vertical)
-                            .font(.system(size: Fonts.body))
+                        TextFieldInputView(title: Strings.memory.title, placeholder: "Bought me a coffee.", binding: $title, isMultiLine: true)
                         
                         DividerLineView()
                         
-                        TextField(Strings.memory.content, text: $content, axis: .vertical)
-                            .font(.system(size: Fonts.body))
+                        TextFieldInputView(title: Strings.memory.content, placeholder: "Today, Bright Sun bought me a coffee. I thought it was very thoughtful of him to do so because I forgot my wallet at home!", binding: $content, isMultiLine: true)
                         
                         Spacer()
                     }
@@ -87,6 +85,7 @@ struct NewMemoryView: View {
                 print("Create memory tapped!")
             })
             .background(.wavelengthBackground)
+            .ignoresSafeArea(.keyboard)
             
         }
     }

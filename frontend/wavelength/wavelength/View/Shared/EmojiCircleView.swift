@@ -20,7 +20,7 @@ struct EmojiCircleView: View {
     var body: some View {
         ZStack {
             Circle()
-                .frame(width: 40)
+                .frame(width: Frame.small)
                 .foregroundColor(.wavelengthPurple)
                 .opacity(0.2)
             if (emoji != nil) {

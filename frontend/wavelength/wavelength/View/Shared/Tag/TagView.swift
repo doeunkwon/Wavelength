@@ -11,9 +11,18 @@ struct TagView: View {
     
     let interest: String
     let color: Color
+    let editable: Bool
     
     var body: some View {
-        Text(interest)
+        HStack {
+            Text(interest)
+            if editable {
+                Image(systemName: Strings.icons.xmark)
+                    .font(.system(size: Fonts.body))
+                    .foregroundColor(.wavelengthGrey)
+                    .padding(.leading, Padding.xsmall)
+            }
+        }
             .font(.system(size: Fonts.body))
             .padding(.horizontal, Padding.medium + 3)
             .padding(.vertical, Padding.medium)
@@ -26,5 +35,5 @@ struct TagView: View {
 }
 
 #Preview {
-    TagView(interest: "Muay Thai", color: Color.wavelengthViolet)
+    TagView(interest: "Muay Thai", color: Color.wavelengthViolet, editable: true)
 }

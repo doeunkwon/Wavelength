@@ -20,6 +20,7 @@ struct Strings {
         static let username: String = "Username"
         static let email: String = "Email"
         static let interests: String = "Interests"
+        static let emoji: String = "Emoji"
         
     }
     
@@ -42,7 +43,7 @@ struct Strings {
     
     struct friend {
         
-        static let addNewFriend: String = "New friend"
+        static let newFriend: String = "New friend"
         
     }
     
@@ -86,6 +87,7 @@ struct Strings {
         static let chevronRight: String = "chevron.right"
         static let ellipsis: String = "ellipsis"
         static let pencil: String = "pencil"
+        static let xmark: String = "xmark"
 
     }
 }

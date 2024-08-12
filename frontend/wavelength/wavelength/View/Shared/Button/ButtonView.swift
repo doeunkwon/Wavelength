@@ -15,6 +15,7 @@ struct ButtonView: View {
     var body: some View {
         Button(action: action) {
             Text(title)
+                .font(.system(size: Fonts.body))
                 .frame(maxWidth: .infinity) // Expand text to fill available width
                 .padding(.vertical, Padding.large) // Add padding for spacing
         }
