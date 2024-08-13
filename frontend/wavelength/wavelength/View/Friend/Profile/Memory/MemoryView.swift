@@ -16,7 +16,7 @@ struct MemoryView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack (alignment: .leading, spacing: Padding.large) {
+                VStack (alignment: .leading, spacing: Padding.xlarge) {
                     
                     HStack {
                         
@@ -30,9 +30,14 @@ struct MemoryView: View {
                             .font(.system(size: Fonts.body))
                             .foregroundStyle(.wavelengthTokenOrange)
                     }
+                    
+                    DividerLineView()
 
                     Text(memory.title)
-                        .font(.system(size: Fonts.subtitle))
+                        .font(.system(size: Fonts.body))
+                        .foregroundStyle(.wavelengthText)
+                    
+                    DividerLineView()
                     
                     Text(memory.content)
                         .font(.system(size: Fonts.body))

@@ -13,10 +13,7 @@ struct BasicFieldView: View {
     let friendData: String
     
     var body: some View {
-        VStack(alignment: .leading, spacing: Padding.medium) {
-            Text(field)
-                .font(.system(size: Fonts.body))
-                .foregroundColor(.wavelengthDarkGrey)
+        VStack(alignment: .leading) {
             Text(friendData)
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthText)

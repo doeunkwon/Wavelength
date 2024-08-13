@@ -27,9 +27,12 @@ struct NewFriendView: View {
     @StateObject var tagManager = TagManager()
     
     @Environment(\.dismiss) private var dismiss
-    @State private var isPresented: Bool = false
-    @State private var emoji: String = "🌞"
-    @State private var color: Color = .clear
+    
+    @State private var isEmojiPickerVisible: Bool = false
+    @State private var isColorPickerVisible: Bool = false
+    
+    @State private var emoji: String = "🙈"
+    @State private var color: Color = .wavelengthLightGrey
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     @State private var goals: String = ""
@@ -39,42 +42,49 @@ struct NewFriendView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack (alignment: .leading, spacing: Padding.xlarge) {
-                    HStack {
-                        Text(Strings.friend.newFriend)
-                            .font(.system(size: Fonts.title))
-                        Spacer()
-                    }
                     
                     HStack {
-                        Text(Strings.general.emoji)
-                            .font(.system(size: Fonts.body))
+                        
                         Spacer()
-                        Button(emoji) {
-                            isPresented.toggle()
+                        
+                        Menu {
+                            Button("Pick an emoji", action: {
+                                isEmojiPickerVisible.toggle()
+                            })
+                            Button("Choose a color", action: {
+                                UIColorWellHelper.helper.execute?()
+                            })
+                        } label: {
+                            ProfilePictureView(emoji: emoji, color: color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
+                                .shadow(
+                                    color: color.opacity(0.5),
+                                    radius: ShadowStyle.standard.radius,
+                                    x: ShadowStyle.standard.x,
+                                    y: ShadowStyle.standard.y)
                         }
-                        .font(.system(size: 30))
                         .emojiPicker(
-                            isPresented: $isPresented,
+                            isPresented: $isEmojiPickerVisible,
                             selectedEmoji: $emoji
                         )
+                        .background(
+                            ColorPicker("", selection: $color, supportsOpacity: false)
+                                .labelsHidden().opacity(0)
+                        )
                         
+                        Spacer()
                     }
                     
                     DividerLineView()
                     
-                    ColorPicker("Color", selection: $color, supportsOpacity: false)
-                    
-                    DividerLineView()
-                    
-                    TextFieldInputView(title: Strings.general.firstName, placeholder: "Bright", binding: $firstName, isMultiLine: false)
+                    TextFieldInputView(title: Strings.general.firstName, placeholder: Strings.general.firstName, binding: $firstName, isMultiLine: false)
                     
                     DividerLineView()
                 
-                    TextFieldInputView(title: Strings.general.lastName, placeholder: "Sun", binding: $lastName, isMultiLine: false)
+                    TextFieldInputView(title: Strings.general.lastName, placeholder: Strings.general.lastName, binding: $lastName, isMultiLine: false)
                     
                     DividerLineView()
                     
-                    TextFieldInputView(title: Strings.general.goals, placeholder: "To empower all life on Earth.", binding: $goals, isMultiLine: true)
+                    TextFieldInputView(title: Strings.general.goals, placeholder: Strings.general.goals, binding: $goals, isMultiLine: true)
                     
                     DividerLineView()
                     

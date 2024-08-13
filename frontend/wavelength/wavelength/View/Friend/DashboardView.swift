@@ -67,6 +67,11 @@ struct DashboardView: View {
                     )
                     .interpolationMethod(.catmullRom)
                     .foregroundStyle(intToColor(value: scorePercentage))
+                    .shadow(
+                        color: intToColor(value: scorePercentage).opacity(0.25),
+                        radius: ShadowStyle.subtle.radius,
+                        x: 0,
+                        y: 0)
                 }
             }
             .chartYAxis {

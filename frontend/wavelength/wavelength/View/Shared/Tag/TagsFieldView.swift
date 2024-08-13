@@ -14,7 +14,7 @@ struct TagsFieldView: View {
     let tagColor: Color
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: Padding.medium + Padding.nudge) {
             Text(title)
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthDarkGrey)

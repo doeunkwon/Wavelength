@@ -19,10 +19,7 @@ struct TagsFieldInputView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(title)
-                .font(.system(size: Fonts.body))
-                .padding(.bottom, Padding.medium + Padding.nudge)
-            
+
             ZStack (alignment: .center) {
                 RoundedRectangle(cornerRadius: CornerRadius.max)
                     .stroke(.wavelengthLightGrey, lineWidth: Border.small)
@@ -31,7 +28,7 @@ struct TagsFieldInputView: View {
                 HStack {
                     TextField(placeholder, text: $newItem)
                         .font(.system(size: Fonts.body))
-                        .foregroundColor(.wavelengthDarkGrey)
+                        .foregroundColor(.wavelengthText)
                     Spacer()
                     Button {
                         if newItem.count > 0 {
@@ -50,6 +47,7 @@ struct TagsFieldInputView: View {
                 }
                 .padding(Padding.medium + Padding.nudge)
             }
+            .padding(.top, Padding.medium)
             .padding(.bottom,
                      title == Strings.general.values ?
                      (tagManager.valuesTags.count > 0 ? Padding.large : Padding.medium)

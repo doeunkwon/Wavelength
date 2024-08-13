@@ -15,10 +15,9 @@ struct FriendProfileView: View {
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: Padding.xlarge) {
                     
                     HeaderView(emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, tokenCount: friend.tokenCount)
-                        .padding(.bottom, Padding.medium)
                     
                     HStack(alignment: .center, spacing: Padding.large) {
                         ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageMatch, color: intToColor(value: friend.scorePercentage), action: {print("Score button tapped")})
@@ -31,19 +30,21 @@ struct FriendProfileView: View {
                         radius: ShadowStyle.subtle.radius,
                         x: ShadowStyle.subtle.x,
                         y: ShadowStyle.subtle.y)
-                    .padding(.bottom, Padding.large)
                     .fullScreenCover(isPresented: $showMemoriesViewSheet) {
                         MemoriesView(memoryCount: friend.memoryCount, memories: Mock.memories)
                     }
                     
+                    DividerLineView()
+                    
                     BasicFieldView(field: Strings.general.goals, friendData: friend.goals)
-                        .padding(.bottom, Padding.large)
+                    
+                    DividerLineView()
                     
                     TagsFieldView(title: Strings.general.values, items: friend.values, tagColor: friend.color)
-                        .padding(.bottom, Padding.large)
+                    
+                    DividerLineView()
                     
                     TagsFieldView(title: Strings.general.interests, items: friend.interests, tagColor: friend.color)
-                        .padding(.bottom, Padding.large)
     //
     //                DividerLineView()
     //

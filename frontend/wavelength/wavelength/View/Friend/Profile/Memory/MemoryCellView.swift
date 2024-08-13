@@ -27,7 +27,7 @@ struct MemoryCellView: View {
                     
                     Spacer()
                     
-                    Text((memory.tokens > 0 ? "+" : "") + String(memory.tokens) + " " + Strings.general.tokens)
+                    Text((memory.tokens > 0 ? "+" : "") + String(memory.tokens))
                         .font(.system(size: Fonts.body2))
                         .foregroundColor(.wavelengthTokenOrange)
                 }

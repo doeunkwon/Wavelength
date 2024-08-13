@@ -15,16 +15,14 @@ struct TextFieldInputView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Padding.medium) {
-            Text(title)
-                .font(.system(size: Fonts.body))
             if isMultiLine {
                 TextField(placeholder, text: binding, axis: .vertical)
                     .font(.system(size: Fonts.body))
-                    .foregroundColor(.wavelengthDarkGrey)
+                    .foregroundColor(.wavelengthText)
             } else {
                 TextField(placeholder, text: binding)
                     .font(.system(size: Fonts.body))
-                    .foregroundColor(.wavelengthDarkGrey)
+                    .foregroundColor(.wavelengthText)
             }
         }
     }

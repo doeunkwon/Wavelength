@@ -25,6 +25,7 @@ enum Frame {
     static let xsmall: CGFloat = 35
     static let dashboardTop: CGFloat = 60
     static let dashboardBottom: CGFloat = 100
+    static let friendCard: CGFloat = UIScreen.main.bounds.width / 2 - (Padding.medium * 2) - (Padding.large + (Padding.large / 2))
 }
 
 enum Padding {

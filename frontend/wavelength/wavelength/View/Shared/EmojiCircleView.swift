@@ -29,6 +29,11 @@ struct EmojiCircleView: View {
                 Image(systemName: icon ?? Strings.icons.gear)
                     .font(.system(size: Fonts.subtitle))
                     .foregroundStyle(.wavelengthPurple)
+                    .shadow(
+                        color: .wavelengthPurple.opacity(0.5),
+                        radius: ShadowStyle.standard.radius,
+                        x: ShadowStyle.standard.x,
+                        y: ShadowStyle.standard.y)
             }
         }
     }
