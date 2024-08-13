@@ -32,10 +32,10 @@ struct FriendCardView: View {
                     VStack(alignment: .leading) {
                         ProfilePictureView(emoji: friend.emoji, color: friend.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
                             .shadow(
-                                color: friend.color.opacity(0.5),
-                                radius: ShadowStyle.standard.radius,
-                                x: ShadowStyle.standard.x,
-                                y: ShadowStyle.standard.y)
+                                color: ShadowStyle.glow(friend.color).color,
+                                radius: ShadowStyle.glow(friend.color).radius,
+                                x: ShadowStyle.glow(friend.color).x,
+                                y: ShadowStyle.glow(friend.color).y)
                         // The (Padding.medium * 2) is the padding in between the profile picture and the edges of the card
                         
                         // Name and username below the emoji
@@ -53,7 +53,7 @@ struct FriendCardView: View {
                 }
                 .background(Color.wavelengthOffWhite)
                 .cornerRadius(CornerRadius.medium)
-                .frame(width: UIScreen.main.bounds.width / 2 - (Padding.large + (Padding.large / 2)))
+                .frame(width: Frame.friendCard + (Padding.medium * 2))
         }
     }
 }

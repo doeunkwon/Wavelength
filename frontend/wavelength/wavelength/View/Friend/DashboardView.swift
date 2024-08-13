@@ -68,10 +68,10 @@ struct DashboardView: View {
                     .interpolationMethod(.catmullRom)
                     .foregroundStyle(intToColor(value: scorePercentage))
                     .shadow(
-                        color: intToColor(value: scorePercentage).opacity(0.25),
-                        radius: ShadowStyle.subtle.radius,
-                        x: 0,
-                        y: 0)
+                        color: ShadowStyle.glow(intToColor(value: scorePercentage)).color,
+                        radius: ShadowStyle.glow(intToColor(value: scorePercentage)).radius,
+                        x: ShadowStyle.glow(intToColor(value: scorePercentage)).x,
+                        y: ShadowStyle.glow(intToColor(value: scorePercentage)).y)
                 }
             }
             .chartYAxis {

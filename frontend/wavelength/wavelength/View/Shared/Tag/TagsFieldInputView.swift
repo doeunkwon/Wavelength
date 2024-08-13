@@ -22,8 +22,12 @@ struct TagsFieldInputView: View {
 
             ZStack (alignment: .center) {
                 RoundedRectangle(cornerRadius: CornerRadius.max)
-                    .stroke(.wavelengthLightGrey, lineWidth: Border.small)
                     .foregroundColor(.wavelengthOffWhite)
+                    .shadow(
+                        color: ShadowStyle.subtle.color,
+                        radius: ShadowStyle.subtle.radius,
+                        x: ShadowStyle.subtle.x,
+                        y: ShadowStyle.subtle.y)
                 
                 HStack {
                     TextField(placeholder, text: $newItem)
@@ -47,11 +51,10 @@ struct TagsFieldInputView: View {
                 }
                 .padding(Padding.medium + Padding.nudge)
             }
-            .padding(.top, Padding.medium)
             .padding(.bottom,
                      title == Strings.general.values ?
-                     (tagManager.valuesTags.count > 0 ? Padding.large : Padding.medium)
-                     : (tagManager.interestTags.count > 0 ? Padding.large : Padding.medium)
+                     (tagManager.valuesTags.count > 0 ? Padding.xlarge : 0)
+                     : (tagManager.interestTags.count > 0 ? Padding.large : 0)
             )
             
             // Keep in mind that .wrappedValue just copies the underlying VALUE of the binding, NOT the reference.

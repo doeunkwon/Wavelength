@@ -32,7 +32,7 @@ struct NewFriendView: View {
     @State private var isColorPickerVisible: Bool = false
     
     @State private var emoji: String = "🙈"
-    @State private var color: Color = .wavelengthLightGrey
+    @State private var color: Color = .wavelengthOffWhite
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     @State private var goals: String = ""
@@ -55,12 +55,27 @@ struct NewFriendView: View {
                                 UIColorWellHelper.helper.execute?()
                             })
                         } label: {
-                            ProfilePictureView(emoji: emoji, color: color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
-                                .shadow(
-                                    color: color.opacity(0.5),
-                                    radius: ShadowStyle.standard.radius,
-                                    x: ShadowStyle.standard.x,
-                                    y: ShadowStyle.standard.y)
+                            ZStack (alignment: .center) {
+                                
+                                RoundedRectangle(cornerRadius: CornerRadius.medium)
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .foregroundColor(.wavelengthOffWhite)
+                                    .frame(width: Frame.friendCard + (Padding.medium * 2))
+                                    
+                                
+                                ProfilePictureView(emoji: emoji, color: color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
+                                    .shadow(
+                                        color: ShadowStyle.glow(color).color,
+                                        radius: ShadowStyle.glow(color).radius,
+                                        x: ShadowStyle.glow(color).x,
+                                        y: ShadowStyle.glow(color).radius)
+                            }
+                            .shadow(
+                                color: ShadowStyle.standard.color,
+                                radius: ShadowStyle.standard.radius,
+                                x: ShadowStyle.standard.x,
+                                y: ShadowStyle.standard.y)
+                            
                         }
                         .emojiPicker(
                             isPresented: $isEmojiPickerVisible,

@@ -35,10 +35,10 @@ struct MemoriesView: View {
                             }
                         }
                         .shadow(
-                            color: ShadowStyle.standard.color,
-                            radius: ShadowStyle.standard.radius,
-                            x: ShadowStyle.standard.x,
-                            y: ShadowStyle.standard.y)
+                            color: ShadowStyle.subtle.color,
+                            radius: ShadowStyle.subtle.radius,
+                            x: ShadowStyle.subtle.x,
+                            y: ShadowStyle.subtle.y)
                         .padding(.horizontal, Padding.large)
                     }
                 }

@@ -30,10 +30,10 @@ struct EmojiCircleView: View {
                     .font(.system(size: Fonts.subtitle))
                     .foregroundStyle(.wavelengthPurple)
                     .shadow(
-                        color: .wavelengthPurple.opacity(0.5),
-                        radius: ShadowStyle.standard.radius,
-                        x: ShadowStyle.standard.x,
-                        y: ShadowStyle.standard.y)
+                        color: ShadowStyle.glow(.wavelengthPurple).color,
+                        radius: ShadowStyle.glow(.wavelengthPurple).radius,
+                        x: ShadowStyle.glow(.wavelengthPurple).x,
+                        y: ShadowStyle.glow(.wavelengthPurple).y)
             }
         }
     }

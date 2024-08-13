@@ -23,7 +23,7 @@ struct MemoryCellView: View {
                 HStack {
                     
                     
-                    Text(String(memory.date.formatted(date: .abbreviated, time: .omitted)))
+                    Text(String(memory.date.formatted(date: .long, time: .omitted)))
                         .font(.system(size: Fonts.body))
                         .foregroundColor(.wavelengthDarkGrey)
                     
@@ -37,15 +37,11 @@ struct MemoryCellView: View {
                     .multilineTextAlignment(.leading)
                     .font(.system(size: Fonts.body))
                     .foregroundColor(.wavelengthText)
-                Text(memory.content)
-                    .multilineTextAlignment(.leading)
-                    .font(.system(size: Fonts.body))
-                    .foregroundColor(.wavelengthDarkGrey)
                 
                 Spacer()
             }
             .padding(Padding.large)
-            .frame(maxHeight: 110)
+            .frame(maxHeight: 90)
             .background(.wavelengthOffWhite) // Set text color
             .cornerRadius(CornerRadius.medium) // Add corner radius
         }
