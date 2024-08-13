@@ -36,9 +36,10 @@ struct TagsView: View {
             label.text = word
             label.sizeToFit()
             
-            /// This value is added to the width of each label (tag) to account for padding or extra space around the text. It ensures that the tags do not appear cramped and have sufficient spacing inside the UI component.
-            /// If editable, then we must also account for the space taken up by the xmark
-            let textCushion = ((Padding.medium + Padding.nudge) * 3) + (editable ? Padding.large : 0)
+            /// Padding.medium + Padding.nudge is the horizontal padding applied to the tags. Since it's applied to both sides of the label, we multiply by 2
+            /// We must also add the padding applied between each tag, which is Padding.medium + Padding.nudge, and so (Padding.medium + Padding.nudge) / 2 per each tag
+            /// If editable, then we must also account for the space taken up by the xmark, which is ~Padding.xlarge
+            let textCushion = ((Padding.medium + Padding.nudge) * 2) + ((Padding.medium + Padding.nudge) / 2) + (editable ? Padding.xlarge : 0)
             let labelWidth = label.frame.size.width + textCushion
             
             /// Makes sure width + labelWidth is less than screenWidth including the edges paddings

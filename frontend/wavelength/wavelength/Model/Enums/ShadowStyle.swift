@@ -16,7 +16,7 @@ enum ShadowStyle {
         switch self {
         case .standard: return .shadowStandard
         case .subtle: return .shadowSubtle
-        case .glow(let baseColor): return baseColor.opacity(0.3)
+        case .glow(let baseColor): return baseColor.opacity(0.25)
         }
     }
 

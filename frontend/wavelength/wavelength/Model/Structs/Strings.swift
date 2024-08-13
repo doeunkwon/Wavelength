@@ -26,6 +26,13 @@ struct Strings {
         
     }
     
+    struct form {
+        
+        static let pickAnEmoji: String = "Pick an emoji"
+        static let chooseAColor: String = "Choose a color"
+        
+    }
+    
     struct settings {
         
         static let profile: String = "Profile"

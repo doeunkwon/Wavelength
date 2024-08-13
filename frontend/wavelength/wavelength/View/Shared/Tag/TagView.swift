@@ -46,5 +46,5 @@ struct TagView: View {
 }
 
 #Preview {
-    TagView(text: "Muay Thai", color: Color.wavelengthViolet, editable: true, flag: nil)
+    TagView(text: "Muay Thai", color: Color.wavelengthPurple, editable: true, flag: nil)
 }

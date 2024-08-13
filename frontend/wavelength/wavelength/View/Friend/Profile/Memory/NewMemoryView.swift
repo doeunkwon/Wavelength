@@ -57,11 +57,11 @@ struct NewMemoryView: View {
                         
                         DividerLineView()
                         
-                        TextFieldInputView(title: Strings.memory.title, placeholder: Strings.memory.title, binding: $title, isMultiLine: true)
+                        TextFieldInputView(placeholder: Strings.memory.title, binding: $title, isMultiLine: false)
                         
                         DividerLineView()
                         
-                        TextFieldInputView(title: Strings.memory.content, placeholder: Strings.memory.content, binding: $content, isMultiLine: true)
+                        TextFieldInputView(placeholder: Strings.memory.content, binding: $content, isMultiLine: true)
                         
                         Spacer()
                     }

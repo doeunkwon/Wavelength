@@ -31,5 +31,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView(emoji: "🌎", color: Color.wavelengthBlue, firstName: "Doeun", lastName: "Kwon", tokenCount: 17)
+    HeaderView(emoji: "🌎", color: Color.wavelengthPurple, firstName: "Doeun", lastName: "Kwon", tokenCount: 17)
 }

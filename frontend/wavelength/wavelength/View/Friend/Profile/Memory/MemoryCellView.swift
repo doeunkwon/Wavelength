@@ -44,7 +44,7 @@ struct MemoryCellView: View {
                 Spacer()
             }
             .padding(Padding.large)
-            .frame(maxHeight: 100)
+            .frame(maxHeight: Frame.memoryCell)
             .background(.wavelengthOffWhite) // Set text color
             .cornerRadius(CornerRadius.medium) // Add corner radius
         }

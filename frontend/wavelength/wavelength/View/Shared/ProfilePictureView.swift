@@ -28,5 +28,5 @@ struct ProfilePictureView: View {
 }
 
 #Preview {
-    ProfilePictureView(emoji: "🌎", color: Color.wavelengthBlue, frameSize: Frame.medium, emojiSize: Fonts.header)
+    ProfilePictureView(emoji: "🌎", color: Color.wavelengthPurple, frameSize: Frame.medium, emojiSize: Fonts.header)
 }

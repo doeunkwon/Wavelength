@@ -9,11 +9,13 @@ import SwiftUI
 import MCEmojiPicker
 
 class TagManager: ObservableObject {
-    @Published var valuesTags: [String] = []
+    
+    @Published var valueTags: [String] = []
+    
     @Published var interestTags: [String] = []
 
     func removeValueTag(tag: String) {
-        valuesTags.removeAll { $0 == tag }
+        valueTags.removeAll { $0 == tag }
     }
     
     func removeInterestTag(tag: String) {
@@ -48,10 +50,10 @@ struct NewFriendView: View {
                         Spacer()
                         
                         Menu {
-                            Button("Pick an emoji", action: {
+                            Button(Strings.form.pickAnEmoji, action: {
                                 isEmojiPickerVisible.toggle()
                             })
-                            Button("Choose a color", action: {
+                            Button(Strings.form.chooseAColor, action: {
                                 UIColorWellHelper.helper.execute?()
                             })
                         } label: {
@@ -60,7 +62,7 @@ struct NewFriendView: View {
                                 RoundedRectangle(cornerRadius: CornerRadius.medium)
                                     .aspectRatio(1, contentMode: .fit)
                                     .foregroundColor(.wavelengthOffWhite)
-                                    .frame(width: Frame.friendCard + (Padding.medium * 2))
+                                    .frame(width: Frame.friendCardBackground)
                                     
                                 
                                 ProfilePictureView(emoji: emoji, color: color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
@@ -89,20 +91,22 @@ struct NewFriendView: View {
                         Spacer()
                     }
                     
-                    TextFieldInputView(title: Strings.general.firstName, placeholder: Strings.general.firstName, binding: $firstName, isMultiLine: false)
+                    TextFieldInputView(placeholder: Strings.general.firstName, binding: $firstName, isMultiLine: false)
                     
                     DividerLineView()
                 
-                    TextFieldInputView(title: Strings.general.lastName, placeholder: Strings.general.lastName, binding: $lastName, isMultiLine: false)
+                    TextFieldInputView(placeholder: Strings.general.lastName, binding: $lastName, isMultiLine: false)
                     
                     DividerLineView()
                     
-                    TextFieldInputView(title: Strings.general.goals, placeholder: Strings.general.goals, binding: $goals, isMultiLine: true)
+                    TextFieldInputView(placeholder: Strings.general.goals, binding: $goals, isMultiLine: true)
+                    
+                    DividerLineView()
                     
                     VStack (spacing: Padding.xlarge) {
-                        TagsFieldInputView(title: Strings.general.values, placeholder: Strings.general.addAValue, color: color)
+                        TagsFieldInputView(flag: Strings.general.values, placeholder: Strings.general.addAValue, color: color)
                         
-                        TagsFieldInputView(title: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: color)
+                        TagsFieldInputView(flag: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: color)
                     }
                     .environmentObject(tagManager)
                     

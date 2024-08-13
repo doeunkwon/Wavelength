@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TextFieldInputView: View {
-    let title: String
     let placeholder: String
     let binding: Binding<String>
     let isMultiLine: Bool

@@ -24,5 +24,5 @@ struct TagsFieldView: View {
 }
 
 #Preview {
-    TagsFieldView(title: Strings.general.interests, items: ["Programming", "Travelling", "Boxing", "EDM", "Reading"], tagColor: .wavelengthBlue)
+    TagsFieldView(title: Strings.general.interests, items: ["Programming", "Travelling", "Boxing", "EDM", "Reading"], tagColor: .wavelengthPurple)
 }
