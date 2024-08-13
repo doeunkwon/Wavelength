@@ -64,5 +64,5 @@ struct MemoryView: View {
 }
 
 #Preview {
-    MemoryView(memory: Mock.memory)
+    MemoryView(memory: Mock.memory1)
 }

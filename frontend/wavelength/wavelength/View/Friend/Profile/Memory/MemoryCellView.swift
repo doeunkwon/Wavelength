@@ -18,32 +18,34 @@ struct MemoryCellView: View {
             showMemoryViewModal.toggle()
         } label: {
             VStack(alignment: .leading, spacing: Padding.medium) {
+                
+                Spacer()
                 HStack {
                     
                     
                     Text(String(memory.date.formatted(date: .abbreviated, time: .omitted)))
-                        .font(.system(size: Fonts.body2))
+                        .font(.system(size: Fonts.body))
                         .foregroundColor(.wavelengthDarkGrey)
                     
                     Spacer()
                     
                     Text((memory.tokens > 0 ? "+" : "") + String(memory.tokens))
-                        .font(.system(size: Fonts.body2))
+                        .font(.system(size: Fonts.body))
                         .foregroundColor(.wavelengthTokenOrange)
                 }
                 Text(memory.title)
                     .multilineTextAlignment(.leading)
                     .font(.system(size: Fonts.body))
                     .foregroundColor(.wavelengthText)
-                    .frame(height: 20)
                 Text(memory.content)
                     .multilineTextAlignment(.leading)
                     .font(.system(size: Fonts.body))
                     .foregroundColor(.wavelengthDarkGrey)
-                    .frame(height: 40)
+                
+                Spacer()
             }
             .padding(Padding.large)
-            .frame(maxWidth: .infinity)
+            .frame(maxHeight: 110)
             .background(.wavelengthOffWhite) // Set text color
             .cornerRadius(CornerRadius.medium) // Add corner radius
         }
@@ -55,5 +57,5 @@ struct MemoryCellView: View {
 }
 
 #Preview {
-    MemoryCellView(memory: Mock.memory)
+    MemoryCellView(memory: Mock.memory1)
 }

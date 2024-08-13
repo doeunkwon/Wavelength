@@ -74,8 +74,6 @@ struct NewFriendView: View {
                         Spacer()
                     }
                     
-                    DividerLineView()
-                    
                     TextFieldInputView(title: Strings.general.firstName, placeholder: Strings.general.firstName, binding: $firstName, isMultiLine: false)
                     
                     DividerLineView()
@@ -90,8 +88,6 @@ struct NewFriendView: View {
                     
                     VStack (spacing: Padding.xlarge) {
                         TagsFieldInputView(title: Strings.general.values, placeholder: Strings.general.addAValue, color: color)
-                        
-                        DividerLineView()
                         
                         TagsFieldInputView(title: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: color)
                     }

@@ -15,7 +15,7 @@ struct Strings {
         static let create: String = "Create"
         static let firstName: String = "First name"
         static let lastName: String = "Last name"
-        static let goals: String = "Goals"
+        static let goals: String = "Goals & plans"
         static let values: String = "Values"
         static let username: String = "Username"
         static let email: String = "Email"
