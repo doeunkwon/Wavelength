@@ -8,27 +8,23 @@
 import SwiftUI
 import MCEmojiPicker
 
-class ValueTagManager: ObservableObject {
-    @Published var tags: [String] = []
+class TagManager: ObservableObject {
+    @Published var valuesTags: [String] = []
+    @Published var interestTags: [String] = []
 
     func removeValueTag(tag: String) {
-        tags.removeAll { $0 == tag }
+        valuesTags.removeAll { $0 == tag }
     }
-}
-
-class InterestTagManager: ObservableObject {
-    @Published var tags: [String] = []
     
     func removeInterestTag(tag: String) {
-        tags.removeAll { $0 == tag }
+        interestTags.removeAll { $0 == tag }
     }
 }
 
 
 struct NewFriendView: View {
     
-    @StateObject var valueTagManager = ValueTagManager()
-    @StateObject var interestTagManager = InterestTagManager()
+    @StateObject var tagManager = TagManager()
     
     @Environment(\.dismiss) private var dismiss
     @State private var isPresented: Bool = false
@@ -82,13 +78,14 @@ struct NewFriendView: View {
                     
                     DividerLineView()
                     
-                    TagsFieldInputView(title: Strings.general.values, placeholder: Strings.general.addAValue, color: color)
-                        .environmentObject(valueTagManager)
-                    
-                    DividerLineView()
-                    
-                    TagsFieldInputView(title: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: color)
-                        .environmentObject(interestTagManager)
+                    VStack (spacing: Padding.xlarge) {
+                        TagsFieldInputView(title: Strings.general.values, placeholder: Strings.general.addAValue, color: color)
+                        
+                        DividerLineView()
+                        
+                        TagsFieldInputView(title: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: color)
+                    }
+                    .environmentObject(tagManager)
                     
                     Spacer()
                 }

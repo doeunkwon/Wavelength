@@ -18,7 +18,7 @@ struct TagsFieldView: View {
             Text(title)
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthDarkGrey)
-            TagsView(items: items, color: tagColor, editable: false)
+            TagsView(tags: items, color: tagColor, editable: false, flag: nil)
         }
     }
 }

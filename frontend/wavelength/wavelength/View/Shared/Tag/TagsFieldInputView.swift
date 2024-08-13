@@ -9,8 +9,7 @@ import SwiftUI
 
 struct TagsFieldInputView: View {
     
-    @EnvironmentObject var valueTagManager: ValueTagManager
-    @EnvironmentObject var interestTagManager: InterestTagManager
+    @EnvironmentObject var tagManager: TagManager
     
     let title: String
     let placeholder: String
@@ -22,10 +21,10 @@ struct TagsFieldInputView: View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
                 .font(.system(size: Fonts.body))
-                .padding(.bottom, Padding.medium)
+                .padding(.bottom, Padding.medium + Padding.nudge)
             
             ZStack (alignment: .center) {
-                RoundedRectangle(cornerRadius: CornerRadius.medium)
+                RoundedRectangle(cornerRadius: CornerRadius.max)
                     .stroke(.wavelengthLightGrey, lineWidth: Border.small)
                     .foregroundColor(.wavelengthOffWhite)
                 
@@ -36,9 +35,9 @@ struct TagsFieldInputView: View {
                     Spacer()
                     Button {
                         if title == Strings.general.values {
-                            valueTagManager.tags.append(newItem)
-                        } else {
-                            interestTagManager.tags.append(newItem)
+                            tagManager.valuesTags.append(newItem)
+                        } else if title == Strings.general.interests {
+                            tagManager.interestTags.append(newItem)
                         }
                         newItem = ""
                     } label: {
@@ -47,16 +46,16 @@ struct TagsFieldInputView: View {
                             .foregroundColor(.wavelengthGrey)
                     }
                 }
-                .padding(Padding.medium)
+                .padding(Padding.medium + Padding.nudge)
             }
             .padding(.bottom,
                      title == Strings.general.values ?
-                     (valueTagManager.tags.count > 0 ? Padding.large : Padding.medium)
-                     : (interestTagManager.tags.count > 0 ? Padding.large : Padding.medium)
+                     (tagManager.valuesTags.count > 0 ? Padding.large : Padding.medium)
+                     : (tagManager.interestTags.count > 0 ? Padding.large : Padding.medium)
             )
             
             // Keep in mind that .wrappedValue just copies the underlying VALUE of the binding, NOT the reference.
-            TagsView(items: (title == Strings.general.values ? valueTagManager.tags : interestTagManager.tags), color: color, editable: true)
+            TagsView(tags: (title == Strings.general.values ? tagManager.valuesTags : tagManager.interestTags), color: color, editable: true, flag: title)
         }
     }
 }

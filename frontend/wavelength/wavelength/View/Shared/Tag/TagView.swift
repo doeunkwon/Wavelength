@@ -9,19 +9,23 @@ import SwiftUI
 
 struct TagView: View {
     
-    @EnvironmentObject var valueTagManager: ValueTagManager
-    @EnvironmentObject var interestTagManager: InterestTagManager
+    @EnvironmentObject var tagManager: TagManager
     
     let text: String
     let color: Color
     let editable: Bool
+    let flag: String?
     
     var body: some View {
         HStack {
             Text(text)
             if editable {
                 Button {
-                    valueTagManager.removeValueTag(tag: text)
+                    if flag == Strings.general.values {
+                        tagManager.removeValueTag(tag: text)
+                    } else if flag == Strings.general.interests {
+                        tagManager.removeInterestTag(tag: text)
+                    }
                 } label: {
                     Image(systemName: Strings.icons.xmark)
                         .font(.system(size: Fonts.body))
@@ -30,16 +34,17 @@ struct TagView: View {
                 }
             }
         }
-            .font(.system(size: Fonts.body))
-            .padding(Padding.medium)
-            .overlay( /// apply a rounded border
-                RoundedRectangle(cornerRadius: CornerRadius.max)
-                    .stroke(color, lineWidth: Border.medium))
-            .background(.wavelengthOffWhite)
-            .cornerRadius(CornerRadius.max)
+        .font(.system(size: Fonts.body))
+        .padding(.horizontal, Padding.medium + Padding.nudge)
+        .padding(.vertical, Padding.medium)
+        .overlay( /// apply a rounded border
+            RoundedRectangle(cornerRadius: CornerRadius.max)
+                .stroke(color, lineWidth: Border.medium))
+        .background(.wavelengthOffWhite)
+        .cornerRadius(CornerRadius.max)
     }
 }
 
 #Preview {
-    TagView(text: "Muay Thai", color: Color.wavelengthViolet, editable: true)
+    TagView(text: "Muay Thai", color: Color.wavelengthViolet, editable: true, flag: nil)
 }

@@ -34,6 +34,7 @@ enum Padding {
     static let small: CGFloat = 5
     static let xsmall: CGFloat = 3
     static let min: CGFloat = 1
+    static let nudge: CGFloat = 3
 }
 
 enum CornerRadius {
