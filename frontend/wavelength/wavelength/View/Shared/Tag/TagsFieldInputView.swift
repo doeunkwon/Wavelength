@@ -54,7 +54,7 @@ struct TagsFieldInputView: View {
             .padding(.bottom,
                      title == Strings.general.values ?
                      (tagManager.valuesTags.count > 0 ? Padding.xlarge : 0)
-                     : (tagManager.interestTags.count > 0 ? Padding.large : 0)
+                     : (tagManager.interestTags.count > 0 ? Padding.xlarge : 0)
             )
             
             // Keep in mind that .wrappedValue just copies the underlying VALUE of the binding, NOT the reference.

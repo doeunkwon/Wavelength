@@ -99,8 +99,6 @@ struct NewFriendView: View {
                     
                     TextFieldInputView(title: Strings.general.goals, placeholder: Strings.general.goals, binding: $goals, isMultiLine: true)
                     
-                    DividerLineView()
-                    
                     VStack (spacing: Padding.xlarge) {
                         TagsFieldInputView(title: Strings.general.values, placeholder: Strings.general.addAValue, color: color)
                         

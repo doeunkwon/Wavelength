@@ -17,13 +17,13 @@ struct MemoryCellView: View {
         Button {
             showMemoryViewModal.toggle()
         } label: {
-            VStack(alignment: .leading, spacing: Padding.medium) {
+            VStack(alignment: .leading, spacing: Padding.medium + Padding.nudge) {
                 
                 Spacer()
                 HStack {
                     
                     
-                    Text(String(memory.date.formatted(date: .long, time: .omitted)))
+                    Text(String(memory.date.formatted(date: .abbreviated, time: .omitted)))
                         .font(.system(size: Fonts.body))
                         .foregroundColor(.wavelengthDarkGrey)
                     
@@ -33,6 +33,9 @@ struct MemoryCellView: View {
                         .font(.system(size: Fonts.body))
                         .foregroundColor(.wavelengthTokenOrange)
                 }
+                
+                DividerLineView()
+                
                 Text(memory.title)
                     .multilineTextAlignment(.leading)
                     .font(.system(size: Fonts.body))
@@ -41,7 +44,7 @@ struct MemoryCellView: View {
                 Spacer()
             }
             .padding(Padding.large)
-            .frame(maxHeight: 90)
+            .frame(maxHeight: 100)
             .background(.wavelengthOffWhite) // Set text color
             .cornerRadius(CornerRadius.medium) // Add corner radius
         }
