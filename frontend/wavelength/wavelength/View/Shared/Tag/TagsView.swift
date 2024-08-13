@@ -66,9 +66,7 @@ struct TagsView: View {
             ForEach(groupedItems, id: \.self) { subItems in
                 HStack (spacing: Padding.medium + Padding.nudge) {
                     ForEach(subItems, id: \.self) { word in
-                        
                         TagView(text: word, color: color, editable: editable, flag: flag)
-                        
                     }
                 }
             }

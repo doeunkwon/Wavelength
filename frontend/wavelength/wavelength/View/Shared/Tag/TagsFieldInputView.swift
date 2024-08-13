@@ -34,12 +34,14 @@ struct TagsFieldInputView: View {
                         .foregroundColor(.wavelengthDarkGrey)
                     Spacer()
                     Button {
-                        if title == Strings.general.values {
-                            tagManager.valuesTags.append(newItem)
-                        } else if title == Strings.general.interests {
-                            tagManager.interestTags.append(newItem)
+                        if newItem.count > 0 {
+                            if title == Strings.general.values {
+                                tagManager.valuesTags.append(newItem)
+                            } else if title == Strings.general.interests {
+                                tagManager.interestTags.append(newItem)
+                            }
+                            newItem = ""
                         }
-                        newItem = ""
                     } label: {
                         Image(systemName: Strings.icons.plus)
                             .font(.system(size: Fonts.body))
