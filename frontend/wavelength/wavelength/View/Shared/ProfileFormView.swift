@@ -13,11 +13,11 @@ struct ProfileFormView: View {
     
     @State var isEmojiPickerVisible: Bool = false
     @ObservedObject var friend: Friend
-    @State private var editedFriend: Friend
+    @StateObject private var editedFriend: Friend
     
     init(friend: Friend) {
         self.friend = friend
-        _editedFriend = State(initialValue: Friend(fid: friend.fid, scorePercentage: friend.scorePercentage, scoreAnalysis: friend.scoreAnalysis, tokenCount: friend.tokenCount, memoryCount: friend.memoryCount, emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, goals: friend.goals, interests: friend.interests, values: friend.values))
+        _editedFriend = StateObject(wrappedValue: Friend(fid: friend.fid, scorePercentage: friend.scorePercentage, scoreAnalysis: friend.scoreAnalysis, tokenCount: friend.tokenCount, memoryCount: friend.memoryCount, emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, goals: friend.goals, interests: friend.interests, values: friend.values))
     }
     
     var body: some View {
@@ -55,8 +55,7 @@ struct ProfileFormView: View {
                                     .frame(width: Frame.friendCardBackground)
                                 
                                 
-                                ProfilePictureView(emoji: "", color: .clear, frameSize: Frame.friendCard, emojiSize: Fonts.icon, editable: true)
-                                    .environmentObject(editedFriend)
+                                ProfilePictureView(emoji: editedFriend.emoji, color: editedFriend.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
                             }
                             .shadow(
                                 color: ShadowStyle.standard.color,
@@ -90,9 +89,9 @@ struct ProfileFormView: View {
                     DividerLineView()
                     
                     VStack (spacing: Padding.xlarge) {
-                        TagsFieldInputView(flag: Strings.general.values, placeholder: Strings.general.addAValue, color: .clear)
+                        TagsFieldInputView(flag: Strings.general.values, placeholder: Strings.general.addAValue, color: editedFriend.color)
                         
-                        TagsFieldInputView(flag: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: .clear)
+                        TagsFieldInputView(flag: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: editedFriend.color)
                     }
                     .environmentObject(editedFriend)
                     

@@ -30,7 +30,7 @@ struct FriendCardView: View {
         NavigationLink(destination: FriendProfileView(friend: friend)) {
                 ZStack {
                     VStack(alignment: .leading) {
-                        ProfilePictureView(emoji: friend.emoji, color: friend.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon, editable: false)
+                        ProfilePictureView(emoji: friend.emoji, color: friend.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
                         // The (Padding.medium * 2) is the padding in between the profile picture and the edges of the card
                         
                         // Name and username below the emoji

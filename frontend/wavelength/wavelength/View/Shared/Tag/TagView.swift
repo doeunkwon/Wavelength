@@ -39,7 +39,7 @@ struct TagView: View {
         .padding(.vertical, Padding.medium)
         .overlay( /// apply a rounded border
             RoundedRectangle(cornerRadius: CornerRadius.max)
-                .stroke(editable ? editedFriend.color : color, lineWidth: Border.medium))
+                .stroke(color, lineWidth: Border.medium))
         .background(.wavelengthOffWhite)
         .cornerRadius(CornerRadius.max)
     }

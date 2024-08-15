@@ -9,13 +9,10 @@ import SwiftUI
 
 struct ProfilePictureView: View {
     
-    @EnvironmentObject var editedFriend: Friend
-    
     let emoji: String
     let color: Color
     let frameSize: CGFloat
     let emojiSize: CGFloat
-    let editable: Bool
     var shadowEnabled: Bool = true
     
     var body: some View {
@@ -23,19 +20,19 @@ struct ProfilePictureView: View {
             Rectangle()
                 .aspectRatio(1, contentMode: .fit)
                 .frame(width: frameSize)
-                .foregroundColor(editable ? editedFriend.color : color)
+                .foregroundColor(color)
                 .cornerRadius(CornerRadius.medium)
-            Text(editable ? editedFriend.emoji : emoji)
+            Text(emoji)
                 .font(.system(size: emojiSize))
         }
         .shadow(
-            color: shadowEnabled ? ShadowStyle.glow(editable ? editedFriend.color : color).color : .clear,
-            radius: shadowEnabled ? ShadowStyle.glow(editable ? editedFriend.color : color).radius : 0,
-            x: shadowEnabled ? ShadowStyle.glow(editable ? editedFriend.color : color).x : 0,
-            y: shadowEnabled ? ShadowStyle.glow(editable ? editedFriend.color : color).y : 0)
+            color: ShadowStyle.glow(color).color,
+            radius: ShadowStyle.glow(color).radius,
+            x: ShadowStyle.glow(color).x,
+            y: ShadowStyle.glow(color).y)
     }
 }
 
 #Preview {
-    ProfilePictureView(emoji: "🌎", color: Color.wavelengthPurple, frameSize: Frame.medium, emojiSize: Fonts.header, editable: false)
+    ProfilePictureView(emoji: "🌎", color: Color.wavelengthPurple, frameSize: Frame.medium, emojiSize: Fonts.header)
 }
