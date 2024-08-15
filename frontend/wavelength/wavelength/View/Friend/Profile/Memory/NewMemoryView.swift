@@ -103,7 +103,9 @@ struct NewMemoryView: View {
                 .padding(.vertical, Padding.large)
             }
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: DownButtonView(action: {dismiss()}), trailing: Button(Strings.general.create) {
+            .navigationBarItems(leading: Button(action: { dismiss() }) {
+                DownButtonView()
+            }, trailing: Button(Strings.form.create) {
                 print("Create memory tapped!")
             })
             .background(.wavelengthBackground)

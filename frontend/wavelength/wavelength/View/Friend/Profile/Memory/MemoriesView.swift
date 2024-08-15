@@ -67,8 +67,8 @@ struct MemoriesView: View {
                 .padding(.vertical, Padding.large)
             }
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: DownButtonView {
-                dismiss()
+            .navigationBarItems(leading: Button(action: { dismiss() }) {
+                DownButtonView()
             })
             .background(.wavelengthBackground)
         }

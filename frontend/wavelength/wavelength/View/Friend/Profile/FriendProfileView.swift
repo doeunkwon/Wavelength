@@ -65,11 +65,11 @@ struct FriendProfileView: View {
                     Label("Delete", systemImage: Strings.icons.trash)
                 }
             } label: {
-                EllipsisButtonView(action: {print("edit button tapped")})
+                EllipsisButtonView()
             })
             .background(Color.wavelengthBackground)
             .sheet(isPresented: $showProfileFormViewSheet) {
-                ProfileFormView(friend: friend)
+                ProfileFormView(friend: friend, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
             }
         }
     }

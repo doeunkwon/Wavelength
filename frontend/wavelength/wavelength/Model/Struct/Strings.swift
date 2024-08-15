@@ -12,7 +12,6 @@ struct Strings {
     struct general {
         
         static let tokens: String = "tokens"
-        static let create: String = "Create"
         static let firstName: String = "First name"
         static let lastName: String = "Last name"
         static let goals: String = "Goals & plans"
@@ -28,6 +27,8 @@ struct Strings {
     
     struct form {
         
+        static let create: String = "Create"
+        static let save: String = "Save"
         static let pickAnEmoji: String = "Pick an emoji"
         static let chooseAColor: String = "Choose a color"
         

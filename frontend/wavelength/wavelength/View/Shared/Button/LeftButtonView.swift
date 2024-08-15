@@ -1,21 +1,21 @@
 //
-//  DownButtonView.swift
+//  LeftButtonView.swift
 //  wavelength
 //
-//  Created by Doeun Kwon on 2024-08-08.
+//  Created by Doeun Kwon on 2024-08-15.
 //
 
 import SwiftUI
 
-struct DownButtonView: View {
+struct LeftButtonView: View {
 
     var body: some View {
-        Image(systemName: Strings.icons.chevronDown)
+        Image(systemName: Strings.icons.chevronLeft)
             .foregroundColor(.blue)
             .font(Font.body.weight(.semibold))
     }
 }
 
 #Preview {
-    DownButtonView()
+    LeftButtonView()
 }

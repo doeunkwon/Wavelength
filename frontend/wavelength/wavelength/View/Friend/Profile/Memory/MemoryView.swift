@@ -48,7 +48,9 @@ struct MemoryView: View {
                 .padding(Padding.large)
             }
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: DownButtonView(action: {dismiss()}), trailing: Menu {
+            .navigationBarItems(leading: Button(action: { dismiss() }) {
+                DownButtonView()
+            }, trailing: Menu {
                 Button(action: {print("Edit tapped!")}) {
                     Label("Edit memory", systemImage: Strings.icons.pencil)
                 }
@@ -56,7 +58,7 @@ struct MemoryView: View {
                     Label("Delete", systemImage: Strings.icons.trash)
                 }
             } label: {
-                EllipsisButtonView(action: {print("edit button tapped")})
+                EllipsisButtonView()
             })
             .background(.wavelengthBackground)
         }

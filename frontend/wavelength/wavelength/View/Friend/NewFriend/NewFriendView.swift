@@ -20,7 +20,7 @@ struct NewFriendView: View {
     @State private var goals: String = ""
     
     var body: some View {
-        ProfileFormView(friend: friend)
+        ProfileFormView(friend: friend, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.create)
     }
 }
 

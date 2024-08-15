@@ -15,9 +15,14 @@ struct ProfileFormView: View {
     @ObservedObject var friend: Friend
     @StateObject private var editedFriend: Friend
     
-    init(friend: Friend) {
+    let leadingButtonContent: AnyView
+    let trailingButtonLabel: String
+    
+    init(friend: Friend, leadingButtonContent: AnyView, trailingButtonLabel: String) {
         self.friend = friend
         _editedFriend = StateObject(wrappedValue: Friend(fid: friend.fid, scorePercentage: friend.scorePercentage, scoreAnalysis: friend.scoreAnalysis, tokenCount: friend.tokenCount, memoryCount: friend.memoryCount, emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, goals: friend.goals, interests: friend.interests, values: friend.values))
+        self.leadingButtonContent = leadingButtonContent
+        self.trailingButtonLabel = trailingButtonLabel
     }
     
     var body: some View {
@@ -100,15 +105,13 @@ struct ProfileFormView: View {
                 .padding(Padding.large)
             }
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: DownButtonView(action: {dismiss()}), trailing: Button(Strings.general.create) {
+            .navigationBarItems(leading: Button(action: { dismiss() }) {
+                leadingButtonContent
+            }, trailing: Button(trailingButtonLabel) {
                 print("Create memory tapped!")
             })
             .background(.wavelengthBackground)
         }
         
     }
-}
-
-#Preview {
-    ProfileFormView(friend: Mock.friend)
 }

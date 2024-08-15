@@ -8,17 +8,14 @@
 import SwiftUI
 
 struct EllipsisButtonView: View {
-    var action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            Image(systemName: Strings.icons.ellipsis)
-                .foregroundColor(.blue)
-                .font(Font.body.weight(.semibold))
-        }
+        Image(systemName: Strings.icons.ellipsis)
+            .foregroundColor(.blue)
+            .font(Font.body.weight(.semibold))
     }
 }
 
 #Preview {
-    EllipsisButtonView(action: {print("hi")})
+    EllipsisButtonView()
 }

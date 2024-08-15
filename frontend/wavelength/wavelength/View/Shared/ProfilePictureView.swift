@@ -26,10 +26,10 @@ struct ProfilePictureView: View {
                 .font(.system(size: emojiSize))
         }
         .shadow(
-            color: ShadowStyle.glow(color).color,
-            radius: ShadowStyle.glow(color).radius,
-            x: ShadowStyle.glow(color).x,
-            y: ShadowStyle.glow(color).y)
+            color: shadowEnabled ? ShadowStyle.glow(color).color : .clear,
+            radius: shadowEnabled ? ShadowStyle.glow(color).radius : 0,
+            x: shadowEnabled ? ShadowStyle.glow(color).x : 0,
+            y: shadowEnabled ? ShadowStyle.glow(color).y : 0)
     }
 }
 
