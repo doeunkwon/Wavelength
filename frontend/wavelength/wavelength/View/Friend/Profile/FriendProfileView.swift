@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct FriendProfileView: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var showMemoriesViewSheet = false
     @State private var showProfileFormViewSheet = false
     
@@ -54,7 +57,12 @@ struct FriendProfileView: View {
                 .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .navigationBarItems(trailing: Menu {
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading: Button(action: {
+                dismiss()
+            }, label: {
+                LeftButtonView()
+            }), trailing: Menu {
                 Button(action: {
                     print("Edit tapped!")
                     showProfileFormViewSheet.toggle()
