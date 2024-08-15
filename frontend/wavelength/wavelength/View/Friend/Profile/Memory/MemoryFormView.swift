@@ -34,9 +34,7 @@ struct MemoryFormView: View {
                     VStack (alignment: .leading, spacing: Padding.xlarge) {
                         
                         Button(action: {
-                            withAnimation {
-                                showDatePicker.toggle()
-                            }
+                            showDatePicker.toggle()
                         }) {
                             HStack (alignment: .center) {
                                 Text(String(editedMemory.date.formatted(date: .long, time: .omitted)))
