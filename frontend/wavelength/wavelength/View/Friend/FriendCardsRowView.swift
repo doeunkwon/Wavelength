@@ -25,5 +25,5 @@ struct FriendCardsRowView: View {
 
 
 #Preview {
-    FriendCardsRowView(friend1: Friend(fid: "1", emoji: "🌎", color: .blue, firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12, values: ["Discipline", "Integrity", "Growth", "Positivity"]), friend2: Friend(fid: "1", emoji: "🌎", color: .blue, firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 90, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12, values: ["Discipline", "Integrity", "Growth", "Positivity"]))
+    FriendCardsRowView(friend1: Mock.friend, friend2: Mock.friend)
 }

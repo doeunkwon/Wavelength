@@ -48,10 +48,10 @@ struct MemoriesView: View {
                         .frame(width: 45)
                         .foregroundColor(.wavelengthOffWhite)
                         .shadow(
-                            color: ShadowStyle.standard.color,
-                            radius: ShadowStyle.standard.radius,
-                            x: ShadowStyle.standard.x,
-                            y: ShadowStyle.standard.y)
+                            color: ShadowStyle.subtle.color,
+                            radius: ShadowStyle.subtle.radius,
+                            x: ShadowStyle.subtle.x,
+                            y: ShadowStyle.subtle.y)
                     Button {
                         print("Add new friend!")
                         showNewMemoryViewModal.toggle()

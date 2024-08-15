@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FriendProfileView: View {
     @State private var showMemoriesViewSheet = false
+    @State private var showProfileFormViewSheet = false
     
     let friend: Friend
     
@@ -54,7 +55,10 @@ struct FriendProfileView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .navigationBarItems(trailing: Menu {
-                Button(action: {print("Edit tapped!")}) {
+                Button(action: {
+                    print("Edit tapped!")
+                    showProfileFormViewSheet.toggle()
+                }) {
                     Label("Edit profile", systemImage: Strings.icons.person)
                 }
                 Button(role: .destructive, action: {print("Delete tapped!")}) {
@@ -64,6 +68,9 @@ struct FriendProfileView: View {
                 EllipsisButtonView(action: {print("edit button tapped")})
             })
             .background(Color.wavelengthBackground)
+            .sheet(isPresented: $showProfileFormViewSheet) {
+                ProfileFormView(friend: friend)
+            }
         }
     }
 }

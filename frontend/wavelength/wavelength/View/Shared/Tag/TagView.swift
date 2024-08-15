@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TagView: View {
     
-    @EnvironmentObject var tagManager: TagManager
+    @EnvironmentObject var editedFriend: Friend
     
     let text: String
     let color: Color
@@ -22,9 +22,9 @@ struct TagView: View {
             if editable {
                 Button {
                     if flag == Strings.general.values {
-                        tagManager.removeValueTag(tag: text)
+                        editedFriend.removeValueTag(tag: text)
                     } else if flag == Strings.general.interests {
-                        tagManager.removeInterestTag(tag: text)
+                        editedFriend.removeInterestTag(tag: text)
                     }
                 } label: {
                     Image(systemName: Strings.icons.xmark)
@@ -39,7 +39,7 @@ struct TagView: View {
         .padding(.vertical, Padding.medium)
         .overlay( /// apply a rounded border
             RoundedRectangle(cornerRadius: CornerRadius.max)
-                .stroke(color, lineWidth: Border.medium))
+                .stroke(editable ? editedFriend.color : color, lineWidth: Border.medium))
         .background(.wavelengthOffWhite)
         .cornerRadius(CornerRadius.max)
     }

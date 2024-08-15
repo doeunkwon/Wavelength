@@ -30,12 +30,7 @@ struct FriendCardView: View {
         NavigationLink(destination: FriendProfileView(friend: friend)) {
                 ZStack {
                     VStack(alignment: .leading) {
-                        ProfilePictureView(emoji: friend.emoji, color: friend.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
-                            .shadow(
-                                color: ShadowStyle.glow(friend.color).color,
-                                radius: ShadowStyle.glow(friend.color).radius,
-                                x: ShadowStyle.glow(friend.color).x,
-                                y: ShadowStyle.glow(friend.color).y)
+                        ProfilePictureView(emoji: friend.emoji, color: friend.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon, editable: false)
                         // The (Padding.medium * 2) is the padding in between the profile picture and the edges of the card
                         
                         // Name and username below the emoji
@@ -59,5 +54,5 @@ struct FriendCardView: View {
 }
 
 #Preview {
-    FriendCardView(friend: Friend(fid: "1", emoji: "🌎", color: .blue, firstName: "Doeun", lastName: "Kwon", goals: "To just do it.", interests: ["Programming", "Travelling", "Boxing"], scorePercentage: 100, scoreAnalysis: "Amazing friendship!", tokenCount: 15, memoryCount: 12, values: ["Discipline", "Integrity", "Growth", "Positivity"]))
+    FriendCardView(friend: Mock.friend)
 }

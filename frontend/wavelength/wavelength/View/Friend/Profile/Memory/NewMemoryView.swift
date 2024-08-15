@@ -73,10 +73,10 @@ struct NewMemoryView: View {
                         .frame(width: 180, height: 50)
                         .foregroundColor(.wavelengthOffWhite)
                         .shadow(
-                            color: ShadowStyle.standard.color,
-                            radius: ShadowStyle.standard.radius,
-                            x: ShadowStyle.standard.x,
-                            y: ShadowStyle.standard.y)
+                            color: ShadowStyle.subtle.color,
+                            radius: ShadowStyle.subtle.radius,
+                            x: ShadowStyle.subtle.x,
+                            y: ShadowStyle.subtle.y)
                     HStack (alignment: .center, spacing: Padding.large) {
                         
                         Button {

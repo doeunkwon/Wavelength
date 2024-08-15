@@ -16,15 +16,15 @@ enum ShadowStyle {
         switch self {
         case .standard: return .shadowStandard
         case .subtle: return .shadowSubtle
-        case .glow(let baseColor): return baseColor.opacity(0.25)
+        case .glow(let baseColor): return baseColor.opacity(0.4)
         }
     }
 
     var radius: CGFloat {
         switch self {
         case .standard: return 8
-        case .subtle: return 5
-        case .glow: return 10
+        case .subtle: return 4
+        case .glow: return 12
         }
     }
 
@@ -38,9 +38,9 @@ enum ShadowStyle {
 
     var y: CGFloat {
         switch self {
-        case .standard: return 4
-        case .subtle: return 4
-        case .glow: return 5
+        case .standard: return 6
+        case .subtle: return 6
+        case .glow: return 0
         }
     }
 }
