@@ -116,6 +116,9 @@ struct MemoryFormView: View {
                 print("Trailing button pressed!")
             })
             .background(.wavelengthBackground)
+            .onTapGesture {
+                hideKeyboard()
+            }
             .ignoresSafeArea(.keyboard)
         }
     }

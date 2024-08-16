@@ -122,6 +122,9 @@ struct ProfileFormView: View {
                 print("Create memory tapped!")
             })
             .background(.wavelengthBackground)
+            .onTapGesture {
+                hideKeyboard()
+            }
         }
         
     }
