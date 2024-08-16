@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:">
+      location = "self:/Users/doeunkwon/Downloads/software/projects/Wavelength/frontend/wavelength/wavelength.xcodeproj">
    </FileRef>
 </Workspace>
