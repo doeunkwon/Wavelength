@@ -22,8 +22,15 @@ struct ProfilePictureView: View {
                 .frame(width: frameSize)
                 .foregroundColor(color)
                 .cornerRadius(CornerRadius.medium)
-            Text(emoji)
-                .font(.system(size: emojiSize))
+            if emoji.count == 0 && emojiSize == Fonts.icon {
+                Text(Strings.form.tapToEdit)
+                    .font(.system(size: Fonts.body))
+                    .foregroundColor(.wavelengthGrey)
+            } else {
+                Text(emoji)
+                    .font(.system(size: emojiSize))
+            }
+
         }
         .shadow(
             color: shadowEnabled ? ShadowStyle.glow(color).color : .clear,

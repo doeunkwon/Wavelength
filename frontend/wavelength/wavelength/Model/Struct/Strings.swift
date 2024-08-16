@@ -25,6 +25,7 @@ struct Strings {
     
     struct form {
         
+        static let tapToEdit: String = "Tap to edit"
         static let currentPassword: String = "Current password"
         static let newPassword: String = "New password"
         static let confirmPassword: String = "Confirm password"
