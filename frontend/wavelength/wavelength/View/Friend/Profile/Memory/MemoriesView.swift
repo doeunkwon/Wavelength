@@ -62,6 +62,7 @@ struct MemoriesView: View {
                     }
                     .sheet(isPresented: $showNewMemoryViewModal) {
                         NewMemoryView()
+                            .interactiveDismissDisabled()
                     }
                 }
                 .padding(.vertical, Padding.large)

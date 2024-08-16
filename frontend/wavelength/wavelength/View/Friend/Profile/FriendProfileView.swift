@@ -75,10 +75,11 @@ struct FriendProfileView: View {
             } label: {
                 EllipsisButtonView()
             })
-            .background(Color.wavelengthBackground)
             .sheet(isPresented: $showProfileFormViewSheet) {
                 ProfileFormView(profileViewModel: ProfileViewModel(profile: friend), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+                    .interactiveDismissDisabled()
             }
+            .background(Color.wavelengthBackground)
         }
     }
 }

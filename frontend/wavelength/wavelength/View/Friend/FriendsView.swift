@@ -80,6 +80,7 @@ struct FriendsView: View {
                     }
                     .sheet(isPresented: $showNewFriendViewModal) {
                         NewFriendView()
+                            .interactiveDismissDisabled()
                     }
                 }
                 .padding(.vertical, Padding.large)

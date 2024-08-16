@@ -20,10 +20,18 @@ struct SettingsPanelView: View {
             SettingsCellView(title: Strings.settings.editProfile, icon: user.emoji, isEmoji: true, action: {
                 showProfileFormViewSheet.toggle()
             })
+            .sheet(isPresented: $showProfileFormViewSheet) {
+                ProfileFormView(profileViewModel: ProfileViewModel(profile: user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+                    .interactiveDismissDisabled()
+            }
             DividerLineView()
             SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock, action: {
                 showChangePasswordViewSheet.toggle()
             })
+            .sheet(isPresented: $showChangePasswordViewSheet) {
+                ChangePasswordView(currentPassword: "", newPassword: "", confirmPassword: "")
+                    .interactiveDismissDisabled()
+            }
             DividerLineView()
             SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash, action: {
                 showConfirmDeleteAlert.toggle()
@@ -38,12 +46,6 @@ struct SettingsPanelView: View {
                     }
             DividerLineView()
             SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {print("Log out tapped!")})
-        }
-        .sheet(isPresented: $showProfileFormViewSheet) {
-            ProfileFormView(profileViewModel: ProfileViewModel(profile: user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
-        }
-        .sheet(isPresented: $showChangePasswordViewSheet) {
-            ChangePasswordView(currentPassword: "", newPassword: "", confirmPassword: "")
         }
     }
 }

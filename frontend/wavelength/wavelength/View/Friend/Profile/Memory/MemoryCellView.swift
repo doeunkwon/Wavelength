@@ -50,6 +50,7 @@ struct MemoryCellView: View {
         }
         .sheet(isPresented: $showMemoryViewModal) {
             MemoryView(memory: memory)
+                .interactiveDismissDisabled()
         }
     }
     
