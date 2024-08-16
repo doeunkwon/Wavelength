@@ -12,6 +12,7 @@ struct SettingsPanelView: View {
     @EnvironmentObject var user: User
     
     @State private var showUserProfileFormViewSheet = false
+    @State private var showChangePasswordViewSheet = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -19,7 +20,9 @@ struct SettingsPanelView: View {
                 showUserProfileFormViewSheet.toggle()
             })
             DividerLineView()
-            SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock, action: {print("Change Password tapped!")})
+            SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock, action: {
+                showChangePasswordViewSheet.toggle()
+            })
             DividerLineView()
             SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash, action: {print("Delete Profile tapped!")})
             DividerLineView()
@@ -27,6 +30,9 @@ struct SettingsPanelView: View {
         }
         .sheet(isPresented: $showUserProfileFormViewSheet) {
             UserProfileFormView(user: user, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+        }
+        .sheet(isPresented: $showChangePasswordViewSheet) {
+            ChangePasswordView(currentPassword: "", newPassword: "", confirmPassword: "")
         }
     }
 }

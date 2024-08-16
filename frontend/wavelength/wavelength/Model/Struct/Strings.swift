@@ -24,6 +24,9 @@ struct Strings {
     
     struct form {
         
+        static let currentPassword: String = "Current password"
+        static let newPassword: String = "New password"
+        static let confirmPassword: String = "Confirm password"
         static let firstName: String = "First name"
         static let lastName: String = "Last name"
         static let goals: String = "Goals"
