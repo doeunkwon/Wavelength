@@ -7,22 +7,22 @@
 
 import SwiftUI
 
-class User {
+class User: ObservableObject {
     
     let uid: String
-    let emoji: String
-    let color: Color
-    let firstName: String
-    let lastName: String
-    let username: String
-    let email: String
-    let password: String
-    let goals: String
-    let interests: [String]
-    let scorePercentage: Int
-    let tokenCount: Int
-    let memoryCount: Int
-    let values: [String]
+    @Published var emoji: String
+    @Published var color: Color
+    @Published var firstName: String
+    @Published var lastName: String
+    @Published var username: String
+    @Published var email: String
+    @Published var password: String
+    @Published var goals: String
+    @Published var interests: [String]
+    @Published var scorePercentage: Int
+    @Published var tokenCount: Int
+    @Published var memoryCount: Int
+    @Published var values: [String]
     
     init(uid: String, emoji: String, color: Color, firstName: String, lastName: String, username: String, email: String, password: String, goals: String, interests: [String], scorePercentage: Int, tokenCount: Int, memoryCount: Int, values: [String]) {
         self.uid = uid

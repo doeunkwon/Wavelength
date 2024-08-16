@@ -11,6 +11,7 @@ struct SettingsCellView: View {
     
     let title: String
     let icon: String
+    var isEmoji: Bool = false
     let action: () -> Void
     
     var body: some View {
@@ -18,7 +19,7 @@ struct SettingsCellView: View {
             action()
         } label: {
             HStack {
-                EmojiCircleView(icon: icon)
+                EmojiCircleView(icon: icon, isEmoji: isEmoji)
                     .padding(.trailing, 2)
                 Text(title)
                     .font(.system(size: Fonts.body))
@@ -36,5 +37,6 @@ struct SettingsCellView: View {
 }
 
 #Preview {
-    SettingsCellView(title: Strings.settings.profile, icon: Strings.icons.person, action: { print("hello") })
+    SettingsCellView(title: Strings.settings.editProfile, icon: Strings.icons.person, action: { print("hello") })
+        .environmentObject(Mock.user)
 }

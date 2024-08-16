@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TagsFieldInputView: View {
     
-    @EnvironmentObject var friend: Friend
+    @EnvironmentObject var tagManager: TagManager
     
     let flag: String
     let placeholder: String
@@ -37,9 +37,9 @@ struct TagsFieldInputView: View {
                     Button {
                         if newItem.count > 0 { /// Makes sure the tag to be added is not an empty string
                             if flag == Strings.general.values {
-                                friend.values.append(newItem)
+                                tagManager.values.append(newItem)
                             } else if flag == Strings.general.interests {
-                                friend.interests.append(newItem)
+                                tagManager.interests.append(newItem)
                             }
                             newItem = ""
                         }
@@ -53,12 +53,12 @@ struct TagsFieldInputView: View {
             }
             .padding(.bottom,
                      flag == Strings.general.values ?
-                     (friend.values.count > 0 ? Padding.xlarge : 0)
-                     : (friend.interests.count > 0 ? Padding.xlarge : 0)
+                     (tagManager.values.count > 0 ? Padding.xlarge : 0)
+                     : (tagManager.interests.count > 0 ? Padding.xlarge : 0)
                      /// Assumes that the only two values of 'flag' is "Values" and "Interests"
             )
             
-            TagsView(tags: (flag == Strings.general.values ? friend.values : friend.interests), color: color, editable: true, flag: flag)
+            TagsView(tags: (flag == Strings.general.values ? tagManager.values : tagManager.interests), color: color, editable: true, flag: flag)
         }
     }
 }

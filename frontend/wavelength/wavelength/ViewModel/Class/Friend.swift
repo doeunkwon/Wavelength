@@ -22,14 +22,6 @@ class Friend: ObservableObject {
     @Published var interests: [String]
     @Published var values: [String]
     
-    func removeValueTag(tag: String) {
-        values.removeAll { $0 == tag }
-    }
-    
-    func removeInterestTag(tag: String) {
-        interests.removeAll { $0 == tag }
-    }
-    
     init(fid: String, scorePercentage: Int, scoreAnalysis: String, tokenCount: Int, memoryCount: Int, emoji: String, color: Color, firstName: String, lastName: String, goals: String, interests: [String], values: [String]) {
         self.fid = fid
         self.scorePercentage = scorePercentage

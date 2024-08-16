@@ -38,7 +38,7 @@ struct FriendProfileView: View {
                         MemoriesView(memoryCount: friend.memoryCount, memories: Mock.memories)
                     }
                     
-                    BasicFieldView(field: Strings.general.goals, friendData: friend.goals)
+                    BasicFieldView(content: friend.goals)
                     
                     DividerLineView()
                     

@@ -9,12 +9,17 @@ import SwiftUI
 
 struct BasicFieldView: View {
     
-    let field: String
-    let friendData: String
+    var title: String = ""
+    let content: String
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(friendData)
+        VStack(alignment: .leading, spacing: Padding.medium) {
+            if title.count > 0 {
+                Text(title)
+                    .font(.system(size: Fonts.body))
+                    .foregroundColor(.wavelengthDarkGrey)
+            }
+            Text(content)
                 .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthText)
         }
@@ -22,5 +27,5 @@ struct BasicFieldView: View {
 }
 
 #Preview {
-    BasicFieldView(field: Strings.general.goals, friendData: "Port Moody")
+    BasicFieldView(content: "Port Moody")
 }

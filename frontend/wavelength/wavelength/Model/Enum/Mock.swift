@@ -27,5 +27,7 @@ enum Mock {
         Memory(mid: "1", date: Date(), title: "Text message during my Asia trip 2024 to Tokyo, Japan.", content: "He asked me to hang out after my Asia trip. I thought it was quite nice that he thought of me while I was on my trip because it’s easy to forget these things!", tokens: 2),
         Memory(mid: "2", date: Date(), title: "Bought me a coffee.", content: "He’d already left the office when I realized I’d forgotten my wallet. Figuring I’d have to skip my usual coffee run, I was about to head back to my desk when he appeared in the doorway, grinning and holding out a steaming cup. It was a small gesture, but it made my day.", tokens: 1)
     ]
+    
+    static let tagManager: TagManager = TagManager(values: ["Money", "Status", "Growth", "Learning"], interests: ["Writing", "Reading", "Philosophy", "AI", "Quantum Computing", "Bouldering", "Cooking", "Coffee"])
 
 }

@@ -9,14 +9,14 @@ import SwiftUI
 
 struct FriendsView: View {
     
+    @EnvironmentObject var user: User
+    
     @State private var showNewFriendViewModal = false
     
-    private var user: User
     private var friends: [Friend]
     
-    init(user: User, friends: [Friend]) {
+    init(friends: [Friend]) {
         let sortedFriends = friends.sorted { $0.scorePercentage > $1.scorePercentage }
-        self.user = user
         self.friends = sortedFriends
     }
     
@@ -89,5 +89,6 @@ struct FriendsView: View {
 }
 
 #Preview {
-    FriendsView(user: Mock.user, friends: Mock.friends)
+    FriendsView(friends: Mock.friends)
+        .environmentObject(Mock.user)
 }

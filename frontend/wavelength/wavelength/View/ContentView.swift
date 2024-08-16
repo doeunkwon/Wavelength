@@ -11,7 +11,7 @@ struct ContentView: View {
     
     @State var selectedTab = 1
     
-    let user = Mock.user
+    @StateObject var user = Mock.user
     
     let friends = Mock.friends
     
@@ -21,12 +21,13 @@ struct ContentView: View {
             TabView(selection: $selectedTab) {
                 SettingsView()
                     .tag(0)
-                FriendsView(user: user, friends: friends)
+                FriendsView(friends: friends)
                     .tag(1)
 //                ChatView()
 //                    .tabItem { Image(systemName: Strings.icons.bubble) }
 //                    .tag(2)
             }
+            .environmentObject(user)
 //            .accentColor(Color.wavelengthPurple)
             .tabViewStyle(.page(indexDisplayMode: .never))
             .background(.wavelengthBackground)

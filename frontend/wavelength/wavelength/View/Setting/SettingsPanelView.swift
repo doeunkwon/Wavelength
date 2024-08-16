@@ -8,9 +8,16 @@
 import SwiftUI
 
 struct SettingsPanelView: View {
+    
+    @EnvironmentObject var user: User
+    
+    @State private var showUserProfileFormViewSheet = false
+    
     var body: some View {
         VStack(spacing: 0) {
-            SettingsCellView(title: Strings.settings.profile, icon: Strings.icons.person, action: {print("Profile tapped!")})
+            SettingsCellView(title: Strings.settings.editProfile, icon: user.emoji, isEmoji: true, action: {
+                showUserProfileFormViewSheet.toggle()
+            })
             DividerLineView()
             SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock, action: {print("Change Password tapped!")})
             DividerLineView()
@@ -18,9 +25,13 @@ struct SettingsPanelView: View {
             DividerLineView()
             SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {print("Log out tapped!")})
         }
+        .sheet(isPresented: $showUserProfileFormViewSheet) {
+            UserProfileFormView(user: user, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+        }
     }
 }
 
 #Preview {
     SettingsPanelView()
+        .environmentObject(Mock.user)
 }

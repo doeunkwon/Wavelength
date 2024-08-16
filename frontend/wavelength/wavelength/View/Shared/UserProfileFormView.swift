@@ -1,28 +1,28 @@
 //
-//  ProfileFormView.swift
+//  UserProfileFormView.swift
 //  wavelength
 //
-//  Created by Doeun Kwon on 2024-08-13.
+//  Created by Doeun Kwon on 2024-08-15.
 //
 
 import SwiftUI
 
-struct ProfileFormView: View {
+struct UserProfileFormView: View {
     
     @Environment(\.dismiss) private var dismiss
     
     @State var isEmojiPickerVisible: Bool = false
-    @ObservedObject var friend: Friend
-    @StateObject private var editedFriend: Friend
+    @ObservedObject var user: User
+    @StateObject private var editedUser: User
     @StateObject private var tagManager: TagManager
     
     let leadingButtonContent: AnyView
     let trailingButtonLabel: String
     
-    init(friend: Friend, leadingButtonContent: AnyView, trailingButtonLabel: String) {
-        self.friend = friend
-        _tagManager = StateObject(wrappedValue: TagManager(values: friend.values, interests: friend.interests))
-        _editedFriend = StateObject(wrappedValue: Friend(fid: friend.fid, scorePercentage: friend.scorePercentage, scoreAnalysis: friend.scoreAnalysis, tokenCount: friend.tokenCount, memoryCount: friend.memoryCount, emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, goals: friend.goals, interests: friend.interests, values: friend.values))
+    init(user: User, leadingButtonContent: AnyView, trailingButtonLabel: String) {
+        self.user = user
+        _tagManager = StateObject(wrappedValue: TagManager(values: user.values, interests: user.interests))
+        _editedUser = StateObject(wrappedValue: User(uid: user.uid, emoji: user.emoji, color: user.color, firstName: user.firstName, lastName: user.lastName, username: user.username, email: user.email, password: user.password, goals: user.goals, interests: user.interests, scorePercentage: user.scorePercentage, tokenCount: user.tokenCount, memoryCount: user.memoryCount, values: user.values))
         self.leadingButtonContent = leadingButtonContent
         self.trailingButtonLabel = trailingButtonLabel
     }
@@ -53,8 +53,7 @@ struct ProfileFormView: View {
                                     .foregroundColor(.wavelengthOffWhite)
                                     .frame(width: Frame.friendCardBackground)
                                 
-                                
-                                ProfilePictureView(emoji: editedFriend.emoji, color: editedFriend.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
+                                ProfilePictureView(emoji: editedUser.emoji, color: editedUser.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
                             }
                             .shadow(
                                 color: ShadowStyle.standard.color,
@@ -65,32 +64,40 @@ struct ProfileFormView: View {
                         }
                         .emojiPicker(
                             isPresented: $isEmojiPickerVisible,
-                            selectedEmoji: $editedFriend.emoji
+                            selectedEmoji: $editedUser.emoji
                         )
                         .background(
-                            ColorPicker("", selection: $editedFriend.color, supportsOpacity: false)
+                            ColorPicker("", selection: $editedUser.color, supportsOpacity: false)
                                 .labelsHidden().opacity(0)
                         )
                         
                         Spacer()
                     }
                     
-                    TextFieldInputView(placeholder: Strings.form.firstName, binding: $editedFriend.firstName, isMultiLine: false)
+                    TextFieldInputView(placeholder: Strings.form.firstName, binding: $editedUser.firstName, isMultiLine: false)
                     
                     DividerLineView()
                     
-                    TextFieldInputView(placeholder: Strings.form.lastName, binding: $editedFriend.lastName, isMultiLine: false)
+                    TextFieldInputView(placeholder: Strings.form.lastName, binding: $editedUser.lastName, isMultiLine: false)
                     
                     DividerLineView()
                     
-                    TextFieldInputView(placeholder: Strings.form.goals, binding: $editedFriend.goals, isMultiLine: true)
+                    TextFieldInputView(placeholder: Strings.form.email, binding: $editedUser.email, isMultiLine: false)
+                    
+                    DividerLineView()
+                    
+                    TextFieldInputView(placeholder: Strings.form.username, binding: $editedUser.username, isMultiLine: false)
+                    
+                    DividerLineView()
+                    
+                    TextFieldInputView(placeholder: Strings.form.goals, binding: $editedUser.goals, isMultiLine: true)
                     
                     DividerLineView()
                     
                     VStack (spacing: Padding.xlarge) {
-                        TagsFieldInputView(flag: Strings.general.values, placeholder: Strings.general.addAValue, color: editedFriend.color)
+                        TagsFieldInputView(flag: Strings.general.values, placeholder: Strings.general.addAValue, color: editedUser.color)
                         
-                        TagsFieldInputView(flag: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: editedFriend.color)
+                        TagsFieldInputView(flag: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: editedUser.color)
                     }
                     .environmentObject(tagManager)
                     
@@ -110,6 +117,7 @@ struct ProfileFormView: View {
     }
 }
 
+
 #Preview {
-    ProfileFormView(friend: Mock.friend, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+    UserProfileFormView(user: Mock.user, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
 }

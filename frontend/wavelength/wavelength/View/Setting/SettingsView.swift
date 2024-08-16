@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    
     var body: some View {
         VStack {
             SettingsPanelView()
@@ -23,8 +24,4 @@ struct SettingsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.wavelengthBackground)
     }
-}
-
-#Preview {
-    SettingsView()
 }

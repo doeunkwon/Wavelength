@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TagView: View {
     
-    @EnvironmentObject var editedFriend: Friend
+    @EnvironmentObject var tagManager: TagManager
     
     let text: String
     let color: Color
@@ -22,9 +22,9 @@ struct TagView: View {
             if editable {
                 Button {
                     if flag == Strings.general.values {
-                        editedFriend.removeValueTag(tag: text)
+                        tagManager.removeValueTag(tag: text)
                     } else if flag == Strings.general.interests {
-                        editedFriend.removeInterestTag(tag: text)
+                        tagManager.removeInterestTag(tag: text)
                     }
                 } label: {
                     Image(systemName: Strings.icons.xmark)

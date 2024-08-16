@@ -9,26 +9,23 @@ import SwiftUI
 
 struct EmojiCircleView: View {
     
-    let emoji: String?
-    let icon: String?
+    @EnvironmentObject var user: User
     
-    init(emoji: String? = nil, icon: String? = nil) {
-        self.emoji = emoji
-        self.icon = icon
-    }
+    let icon: String
+    let isEmoji: Bool
     
     var body: some View {
         ZStack {
             Circle()
                 .frame(width: Frame.small)
-                .foregroundColor(.wavelengthPurple)
-                .opacity(0.2)
-            if (emoji != nil) {
-                Text(emoji ?? "😂")
-            } else if (icon != nil) {
-                Image(systemName: icon ?? Strings.icons.gear)
+                .foregroundColor(user.color)
+                .opacity(0.1)
+            if isEmoji {
+                Text(icon)
+            } else {
+                Image(systemName: icon)
                     .font(.system(size: Fonts.subtitle))
-                    .foregroundStyle(.wavelengthPurple)
+                    .foregroundStyle(user.color)
                     .shadow(
                         color: ShadowStyle.glow(.wavelengthPurple).color,
                         radius: ShadowStyle.glow(.wavelengthPurple).radius,
@@ -40,5 +37,6 @@ struct EmojiCircleView: View {
 }
 
 #Preview {
-    EmojiCircleView(icon: Strings.icons.gearshape)
+    EmojiCircleView(icon: Strings.icons.gearshape, isEmoji: false)
+        .environmentObject(Mock.user)
 }
