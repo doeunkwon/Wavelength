@@ -19,6 +19,7 @@ struct Strings {
         static let emoji: String = "Emoji"
         static let addAValue: String = "Add a value"
         static let addAnInterest: String = "Add an interest"
+        static let cancel: String = "Cancel"
         
     }
     
@@ -45,6 +46,8 @@ struct Strings {
         static let changePassword: String = "Change password"
         static let deleteProfile: String = "Delete profile"
         static let logOut: String = "Log out"
+        static let confirmDelete: String = "Are you sure you want to delete your profile? This action cannot be undone."
+        static let confirmDeleteProfile: String = "Confirm delete profile"
         
     }
     

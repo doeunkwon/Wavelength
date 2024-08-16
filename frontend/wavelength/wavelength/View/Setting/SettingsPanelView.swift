@@ -13,6 +13,7 @@ struct SettingsPanelView: View {
     
     @State private var showUserProfileFormViewSheet = false
     @State private var showChangePasswordViewSheet = false
+    @State private var showConfirmDeleteAlert = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -24,7 +25,17 @@ struct SettingsPanelView: View {
                 showChangePasswordViewSheet.toggle()
             })
             DividerLineView()
-            SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash, action: {print("Delete Profile tapped!")})
+            SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash, action: {
+                showConfirmDeleteAlert.toggle()
+            })
+            .alert(Strings.settings.confirmDeleteProfile, isPresented: $showConfirmDeleteAlert) {
+                Button(Strings.settings.deleteProfile, role: .destructive) {
+                            // Perform account deletion logic here
+                        }
+                Button(Strings.general.cancel, role: .cancel) {}
+                    } message: {
+                        Text(Strings.settings.confirmDelete)
+                    }
             DividerLineView()
             SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {print("Log out tapped!")})
         }
