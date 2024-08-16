@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-protocol Profile {
+protocol Profile{
     var emoji: String { get set }
     var color: Color { get set }
     var firstName: String { get set }
