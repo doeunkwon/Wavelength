@@ -77,7 +77,7 @@ struct FriendProfileView: View {
             })
             .background(Color.wavelengthBackground)
             .sheet(isPresented: $showProfileFormViewSheet) {
-                ProfileFormView(friend: friend, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+                ProfileFormView(profileViewModel: ProfileViewModel(profile: friend), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
             }
         }
     }

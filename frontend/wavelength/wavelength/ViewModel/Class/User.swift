@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class User: ObservableObject {
+class User: ObservableObject, Profile {
     
     let uid: String
     @Published var emoji: String
@@ -19,10 +19,10 @@ class User: ObservableObject {
     @Published var password: String
     @Published var goals: String
     @Published var interests: [String]
+    @Published var values: [String]
     @Published var scorePercentage: Int
     @Published var tokenCount: Int
     @Published var memoryCount: Int
-    @Published var values: [String]
     
     init(uid: String, emoji: String, color: Color, firstName: String, lastName: String, username: String, email: String, password: String, goals: String, interests: [String], scorePercentage: Int, tokenCount: Int, memoryCount: Int, values: [String]) {
         self.uid = uid

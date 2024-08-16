@@ -12,7 +12,7 @@ struct EditProfileView: View {
     let user: User
     
     var body: some View {
-        UserProfileFormView(user: user, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+        ProfileFormView(profileViewModel: ProfileViewModel(profile: user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
     }
 }
 

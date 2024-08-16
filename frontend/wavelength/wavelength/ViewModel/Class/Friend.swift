@@ -7,13 +7,9 @@
 
 import SwiftUI
 
-class Friend: ObservableObject {
+class Friend: ObservableObject, Profile {
     
     let fid: String
-    let scorePercentage: Int
-    let scoreAnalysis: String
-    let tokenCount: Int
-    let memoryCount: Int
     @Published var emoji: String
     @Published var color: Color
     @Published var firstName: String
@@ -21,6 +17,10 @@ class Friend: ObservableObject {
     @Published var goals: String
     @Published var interests: [String]
     @Published var values: [String]
+    @Published var scorePercentage: Int
+    @Published var scoreAnalysis: String
+    @Published var tokenCount: Int
+    @Published var memoryCount: Int
     
     init(fid: String, scorePercentage: Int, scoreAnalysis: String, tokenCount: Int, memoryCount: Int, emoji: String, color: Color, firstName: String, lastName: String, goals: String, interests: [String], values: [String]) {
         self.fid = fid

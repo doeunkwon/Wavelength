@@ -11,14 +11,14 @@ struct SettingsPanelView: View {
     
     @EnvironmentObject var user: User
     
-    @State private var showUserProfileFormViewSheet = false
+    @State private var showProfileFormViewSheet = false
     @State private var showChangePasswordViewSheet = false
     @State private var showConfirmDeleteAlert = false
     
     var body: some View {
         VStack(spacing: 0) {
             SettingsCellView(title: Strings.settings.editProfile, icon: user.emoji, isEmoji: true, action: {
-                showUserProfileFormViewSheet.toggle()
+                showProfileFormViewSheet.toggle()
             })
             DividerLineView()
             SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock, action: {
@@ -39,8 +39,8 @@ struct SettingsPanelView: View {
             DividerLineView()
             SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {print("Log out tapped!")})
         }
-        .sheet(isPresented: $showUserProfileFormViewSheet) {
-            UserProfileFormView(user: user, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+        .sheet(isPresented: $showProfileFormViewSheet) {
+            ProfileFormView(profileViewModel: ProfileViewModel(profile: user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
         }
         .sheet(isPresented: $showChangePasswordViewSheet) {
             ChangePasswordView(currentPassword: "", newPassword: "", confirmPassword: "")
