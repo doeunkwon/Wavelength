@@ -11,20 +11,10 @@ struct FriendProfileView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @StateObject private var friendProfileViewModel = FriendProfileViewModel()
-    
     @State private var showMemoriesViewSheet = false
     @State private var showProfileFormViewSheet = false
     
     let friend: Friend
-    
-    func totalTokens(memories: [Memory]) -> Int {
-        var tokens = 0
-        for memory in memories {
-            tokens += memory.tokens
-        }
-        return tokens
-    }
     
     var body: some View {
         
@@ -32,11 +22,11 @@ struct FriendProfileView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: Padding.xlarge) {
                     
-                    HeaderView(emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, tokenCount: totalTokens(memories: friendProfileViewModel.memories))
+                    HeaderView(emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, tokenCount: friend.tokenCount)
                     
                     HStack(alignment: .center, spacing: Padding.large) {
                         ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageMatch, color: intToColor(value: friend.scorePercentage), action: {print("Score button tapped")})
-                        ButtonView(title: String(friendProfileViewModel.memories.count) + " " + Strings.memory.memories, color: .wavelengthText) {
+                        ButtonView(title: String(friend.memoryCount) + " " + Strings.memory.memories, color: .wavelengthText) {
                             showMemoriesViewSheet.toggle()
                             }
                     }
@@ -46,7 +36,7 @@ struct FriendProfileView: View {
                         x: ShadowStyle.subtle.x,
                         y: ShadowStyle.subtle.y)
                     .fullScreenCover(isPresented: $showMemoriesViewSheet) {
-                        MemoriesView(memoryCount: friendProfileViewModel.memories.count, memories: friendProfileViewModel.memories)
+                        MemoriesView(fid: friend.fid)
                     }
                     
                     BasicFieldView(content: friend.goals)
@@ -92,9 +82,6 @@ struct FriendProfileView: View {
             }
             .background(Color.wavelengthBackground)
         }
-        .onAppear(perform: {
-            friendProfileViewModel.fetchMemories(fid: friend.fid)
-        })
     }
 }
 

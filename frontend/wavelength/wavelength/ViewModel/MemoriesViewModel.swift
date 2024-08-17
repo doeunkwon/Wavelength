@@ -1,5 +1,5 @@
 //
-//  FriendProfileViewModel.swift
+//  MemoriesViewModel.swift
 //  wavelength
 //
 //  Created by Doeun Kwon on 2024-08-16.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class FriendProfileViewModel: ObservableObject {
+class MemoriesViewModel: ObservableObject {
     @Published var memories: [Memory] = []
 
     let memoryService = MemoryService()

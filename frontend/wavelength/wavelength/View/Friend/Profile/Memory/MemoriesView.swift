@@ -12,8 +12,9 @@ struct MemoriesView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showNewMemoryViewModal = false
     
-    let memoryCount: Int
-    let memories: [Memory]
+    @StateObject private var memoriesViewModel = MemoriesViewModel()
+    
+    let fid: String
     
     var body: some View {
         NavigationStack {
@@ -21,7 +22,7 @@ struct MemoriesView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         HStack {
-                            Text(String(memoryCount) + " " + Strings.memory.memories)
+                            Text(String(memoriesViewModel.memories.count) + " " + Strings.memory.memories)
                                 .font(.system(size: Fonts.title))
                             Spacer()
                         }
@@ -30,7 +31,7 @@ struct MemoriesView: View {
                         .padding(.bottom, Padding.xlarge)
                         
                         LazyVStack(alignment: .leading, spacing: Padding.large) {
-                            ForEach(Array(memories), id: \.self) { memory in
+                            ForEach(Array(memoriesViewModel.memories), id: \.self) { memory in
                                 MemoryCellView(memory: memory)
                             }
                         }
@@ -73,9 +74,12 @@ struct MemoriesView: View {
             })
             .background(.wavelengthBackground)
         }
+        .onAppear(perform: {
+            memoriesViewModel.fetchMemories(fid: fid)
+        })
     }
 }
 
 #Preview {
-    MemoriesView(memoryCount: 67, memories: Mock.memories)
+    MemoriesView(fid: "8122f06c-c52d-4ab7-a5f2-8d6c086f3929")
 }

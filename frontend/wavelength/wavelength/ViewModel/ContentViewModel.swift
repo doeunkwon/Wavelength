@@ -29,6 +29,7 @@ class ContentViewModel: ObservableObject {
     let friendService = FriendService()
 
     func fetchUser() {
+        print("FETCHING USER")
         Task {
             do {
                 let fetchedUser = try await userService.fetchUser()
@@ -43,6 +44,7 @@ class ContentViewModel: ObservableObject {
     }
     
     func fetchFriends() {
+        print("FETCHING FRIENDS")
         Task {
             do {
                 let fetchedFriends = try await friendService.fetchFriends()
