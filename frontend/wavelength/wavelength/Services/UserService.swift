@@ -17,6 +17,7 @@ enum UserServiceError: Error {
 class UserService {
     
     func fetchUser() async throws -> User {
+        
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
             throw UserServiceError.unknownError("Failed to create URL")
         }
@@ -34,19 +35,14 @@ class UserService {
         guard (200...299).contains(httpResponse.statusCode) else {
             throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
         }
-        
-        print("les go")
 
         do {
-            print("CHECKPOINT 1")
             let decoder = JSONDecoder()
-            print("CHECKPOINT 2")
             let decodedUser = try decoder.decode(DecodedUser.self, from: data)
-            print("CHECKPOINT 3")
             let user = User(
                 uid: decodedUser.uid,
                 emoji: decodedUser.emoji,
-                color: Color(hex: decodedUser.color), // Assuming conversion from string
+                color: Color(hex: decodedUser.color) ?? .wavelengthOffWhite, // Assuming conversion from string
                 firstName: decodedUser.firstName,
                 lastName: decodedUser.lastName,
                 username: decodedUser.username,
@@ -54,12 +50,11 @@ class UserService {
                 password: decodedUser.password,
                 goals: decodedUser.goals,
                 interests: decodedUser.interests,
-                scorePercentage: decodedUser.scorePercentage,
+                scorePercentage: 50, // !!!
                 tokenCount: decodedUser.tokenCount,
                 memoryCount: decodedUser.memoryCount,
                 values: decodedUser.values
             )
-            print("CHECKPOINT 4")
             return user
         } catch {
             throw UserServiceError.unknownError("Error decoding user data")
@@ -70,6 +65,6 @@ class UserService {
     private func getToken() -> String {
         // Replace this with your actual token retrieval logic
         // For example, using UserDefaults or Keychain
-        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYjdmMjBhYy1mNzQxLTRmY2YtYWNhMy01ZTAwNzk2MzY5YzUiLCJleHAiOjE3MjM4ODc5NzcuNTgwOTR9.gA9jMl9b49vxoG2eFKYLX8_Q6pr8Bdc6mb2F4iTQHjo"
+        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZTM3ODg2OS1hNDM0LTQ2YmItOGUyNC0wZGEzMjBhYjA1NjUiLCJleHAiOjE3MjM4OTMxNjguMzY0NTM5fQ.Tgr2_4YS2FBBg2Fjvnr5ApWa4V8WSv1B7DgwP_ad0Rs"
     }
 }

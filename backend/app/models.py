@@ -26,6 +26,7 @@ class User(BaseModel):
     password: str  # Hash passwords before storing
     goals: str
     interests: List[str]
+    values: List[str]
     tokenCount: int
     memoryCount: int
 
@@ -37,6 +38,7 @@ class Friend(BaseModel):
     lastName: str
     goals: str
     interests: List[str]
+    values: List[str]
     tokenCount: int
     memoryCount: int
 

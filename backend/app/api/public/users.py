@@ -45,6 +45,7 @@ async def create_user(user: User = Body(...)):
                     email: $email,
                     password: $hashed_password,
                     goals: $goals,
+                    values: $values,
                     interests: $interests,
                     tokenCount: $tokenCount,
                     memoryCount: $memoryCount

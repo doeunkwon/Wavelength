@@ -9,11 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     
+    //    @StateObject var user = Mock.user
     @StateObject private var contentViewModel = ContentViewModel()
     
     @State var selectedTab = 1
-    
-    @StateObject var user = Mock.user
     
     let friends = Mock.friends
     
@@ -29,14 +28,13 @@ struct ContentView: View {
 //                    .tabItem { Image(systemName: Strings.icons.bubble) }
 //                    .tag(2)
             }
-            .environmentObject(user)
+            .environmentObject(contentViewModel.user)
 //            .accentColor(Color.wavelengthPurple)
             .tabViewStyle(.page(indexDisplayMode: .never))
             .background(.wavelengthBackground)
             .ignoresSafeArea()
         }
         .onAppear(perform: {
-            print("hi")
             contentViewModel.fetchUser()
         })
     }
