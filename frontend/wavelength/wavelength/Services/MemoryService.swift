@@ -1,5 +1,5 @@
 //
-//  FriendService.swift
+//  MemoryService.swift
 //  wavelength
 //
 //  Created by Doeun Kwon on 2024-08-16.
@@ -8,17 +8,17 @@
 import Foundation
 import SwiftUI
 
-enum FriendServiceError: Error {
+enum MemoryServiceError: Error {
     case unauthorized
     case networkError(Error)
     case unknownError(String)
 }
 
-class FriendService {
+class MemoryService {
     
-    func fetchFriends() async throws -> [Friend] {
+    func fetchMemories(fid: String) async throws -> [Memory] {
         
-        guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
+        guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {
             throw UserServiceError.unknownError("Failed to create URL")
         }
 
@@ -38,27 +38,23 @@ class FriendService {
 
         do {
             let decoder = JSONDecoder()
-            let decodedFriends = try decoder.decode([DecodedFriend].self, from: data)
+            let decodedMemories = try decoder.decode([DecodedMemory].self, from: data)
             
-            let friends: [Friend] = decodedFriends.map { decodedFriend in
-                Friend(
-                    fid: decodedFriend.fid,
-                    scorePercentage: 50,
-                    scoreAnalysis: "WOW!",
-                    tokenCount: decodedFriend.tokenCount,
-                    memoryCount: decodedFriend.memoryCount,
-                    emoji: decodedFriend.emoji,
-                    color: Color(hex: decodedFriend.color) ?? .wavelengthOffWhite,
-                    firstName: decodedFriend.firstName,
-                    lastName: decodedFriend.lastName,
-                    goals: decodedFriend.goals,
-                    interests: decodedFriend.interests,
-                    values: decodedFriend.values)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm E, d MMM y"
+            
+            let memories: [Memory] = decodedMemories.map { decodedMemory in
+                Memory(
+                    mid: decodedMemory.mid,
+                    date: dateFormatter.date(from: decodedMemory.date) ?? Date(),
+                    title: decodedMemory.title,
+                    content: decodedMemory.content,
+                    tokens: decodedMemory.tokens)
             }
             
-            return friends
+            return memories
         } catch {
-            throw FriendServiceError.unknownError("Error decoding friend data")
+            throw MemoryServiceError.unknownError("Error decoding memory data")
         }
     }
     
