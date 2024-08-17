@@ -67,6 +67,42 @@ async def create_memory(
             status_code=500, detail=f"Error creating memory: {str(e)}"
         )
 
+# Function to fetch all memories with a friend
+
+
+@router.get("/private/memories/{fid}")
+async def get_memories(
+    fid: str,
+    token: str = Depends(get_current_user)
+):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+
+        uid = token["uid"]
+
+        # Cypher query to fetch memories shared with the friend
+        cypher_query = """
+        MATCH (:User {uid: $uid})-[:HAS_MEMORY]-(m:Memory)-[:ABOUT]->(:Friend {fid: $fid})
+        RETURN m
+        """
+
+        results = graph.query(cypher_query, {"uid": uid, "fid": fid})
+
+        memories = []
+        for record in results:
+            memory = record["m"]
+            memories.append(memory)
+
+        return memories
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching memories: {str(e)}"
+        )
 
 # Function to delete a memory
 
