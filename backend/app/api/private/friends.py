@@ -42,6 +42,7 @@ async def create_friend(
                     lastName: $lastName,
                     goals: $goals,
                     interests: $interests,
+                    values: $values,
                     tokenCount: $tokenCount,
                     memoryCount: $memoryCount
                 })

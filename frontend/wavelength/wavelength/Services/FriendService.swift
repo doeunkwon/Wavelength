@@ -1,5 +1,5 @@
 //
-//  UserService.swift
+//  FriendService.swift
 //  wavelength
 //
 //  Created by Doeun Kwon on 2024-08-16.
@@ -8,17 +8,17 @@
 import Foundation
 import SwiftUI
 
-enum UserServiceError: Error {
+enum FriendServiceError: Error {
     case unauthorized
     case networkError(Error)
     case unknownError(String)
 }
 
-class UserService {
+class FriendService {
     
-    func fetchUser() async throws -> User {
+    func fetchFriends() async throws -> [Friend] {
         
-        guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
+        guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
             throw UserServiceError.unknownError("Failed to create URL")
         }
 
@@ -38,24 +38,25 @@ class UserService {
 
         do {
             let decoder = JSONDecoder()
-            let decodedUser = try decoder.decode(DecodedUser.self, from: data)
-            let user = User(
-                uid: decodedUser.uid,
-                emoji: decodedUser.emoji,
-                color: Color(hex: decodedUser.color) ?? .wavelengthOffWhite, // Assuming conversion from string
-                firstName: decodedUser.firstName,
-                lastName: decodedUser.lastName,
-                username: decodedUser.username,
-                email: decodedUser.email,
-                password: decodedUser.password,
-                goals: decodedUser.goals,
-                interests: decodedUser.interests,
-                scorePercentage: 50, // !!!
-                tokenCount: decodedUser.tokenCount,
-                memoryCount: decodedUser.memoryCount,
-                values: decodedUser.values
-            )
-            return user
+            let decodedFriends = try decoder.decode([DecodedFriend].self, from: data)
+            
+            let friends: [Friend] = decodedFriends.map { decodedFriend in
+                Friend(
+                    fid: decodedFriend.fid,
+                    scorePercentage: 50,
+                    scoreAnalysis: "WOW!",
+                    tokenCount: decodedFriend.tokenCount,
+                    memoryCount: decodedFriend.memoryCount,
+                    emoji: decodedFriend.emoji,
+                    color: Color(hex: decodedFriend.color) ?? .wavelengthOffWhite,
+                    firstName: decodedFriend.firstName,
+                    lastName: decodedFriend.lastName,
+                    goals: decodedFriend.goals,
+                    interests: decodedFriend.interests,
+                    values: decodedFriend.values)
+            }
+            
+            return friends
         } catch {
             throw UserServiceError.unknownError("Error decoding user data")
         }

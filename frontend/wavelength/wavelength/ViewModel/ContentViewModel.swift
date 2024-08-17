@@ -23,8 +23,10 @@ class ContentViewModel: ObservableObject {
         tokenCount: 0,
         memoryCount: 0,
         values: [])
+    @Published var friends: [Friend] = []
 
     let userService = UserService()
+    let friendService = FriendService()
 
     func fetchUser() {
         Task {
@@ -36,6 +38,20 @@ class ContentViewModel: ObservableObject {
             } catch {
                 // Handle error
                 print("Error fetching user: \(error)")
+            }
+        }
+    }
+    
+    func fetchFriends() {
+        Task {
+            do {
+                let fetchedFriends = try await friendService.fetchFriends()
+                DispatchQueue.main.async {
+                    self.friends = fetchedFriends
+                }
+            } catch {
+                // Handle error
+                print("Error fetching friends: \(error)")
             }
         }
     }

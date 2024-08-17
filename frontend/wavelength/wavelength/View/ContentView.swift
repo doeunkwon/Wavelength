@@ -10,32 +10,28 @@ import SwiftUI
 struct ContentView: View {
     
     //    @StateObject var user = Mock.user
+    // let friends = Mock.friends
+    
     @StateObject private var contentViewModel = ContentViewModel()
     
     @State var selectedTab = 1
     
-    let friends = Mock.friends
-    
     var body: some View {
         NavigationStack {
-//            FriendsView(user: user, friends: friends)
             TabView(selection: $selectedTab) {
                 SettingsView()
                     .tag(0)
-                FriendsView(friends: friends)
+                FriendsView(friends: contentViewModel.friends)
                     .tag(1)
-//                ChatView()
-//                    .tabItem { Image(systemName: Strings.icons.bubble) }
-//                    .tag(2)
             }
             .environmentObject(contentViewModel.user)
-//            .accentColor(Color.wavelengthPurple)
             .tabViewStyle(.page(indexDisplayMode: .never))
             .background(.wavelengthBackground)
             .ignoresSafeArea()
         }
         .onAppear(perform: {
             contentViewModel.fetchUser()
+            contentViewModel.fetchFriends()
         })
     }
 }
