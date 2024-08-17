@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @StateObject private var contentViewModel = ContentViewModel()
+    
     @State var selectedTab = 1
     
     @StateObject var user = Mock.user
@@ -33,6 +35,10 @@ struct ContentView: View {
             .background(.wavelengthBackground)
             .ignoresSafeArea()
         }
+        .onAppear(perform: {
+            print("hi")
+            contentViewModel.fetchUser()
+        })
     }
 }
 
