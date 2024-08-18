@@ -9,6 +9,12 @@ import SwiftUI
 
 struct Strings {
     
+    struct error {
+        
+        static let networkError: String = "Network error"
+        
+    }
+    
     struct general {
         
         static let tokens: String = "tokens"
@@ -63,6 +69,7 @@ struct Strings {
     struct friend {
         
         static let newFriend: String = "New friend"
+        static let addAFriend: String = "Add a friend"
         
     }
     
@@ -79,6 +86,7 @@ struct Strings {
         static let title: String = "Title"
         static let content: String = "Content"
         static let date: String = "Date"
+        static let addAMemory: String = "Add a memory"
         
     }
 
@@ -108,6 +116,9 @@ struct Strings {
         static let ellipsis: String = "ellipsis"
         static let pencil: String = "pencil"
         static let xmark: String = "xmark"
-
+        static let person2: String = "person.2"
+        static let icloudslash: String = "icloud.slash"
+        static let personLineDottedPerson: String = "person.line.dotted.person"
+        
     }
 }

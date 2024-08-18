@@ -17,17 +17,30 @@ struct ContentView: View {
     @State var selectedTab = 1
     
     var body: some View {
+        
         NavigationStack {
-            TabView(selection: $selectedTab) {
-                SettingsView()
-                    .tag(0)
-                FriendsView(friends: contentViewModel.friends)
-                    .tag(1)
+            if contentViewModel.user.uid.isEmpty {
+                
+                VStack {
+                    Spacer()
+                    EmptyState(text: Strings.error.networkError, icon: Strings.icons.icloudslash)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.wavelengthBackground)
+                
+            } else {
+                TabView(selection: $selectedTab) {
+                    SettingsView()
+                        .tag(0)
+                    FriendsView(friends: contentViewModel.friends)
+                        .tag(1)
+                }
+                .environmentObject(contentViewModel.user)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .background(.wavelengthBackground)
+                .ignoresSafeArea()
             }
-            .environmentObject(contentViewModel.user)
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .background(.wavelengthBackground)
-            .ignoresSafeArea()
         }
         .onAppear(perform: {
             contentViewModel.fetchUser()

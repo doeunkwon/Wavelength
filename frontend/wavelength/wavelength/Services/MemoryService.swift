@@ -63,6 +63,6 @@ class MemoryService {
         // Replace this with your actual token retrieval logic
         // For example, using UserDefaults or Keychain
         // Won't be able to implement until I implement login screen !!!
-        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZTM3ODg2OS1hNDM0LTQ2YmItOGUyNC0wZGEzMjBhYjA1NjUiLCJleHAiOjE3MjM4OTMxNjguMzY0NTM5fQ.Tgr2_4YS2FBBg2Fjvnr5ApWa4V8WSv1B7DgwP_ad0Rs"
+        return ServiceUtils.testToken
     }
 }

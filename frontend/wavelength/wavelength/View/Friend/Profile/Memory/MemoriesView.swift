@@ -19,29 +19,43 @@ struct MemoriesView: View {
     var body: some View {
         NavigationStack {
             ZStack (alignment: .bottom) {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        HStack {
-                            Text(String(memoriesViewModel.memories.count) + " " + Strings.memory.memories)
-                                .font(.system(size: Fonts.title))
-                            Spacer()
-                        }
-                        .padding(.horizontal, Padding.large)
-                        .padding(.top, Padding.large)
-                        .padding(.bottom, Padding.xlarge)
-                        
-                        LazyVStack(alignment: .leading, spacing: Padding.large) {
-                            ForEach(Array(memoriesViewModel.memories), id: \.self) { memory in
-                                MemoryCellView(memory: memory)
-                            }
-                        }
-                        .shadow(
-                            color: ShadowStyle.subtle.color,
-                            radius: ShadowStyle.subtle.radius,
-                            x: ShadowStyle.subtle.x,
-                            y: ShadowStyle.subtle.y)
-                        .padding(.horizontal, Padding.large)
+                
+                if memoriesViewModel.memories.count == 0 {
+                    
+                    VStack {
+                        Spacer()
+                        EmptyState(text: Strings.memory.addAMemory, icon: Strings.icons.personLineDottedPerson)
+                        Spacer()
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
+                } else {
+                    
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            HStack {
+                                Text(String(memoriesViewModel.memories.count) + " " + Strings.memory.memories)
+                                    .font(.system(size: Fonts.title))
+                                Spacer()
+                            }
+                            .padding(.horizontal, Padding.large)
+                            .padding(.top, Padding.large)
+                            .padding(.bottom, Padding.xlarge)
+                            
+                            LazyVStack(alignment: .leading, spacing: Padding.large) {
+                                ForEach(Array(memoriesViewModel.memories), id: \.self) { memory in
+                                    MemoryCellView(memory: memory)
+                                }
+                            }
+                            .shadow(
+                                color: ShadowStyle.subtle.color,
+                                radius: ShadowStyle.subtle.radius,
+                                x: ShadowStyle.subtle.x,
+                                y: ShadowStyle.subtle.y)
+                            .padding(.horizontal, Padding.large)
+                        }
+                    }
+                    
                 }
                 
                 ZStack {
@@ -81,5 +95,5 @@ struct MemoriesView: View {
 }
 
 #Preview {
-    MemoriesView(fid: "8122f06c-c52d-4ab7-a5f2-8d6c086f3929")
+    MemoriesView(fid: "1")
 }
