@@ -23,7 +23,7 @@ struct ContentView: View {
                 
                 VStack {
                     Spacer()
-                    EmptyState(text: Strings.error.networkError, icon: Strings.icons.icloudslash)
+                    EmptyStateView(text: Strings.error.networkError, icon: Strings.icons.icloudslash)
                     Spacer()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

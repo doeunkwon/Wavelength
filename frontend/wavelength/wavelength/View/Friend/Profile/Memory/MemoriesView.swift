@@ -24,7 +24,7 @@ struct MemoriesView: View {
                     
                     VStack {
                         Spacer()
-                        EmptyState(text: Strings.memory.addAMemory, icon: Strings.icons.personLineDottedPerson)
+                        EmptyStateView(text: Strings.memory.addAMemory, icon: Strings.icons.personLineDottedPerson)
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -29,7 +29,7 @@ struct FriendsView: View {
                     
                     VStack {
                         Spacer()
-                        EmptyState(text: Strings.friend.addAFriend, icon: Strings.icons.person2)
+                        EmptyStateView(text: Strings.friend.addAFriend, icon: Strings.icons.person2)
                         Spacer()
                     }
                     

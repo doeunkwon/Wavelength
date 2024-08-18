@@ -1,0 +1,30 @@
+//
+//  EmptyStateView.swift
+//  wavelength
+//
+//  Created by Doeun Kwon on 2024-08-18.
+//
+
+import SwiftUI
+
+struct EmptyStateView: View {
+    
+    let text: String
+    let icon: String
+    
+    var body: some View {
+        VStack (spacing: Padding.medium) {
+            
+            Image(systemName: icon)
+                .font(.system(size: Fonts.header))
+            Text(text)
+                .font(.system(size: Fonts.subtitle))
+            
+        }
+        .foregroundColor(.wavelengthGrey)
+    }
+}
+
+#Preview {
+    EmptyStateView(text: Strings.memory.addAMemory, icon: Strings.icons.personLineDottedPerson)
+}
