@@ -36,6 +36,8 @@ async def create_friend(
                 cypher_query = """
                 CREATE (f:Friend {
                     fid: $fid,
+                    scorePercentage: $scorePercentage,
+                    scoreAnalysis: $scoreAnalysis,
                     emoji: $emoji,
                     color: $color,
                     firstName: $firstName,

@@ -50,7 +50,7 @@ class UserService {
                 password: decodedUser.password,
                 goals: decodedUser.goals,
                 interests: decodedUser.interests,
-                scorePercentage: 50, // !!!
+                scorePercentage: decodedUser.scorePercentage,
                 tokenCount: decodedUser.tokenCount,
                 memoryCount: decodedUser.memoryCount,
                 values: decodedUser.values

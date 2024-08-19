@@ -20,6 +20,7 @@ struct DecodedUser: Decodable {
     let goals: String
     let interests: [String]
     let values: [String]
+    let scorePercentage: Int
     let tokenCount: Int
     let memoryCount: Int
 
@@ -35,6 +36,7 @@ struct DecodedUser: Decodable {
         case goals
         case interests
         case values
+        case scorePercentage
         case tokenCount
         case memoryCount
     }

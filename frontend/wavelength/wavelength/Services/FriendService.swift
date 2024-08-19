@@ -19,7 +19,7 @@ class FriendService {
     func fetchFriends() async throws -> [Friend] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
-            throw UserServiceError.unknownError("Failed to create URL")
+            throw FriendServiceError.unknownError("Failed to create URL")
         }
 
         var urlRequest = URLRequest(url: url)
@@ -29,11 +29,11 @@ class FriendService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw FriendServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw FriendServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
         }
 
         do {
@@ -43,8 +43,8 @@ class FriendService {
             let friends: [Friend] = decodedFriends.map { decodedFriend in
                 Friend(
                     fid: decodedFriend.fid,
-                    scorePercentage: 50,
-                    scoreAnalysis: "WOW!",
+                    scorePercentage: decodedFriend.scorePercentage,
+                    scoreAnalysis: decodedFriend.scoreAnalysis,
                     tokenCount: decodedFriend.tokenCount,
                     memoryCount: decodedFriend.memoryCount,
                     emoji: decodedFriend.emoji,

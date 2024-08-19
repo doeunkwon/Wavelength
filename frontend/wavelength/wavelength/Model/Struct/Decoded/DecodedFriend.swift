@@ -10,6 +10,8 @@ import SwiftUI
 struct DecodedFriend: Decodable {
     
     let fid: String
+    let scorePercentage: Int
+    let scoreAnalysis: String
     let emoji: String
     let color: String // Assuming color can be represented as a string on the backend
     let firstName: String
@@ -22,6 +24,8 @@ struct DecodedFriend: Decodable {
 
     enum CodingKeys: String, CodingKey {
         case fid
+        case scorePercentage
+        case scoreAnalysis
         case emoji
         case color
         case firstName

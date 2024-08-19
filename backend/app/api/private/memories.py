@@ -3,7 +3,6 @@ from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from fastapi import Depends, HTTPException, Body, APIRouter
 from app.models import Memory
-from app.api.helpers.general import get_neo4j_datetime
 
 router = APIRouter()
 
@@ -34,7 +33,6 @@ async def create_memory(
 
             # If no memory found with the generated ID, proceed with creation
             if len(result) == 0:
-                neo4j_timestamp = get_neo4j_datetime()
 
                 # Cypher query to create a new memory node with generated ID
                 cypher_query = """

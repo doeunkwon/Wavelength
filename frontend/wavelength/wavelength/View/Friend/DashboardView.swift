@@ -13,7 +13,7 @@ struct DashboardView: View {
     let scorePercentage: Int
     let tokenCount: Int
     let memoryCount: Int
-    let data: [LineChartData]
+    let data: [ScoreData]
     
     var body: some View {
         VStack(spacing: 0) {
@@ -65,7 +65,7 @@ struct DashboardView: View {
                         x: .value("Weekday", item.date),
                         y: .value("Count", item.value)
                     )
-                    .interpolationMethod(.catmullRom)
+                    .interpolationMethod(.catmullRom(alpha: 0.5))
                     .foregroundStyle(intToColor(value: scorePercentage))
                     .shadow(
                         color: ShadowStyle.glow(intToColor(value: scorePercentage)).color,
@@ -74,6 +74,7 @@ struct DashboardView: View {
                         y: ShadowStyle.glow(intToColor(value: scorePercentage)).y)
                 }
             }
+            .chartYScale(domain: (data.min(by: { $0.value < $1.value })?.value ?? 0)...(data.max(by: { $0.value < $1.value })?.value ?? 0))
             .chartYAxis {
                 AxisMarks(position: .leading) { _ in
                 }
@@ -83,8 +84,9 @@ struct DashboardView: View {
                 }
             }
             .frame(height:Frame.dashboardBottom)
-            .padding(.top, Padding.large)
             .padding(.horizontal, Padding.large)
+            .padding(.bottom, Padding.large)
+            .padding(.top, Padding.xlarge)
             
         }
         .overlay( /// apply a rounded border
@@ -97,20 +99,5 @@ struct DashboardView: View {
 }
 
 #Preview {
-    DashboardView(scorePercentage: 76, tokenCount: 52, memoryCount: 219, data: {
-        let sampleDate = Date().startOfDay.adding(.month, value: -10)!
-        var temp = [LineChartData]()
-        
-        for i in 0..<20 {
-            let value = Double.random(in: 5...20)
-            temp.append(
-                LineChartData(
-                    date: sampleDate.adding(.day, value: i)!,
-                    value: value
-                )
-            )
-        }
-        
-        return temp
-    }())
+    DashboardView(scorePercentage: 76, tokenCount: 52, memoryCount: 219, data: Mock.scoreChartData)
 }

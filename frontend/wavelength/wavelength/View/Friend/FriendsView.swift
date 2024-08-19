@@ -14,10 +14,12 @@ struct FriendsView: View {
     @State private var showNewFriendViewModal = false
     
     private var friends: [Friend]
+    private var scoreChartData: [ScoreData]
     
-    init(friends: [Friend]) {
+    init(friends: [Friend], scoreChartData: [ScoreData]) {
         let sortedFriends = friends.sorted { $0.scorePercentage > $1.scorePercentage }
         self.friends = sortedFriends
+        self.scoreChartData = scoreChartData
     }
     
     var body: some View {
@@ -37,22 +39,7 @@ struct FriendsView: View {
                     
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {
-                            DashboardView(scorePercentage: user.scorePercentage, tokenCount: user.tokenCount, memoryCount: user.memoryCount, data: {
-                                let sampleDate = Date().startOfDay.adding(.day, value: -10)!
-                                var temp = [LineChartData]()
-                                
-                                for i in 0..<20 {
-                                    let value = Double.random(in: 5...20)
-                                    temp.append(
-                                        LineChartData(
-                                            date: sampleDate.adding(.day, value: i)!,
-                                            value: value
-                                        )
-                                    )
-                                }
-                                
-                                return temp
-                            }())
+                            DashboardView(scorePercentage: user.scorePercentage, tokenCount: user.tokenCount, memoryCount: user.memoryCount, data: scoreChartData)
                             .padding(.top, Padding.large)
                             .padding(.horizontal, Padding.large)
                             
@@ -105,6 +92,6 @@ struct FriendsView: View {
 }
 
 #Preview {
-    FriendsView(friends: Mock.friends)
+    FriendsView(friends: Mock.friends, scoreChartData: Mock.scoreChartData)
         .environmentObject(Mock.user)
 }

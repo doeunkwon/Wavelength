@@ -3,7 +3,7 @@ from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from fastapi import Depends, HTTPException, Body, APIRouter
 from app.models import Score
-from app.api.helpers.general import get_neo4j_datetime
+from app.api.helpers.general import get_neo4j_datetime_iso8601
 
 router = APIRouter()
 
@@ -33,7 +33,7 @@ async def create_score(
 
             # If no score found with the generated ID, proceed with creation
             if len(result) == 0:
-                neo4j_timestamp = get_neo4j_datetime()
+                neo4j_timestamp = get_neo4j_datetime_iso8601()
 
                 # Cypher query to create a new score node with generated ID
                 cypher_query = """
@@ -65,6 +65,39 @@ async def create_score(
         )
 
 # The final "return" statement is removed since we already return inside the loop
+
+
+# Function to fetch all scores
+
+@router.get("/private/scores")
+async def get_all_scores(token: str = Depends(get_current_user)):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+        uid = token["uid"]
+
+        # Cypher query to fetch all scores for the user using HAS_SCORE relationship
+        cypher_query = """
+        MATCH (u:User {uid: $uid})-[:HAS_SCORE]->(s:Score)
+        RETURN s
+        """
+
+        # Execute the query with user ID
+        result = graph.query(cypher_query, {"uid": uid})
+
+        # Extract scores from the result
+        scores = [record["s"] for record in result]
+
+        # Return a list of all scores for the user
+        return scores
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching scores: {str(e)}"
+        )
 
 
 # Function to delete a score

@@ -47,6 +47,7 @@ async def create_user(user: User = Body(...)):
                     goals: $goals,
                     values: $values,
                     interests: $interests,
+                    scorePercentage: $scorePercentage,
                     tokenCount: $tokenCount,
                     memoryCount: $memoryCount
                 })

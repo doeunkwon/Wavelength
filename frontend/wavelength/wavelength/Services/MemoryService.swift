@@ -19,7 +19,7 @@ class MemoryService {
     func fetchMemories(fid: String) async throws -> [Memory] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {
-            throw UserServiceError.unknownError("Failed to create URL")
+            throw MemoryServiceError.unknownError("Failed to create URL")
         }
 
         var urlRequest = URLRequest(url: url)
@@ -29,11 +29,11 @@ class MemoryService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
         }
 
         do {

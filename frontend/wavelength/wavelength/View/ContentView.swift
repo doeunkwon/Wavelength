@@ -33,7 +33,7 @@ struct ContentView: View {
                 TabView(selection: $selectedTab) {
                     SettingsView()
                         .tag(0)
-                    FriendsView(friends: contentViewModel.friends)
+                    FriendsView(friends: contentViewModel.friends, scoreChartData: contentViewModel.scoreChartData)
                         .tag(1)
                 }
                 .environmentObject(contentViewModel.user)
@@ -45,6 +45,7 @@ struct ContentView: View {
         .onAppear(perform: {
             contentViewModel.fetchUser()
             contentViewModel.fetchFriends()
+            contentViewModel.fetchScores()
         })
     }
 }
