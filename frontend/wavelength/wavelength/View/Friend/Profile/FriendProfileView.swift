@@ -14,7 +14,7 @@ struct FriendProfileView: View {
     @State private var showMemoriesViewSheet = false
     @State private var showProfileFormViewSheet = false
     
-    let friend: Friend
+    @ObservedObject var friend: Friend
     
     var body: some View {
         

@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct EncodedFriend: Encodable {
-    let emoji: String?
-    let color: String? // Assuming color can be represented as a string on the backend
-    let firstName: String?
-    let lastName: String?
-    let goals: String?
-    let interests: [String]?
-    let values: [String]?
-    let scorePercentage: Int?
-    let scoreAnalysis: String?
-    let tokenCount: Int?
-    let memoryCount: Int?
+struct EncodedFriend: Encodable, EncodedProfile {
+    var emoji: String?
+    var color: String? // Assuming color can be represented as a string on the backend
+    var firstName: String?
+    var lastName: String?
+    var goals: String?
+    var interests: [String]?
+    var values: [String]?
+    var scorePercentage: Int?
+    var scoreAnalysis: String?
+    var tokenCount: Int?
+    var memoryCount: Int?
 }

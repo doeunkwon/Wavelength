@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-struct EncodedUser: Encodable {
+struct EncodedUser: Encodable, EncodedProfile {
     var emoji: String?
-    let color: String? // Assuming color can be represented as a string on the backend
-    let firstName: String?
-    let lastName: String?
-    let username: String?
-    let email: String?
-    let password: String? // Consider not including password in the response for security reasons
-    let goals: String?
-    let interests: [String]?
-    let values: [String]?
-    let scorePercentage: Int?
-    let tokenCount: Int?
-    let memoryCount: Int?
+    var color: String? // Assuming color can be represented as a string on the backend
+    var firstName: String?
+    var lastName: String?
+    var username: String?
+    var email: String?
+    var password: String? // Consider not including password in the response for security reasons
+    var goals: String?
+    var interests: [String]?
+    var values: [String]?
+    var scorePercentage: Int?
+    var tokenCount: Int?
+    var memoryCount: Int?
 }
  

@@ -119,36 +119,35 @@ struct ProfileFormView: View {
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 leadingButtonContent
             }, trailing: Button(trailingButtonLabel) {
-                if profileManager.profile is User {
+                if let user = profileManager.profile as? User {
                     Task {
                         do {
-                            var profile = profileManager.profile
-                            var editedProfile = editedProfileManager.profile
+                            let editedProfile = editedProfileManager.profile
                             
                             @StateObject var profileFormViewModel = ProfileFormViewModel(
-                                user: EncodedUser(
-                                    emoji: profile.emoji != editedProfile.emoji ? editedProfile.emoji : nil,
-                                    color: profile.color != editedProfile.color ? editedProfile.color.toHex() : nil,
-                                    firstName: profile.firstName != editedProfile.firstName ? editedProfile.firstName : nil,
-                                    lastName: profile.lastName != editedProfile.lastName ? editedProfile.lastName : nil,
+                                profile: EncodedUser(
+                                    emoji: user.emoji != editedProfile.emoji ? editedProfile.emoji : nil,
+                                    color: user.color != editedProfile.color ? editedProfile.color.toHex() : nil,
+                                    firstName: user.firstName != editedProfile.firstName ? editedProfile.firstName : nil,
+                                    lastName: user.lastName != editedProfile.lastName ? editedProfile.lastName : nil,
                                     username: {
-                                        if let user1 = profile as? User, let user2 = editedProfile as? User {
-                                            return user1.username != user2.username ? user2.username : nil
+                                        if let editedUser = editedProfile as? User {
+                                            return user.username != editedUser.username ? editedUser.username : nil
                                         } else {
                                             return nil
                                         }
                                         }(),
                                     email: {
-                                        if let user1 = profile as? User, let user2 = editedProfile as? User {
-                                            return user1.email != user2.email ? user2.email : nil
+                                        if let editedUser = editedProfile as? User {
+                                            return user.email != editedUser.email ? editedUser.email : nil
                                         } else {
                                             return nil
                                         }
                                         }(),
                                     password: nil,
-                                    goals: profile.goals != editedProfile.goals ? editedProfile.goals : nil,
-                                    interests: profile.interests != tagManager.interests ? tagManager.interests : nil,
-                                    values: profile.values != tagManager.values ? tagManager.values : nil,
+                                    goals: user.goals != editedProfile.goals ? editedProfile.goals : nil,
+                                    interests: user.interests != tagManager.interests ? tagManager.interests : nil,
+                                    values: user.values != tagManager.values ? tagManager.values : nil,
                                     scorePercentage: nil,
                                     tokenCount: nil,
                                     memoryCount: nil))
@@ -157,27 +156,60 @@ struct ProfileFormView: View {
                             
                             DispatchQueue.main.async {
                                 
-                                profile.emoji = editedProfile.emoji
-                                profile.color = editedProfile.color
-                                profile.firstName = editedProfile.firstName
-                                profile.lastName = editedProfile.lastName
-                                if let user1 = profile as? User, let user2 = editedProfile as? User {
-                                    user1.username = user2.username
+                                user.emoji = editedProfile.emoji
+                                user.color = editedProfile.color
+                                user.firstName = editedProfile.firstName
+                                user.lastName = editedProfile.lastName
+                                if let editedUser = editedProfile as? User {
+                                    user.username = editedUser.username
                                 }
-                                if let user1 = profile as? User, let user2 = editedProfile as? User {
-                                    user1.email = user2.email
+                                if let editedUser = editedProfile as? User {
+                                    user.email = editedUser.email
                                 }
-                                profile.goals = editedProfile.goals
-                                profile.interests = tagManager.interests
-                                profile.values = tagManager.values
+                                user.goals = editedProfile.goals
+                                user.interests = tagManager.interests
+                                user.values = tagManager.values
                             }
                         } catch {
                           // Handle errors
                             print("Error updating user: \(error)")
                         }
                     }
-                } else {
-                    print("Friend!")
+                } else if let friend = profileManager.profile as? Friend {
+                    Task {
+                        do {
+                            let editedProfile = editedProfileManager.profile
+                            
+                            @StateObject var profileFormViewModel = ProfileFormViewModel(
+                                profile: EncodedFriend(
+                                    emoji: friend.emoji != editedProfile.emoji ? editedProfile.emoji : nil,
+                                    color: friend.color != editedProfile.color ? editedProfile.color.toHex() : nil,
+                                    firstName: friend.firstName != editedProfile.firstName ? editedProfile.firstName : nil,
+                                    lastName: friend.lastName != editedProfile.lastName ? editedProfile.lastName : nil,
+                                    goals: friend.goals != editedProfile.goals ? editedProfile.goals : nil,
+                                    interests: friend.interests != tagManager.interests ? tagManager.interests : nil,
+                                    values: friend.values != tagManager.values ? tagManager.values : nil,
+                                    scorePercentage: nil,
+                                    tokenCount: nil,
+                                    memoryCount: nil))
+                            
+                            try await profileFormViewModel.updateFriend(fid: friend.fid)
+                            
+                            DispatchQueue.main.async {
+                                
+                                friend.emoji = editedProfile.emoji
+                                friend.color = editedProfile.color
+                                friend.firstName = editedProfile.firstName
+                                friend.lastName = editedProfile.lastName
+                                friend.goals = editedProfile.goals
+                                friend.interests = tagManager.interests
+                                friend.values = tagManager.values
+                            }
+                        } catch {
+                          // Handle errors
+                            print("Error updating user: \(error)")
+                        }
+                    }
                 }
             })
             .background(.wavelengthBackground)

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FriendCardView: View {
     
-    let friend: Friend
+    @ObservedObject var friend: Friend
     
     var body: some View {
         
