@@ -9,6 +9,8 @@ import SwiftUI
 
 struct FriendProfileView: View {
     
+    let friendProfileViewModel = FriendProfileViewModel()
+    
     @Environment(\.dismiss) private var dismiss
     
     @State private var showMemoriesViewSheet = false
@@ -77,7 +79,7 @@ struct FriendProfileView: View {
                 EllipsisButtonView()
             })
             .sheet(isPresented: $showProfileFormViewSheet) {
-                ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.settings.editProfile)
+                ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), trailingButton: TrailingButtonConfig(title: Strings.form.save, action: friendProfileViewModel.completion), navTitle: Strings.settings.editProfile)
                     .interactiveDismissDisabled()
             }
             .background(Color.wavelengthBackground)

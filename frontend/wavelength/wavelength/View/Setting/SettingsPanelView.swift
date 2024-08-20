@@ -11,6 +11,8 @@ struct SettingsPanelView: View {
     
     @EnvironmentObject var user: User
     
+    let settingsPanelViewModel = SettingsPanelViewModel()
+    
     @State private var showProfileFormViewSheet = false
     @State private var showChangePasswordViewSheet = false
     @State private var showConfirmDeleteAlert = false
@@ -21,7 +23,7 @@ struct SettingsPanelView: View {
                 showProfileFormViewSheet.toggle()
             })
             .sheet(isPresented: $showProfileFormViewSheet) {
-                ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.settings.editProfile)
+                ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), trailingButton: TrailingButtonConfig(title: Strings.form.save, action: settingsPanelViewModel.completion), navTitle: Strings.settings.editProfile)
                     .interactiveDismissDisabled()
             }
             DividerLineView()

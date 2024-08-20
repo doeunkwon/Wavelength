@@ -10,11 +10,13 @@ import MCEmojiPicker
 
 struct NewFriendView: View {
     
+    let newFriendViewModel = NewFriendViewModel()
+    
     /// Enter in an arbitrary 'fid' for now. 'fid' will be generated on the backend.
     @StateObject var friend = Friend(fid: "", scorePercentage: 0, scoreAnalysis: "", tokenCount: 0, memoryCount: 0, emoji: "", color: .wavelengthOffWhite, firstName: "", lastName: "", goals: "", interests: [], values: [])
     
     var body: some View {
-        ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.create, navTitle: Strings.friend.newFriend)
+        ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), trailingButton: TrailingButtonConfig(title: Strings.form.save, action: newFriendViewModel.completion), navTitle: Strings.friend.newFriend)
     }
 }
 

@@ -18,6 +18,9 @@ async def create_friend(
         return HTTPException(status_code=401, detail="Unauthorized access")
 
     try:
+
+        uid = token["uid"]
+
         while True:
             # Generate a new UUID for the friend ID
             new_fid = str(uuid.uuid4())
@@ -59,7 +62,20 @@ async def create_friend(
                 )
                 # Assuming a single friend is created (remove the loop) <- (July 20, 2024: what does "remove the loop" mean?)
                 created_friend = result[0]["f"]
-                return created_friend  # Return the created user here
+
+                try:
+
+                    cypher_query = """
+                    MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid})
+                    CREATE (user)-[:FRIENDS_WITH]->(friend)
+                    """
+                    graph.query(cypher_query, {
+                                "uid": uid, "fid": created_friend["fid"]})
+                    return {"message": "Friendship successfully created."}
+
+                except Exception as e:
+                    raise HTTPException(
+                        status_code=404, detail="Friend not found.")
             else:
                 # Handle duplicate user ID case (optional)
                 raise HTTPException(

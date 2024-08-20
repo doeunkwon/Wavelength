@@ -66,4 +66,24 @@ class ProfileFormViewModel: ObservableObject {
             throw error // Re-throw the error for caller handling
         }
     }
+    
+    func createFriend() async throws {
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        do {
+            if let friend = profile as? EncodedFriend {
+                try await friendService.createFriend(newData: friend)
+                updateError = nil
+                print("Friend profile created successfully!")
+            }
+        } catch {
+            if let encodingError = error as? EncodingError {
+                updateError = .encodingError(encodingError)
+            } else {
+                updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
+    }
 }

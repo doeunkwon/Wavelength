@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EncodedFriend: Encodable, EncodedProfile {
+    var fid: String?
     var emoji: String?
     var color: String? // Assuming color can be represented as a string on the backend
     var firstName: String?
