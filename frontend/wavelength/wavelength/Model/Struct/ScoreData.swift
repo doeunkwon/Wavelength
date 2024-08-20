@@ -8,16 +8,32 @@
 import SwiftUI
 
 struct ScoreData {
-    
     var id = UUID()
-    var date: Date
+    var entry: Int
     var value: Double
 }
 
 func prepareChartData(from scores: [Score]) -> [ScoreData] {
+    let maxEntries = 20
+    let sortedScores = scores.sorted { $0.timestamp < $1.timestamp }
+
     var chartData = [ScoreData]()
-    for score in scores {
-        chartData.append(ScoreData(date: score.timestamp, value: Double(score.percentage)))
+    var entryNumber = 1
+
+    // Take the last 20 scores if there are more than 20
+    let scoresToProcess = sortedScores.count > maxEntries ? sortedScores.suffix(maxEntries) : sortedScores
+
+    // Fill with zeros if there are less than 20 scores
+    for _ in 0..<maxEntries - scoresToProcess.count {
+        chartData.append(ScoreData(entry: entryNumber, value: 0))
+        entryNumber += 1
     }
+
+    // Add actual scores
+    for score in scoresToProcess {
+        chartData.append(ScoreData(entry: entryNumber, value: Double(score.percentage)))
+        entryNumber += 1
+    }
+
     return chartData
 }

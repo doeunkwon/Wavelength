@@ -62,10 +62,10 @@ struct DashboardView: View {
             Chart {
                 ForEach(data, id: \.id) { item in
                     LineMark(
-                        x: .value("Weekday", item.date),
-                        y: .value("Count", item.value)
+                        x: .value("", item.entry),
+                        y: .value("", item.value)
                     )
-                    .interpolationMethod(.catmullRom(alpha: 0.5))
+                    .interpolationMethod(.monotone)
                     .foregroundStyle(intToColor(value: scorePercentage))
                     .shadow(
                         color: ShadowStyle.glow(intToColor(value: scorePercentage)).color,
@@ -75,8 +75,12 @@ struct DashboardView: View {
                 }
             }
             .chartYScale(domain: (data.min(by: { $0.value < $1.value })?.value ?? 0)...(data.max(by: { $0.value < $1.value })?.value ?? 0))
-            .chartYAxis {
-                AxisMarks(position: .leading) { _ in
+            .chartYAxis {AxisMarks(values: .automatic) {
+                    AxisValueLabel()
+                    .foregroundStyle(.wavelengthGrey)
+
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 1))
+                        .foregroundStyle(.wavelengthLightGrey)
                 }
             }
             .chartXAxis {
@@ -84,9 +88,7 @@ struct DashboardView: View {
                 }
             }
             .frame(height:Frame.dashboardBottom)
-            .padding(.horizontal, Padding.large)
-            .padding(.bottom, Padding.large)
-            .padding(.top, Padding.xlarge)
+            .padding(Padding.large)
             
         }
         .overlay( /// apply a rounded border

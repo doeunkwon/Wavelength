@@ -41,13 +41,26 @@ enum Mock {
     // MARK: - Score
     
     static let scoreChartData: [ScoreData] = [
-        ScoreData(date: Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 10))!, value: 50),
-        ScoreData(date: Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 11))!, value: 52),
-        ScoreData(date: Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 12))!, value: 52),
-        ScoreData(date: Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 13))!, value: 56),
-        ScoreData(date: Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 14))!, value: 55),
-        ScoreData(date: Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 15))!, value: 58),
-        ScoreData(date: Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 16))!, value: 60)
+        ScoreData(entry: 1, value: 50),
+        ScoreData(entry: 2, value: 52),
+        ScoreData(entry: 3, value: 52),
+        ScoreData(entry: 4, value: 56),
+        ScoreData(entry: 5, value: 55),
+        ScoreData(entry: 6, value: 58),
+        ScoreData(entry: 7, value: 60),
+        ScoreData(entry: 8, value: 60),
+        ScoreData(entry: 9, value: 60),
+        ScoreData(entry: 10, value: 60),
+        ScoreData(entry: 11, value: 60),
+        ScoreData(entry: 12, value: 60),
+        ScoreData(entry: 13, value: 60),
+        ScoreData(entry: 14, value: 60),
+        ScoreData(entry: 15, value: 60),
+        ScoreData(entry: 16, value: 60),
+        ScoreData(entry: 17, value: 60),
+        ScoreData(entry: 18, value: 60),
+        ScoreData(entry: 19, value: 60),
+        ScoreData(entry: 20, value: 60)
     ]
 
 }

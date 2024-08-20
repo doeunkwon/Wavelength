@@ -23,8 +23,8 @@ enum Frame {
     static let medium: CGFloat = 80
     static let small: CGFloat = 40
     static let xsmall: CGFloat = 35
-    static let dashboardTop: CGFloat = 60
-    static let dashboardBottom: CGFloat = 100
+    static let dashboardTop: CGFloat = 65
+    static let dashboardBottom: CGFloat = 110
     static let friendCard: CGFloat = UIScreen.main.bounds.width / 2 - (Padding.medium * 2) - (Padding.large + (Padding.large / 2))
     static let friendCardBackground: CGFloat = UIScreen.main.bounds.width / 2 - (Padding.large + (Padding.large / 2))
     static let memoryCell: CGFloat = 100
