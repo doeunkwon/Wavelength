@@ -14,9 +14,10 @@ struct FriendProfileView: View {
     @State private var showMemoriesViewSheet = false
     @State private var showProfileFormViewSheet = false
     
-    let friend: Friend
+    @ObservedObject var friend: Friend
     
     var body: some View {
+        
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: Padding.xlarge) {
@@ -35,7 +36,7 @@ struct FriendProfileView: View {
                         x: ShadowStyle.subtle.x,
                         y: ShadowStyle.subtle.y)
                     .fullScreenCover(isPresented: $showMemoriesViewSheet) {
-                        MemoriesView(memoryCount: friend.memoryCount, memories: Mock.memories)
+                        MemoriesView(fid: friend.fid)
                     }
                     
                     BasicFieldView(content: friend.goals)

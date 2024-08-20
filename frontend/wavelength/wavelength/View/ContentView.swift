@@ -9,30 +9,44 @@ import SwiftUI
 
 struct ContentView: View {
     
+    //    @StateObject var user = Mock.user
+    // let friends = Mock.friends
+    
+    @StateObject private var contentViewModel = ContentViewModel()
+    
     @State var selectedTab = 1
     
-    @StateObject var user = Mock.user
-    
-    let friends = Mock.friends
-    
     var body: some View {
+        
         NavigationStack {
-//            FriendsView(user: user, friends: friends)
-            TabView(selection: $selectedTab) {
-                SettingsView()
-                    .tag(0)
-                FriendsView(friends: friends)
-                    .tag(1)
-//                ChatView()
-//                    .tabItem { Image(systemName: Strings.icons.bubble) }
-//                    .tag(2)
+            if contentViewModel.user.uid.isEmpty {
+                
+                VStack {
+                    Spacer()
+                    EmptyStateView(text: Strings.error.networkError, icon: Strings.icons.icloudslash)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.wavelengthBackground)
+                
+            } else {
+                TabView(selection: $selectedTab) {
+                    SettingsView()
+                        .tag(0)
+                    FriendsView(friends: contentViewModel.friends, scoreChartData: contentViewModel.scoreChartData)
+                        .tag(1)
+                }
+                .environmentObject(contentViewModel.user)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .background(.wavelengthBackground)
+                .ignoresSafeArea()
             }
-            .environmentObject(user)
-//            .accentColor(Color.wavelengthPurple)
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .background(.wavelengthBackground)
-            .ignoresSafeArea()
         }
+        .onAppear(perform: {
+            contentViewModel.getUser()
+            contentViewModel.getFriends()
+            contentViewModel.getScores()
+        })
     }
 }
 

@@ -26,17 +26,22 @@ class User(BaseModel):
     password: str  # Hash passwords before storing
     goals: str
     interests: List[str]
+    values: List[str]
+    scorePercentage: int
     tokenCount: int
     memoryCount: int
 
 
 class Friend(BaseModel):
     emoji: str
+    scorePercentage: int
+    scoreAnalysis: str
     color: str
     firstName: str
     lastName: str
     goals: str
     interests: List[str]
+    values: List[str]
     tokenCount: int
     memoryCount: int
 
