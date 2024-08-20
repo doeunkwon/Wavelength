@@ -24,7 +24,7 @@ struct DashboardView: View {
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
                         Text("\(scorePercentage)%")
-                            .font(.system(size: Fonts.subtitle))
+                            .font(.system(size: Fonts.subtitle, weight: .medium))
                             .foregroundColor(intToColor(value: scorePercentage))
                     }
                     .padding(Padding.medium)
@@ -37,7 +37,7 @@ struct DashboardView: View {
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
                         Text((tokenCount > 0 ? "+" : "") + String(tokenCount))
-                            .font(.system(size: Fonts.subtitle))
+                            .font(.system(size: Fonts.subtitle, weight: .medium))
                             .foregroundColor(.wavelengthTokenOrange)
                     }
                     .padding(Padding.medium)
@@ -50,7 +50,7 @@ struct DashboardView: View {
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
                         Text(String(memoryCount))
-                            .font(.system(size: Fonts.subtitle))
+                            .font(.system(size: Fonts.subtitle, weight: .medium))
                             .foregroundColor(.wavelengthText)
                     }
                     .padding(Padding.medium)
@@ -65,6 +65,7 @@ struct DashboardView: View {
                         x: .value("", item.entry),
                         y: .value("", item.value)
                     )
+                    .lineStyle(StrokeStyle(lineWidth: 2))
                     .interpolationMethod(.monotone)
                     .foregroundStyle(intToColor(value: scorePercentage))
                     .shadow(

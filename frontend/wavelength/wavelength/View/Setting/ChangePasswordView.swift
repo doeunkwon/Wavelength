@@ -39,6 +39,7 @@ struct ChangePasswordView: View {
                 print("Save pressed!")
             })
             .padding(Padding.large)
+            .padding(.top, Padding.nudge)
             .background(.wavelengthBackground)
             .onTapGesture {
                 hideKeyboard()

@@ -27,14 +27,14 @@ struct MemoryView: View {
                         Spacer()
                         
                         Text((memory.tokens > 0 ? "+" : "") + "\(memory.tokens) tokens")
-                            .font(.system(size: Fonts.body))
+                            .font(.system(size: Fonts.body, weight: .medium))
                             .foregroundStyle(.wavelengthTokenOrange)
                     }
                     
                     DividerLineView()
 
                     Text(memory.title)
-                        .font(.system(size: Fonts.body))
+                        .font(.system(size: Fonts.body, weight: .medium))
                         .foregroundStyle(.wavelengthText)
                     
                     DividerLineView()

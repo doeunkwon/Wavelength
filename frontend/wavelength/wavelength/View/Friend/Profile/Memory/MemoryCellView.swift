@@ -30,7 +30,7 @@ struct MemoryCellView: View {
                     Spacer()
                     
                     Text((memory.tokens > 0 ? "+" : "") + String(memory.tokens))
-                        .font(.system(size: Fonts.body))
+                        .font(.system(size: Fonts.body, weight: .medium))
                         .foregroundColor(.wavelengthTokenOrange)
                 }
                 
