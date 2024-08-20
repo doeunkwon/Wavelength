@@ -88,7 +88,6 @@ class FriendService {
             throw FriendServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
         }
 
-        // Handle success response (optional) - You might not need to decode anything on success
         print("Friend updated successfully!")
     }
     

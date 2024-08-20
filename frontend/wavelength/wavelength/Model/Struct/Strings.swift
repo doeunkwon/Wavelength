@@ -28,7 +28,6 @@ struct Strings {
         static let cancel: String = "Cancel"
         static let settings: String = "Settings"
         static let yourCircle: String = "Your circle"
-        static let newFriend: String = "New friend"
         
     }
     

@@ -11,7 +11,7 @@ struct MemoryView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    let memory: Memory
+    @ObservedObject var memory: Memory
     
     var body: some View {
         NavigationStack {

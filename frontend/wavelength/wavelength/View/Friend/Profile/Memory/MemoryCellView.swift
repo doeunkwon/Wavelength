@@ -11,7 +11,7 @@ struct MemoryCellView: View {
     
     @State private var showMemoryViewModal = false
     
-    let memory: Memory
+    @ObservedObject var memory: Memory
     
     var body: some View {
         Button {

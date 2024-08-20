@@ -227,5 +227,5 @@ struct ProfileFormView: View {
 
 
 #Preview {
-    ProfileFormView(profileManager: ProfileManager(profile: Mock.user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.general.newFriend)
+    ProfileFormView(profileManager: ProfileManager(profile: Mock.user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.friend.newFriend)
 }
