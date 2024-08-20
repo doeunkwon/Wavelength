@@ -12,11 +12,11 @@ class MemoriesViewModel: ObservableObject {
 
     let memoryService = MemoryService()
     
-    func fetchMemories(fid: String) {
+    func getMemories(fid: String) {
         print("FETCHING MEMORIES")
         Task {
             do {
-                let fetchedMemories = try await memoryService.fetchMemories(fid: fid)
+                let fetchedMemories = try await memoryService.getMemories(fid: fid)
                 DispatchQueue.main.async {
                     self.memories = fetchedMemories
                 }

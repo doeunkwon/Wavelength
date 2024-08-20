@@ -31,11 +31,11 @@ class ContentViewModel: ObservableObject {
     let friendService = FriendService()
     let scoreService = ScoreService()
 
-    func fetchUser() {
+    func getUser() {
         print("FETCHING USER")
         Task {
             do {
-                let fetchedUser = try await userService.fetchUser()
+                let fetchedUser = try await userService.getUser()
                 DispatchQueue.main.async {
                     self.user = fetchedUser
                 }
@@ -46,11 +46,11 @@ class ContentViewModel: ObservableObject {
         }
     }
     
-    func fetchFriends() {
+    func getFriends() {
         print("FETCHING FRIENDS")
         Task {
             do {
-                let fetchedFriends = try await friendService.fetchFriends()
+                let fetchedFriends = try await friendService.getFriends()
                 DispatchQueue.main.async {
                     self.friends = fetchedFriends
                 }
@@ -61,11 +61,11 @@ class ContentViewModel: ObservableObject {
         }
     }
     
-    func fetchScores() {
+    func getScores() {
         print("FETCHING SCORES")
         Task {
             do {
-                let fetchedScores = try await scoreService.fetchScores()
+                let fetchedScores = try await scoreService.getScores()
                 DispatchQueue.main.async {
                     self.scores = fetchedScores
                     self.scoreChartData = prepareChartData(from: fetchedScores)

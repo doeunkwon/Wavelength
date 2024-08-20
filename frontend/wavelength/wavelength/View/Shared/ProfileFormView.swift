@@ -119,7 +119,66 @@ struct ProfileFormView: View {
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 leadingButtonContent
             }, trailing: Button(trailingButtonLabel) {
-                print("Create memory tapped!")
+                if profileManager.profile is User {
+                    Task {
+                        do {
+                            var profile = profileManager.profile
+                            var editedProfile = editedProfileManager.profile
+                            
+                            @StateObject var profileFormViewModel = ProfileFormViewModel(
+                                user: EncodedUser(
+                                    emoji: profile.emoji != editedProfile.emoji ? editedProfile.emoji : nil,
+                                    color: profile.color != editedProfile.color ? editedProfile.color.toHex() : nil,
+                                    firstName: profile.firstName != editedProfile.firstName ? editedProfile.firstName : nil,
+                                    lastName: profile.lastName != editedProfile.lastName ? editedProfile.lastName : nil,
+                                    username: {
+                                        if let user1 = profile as? User, let user2 = editedProfile as? User {
+                                            return user1.username != user2.username ? user2.username : nil
+                                        } else {
+                                            return nil
+                                        }
+                                        }(),
+                                    email: {
+                                        if let user1 = profile as? User, let user2 = editedProfile as? User {
+                                            return user1.email != user2.email ? user2.email : nil
+                                        } else {
+                                            return nil
+                                        }
+                                        }(),
+                                    password: nil,
+                                    goals: profile.goals != editedProfile.goals ? editedProfile.goals : nil,
+                                    interests: profile.interests != tagManager.interests ? tagManager.interests : nil,
+                                    values: profile.values != tagManager.values ? tagManager.values : nil,
+                                    scorePercentage: nil,
+                                    tokenCount: nil,
+                                    memoryCount: nil))
+                            
+                            try await profileFormViewModel.updateUser()
+                            
+                            DispatchQueue.main.async {
+                                
+                                profile.emoji = editedProfile.emoji
+                                profile.color = editedProfile.color
+                                profile.firstName = editedProfile.firstName
+                                profile.lastName = editedProfile.lastName
+                                if let user1 = profile as? User, let user2 = editedProfile as? User {
+                                    user1.username = user2.username
+                                }
+                                if let user1 = profile as? User, let user2 = editedProfile as? User {
+                                    user1.email = user2.email
+                                }
+                                profile.goals = editedProfile.goals
+                                profile.interests = tagManager.interests
+                                profile.values = tagManager.values
+                            }
+                        } catch {
+                          // Handle errors
+                            print("Error updating user: \(error)")
+                        }
+                    }
+                } else {
+                    print("Friend!")
+                }
             })
             .background(.wavelengthBackground)
             .onTapGesture {

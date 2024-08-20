@@ -16,7 +16,7 @@ enum ScoreServiceError: Error {
 
 class ScoreService {
     
-    func fetchScores() async throws -> [Score] {
+    func getScores() async throws -> [Score] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores") else {
             throw ScoreServiceError.unknownError("Failed to create URL")

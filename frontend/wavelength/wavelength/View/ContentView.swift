@@ -43,9 +43,9 @@ struct ContentView: View {
             }
         }
         .onAppear(perform: {
-            contentViewModel.fetchUser()
-            contentViewModel.fetchFriends()
-            contentViewModel.fetchScores()
+            contentViewModel.getUser()
+            contentViewModel.getFriends()
+            contentViewModel.getScores()
         })
     }
 }

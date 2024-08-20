@@ -16,7 +16,7 @@ enum MemoryServiceError: Error {
 
 class MemoryService {
     
-    func fetchMemories(fid: String) async throws -> [Memory] {
+    func getMemories(fid: String) async throws -> [Memory] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {
             throw MemoryServiceError.unknownError("Failed to create URL")

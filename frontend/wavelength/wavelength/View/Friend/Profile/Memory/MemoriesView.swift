@@ -89,7 +89,7 @@ struct MemoriesView: View {
             .background(.wavelengthBackground)
         }
         .onAppear(perform: {
-            memoriesViewModel.fetchMemories(fid: fid)
+            memoriesViewModel.getMemories(fid: fid)
         })
     }
 }

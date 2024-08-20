@@ -16,7 +16,7 @@ enum FriendServiceError: Error {
 
 class FriendService {
     
-    func fetchFriends() async throws -> [Friend] {
+    func getFriends() async throws -> [Friend] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
             throw FriendServiceError.unknownError("Failed to create URL")
