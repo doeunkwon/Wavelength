@@ -77,7 +77,7 @@ struct FriendProfileView: View {
                 EllipsisButtonView()
             })
             .sheet(isPresented: $showProfileFormViewSheet) {
-                ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+                ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.settings.editProfile)
                     .interactiveDismissDisabled()
             }
             .background(Color.wavelengthBackground)

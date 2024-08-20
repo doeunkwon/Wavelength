@@ -10,7 +10,10 @@ import SwiftUI
 struct SettingsView: View {
     
     var body: some View {
-        VStack {
+        VStack (alignment: .leading, spacing: Padding.large) {
+            Text(Strings.general.settings)
+                .font(.system(size: Fonts.title, weight: .semibold))
+                .foregroundStyle(.wavelengthText)
             SettingsPanelView()
                 .cornerRadius(CornerRadius.medium)
                 .shadow(
@@ -20,7 +23,7 @@ struct SettingsView: View {
                     y: ShadowStyle.standard.y)
             Spacer()
         }
-        .padding(Padding.large)
+        .padding(.horizontal, Padding.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.wavelengthBackground)
     }

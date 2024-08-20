@@ -20,7 +20,7 @@ struct DashboardView: View {
             HStack(spacing: 0) {
                 HStack {
                     VStack(alignment: .leading, spacing: Padding.small) {
-                        Text(Strings.dashboard.score)
+                        Text(Strings.dashboard.overall)
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
                         Text("\(scorePercentage)%")

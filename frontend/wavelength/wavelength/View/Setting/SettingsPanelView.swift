@@ -21,7 +21,7 @@ struct SettingsPanelView: View {
                 showProfileFormViewSheet.toggle()
             })
             .sheet(isPresented: $showProfileFormViewSheet) {
-                ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+                ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.settings.editProfile)
                     .interactiveDismissDisabled()
             }
             DividerLineView()

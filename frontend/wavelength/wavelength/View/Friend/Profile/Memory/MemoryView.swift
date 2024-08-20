@@ -51,7 +51,7 @@ struct MemoryView: View {
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 DownButtonView()
             }, trailing: Menu {
-                NavigationLink(destination: MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), trailingButtonLabel: Strings.form.save)) {
+                NavigationLink(destination: MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.memory.editMemory)) {
                     Label("Edit memory", systemImage: Strings.icons.pencil)
                 }
                 Button(role: .destructive, action: {print("Delete tapped!")}) {

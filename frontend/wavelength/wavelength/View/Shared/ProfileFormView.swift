@@ -18,8 +18,9 @@ struct ProfileFormView: View {
     
     let leadingButtonContent: AnyView
     let trailingButtonLabel: String
+    let navTitle: String
     
-    init(profileManager: ProfileManager, leadingButtonContent: AnyView, trailingButtonLabel: String) {
+    init(profileManager: ProfileManager, leadingButtonContent: AnyView, trailingButtonLabel: String, navTitle: String) {
         self.profileManager = profileManager
         _tagManager = StateObject(wrappedValue: TagManager(values: profileManager.profile.values, interests: profileManager.profile.interests))
         _editedProfileManager = if let user = profileManager.profile as? User {
@@ -31,6 +32,7 @@ struct ProfileFormView: View {
         }
         self.leadingButtonContent = leadingButtonContent
         self.trailingButtonLabel = trailingButtonLabel
+        self.navTitle = navTitle
     }
     
     var body: some View {
@@ -212,6 +214,8 @@ struct ProfileFormView: View {
                     }
                 }
             })
+            .navigationTitle(navTitle)
+            .navigationBarTitleDisplayMode(.inline)
             .background(.wavelengthBackground)
             .onTapGesture {
                 hideKeyboard()
@@ -223,5 +227,5 @@ struct ProfileFormView: View {
 
 
 #Preview {
-    ProfileFormView(profileManager: ProfileManager(profile: Mock.user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save)
+    ProfileFormView(profileManager: ProfileManager(profile: Mock.user), leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.general.newFriend)
 }

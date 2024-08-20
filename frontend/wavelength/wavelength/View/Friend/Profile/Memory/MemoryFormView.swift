@@ -15,13 +15,15 @@ struct MemoryFormView: View {
     
     let leadingButtonContent: AnyView
     let trailingButtonLabel: String
+    let navTitle: String
     
     @ObservedObject var memory: Memory
     @StateObject var editedMemory: Memory
     
-    init(memory: Memory, leadingButtonContent: AnyView, trailingButtonLabel: String) {
+    init(memory: Memory, leadingButtonContent: AnyView, trailingButtonLabel: String, navTitle: String) {
         self.leadingButtonContent = leadingButtonContent
         self.trailingButtonLabel = trailingButtonLabel
+        self.navTitle = navTitle
         self.memory = memory
         _editedMemory = StateObject(wrappedValue: Memory(mid: memory.mid, date: memory.date, title: memory.title, content: memory.content, tokens: memory.tokens))
     }
@@ -109,6 +111,8 @@ struct MemoryFormView: View {
                 }
                 .padding(.vertical, Padding.large)
             }
+            .navigationTitle(navTitle)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 leadingButtonContent
@@ -125,5 +129,5 @@ struct MemoryFormView: View {
 }
 
 #Preview {
-    MemoryFormView(memory: Mock.memory1, leadingButtonContent: AnyView(LeftButtonView()), trailingButtonLabel: Strings.form.save)
+    MemoryFormView(memory: Mock.memory1, leadingButtonContent: AnyView(LeftButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.memory.newMemory)
 }

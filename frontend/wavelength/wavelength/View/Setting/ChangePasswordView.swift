@@ -30,6 +30,8 @@ struct ChangePasswordView: View {
                 
                 Spacer()
             }
+            .navigationTitle(Strings.settings.changePassword)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 DownButtonView()

@@ -26,6 +26,9 @@ struct Strings {
         static let addAValue: String = "Add a value"
         static let addAnInterest: String = "Add an interest"
         static let cancel: String = "Cancel"
+        static let settings: String = "Settings"
+        static let yourCircle: String = "Your circle"
+        static let newFriend: String = "New friend"
         
     }
     
@@ -60,7 +63,7 @@ struct Strings {
     
     struct dashboard {
         
-        static let score: String = "Score"
+        static let overall: String = "Overall"
         static let tokens: String = "Tokens"
         static let memories: String = "Memories"
         
@@ -83,6 +86,7 @@ struct Strings {
         
         static let memories: String = "memories"
         static let newMemory: String = "New memory"
+        static let editMemory: String = "Edit memory"
         static let title: String = "Title"
         static let content: String = "Content"
         static let date: String = "Date"

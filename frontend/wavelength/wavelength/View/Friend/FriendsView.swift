@@ -38,9 +38,16 @@ struct FriendsView: View {
                 } else {
                     
                     ScrollView(.vertical, showsIndicators: false) {
-                        VStack(spacing: 0) {
+                        VStack(alignment: .leading, spacing: 0) {
+                            
+                            Text(Strings.general.yourCircle)
+                                .font(.system(size: Fonts.title, weight: .semibold))
+                                .foregroundStyle(.wavelengthText)
+                                .padding(.horizontal, Padding.large)
+                                .padding(.bottom, Padding.large)
+                            
+                            
                             DashboardView(scorePercentage: user.scorePercentage, tokenCount: user.tokenCount, memoryCount: user.memoryCount, data: scoreChartData)
-                            .padding(.top, Padding.large)
                             .padding(.horizontal, Padding.large)
                             
                             LazyVStack(alignment: .leading, spacing: Padding.large) {
