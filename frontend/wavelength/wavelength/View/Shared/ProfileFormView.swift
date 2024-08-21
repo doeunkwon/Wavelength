@@ -17,10 +17,10 @@ struct ProfileFormView: View {
     @StateObject private var tagManager: TagManager
     
     let leadingButtonContent: AnyView
-    let trailingButton: TrailingButtonConfig
+    let buttonConfig: ProfileFormTrailingButtonConfig
     let navTitle: String
     
-    init(profileManager: ProfileManager, leadingButtonContent: AnyView, trailingButton: TrailingButtonConfig, navTitle: String) {
+    init(profileManager: ProfileManager, leadingButtonContent: AnyView, buttonConfig: ProfileFormTrailingButtonConfig, navTitle: String) {
         self.profileManager = profileManager
         _tagManager = StateObject(wrappedValue: TagManager(values: profileManager.profile.values, interests: profileManager.profile.interests))
         _editedProfileManager = if let user = profileManager.profile as? User {
@@ -31,7 +31,7 @@ struct ProfileFormView: View {
             StateObject(wrappedValue: ProfileManager(profile: profileManager.profile))
         }
         self.leadingButtonContent = leadingButtonContent
-        self.trailingButton = trailingButton
+        self.buttonConfig = buttonConfig
         self.navTitle = navTitle
     }
     
@@ -120,9 +120,9 @@ struct ProfileFormView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 leadingButtonContent
-            }, trailing: Button(action: { trailingButton.action(profileManager, editedProfileManager, tagManager)
+            }, trailing: Button(action: { buttonConfig.action(profileManager, editedProfileManager, tagManager)
             }) {
-                Text(trailingButton.title)
+                Text(buttonConfig.title)
             })
             .navigationTitle(navTitle)
             .navigationBarTitleDisplayMode(.inline)
