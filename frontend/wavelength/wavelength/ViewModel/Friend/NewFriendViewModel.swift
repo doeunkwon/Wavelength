@@ -7,12 +7,36 @@
 
 import SwiftUI
 
-class NewFriendViewModel {
+class NewFriendViewModel: ObservableObject {
+    
+    @Published var encodedFriend = EncodedFriend()
+    @Published var isLoading = false
+    @Published var updateError: ProfileUpdateError?
+    
+    private let friendService = FriendService()
     
     @Binding private var friends: [Friend]
     
     init(friends: Binding<[Friend]>) {
         self._friends = friends
+    }
+    
+    func createFriend() async throws {
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        do {
+            try await friendService.createFriend(newData: encodedFriend)
+            updateError = nil
+            print("Friend profile created successfully!")
+        } catch {
+            if let encodingError = error as? EncodingError {
+                updateError = .encodingError(encodingError)
+            } else {
+                updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
     }
     
     func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) {
@@ -24,23 +48,20 @@ class NewFriendViewModel {
                     let editedProfile = editedProfileManager.profile
                     let uuid = UUID().uuidString
                     
-                    @StateObject var profileFormViewModel = ProfileFormViewModel(
-                        profile: EncodedFriend(
-                            fid: uuid,
-                            emoji: editedProfile.emoji,
-                            color: editedProfile.color.toHex(),
-                            firstName: editedProfile.firstName,
-                            lastName: editedProfile.lastName,
-                            goals: editedProfile.goals,
-                            interests: tagManager.interests,
-                            values: tagManager.values,
-                            scorePercentage: 50,
-                            scoreAnalysis: "",
-                            tokenCount: 0,
-                            memoryCount: 0)
-                    )
+                    encodedFriend.fid = uuid
+                    encodedFriend.emoji = editedProfile.emoji
+                    encodedFriend.color = editedProfile.color.toHex()
+                    encodedFriend.firstName = editedProfile.firstName
+                    encodedFriend.lastName = editedProfile.lastName
+                    encodedFriend.goals = editedProfile.goals
+                    encodedFriend.interests = tagManager.interests
+                    encodedFriend.values = tagManager.values
+                    encodedFriend.scorePercentage = 50
+                    encodedFriend.scoreAnalysis = ""
+                    encodedFriend.tokenCount = 0
+                    encodedFriend.memoryCount = 0
                     
-                    try await profileFormViewModel.createFriend()
+                    try await createFriend()
                     
                     DispatchQueue.main.async {
                         

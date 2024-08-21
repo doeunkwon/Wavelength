@@ -7,7 +7,31 @@
 
 import SwiftUI
 
-class FriendProfileViewModel {
+class FriendProfileViewModel: ObservableObject {
+    
+    @Published var encodedFriend = EncodedFriend()
+    @Published var isLoading = false
+    @Published var updateError: ProfileUpdateError?
+    
+    private let friendService = FriendService()
+    
+    func updateFriend(fid: String) async throws {
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        do {
+            try await friendService.updateFriend(fid: fid, newData: encodedFriend)
+            updateError = nil
+            print("Friend profile updated successfully!")
+        } catch {
+            if let encodingError = error as? EncodingError {
+                updateError = .encodingError(encodingError)
+            } else {
+                updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
+    }
     
     func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) {
             
@@ -16,17 +40,15 @@ class FriendProfileViewModel {
                 do {
                     let editedProfile = editedProfileManager.profile
                     
-                    @StateObject var profileFormViewModel = ProfileFormViewModel(
-                        profile: EncodedFriend(
-                            emoji: friend.emoji != editedProfile.emoji ? editedProfile.emoji : nil,
-                            color: friend.color != editedProfile.color ? editedProfile.color.toHex() : nil,
-                            firstName: friend.firstName != editedProfile.firstName ? editedProfile.firstName : nil,
-                            lastName: friend.lastName != editedProfile.lastName ? editedProfile.lastName : nil,
-                            goals: friend.goals != editedProfile.goals ? editedProfile.goals : nil,
-                            interests: friend.interests != tagManager.interests ? tagManager.interests : nil,
-                            values: friend.values != tagManager.values ? tagManager.values : nil))
+                    encodedFriend.emoji = friend.emoji != editedProfile.emoji ? editedProfile.emoji : nil
+                    encodedFriend.color = friend.color != editedProfile.color ? editedProfile.color.toHex() : nil
+                    encodedFriend.firstName = friend.firstName != editedProfile.firstName ? editedProfile.firstName : nil
+                    encodedFriend.lastName = friend.lastName != editedProfile.lastName ? editedProfile.lastName : nil
+                    encodedFriend.goals = friend.goals != editedProfile.goals ? editedProfile.goals : nil
+                    encodedFriend.interests = friend.interests != tagManager.interests ? tagManager.interests : nil
+                    encodedFriend.values = friend.values != tagManager.values ? tagManager.values : nil
                     
-                    try await profileFormViewModel.updateFriend(fid: friend.fid)
+                    try await updateFriend(fid: friend.fid)
                     
                     DispatchQueue.main.async {
                         

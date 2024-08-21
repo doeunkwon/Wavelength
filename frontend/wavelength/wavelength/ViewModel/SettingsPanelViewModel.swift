@@ -7,60 +7,83 @@
 
 import SwiftUI
 
-class SettingsPanelViewModel {
+class SettingsPanelViewModel: ObservableObject {
+    
+    @Published var encodedUser = EncodedUser()
+    @Published var isLoading = false
+    @Published var updateError: ProfileUpdateError?
+
+    private let userService = UserService()
+    
+    func updateUser() async throws {
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        do {
+            try await userService.updateUser(newData: encodedUser)
+            updateError = nil
+            print("User profile updated successfully!")
+        } catch {
+            if let encodingError = error as? EncodingError {
+                updateError = .encodingError(encodingError)
+            } else {
+                updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
+    }
     
     func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) {
-            if let user = profileManager.profile as? User {
-                Task {
-                    do {
-                        let editedProfile = editedProfileManager.profile
-                        
-                        @StateObject var profileFormViewModel = ProfileFormViewModel(
-                            profile: EncodedUser(
-                                emoji: user.emoji != editedProfile.emoji ? editedProfile.emoji : nil,
-                                color: user.color != editedProfile.color ? editedProfile.color.toHex() : nil,
-                                firstName: user.firstName != editedProfile.firstName ? editedProfile.firstName : nil,
-                                lastName: user.lastName != editedProfile.lastName ? editedProfile.lastName : nil,
-                                username: {
-                                    if let editedUser = editedProfile as? User {
-                                        return user.username != editedUser.username ? editedUser.username : nil
-                                    } else {
-                                        return nil
-                                    }
-                                    }(),
-                                email: {
-                                    if let editedUser = editedProfile as? User {
-                                        return user.email != editedUser.email ? editedUser.email : nil
-                                    } else {
-                                        return nil
-                                    }
-                                    }(),
-                                goals: user.goals != editedProfile.goals ? editedProfile.goals : nil,
-                                interests: user.interests != tagManager.interests ? tagManager.interests : nil,
-                                values: user.values != tagManager.values ? tagManager.values : nil))
-                        
-                        try await profileFormViewModel.updateUser()
-                        
-                        DispatchQueue.main.async {
-                            
-                            user.emoji = editedProfile.emoji
-                            user.color = editedProfile.color
-                            user.firstName = editedProfile.firstName
-                            user.lastName = editedProfile.lastName
-                            if let editedUser = editedProfile as? User {
-                                user.username = editedUser.username
-                            }
-                            if let editedUser = editedProfile as? User {
-                                user.email = editedUser.email
-                            }
-                            user.goals = editedProfile.goals
-                            user.interests = tagManager.interests
-                            user.values = tagManager.values
+        if let user = profileManager.profile as? User {
+            Task {
+                do {
+                    let editedProfile = editedProfileManager.profile
+                    
+                    encodedUser.emoji = user.emoji != editedProfile.emoji ? editedProfile.emoji : nil
+                    encodedUser.color = user.color != editedProfile.color ? editedProfile.color.toHex() : nil
+                    encodedUser.firstName = user.firstName != editedProfile.firstName ? editedProfile.firstName : nil
+                    encodedUser.lastName = user.lastName != editedProfile.lastName ? editedProfile.lastName : nil
+                    encodedUser.username = {
+                        if let editedUser = editedProfile as? User {
+                            return user.username != editedUser.username ? editedUser.username : nil
+                        } else {
+                            return nil
                         }
-                    } catch {
-                      // Handle errors
-                        print("Error updating user: \(error)")
+                        }()
+                    encodedUser.email = {
+                        if let editedUser = editedProfile as? User {
+                            return user.email != editedUser.email ? editedUser.email : nil
+                        } else {
+                            return nil
+                        }
+                        }()
+                    encodedUser.goals = user.goals != editedProfile.goals ? editedProfile.goals : nil
+                    encodedUser.interests = user.interests != tagManager.interests ? tagManager.interests : nil
+                    encodedUser.values = user.values != tagManager.values ? tagManager.values : nil
+                    
+                    try await updateUser()
+                    
+                    DispatchQueue.main.async {
+                        
+                        user.emoji = editedProfile.emoji
+                        user.color = editedProfile.color
+                        user.firstName = editedProfile.firstName
+                        user.lastName = editedProfile.lastName
+                        if let editedUser = editedProfile as? User {
+                            user.username = editedUser.username
+                        }
+                        if let editedUser = editedProfile as? User {
+                            user.email = editedUser.email
+                        }
+                        user.goals = editedProfile.goals
+                        user.interests = tagManager.interests
+                        user.values = tagManager.values
+                        
                     }
+                } catch {
+                  // Handle errors
+                    print("Error updating user: \(error)")
+                }
             }
         }
     }

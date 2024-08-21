@@ -10,10 +10,10 @@ import MCEmojiPicker
 
 struct NewFriendView: View {
     
-    private let newFriendViewModel: NewFriendViewModel
+    @StateObject private var newFriendViewModel: NewFriendViewModel
     
     init(friends: Binding<[Friend]>) {
-        self.newFriendViewModel = NewFriendViewModel(friends: friends)
+        self._newFriendViewModel = StateObject(wrappedValue: NewFriendViewModel(friends: friends))
     }
     
     /// Enter in an arbitrary 'fid' for now. 'fid' will be generated on the backend.

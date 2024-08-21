@@ -11,7 +11,7 @@ struct SettingsPanelView: View {
     
     @EnvironmentObject var user: User
     
-    let settingsPanelViewModel = SettingsPanelViewModel()
+    @StateObject var settingsPanelViewModel = SettingsPanelViewModel()
     
     @State private var showProfileFormViewSheet = false
     @State private var showChangePasswordViewSheet = false

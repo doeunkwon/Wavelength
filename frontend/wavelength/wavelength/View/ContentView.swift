@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    //    @StateObject var user = Mock.user
+    // @StateObject var user = Mock.user
     // let friends = Mock.friends
     
     @StateObject private var contentViewModel = ContentViewModel()

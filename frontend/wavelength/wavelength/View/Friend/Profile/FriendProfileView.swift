@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FriendProfileView: View {
     
-    let friendProfileViewModel = FriendProfileViewModel()
+    @StateObject private var friendProfileViewModel = FriendProfileViewModel()
     
     @Environment(\.dismiss) private var dismiss
     
