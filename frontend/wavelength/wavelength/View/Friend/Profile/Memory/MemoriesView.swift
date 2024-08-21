@@ -43,8 +43,10 @@ struct MemoriesView: View {
                             .padding(.top, Padding.large)
                             .padding(.bottom, Padding.xlarge)
                             
+                            let sortedMemories = memoriesViewModel.memories.sorted(by: { $0.date > $1.date })
+                            
                             LazyVStack(alignment: .leading, spacing: Padding.large) {
-                                ForEach(Array(memoriesViewModel.memories), id: \.self) { memory in
+                                ForEach(Array(sortedMemories), id: \.self) { memory in
                                     MemoryCellView(memory: memory)
                                 }
                             }
