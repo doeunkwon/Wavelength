@@ -7,14 +7,38 @@
 
 import SwiftUI
 
-class NewMemoryViewModel {
+class NewMemoryViewModel: ObservableObject {
+    
+    @Published var encodedMemory = EncodedMemory()
+    @Published var isLoading = false
+    @Published var updateError: MemoryUpdateError?
     
     @Binding private var memories: [Memory]
     private var fid: String
     
+    private let memoryService = MemoryService()
+    
     init(memories: Binding<[Memory]>, fid: String) {
         self._memories = memories
         self.fid = fid
+    }
+    
+    func createMemory(fid: String) async throws {
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        do {
+            try await memoryService.createMemory(newData: encodedMemory, fid: fid)
+            updateError = nil
+            print("Memory created successfully!")
+        } catch {
+            if let encodingError = error as? EncodingError {
+                updateError = .encodingError(encodingError)
+            } else {
+                updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
     }
     
     func completion(memory: Memory, editedMemory: Memory) {
@@ -28,15 +52,13 @@ class NewMemoryViewModel {
                 
                 let uuid = UUID().uuidString
                 
-                @StateObject var memoryFormViewModel = MemoryFormViewModel(memory: EncodedMemory(
-                    mid: uuid,
-                    date: formattedDate,
-                    title: editedMemory.title,
-                    content: editedMemory.content,
-                    tokens: editedMemory.tokens)
-                )
+                encodedMemory.mid = uuid
+                encodedMemory.date = formattedDate
+                encodedMemory.title = editedMemory.title
+                encodedMemory.content = editedMemory.content
+                encodedMemory.tokens = editedMemory.tokens
                 
-                try await memoryFormViewModel.createMemory(fid: fid)
+                try await createMemory(fid: fid)
                 
                 DispatchQueue.main.async {
                     

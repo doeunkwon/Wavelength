@@ -9,10 +9,10 @@ import SwiftUI
 
 struct NewMemoryView: View {
     
-    private let newMemoryViewModel: NewMemoryViewModel
+    @StateObject private var newMemoryViewModel: NewMemoryViewModel
     
     init(memories: Binding<[Memory]>, fid: String) {
-        self.newMemoryViewModel = NewMemoryViewModel(memories: memories, fid: fid)
+        self._newMemoryViewModel = StateObject(wrappedValue: NewMemoryViewModel(memories: memories, fid: fid))
     }
     
     @StateObject var memory = Memory(mid: "", date: Date(), title: "", content: "", tokens: 0)

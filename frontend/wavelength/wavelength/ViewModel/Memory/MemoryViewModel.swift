@@ -7,7 +7,31 @@
 
 import SwiftUI
 
-class MemoryViewModel {
+class MemoryViewModel: ObservableObject {
+    
+    @Published var encodedMemory = EncodedMemory()
+    @Published var isLoading = false
+    @Published var updateError: MemoryUpdateError?
+    
+    private let memoryService = MemoryService()
+    
+    func updateMemory(mid: String) async throws {
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        do {
+            try await memoryService.updateMemory(mid: mid, newData: encodedMemory)
+            updateError = nil
+            print("Memory updated successfully!")
+        } catch {
+            if let encodingError = error as? EncodingError {
+                updateError = .encodingError(encodingError)
+            } else {
+                updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
+    }
     
     func completion(memory: Memory, editedMemory: Memory) {
         
@@ -18,14 +42,12 @@ class MemoryViewModel {
                 formatter.dateFormat = "HH:mm E, d MMM y"
                 let formattedDate = formatter.string(from: editedMemory.date)
                 
-                @StateObject var memoryFormViewModel = MemoryFormViewModel(memory: EncodedMemory(
-                    date: memory.date != editedMemory.date ? formattedDate : nil,
-                    title: memory.title != editedMemory.title ? editedMemory.title : nil,
-                    content: memory.content != editedMemory.content ? editedMemory.content : nil,
-                    tokens: memory.tokens != editedMemory.tokens ? editedMemory.tokens : nil)
-                )
+                encodedMemory.date = memory.date != editedMemory.date ? formattedDate : nil
+                encodedMemory.title = memory.title != editedMemory.title ? editedMemory.title : nil
+                encodedMemory.content = memory.content != editedMemory.content ? editedMemory.content : nil
+                encodedMemory.tokens = memory.tokens != editedMemory.tokens ? editedMemory.tokens : nil
                 
-                try await memoryFormViewModel.updateMemory(mid: memory.mid)
+                try await updateMemory(mid: memory.mid)
                 
                 DispatchQueue.main.async {
                     
