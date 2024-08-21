@@ -13,12 +13,11 @@ struct FriendsView: View {
     
     @State private var showNewFriendViewModal = false
     
-    private var friends: [Friend]
-    private var scoreChartData: [ScoreData]
+    @Binding private var friends: [Friend]
+    private let scoreChartData: [ScoreData]
     
-    init(friends: [Friend], scoreChartData: [ScoreData]) {
-        let sortedFriends = friends.sorted { $0.scorePercentage > $1.scorePercentage }
-        self.friends = sortedFriends
+    init(friends: Binding<[Friend]>, scoreChartData: [ScoreData]) {
+        self._friends = friends
         self.scoreChartData = scoreChartData
     }
     
@@ -51,9 +50,10 @@ struct FriendsView: View {
                             .padding(.horizontal, Padding.large)
                             
                             LazyVStack(alignment: .leading, spacing: Padding.large) {
-                                ForEach(Array(stride(from: friends.startIndex, to: friends.endIndex, by: 2)), id: \.self) { index in
-                                    let friend1 = friends[index]
-                                    let friend2 = index + 1 < friends.endIndex ? friends[index + 1] : nil
+                                let sortedFriends = friends.sorted { $0.scorePercentage > $1.scorePercentage }
+                                ForEach(Array(stride(from: sortedFriends.startIndex, to: sortedFriends.endIndex, by: 2)), id: \.self) { index in
+                                    let friend1 = sortedFriends[index]
+                                    let friend2 = index + 1 < sortedFriends.endIndex ? sortedFriends[index + 1] : nil
                                     FriendCardsRowView(friend1: friend1, friend2: friend2)
                                 }
                             }
@@ -87,7 +87,7 @@ struct FriendsView: View {
                             .accentColor(.wavelengthGrey)
                     }
                     .sheet(isPresented: $showNewFriendViewModal) {
-                        NewFriendView()
+                        NewFriendView(friends: $friends)
                             .interactiveDismissDisabled()
                     }
                 }
@@ -96,9 +96,4 @@ struct FriendsView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.wavelengthBackground)
     }
-}
-
-#Preview {
-    FriendsView(friends: Mock.friends, scoreChartData: Mock.scoreChartData)
-        .environmentObject(Mock.user)
 }

@@ -9,16 +9,24 @@ import SwiftUI
 
 class NewFriendViewModel {
     
+    @Binding private var friends: [Friend]
+    
+    init(friends: Binding<[Friend]>) {
+        self._friends = friends
+    }
+    
     func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) {
             
         if let friend = profileManager.profile as? Friend {
             Task {
                 do {
+                    
                     let editedProfile = editedProfileManager.profile
+                    let uuid = UUID().uuidString
                     
                     @StateObject var profileFormViewModel = ProfileFormViewModel(
                         profile: EncodedFriend(
-                            fid: UUID().uuidString,
+                            fid: uuid,
                             emoji: editedProfile.emoji,
                             color: editedProfile.color.toHex(),
                             firstName: editedProfile.firstName,
@@ -36,6 +44,7 @@ class NewFriendViewModel {
                     
                     DispatchQueue.main.async {
                         
+                        friend.fid = uuid
                         friend.emoji = editedProfile.emoji
                         friend.color = editedProfile.color
                         friend.firstName = editedProfile.firstName
@@ -47,6 +56,8 @@ class NewFriendViewModel {
                         friend.scoreAnalysis = ""
                         friend.tokenCount = 0
                         friend.memoryCount = 0
+                        
+                        self.friends.append(friend)
                     }
                 } catch {
                   // Handle errors

@@ -14,7 +14,7 @@ struct ContentView: View {
     
     @StateObject private var contentViewModel = ContentViewModel()
     
-    @State var selectedTab = 1
+    @State private var selectedTab = 1
     
     var body: some View {
         
@@ -33,7 +33,7 @@ struct ContentView: View {
                 TabView(selection: $selectedTab) {
                     SettingsView()
                         .tag(0)
-                    FriendsView(friends: contentViewModel.friends, scoreChartData: contentViewModel.scoreChartData)
+                    FriendsView(friends: $contentViewModel.friends, scoreChartData: contentViewModel.scoreChartData)
                         .tag(1)
                 }
                 .environmentObject(contentViewModel.user)

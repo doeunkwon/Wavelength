@@ -9,7 +9,7 @@ import SwiftUI
 
 class Friend: ObservableObject, Profile {
     
-    let fid: String
+    @Published var fid: String
     @Published var emoji: String
     @Published var color: Color
     @Published var firstName: String
