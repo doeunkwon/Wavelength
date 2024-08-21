@@ -9,13 +9,15 @@ import SwiftUI
 
 struct NewMemoryView: View {
     
+    private let newMemoryViewModel: NewMemoryViewModel
+    
+    init(memories: Binding<[Memory]>, fid: String) {
+        self.newMemoryViewModel = NewMemoryViewModel(memories: memories, fid: fid)
+    }
+    
     @StateObject var memory = Memory(mid: "", date: Date(), title: "", content: "", tokens: 0)
     
     var body: some View {
-        MemoryFormView(memory: memory, leadingButtonContent: AnyView(DownButtonView()), trailingButtonLabel: Strings.form.create, navTitle: Strings.memory.newMemory)
+        MemoryFormView(memory: memory, leadingButtonContent: AnyView(DownButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.form.create, action: newMemoryViewModel.completion), navTitle: Strings.memory.newMemory)
     }
-}
-
-#Preview {
-    NewMemoryView()
 }

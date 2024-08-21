@@ -11,3 +11,8 @@ struct ProfileFormTrailingButtonConfig {
     let title: String
     let action: (ProfileManager, ProfileManager, TagManager) -> Void
 }
+
+struct MemoryFormTrailingButtonConfig {
+    let title: String
+    let action: (Memory, Memory) -> Void
+}

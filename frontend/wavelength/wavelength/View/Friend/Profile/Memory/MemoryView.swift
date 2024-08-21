@@ -12,6 +12,7 @@ struct MemoryView: View {
     @Environment(\.dismiss) private var dismiss
     
     @ObservedObject var memory: Memory
+    private let memoryViewModel = MemoryViewModel()
     
     var body: some View {
         NavigationStack {
@@ -51,7 +52,7 @@ struct MemoryView: View {
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 DownButtonView()
             }, trailing: Menu {
-                NavigationLink(destination: MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.memory.editMemory)) {
+                NavigationLink(destination: MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.form.save, action: memoryViewModel.completion), navTitle: Strings.memory.editMemory)) {
                     Label("Edit memory", systemImage: Strings.icons.pencil)
                 }
                 Button(role: .destructive, action: {print("Delete tapped!")}) {

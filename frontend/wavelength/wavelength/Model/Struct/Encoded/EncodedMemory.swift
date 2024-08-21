@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct EncodedMemory: Encodable {
-    let date: String?
-    let title: String?
-    let content: String?
-    let tokens: Int?
+    var mid: String?
+    var date: String?
+    var title: String?
+    var content: String?
+    var tokens: Int?
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 class Memory: ObservableObject, Hashable, Equatable {
     
-    let mid: String
+    @Published var mid: String
     @Published var date: Date
     @Published var title: String
     @Published var content: String

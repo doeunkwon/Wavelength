@@ -13,19 +13,19 @@ struct MemoryFormView: View {
     
     @State private var showDatePicker = false
     
-    let leadingButtonContent: AnyView
-    let trailingButtonLabel: String
-    let navTitle: String
+    private let leadingButtonContent: AnyView
+    private let navTitle: String
+    private let buttonConfig: MemoryFormTrailingButtonConfig
     
-    @ObservedObject var memory: Memory
-    @StateObject var editedMemory: Memory
+    @ObservedObject private var memory: Memory
+    @StateObject private var editedMemory: Memory
     
-    init(memory: Memory, leadingButtonContent: AnyView, trailingButtonLabel: String, navTitle: String) {
+    init(memory: Memory, leadingButtonContent: AnyView, buttonConfig: MemoryFormTrailingButtonConfig, navTitle: String) {
         self.leadingButtonContent = leadingButtonContent
-        self.trailingButtonLabel = trailingButtonLabel
         self.navTitle = navTitle
         self.memory = memory
-        _editedMemory = StateObject(wrappedValue: Memory(mid: memory.mid, date: memory.date, title: memory.title, content: memory.content, tokens: memory.tokens))
+        self.buttonConfig = buttonConfig
+        self._editedMemory = StateObject(wrappedValue: Memory(mid: memory.mid, date: memory.date, title: memory.title, content: memory.content, tokens: memory.tokens))
     }
     
     var body: some View {
@@ -116,42 +116,12 @@ struct MemoryFormView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 leadingButtonContent
-            }, trailing: Button(trailingButtonLabel) {
-                Task {
-                    do {
-                        
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = "HH:mm E, d MMM y"
-                        let formattedDate = formatter.string(from: editedMemory.date)
-                        
-                        @StateObject var memoryFormViewModel = MemoryFormViewModel(memory: EncodedMemory(
-                            date: memory.date != editedMemory.date ? formattedDate : nil,
-                            title: memory.title != editedMemory.title ? editedMemory.title : nil,
-                            content: memory.content != editedMemory.content ? editedMemory.content : nil,
-                            tokens: memory.tokens != editedMemory.tokens ? editedMemory.tokens : nil)
-                        )
-                        
-                        try await memoryFormViewModel.updateMemory(mid: memory.mid)
-                        
-                        DispatchQueue.main.async {
-                            
-                            memory.date = editedMemory.date
-                            memory.title = editedMemory.title
-                            memory.content = editedMemory.content
-                            memory.tokens = editedMemory.tokens
-                        }
-                        
-                    } catch {
-                        print("Error updating memory: \(error)")
-                    }
-                }
+            }, trailing: Button(action: { buttonConfig.action(memory, editedMemory)
+            }) {
+                Text(buttonConfig.title)
             })
             .background(.wavelengthBackground)
             .ignoresSafeArea(.keyboard)
         }
     }
-}
-
-#Preview {
-    MemoryFormView(memory: Mock.memory1, leadingButtonContent: AnyView(LeftButtonView()), trailingButtonLabel: Strings.form.save, navTitle: Strings.memory.newMemory)
 }

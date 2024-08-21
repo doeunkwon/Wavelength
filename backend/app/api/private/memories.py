@@ -9,16 +9,20 @@ router = APIRouter()
 # Function to create a new memory
 
 
-@router.post("/private/memories")
+@router.post("/private/memories/{fid}")
 async def create_memory(
+        fid: str,
         memory: Memory = Body(...),
-        token: str = Depends(get_current_user)):
+        token: str = Depends(get_current_user)
+):
 
     # Check if user is authorized
     if not token.get("uid"):
         return HTTPException(status_code=401, detail="Unauthorized access")
 
     try:
+
+        uid = token["uid"]
 
         while True:
             # Generate a new UUID for the memory ID
@@ -53,7 +57,21 @@ async def create_memory(
                 )
                 # Assuming a single memory is created
                 created_memory = result[0]["m"]
-                return created_memory  # Return the created memory here
+
+                try:
+
+                    cypher_query = """
+                    MATCH (user:User {uid: $uid}), (memory:Memory {mid: $mid}), (friend:Friend {fid: $fid})
+                    CREATE (user)-[:HAS_MEMORY]->(memory)-[:ABOUT]->(friend)
+                    """
+                    graph.query(cypher_query, {
+                                "uid": uid, "mid": created_memory["mid"], "fid": fid})
+                    return {"message": "Memory relationship successfully created."}
+
+                except Exception as e:
+                    raise HTTPException(
+                        status_code=404, detail="Memory not found.")
+
             else:
                 # Handle duplicate memory ID case (optional)
                 raise HTTPException(

@@ -43,4 +43,22 @@ class MemoryFormViewModel: ObservableObject {
             throw error // Re-throw the error for caller handling
         }
     }
+    
+    func createMemory(fid: String) async throws {
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        do {
+            try await memoryService.createMemory(newData: memory, fid: fid)
+            updateError = nil
+            print("Memory created successfully!")
+        } catch {
+            if let encodingError = error as? EncodingError {
+                updateError = .encodingError(encodingError)
+            } else {
+                updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
+    }
 }

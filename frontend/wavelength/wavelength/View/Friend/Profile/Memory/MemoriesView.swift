@@ -77,7 +77,7 @@ struct MemoriesView: View {
                             .accentColor(.wavelengthGrey)
                     }
                     .sheet(isPresented: $showNewMemoryViewModal) {
-                        NewMemoryView()
+                        NewMemoryView(memories: $memoriesViewModel.memories, fid: fid)
                             .interactiveDismissDisabled()
                     }
                 }
