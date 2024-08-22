@@ -9,9 +9,11 @@ import SwiftUI
 
 class SettingsPanelViewModel: ObservableObject {
     
-    @Published var encodedUser = EncodedUser()
-    @Published var isLoading = false
-    @Published var updateError: ProfileUpdateError?
+    private var encodedUser = EncodedUser()
+//    @Published var isLoading = false
+//    @Published var updateError: ProfileUpdateError?
+    private var isLoading = false
+    private var updateError: ProfileUpdateError?
 
     private let userService = UserService()
     

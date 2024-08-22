@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct wavelengthApp: App {
+    
+    @StateObject var viewModel = ViewModel()
+    
     var body: some Scene {
-        
-        @StateObject var viewModel = ViewModel()
         
         WindowGroup {
             ContentView()

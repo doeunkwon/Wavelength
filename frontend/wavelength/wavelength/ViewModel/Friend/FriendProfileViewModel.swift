@@ -9,9 +9,11 @@ import SwiftUI
 
 class FriendProfileViewModel: ObservableObject {
     
-    @Published var encodedFriend = EncodedFriend()
-    @Published var isLoading = false
-    @Published var updateError: ProfileUpdateError?
+    private var encodedFriend = EncodedFriend()
+//    @Published var isLoading = false
+//    @Published var updateError: ProfileUpdateError?
+    private var isLoading = false
+    private var updateError: ProfileUpdateError?
     
     private let friendService = FriendService()
     
