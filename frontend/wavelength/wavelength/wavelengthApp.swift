@@ -10,8 +10,12 @@ import SwiftUI
 @main
 struct wavelengthApp: App {
     var body: some Scene {
+        
+        @StateObject var viewModel = ViewModel()
+        
         WindowGroup {
             ContentView()
+                .environmentObject(viewModel)
         }
     }
 }

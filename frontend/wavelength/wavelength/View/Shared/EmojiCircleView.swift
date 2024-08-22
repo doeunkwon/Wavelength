@@ -9,7 +9,11 @@ import SwiftUI
 
 struct EmojiCircleView: View {
     
-    @EnvironmentObject var user: User
+    @EnvironmentObject var viewModel: ViewModel
+    
+    private var user: User {
+        return viewModel.user
+    }
     
     let icon: String
     let isEmoji: Bool
@@ -38,5 +42,5 @@ struct EmojiCircleView: View {
 
 #Preview {
     EmojiCircleView(icon: Strings.icons.gearshape, isEmoji: false)
-        .environmentObject(Mock.user)
+        .environmentObject(ViewModel())
 }

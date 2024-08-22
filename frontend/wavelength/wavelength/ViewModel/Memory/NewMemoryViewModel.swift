@@ -14,13 +14,20 @@ class NewMemoryViewModel: ObservableObject {
     @Published var updateError: MemoryUpdateError?
     
     @Binding private var memories: [Memory]
+    
+    @Binding private var userMemoryCount: Int
+    @Binding private var friendMemoryCount: Int
     private var fid: String
     
     private let memoryService = MemoryService()
+    private let userService = UserService()
+    private let friendService = FriendService()
     
-    init(memories: Binding<[Memory]>, fid: String) {
+    init(memories: Binding<[Memory]>, fid: String, friendMemoryCount: Binding<Int>, userMemoryCount: Binding<Int>) {
         self._memories = memories
         self.fid = fid
+        self._friendMemoryCount = friendMemoryCount
+        self._userMemoryCount = userMemoryCount
     }
     
     func createMemory(fid: String) async throws {
@@ -29,6 +36,8 @@ class NewMemoryViewModel: ObservableObject {
 
         do {
             try await memoryService.createMemory(newData: encodedMemory, fid: fid)
+            try await userService.updateUser(newData: EncodedUser(memoryCount: userMemoryCount + 1))
+            try await friendService.updateFriend(fid: fid, newData: EncodedFriend(memoryCount: friendMemoryCount + 1))
             updateError = nil
             print("Memory created successfully!")
         } catch {
@@ -69,6 +78,8 @@ class NewMemoryViewModel: ObservableObject {
                     memory.tokens = editedMemory.tokens
                     
                     self.memories.append(memory)
+                    self.userMemoryCount += 1
+                    self.friendMemoryCount += 1
                     
                 }
                 

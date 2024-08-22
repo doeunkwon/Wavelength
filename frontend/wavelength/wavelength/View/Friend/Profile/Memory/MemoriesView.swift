@@ -10,11 +10,24 @@ import SwiftUI
 struct MemoriesView: View {
     
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var viewModel: ViewModel
+    
     @State private var showNewMemoryViewModal = false
     
     @StateObject private var memoriesViewModel = MemoriesViewModel()
     
-    let fid: String
+    private var userMemoryCount: Binding<Int> {
+        return $viewModel.user.memoryCount
+    }
+    
+    private let fid: String
+    
+    @Binding private var friendMemoryCount: Int
+    
+    init(fid: String, friendMemoryCount: Binding<Int>) {
+        self.fid = fid
+        self._friendMemoryCount = friendMemoryCount
+    }
     
     var body: some View {
         NavigationStack {
@@ -79,7 +92,7 @@ struct MemoriesView: View {
                             .accentColor(.wavelengthGrey)
                     }
                     .sheet(isPresented: $showNewMemoryViewModal) {
-                        NewMemoryView(memories: $memoriesViewModel.memories, fid: fid)
+                        NewMemoryView(memories: $memoriesViewModel.memories, fid: fid, friendMemoryCount: $friendMemoryCount, userMemoryCount: userMemoryCount)
                             .interactiveDismissDisabled()
                     }
                 }
@@ -95,8 +108,4 @@ struct MemoriesView: View {
             memoriesViewModel.getMemories(fid: fid)
         })
     }
-}
-
-#Preview {
-    MemoriesView(fid: "1")
 }

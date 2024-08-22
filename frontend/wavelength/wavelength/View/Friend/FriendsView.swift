@@ -9,7 +9,11 @@ import SwiftUI
 
 struct FriendsView: View {
     
-    @EnvironmentObject var user: User
+    @EnvironmentObject var viewModel: ViewModel
+    
+    private var user: User {
+        return viewModel.user
+    }
     
     @State private var showNewFriendViewModal = false
     
@@ -97,3 +101,4 @@ struct FriendsView: View {
             .background(Color.wavelengthBackground)
     }
 }
+

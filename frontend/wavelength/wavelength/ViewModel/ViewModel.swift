@@ -1,5 +1,5 @@
 //
-//  ContentViewModel.swift
+//  ViewModel.swift
 //  wavelength
 //
 //  Created by Doeun Kwon on 2024-08-16.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class ContentViewModel: ObservableObject {
+class ViewModel: ObservableObject {
     @Published var user: User = User(
         uid: "",
         emoji: "",

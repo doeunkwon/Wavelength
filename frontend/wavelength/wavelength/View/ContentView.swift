@@ -12,14 +12,14 @@ struct ContentView: View {
     // @StateObject var user = Mock.user
     // let friends = Mock.friends
     
-    @StateObject private var contentViewModel = ContentViewModel()
+    @EnvironmentObject var viewModel: ViewModel
     
     @State private var selectedTab = 1
     
     var body: some View {
         
         NavigationStack {
-            if contentViewModel.user.uid.isEmpty {
+            if viewModel.user.uid.isEmpty {
                 
                 VStack {
                     Spacer()
@@ -33,23 +33,23 @@ struct ContentView: View {
                 TabView(selection: $selectedTab) {
                     SettingsView()
                         .tag(0)
-                    FriendsView(friends: $contentViewModel.friends, scoreChartData: contentViewModel.scoreChartData)
+                    FriendsView(friends: $viewModel.friends, scoreChartData: viewModel.scoreChartData)
                         .tag(1)
                 }
-                .environmentObject(contentViewModel.user)
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .background(.wavelengthBackground)
                 .ignoresSafeArea()
             }
         }
         .onAppear(perform: {
-            contentViewModel.getUser()
-            contentViewModel.getFriends()
-            contentViewModel.getScores()
+            viewModel.getUser()
+            viewModel.getFriends()
+            viewModel.getScores()
         })
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(ViewModel())
 }

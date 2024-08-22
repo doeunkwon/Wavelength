@@ -38,7 +38,7 @@ struct FriendProfileView: View {
                         x: ShadowStyle.subtle.x,
                         y: ShadowStyle.subtle.y)
                     .fullScreenCover(isPresented: $showMemoriesViewSheet) {
-                        MemoriesView(fid: friend.fid)
+                        MemoriesView(fid: friend.fid, friendMemoryCount: $friend.memoryCount)
                     }
                     
                     BasicFieldView(content: friend.goals)
