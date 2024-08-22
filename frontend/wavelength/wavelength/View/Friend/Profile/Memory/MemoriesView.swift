@@ -10,23 +10,21 @@ import SwiftUI
 struct MemoriesView: View {
     
     @Environment(\.dismiss) private var dismiss
+    
     @EnvironmentObject var viewModel: ViewModel
     
     @State private var showNewMemoryViewModal = false
     
     @StateObject private var memoriesViewModel = MemoriesViewModel()
     
-    private var userMemoryCount: Binding<Int> {
-        return $viewModel.user.memoryCount
+    private var user: User {
+        return viewModel.user
     }
     
-    private let fid: String
+    @ObservedObject private var friend: Friend
     
-    @Binding private var friendMemoryCount: Int
-    
-    init(fid: String, friendMemoryCount: Binding<Int>) {
-        self.fid = fid
-        self._friendMemoryCount = friendMemoryCount
+    init(friend: Friend) {
+        self.friend = friend
     }
     
     var body: some View {
@@ -92,7 +90,7 @@ struct MemoriesView: View {
                             .accentColor(.wavelengthGrey)
                     }
                     .sheet(isPresented: $showNewMemoryViewModal) {
-                        NewMemoryView(memories: $memoriesViewModel.memories, fid: fid, friendMemoryCount: $friendMemoryCount, userMemoryCount: userMemoryCount)
+                        NewMemoryView(memories: $memoriesViewModel.memories, friend: friend, user: user)
                             .interactiveDismissDisabled()
                     }
                 }
@@ -105,7 +103,7 @@ struct MemoriesView: View {
             .background(.wavelengthBackground)
         }
         .onAppear(perform: {
-            memoriesViewModel.getMemories(fid: fid)
+            memoriesViewModel.getMemories(fid: friend.fid)
         })
     }
 }

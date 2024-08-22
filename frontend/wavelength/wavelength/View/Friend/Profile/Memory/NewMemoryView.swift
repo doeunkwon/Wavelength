@@ -11,8 +11,8 @@ struct NewMemoryView: View {
     
     @StateObject private var newMemoryViewModel: NewMemoryViewModel
     
-    init(memories: Binding<[Memory]>, fid: String, friendMemoryCount: Binding<Int>, userMemoryCount: Binding<Int>) {
-        self._newMemoryViewModel = StateObject(wrappedValue: NewMemoryViewModel(memories: memories, fid: fid, friendMemoryCount: friendMemoryCount, userMemoryCount: userMemoryCount))
+    init(memories: Binding<[Memory]>, friend: Friend, user: User) {
+        self._newMemoryViewModel = StateObject(wrappedValue: NewMemoryViewModel(memories: memories, friend: friend, user: user))
     }
     
     @StateObject var memory = Memory(mid: "", date: Date(), title: "", content: "", tokens: 0)

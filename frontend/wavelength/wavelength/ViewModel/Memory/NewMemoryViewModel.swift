@@ -15,29 +15,27 @@ class NewMemoryViewModel: ObservableObject {
     
     @Binding private var memories: [Memory]
     
-    @Binding private var userMemoryCount: Int
-    @Binding private var friendMemoryCount: Int
-    private var fid: String
+    @ObservedObject private var user: User
+    @ObservedObject private var friend: Friend
     
     private let memoryService = MemoryService()
     private let userService = UserService()
     private let friendService = FriendService()
     
-    init(memories: Binding<[Memory]>, fid: String, friendMemoryCount: Binding<Int>, userMemoryCount: Binding<Int>) {
+    init(memories: Binding<[Memory]>, friend: Friend, user: User) {
         self._memories = memories
-        self.fid = fid
-        self._friendMemoryCount = friendMemoryCount
-        self._userMemoryCount = userMemoryCount
+        self.friend = friend
+        self.user = user
     }
     
-    func createMemory(fid: String) async throws {
+    func createMemory(addedTokens: Int) async throws {
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 
         do {
-            try await memoryService.createMemory(newData: encodedMemory, fid: fid)
-            try await userService.updateUser(newData: EncodedUser(memoryCount: userMemoryCount + 1))
-            try await friendService.updateFriend(fid: fid, newData: EncodedFriend(memoryCount: friendMemoryCount + 1))
+            try await memoryService.createMemory(newData: encodedMemory, fid: friend.fid)
+            try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount + addedTokens, memoryCount: user.memoryCount + 1))
+            try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount + addedTokens, memoryCount: friend.memoryCount + 1))
             updateError = nil
             print("Memory created successfully!")
         } catch {
@@ -67,7 +65,7 @@ class NewMemoryViewModel: ObservableObject {
                 encodedMemory.content = editedMemory.content
                 encodedMemory.tokens = editedMemory.tokens
                 
-                try await createMemory(fid: fid)
+                try await createMemory(addedTokens: editedMemory.tokens)
                 
                 DispatchQueue.main.async {
                     
@@ -78,8 +76,10 @@ class NewMemoryViewModel: ObservableObject {
                     memory.tokens = editedMemory.tokens
                     
                     self.memories.append(memory)
-                    self.userMemoryCount += 1
-                    self.friendMemoryCount += 1
+                    self.user.memoryCount += 1
+                    self.friend.memoryCount += 1
+                    self.user.tokenCount += editedMemory.tokens
+                    self.friend.tokenCount += editedMemory.tokens
                     
                 }
                 
