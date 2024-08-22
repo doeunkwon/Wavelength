@@ -24,8 +24,3 @@ struct ButtonView: View {
         .cornerRadius(CornerRadius.medium) // Add corner radius
     }
 }
-
-
-#Preview {
-    ButtonView(title: "2 memories", color: .wavelengthText, action: {print("Button pressed")})
-}

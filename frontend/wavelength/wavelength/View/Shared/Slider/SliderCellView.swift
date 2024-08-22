@@ -28,7 +28,3 @@ struct SliderCellView: View {
         }
     }
 }
-
-#Preview {
-    SliderCellView(title: "Growth", percentage: 80)
-}

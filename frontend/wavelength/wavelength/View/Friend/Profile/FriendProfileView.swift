@@ -86,7 +86,3 @@ struct FriendProfileView: View {
         }
     }
 }
-
-#Preview {
-    FriendProfileView(friend: Mock.friend)
-}

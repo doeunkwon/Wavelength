@@ -39,7 +39,3 @@ struct ProfilePictureView: View {
             y: shadowEnabled ? ShadowStyle.glow(color).y : 0)
     }
 }
-
-#Preview {
-    ProfilePictureView(emoji: "🌎", color: Color.wavelengthPurple, frameSize: Frame.medium, emojiSize: Fonts.header)
-}

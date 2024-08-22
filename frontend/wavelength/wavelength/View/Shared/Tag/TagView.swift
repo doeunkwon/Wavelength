@@ -44,7 +44,3 @@ struct TagView: View {
         .cornerRadius(CornerRadius.max)
     }
 }
-
-#Preview {
-    TagView(text: "Muay Thai", color: Color.wavelengthPurple, editable: true, flag: nil)
-}

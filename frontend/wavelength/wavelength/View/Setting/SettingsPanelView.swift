@@ -51,8 +51,3 @@ struct SettingsPanelView: View {
         }
     }
 }
-
-#Preview {
-    SettingsPanelView()
-        .environmentObject(Mock.user)
-}

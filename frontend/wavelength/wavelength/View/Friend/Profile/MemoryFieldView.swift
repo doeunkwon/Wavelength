@@ -29,7 +29,3 @@ struct MemoryFieldView: View {
         }
     }
 }
-
-#Preview {
-    MemoryFieldView(memories: ["Wants to go camping this summer 2024 with all the boys from HWSS.", "Has a grad exhibition on May 9."])
-}

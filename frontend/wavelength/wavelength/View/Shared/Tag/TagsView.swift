@@ -76,7 +76,3 @@ struct TagsView: View {
     }
     
 }
-
-#Preview {
-    TagsView(tags: ["Hello", "World"], color: .blue, editable: true, flag: nil)
-}

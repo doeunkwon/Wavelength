@@ -22,8 +22,3 @@ struct FriendCardsRowView: View {
         }
     }
 }
-
-
-#Preview {
-    FriendCardsRowView(friend1: Mock.friend, friend2: Mock.friend)
-}

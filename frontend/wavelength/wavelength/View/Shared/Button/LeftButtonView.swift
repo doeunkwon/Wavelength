@@ -15,7 +15,3 @@ struct LeftButtonView: View {
             .font(Font.body.weight(.semibold))
     }
 }
-
-#Preview {
-    LeftButtonView()
-}

@@ -12,7 +12,13 @@ struct MemoryView: View {
     @Environment(\.dismiss) private var dismiss
     
     @ObservedObject var memory: Memory
-    private let memoryViewModel = MemoryViewModel()
+    
+    private var memoryViewModel: MemoryViewModel
+    
+    init(memory: Memory, user: User, friend: Friend) {
+        self.memory = memory
+        self.memoryViewModel = MemoryViewModel(user: user, friend: friend)
+    }
     
     var body: some View {
         NavigationStack {
@@ -64,8 +70,4 @@ struct MemoryView: View {
             .background(.wavelengthBackground)
         }
     }
-}
-
-#Preview {
-    MemoryView(memory: Mock.memory1)
 }

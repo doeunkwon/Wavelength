@@ -29,7 +29,3 @@ struct HeaderView: View {
         }
     }
 }
-
-#Preview {
-    HeaderView(emoji: "🌎", color: Color.wavelengthPurple, firstName: "Doeun", lastName: "Kwon", tokenCount: 17)
-}

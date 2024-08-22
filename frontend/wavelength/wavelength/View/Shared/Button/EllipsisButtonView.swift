@@ -15,7 +15,3 @@ struct EllipsisButtonView: View {
             .font(Font.body.weight(.semibold))
     }
 }
-
-#Preview {
-    EllipsisButtonView()
-}

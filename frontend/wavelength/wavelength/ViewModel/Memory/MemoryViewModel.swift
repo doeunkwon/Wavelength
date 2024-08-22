@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class MemoryViewModel: ObservableObject {
+class MemoryViewModel {
     
     private var encodedMemory = EncodedMemory()
 //    @Published var isLoading = false
@@ -15,14 +15,28 @@ class MemoryViewModel: ObservableObject {
     private var isLoading = false
     private var updateError: MemoryUpdateError?
     
-    private let memoryService = MemoryService()
+    @ObservedObject private var user: User
+    @ObservedObject private var friend: Friend
     
-    func updateMemory(mid: String) async throws {
+    private let memoryService = MemoryService()
+    private let userService = UserService()
+    private let friendService = FriendService()
+    
+    init(user: User, friend: Friend) {
+        self.user = user
+        self.friend = friend
+    }
+    
+    func updateMemory(mid: String, oldTokens: Int, newTokens: Int) async throws {
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 
         do {
             try await memoryService.updateMemory(mid: mid, newData: encodedMemory)
+            if oldTokens != newTokens {
+                try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount - oldTokens + newTokens))
+                try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount - oldTokens + newTokens))
+            }
             updateError = nil
             print("Memory updated successfully!")
         } catch {
@@ -43,20 +57,25 @@ class MemoryViewModel: ObservableObject {
                 let formatter = DateFormatter()
                 formatter.dateFormat = "HH:mm E, d MMM y"
                 let formattedDate = formatter.string(from: editedMemory.date)
+                let oldTokens = memory.tokens
+                let newTokens = editedMemory.tokens
                 
                 encodedMemory.date = memory.date != editedMemory.date ? formattedDate : nil
                 encodedMemory.title = memory.title != editedMemory.title ? editedMemory.title : nil
                 encodedMemory.content = memory.content != editedMemory.content ? editedMemory.content : nil
-                encodedMemory.tokens = memory.tokens != editedMemory.tokens ? editedMemory.tokens : nil
+                encodedMemory.tokens = oldTokens != newTokens ? newTokens : nil
                 
-                try await updateMemory(mid: memory.mid)
+                try await updateMemory(mid: memory.mid, oldTokens: oldTokens, newTokens: newTokens)
                 
                 DispatchQueue.main.async {
                     
                     memory.date = editedMemory.date
                     memory.title = editedMemory.title
                     memory.content = editedMemory.content
-                    memory.tokens = editedMemory.tokens
+                    memory.tokens = newTokens
+                    
+                    self.user.tokenCount += (newTokens - oldTokens)
+                    self.friend.tokenCount += (newTokens - oldTokens)
                 }
                 
             } catch {

@@ -24,7 +24,3 @@ struct EmptyStateView: View {
         .foregroundColor(.wavelengthGrey)
     }
 }
-
-#Preview {
-    EmptyStateView(text: Strings.memory.addAMemory, icon: Strings.icons.personLineDottedPerson)
-}

@@ -97,4 +97,3 @@ struct FriendsView: View {
             .background(Color.wavelengthBackground)
     }
 }
-

@@ -38,8 +38,3 @@ struct SliderFieldView: View {
         }
     }
 }
-
-
-#Preview {
-    SliderFieldView(title: Strings.general.values, pairs: ["Discipline": 89, "Integrity": 76, "Growth": 81])
-}

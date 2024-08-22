@@ -13,11 +13,11 @@ struct MemoriesView: View {
     
     @EnvironmentObject var user: User
     
-    @State private var showNewMemoryViewModal = false
-    
     @StateObject private var memoriesViewModel = MemoriesViewModel()
     
     @ObservedObject private var friend: Friend
+    
+    @State private var showNewMemoryViewModal = false
     
     init(friend: Friend) {
         self.friend = friend
@@ -54,7 +54,7 @@ struct MemoriesView: View {
                             
                             LazyVStack(alignment: .leading, spacing: Padding.large) {
                                 ForEach(Array(sortedMemories), id: \.self) { memory in
-                                    MemoryCellView(memory: memory)
+                                    MemoryCellView(memory: memory, friend: friend)
                                 }
                             }
                             .shadow(

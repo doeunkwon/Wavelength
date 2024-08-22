@@ -35,8 +35,3 @@ struct EmojiCircleView: View {
         }
     }
 }
-
-#Preview {
-    EmojiCircleView(icon: Strings.icons.gearshape, isEmoji: false)
-        .environmentObject(Mock.user)
-}

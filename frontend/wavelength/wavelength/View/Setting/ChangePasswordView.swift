@@ -47,7 +47,3 @@ struct ChangePasswordView: View {
         }
     }
 }
-
-#Preview {
-    ChangePasswordView(currentPassword: "", newPassword: "", confirmPassword: "")
-}

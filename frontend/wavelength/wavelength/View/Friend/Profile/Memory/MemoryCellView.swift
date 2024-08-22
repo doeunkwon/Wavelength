@@ -9,9 +9,12 @@ import SwiftUI
 
 struct MemoryCellView: View {
     
+    @EnvironmentObject var user: User
+    
     @State private var showMemoryViewModal = false
     
     @ObservedObject var memory: Memory
+    @ObservedObject var friend: Friend
     
     var body: some View {
         Button {
@@ -49,13 +52,9 @@ struct MemoryCellView: View {
             .cornerRadius(CornerRadius.medium) // Add corner radius
         }
         .sheet(isPresented: $showMemoryViewModal) {
-            MemoryView(memory: memory)
+            MemoryView(memory: memory, user: user, friend: friend)
                 .interactiveDismissDisabled()
         }
     }
     
-}
-
-#Preview {
-    MemoryCellView(memory: Mock.memory1)
 }

@@ -76,7 +76,3 @@ extension ChatMessage {
         ChatMessage(id: UUID().uuidString, content: "Thanks!", dateCreated: Date(), sender: .user),
         ChatMessage(id: UUID().uuidString, content: "Always.", dateCreated: Date(), sender: .ai)]
 }
-
-#Preview {
-    ChatView()
-}

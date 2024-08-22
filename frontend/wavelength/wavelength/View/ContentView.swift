@@ -9,9 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     
-    // @StateObject var user = Mock.user
-    // let friends = Mock.friends
-    
     @ObservedObject var viewModel: ViewModel
     
     @State private var selectedTab = 1
@@ -47,9 +44,4 @@ struct ContentView: View {
             viewModel.getScores()
         })
     }
-}
-
-#Preview {
-    ContentView(viewModel: ViewModel())
-        .environmentObject(Mock.user)
 }

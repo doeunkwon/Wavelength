@@ -52,7 +52,3 @@ struct FriendCardView: View {
         }
     }
 }
-
-#Preview {
-    FriendCardView(friend: Mock.friend)
-}

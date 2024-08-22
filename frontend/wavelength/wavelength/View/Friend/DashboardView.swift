@@ -100,7 +100,3 @@ struct DashboardView: View {
         .cornerRadius(CornerRadius.medium)
     }
 }
-
-#Preview {
-    DashboardView(scorePercentage: 76, tokenCount: 52, memoryCount: 219, data: Mock.scoreChartData)
-}

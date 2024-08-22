@@ -15,7 +15,3 @@ struct DownButtonView: View {
             .font(Font.body.weight(.semibold))
     }
 }
-
-#Preview {
-    DownButtonView()
-}

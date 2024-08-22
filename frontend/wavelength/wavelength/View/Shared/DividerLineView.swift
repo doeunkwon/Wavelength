@@ -21,7 +21,3 @@ struct DividerLineView: View {
     }
     
 }
-
-#Preview {
-    DividerLineView()
-}

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class NewMemoryViewModel: ObservableObject {
+class NewMemoryViewModel {
     
     private var encodedMemory = EncodedMemory()
 //    @Published var isLoading = false

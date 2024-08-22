@@ -25,7 +25,3 @@ struct BasicFieldView: View {
         }
     }
 }
-
-#Preview {
-    BasicFieldView(content: "Port Moody")
-}
