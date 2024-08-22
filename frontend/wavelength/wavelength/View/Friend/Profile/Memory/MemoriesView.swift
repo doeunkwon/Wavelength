@@ -11,15 +11,11 @@ struct MemoriesView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var user: User
     
     @State private var showNewMemoryViewModal = false
     
     @StateObject private var memoriesViewModel = MemoriesViewModel()
-    
-    private var user: User {
-        return viewModel.user
-    }
     
     @ObservedObject private var friend: Friend
     

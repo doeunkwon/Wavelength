@@ -127,9 +127,9 @@ struct ProfileFormView: View {
             .navigationTitle(navTitle)
             .navigationBarTitleDisplayMode(.inline)
             .background(.wavelengthBackground)
-            .onTapGesture {
-                hideKeyboard()
-            }
+//            .onTapGesture {
+//                hideKeyboard()
+//            }
         }
         
     }

@@ -9,11 +9,7 @@ import SwiftUI
 
 struct FriendsView: View {
     
-    @EnvironmentObject var viewModel: ViewModel
-    
-    private var user: User {
-        return viewModel.user
-    }
+    @EnvironmentObject var user: User
     
     @State private var showNewFriendViewModal = false
     

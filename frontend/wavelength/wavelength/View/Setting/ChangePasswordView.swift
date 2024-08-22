@@ -41,9 +41,9 @@ struct ChangePasswordView: View {
             .padding(Padding.large)
             .padding(.top, Padding.nudge)
             .background(.wavelengthBackground)
-            .onTapGesture {
-                hideKeyboard()
-            }
+//            .onTapGesture {
+//                hideKeyboard()
+//            }
         }
     }
 }

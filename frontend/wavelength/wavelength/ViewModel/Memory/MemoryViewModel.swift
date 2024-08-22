@@ -9,9 +9,11 @@ import SwiftUI
 
 class MemoryViewModel: ObservableObject {
     
-    @Published var encodedMemory = EncodedMemory()
-    @Published var isLoading = false
-    @Published var updateError: MemoryUpdateError?
+    private var encodedMemory = EncodedMemory()
+//    @Published var isLoading = false
+//    @Published var updateError: MemoryUpdateError?
+    private var isLoading = false
+    private var updateError: MemoryUpdateError?
     
     private let memoryService = MemoryService()
     

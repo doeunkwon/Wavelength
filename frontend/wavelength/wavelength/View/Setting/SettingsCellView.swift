@@ -38,5 +38,5 @@ struct SettingsCellView: View {
 
 #Preview {
     SettingsCellView(title: Strings.settings.editProfile, icon: Strings.icons.person, action: { print("hello") })
-        .environmentObject(ViewModel())
+        .environmentObject(Mock.user)
 }

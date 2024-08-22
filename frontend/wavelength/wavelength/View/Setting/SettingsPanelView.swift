@@ -9,11 +9,7 @@ import SwiftUI
 
 struct SettingsPanelView: View {
     
-    @EnvironmentObject var viewModel: ViewModel
-    
-    private var user: User {
-        return viewModel.user
-    }
+    @EnvironmentObject var user: User
     
     @StateObject var settingsPanelViewModel = SettingsPanelViewModel()
     
@@ -58,5 +54,5 @@ struct SettingsPanelView: View {
 
 #Preview {
     SettingsPanelView()
-        .environmentObject(ViewModel())
+        .environmentObject(Mock.user)
 }

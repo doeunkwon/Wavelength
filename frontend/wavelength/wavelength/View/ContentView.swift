@@ -12,7 +12,7 @@ struct ContentView: View {
     // @StateObject var user = Mock.user
     // let friends = Mock.friends
     
-    @EnvironmentObject var viewModel: ViewModel
+    @ObservedObject var viewModel: ViewModel
     
     @State private var selectedTab = 1
     
@@ -50,6 +50,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
-        .environmentObject(ViewModel())
+    ContentView(viewModel: ViewModel())
+        .environmentObject(Mock.user)
 }

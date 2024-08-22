@@ -15,8 +15,8 @@ struct wavelengthApp: App {
     var body: some Scene {
         
         WindowGroup {
-            ContentView()
-                .environmentObject(viewModel)
+            ContentView(viewModel: viewModel)
+                .environmentObject(viewModel.user)
         }
     }
 }
