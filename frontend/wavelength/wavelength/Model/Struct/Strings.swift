@@ -9,6 +9,13 @@ import SwiftUI
 
 struct Strings {
     
+    struct login {
+        
+        static let logIn: String = "Log in"
+        static let createAnAccount: String = "Create an account"
+        
+    }
+    
     struct error {
         
         static let networkError: String = "Network error"
@@ -46,6 +53,7 @@ struct Strings {
         static let save: String = "Save"
         static let pickAnEmoji: String = "Pick an emoji"
         static let chooseAColor: String = "Choose a color"
+        static let password: String = "Password"
         
     }
     

@@ -18,13 +18,7 @@ struct ContentView: View {
         NavigationStack {
             if viewModel.user.uid.isEmpty {
                 
-                VStack {
-                    Spacer()
-                    EmptyStateView(text: Strings.error.networkError, icon: Strings.icons.icloudslash)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.wavelengthBackground)
+                SignInView()
                 
             } else {
                 TabView(selection: $selectedTab) {
