@@ -63,7 +63,8 @@ async def create_user(user: User = Body(...)):
                 )
                 # Assuming a single user is created (remove the loop)
                 created_user = result[0]["u"]
-                return created_user  # Return the created user here
+                # Return the created user's uid
+                return {"uid": created_user["uid"]}
             else:
                 # Handle duplicate user ID case (optional)
                 raise HTTPException(

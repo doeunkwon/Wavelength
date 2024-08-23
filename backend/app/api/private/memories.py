@@ -66,7 +66,8 @@ async def create_memory(
                     """
                     graph.query(cypher_query, {
                                 "uid": uid, "mid": created_memory["mid"], "fid": fid})
-                    return {"message": "Memory relationship successfully created."}
+                    # Return the created memory's mid
+                    return {"mid": created_memory["mid"]}
 
                 except Exception as e:
                     raise HTTPException(

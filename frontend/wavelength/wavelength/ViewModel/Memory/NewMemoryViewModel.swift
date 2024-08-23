@@ -9,6 +9,7 @@ import SwiftUI
 
 class NewMemoryViewModel {
     
+    @Published var mid: String = ""
     private var encodedMemory = EncodedMemory()
 //    @Published var isLoading = false
 //    @Published var updateError: MemoryUpdateError?
@@ -35,10 +36,13 @@ class NewMemoryViewModel {
         defer { isLoading = false } // Set loading state to false even in case of error
 
         do {
-            try await memoryService.createMemory(newData: encodedMemory, fid: friend.fid)
+            let fetchedMID = try await memoryService.createMemory(newData: encodedMemory, fid: friend.fid)
             try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount + addedTokens, memoryCount: user.memoryCount + 1))
             try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount + addedTokens, memoryCount: friend.memoryCount + 1))
             updateError = nil
+            DispatchQueue.main.async {
+                self.mid = fetchedMID
+            }
             print("Memory created successfully!")
         } catch {
             if let encodingError = error as? EncodingError {
@@ -59,9 +63,6 @@ class NewMemoryViewModel {
                 formatter.dateFormat = "HH:mm E, d MMM y"
                 let formattedDate = formatter.string(from: editedMemory.date)
                 
-                let uuid = UUID().uuidString
-                
-                encodedMemory.mid = uuid
                 encodedMemory.date = formattedDate
                 encodedMemory.title = editedMemory.title
                 encodedMemory.content = editedMemory.content
@@ -71,7 +72,7 @@ class NewMemoryViewModel {
                 
                 DispatchQueue.main.async {
                     
-                    memory.mid = uuid
+                    memory.mid = self.mid
                     memory.date = editedMemory.date
                     memory.title = editedMemory.title
                     memory.content = editedMemory.content

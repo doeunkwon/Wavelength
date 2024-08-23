@@ -71,7 +71,8 @@ async def create_friend(
                     """
                     graph.query(cypher_query, {
                                 "uid": uid, "fid": created_friend["fid"]})
-                    return {"message": "Friendship successfully created."}
+                    # Return the created friend's fid
+                    return {"fid": created_friend["fid"]}
 
                 except Exception as e:
                     raise HTTPException(

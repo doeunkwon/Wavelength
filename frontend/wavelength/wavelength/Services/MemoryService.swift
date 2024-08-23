@@ -87,7 +87,7 @@ class MemoryService {
         print("Memory updated successfully!")
     }
     
-    func createMemory(newData: EncodedMemory, fid: String) async throws {
+    func createMemory(newData: EncodedMemory, fid: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {
             throw MemoryServiceError.unknownError("Failed to create URL")
@@ -104,7 +104,7 @@ class MemoryService {
 
         urlRequest.httpBody = jsonData
 
-        let (_, response) = try await URLSession.shared.data(for: urlRequest)
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
@@ -114,7 +114,13 @@ class MemoryService {
             throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
         }
 
-        print("Memory created successfully!")
+        do {
+            let decoder = JSONDecoder()
+            let decodedMID = try decoder.decode(DecodedMID.self, from: data)
+            return decodedMID.mid
+        } catch {
+            throw MemoryServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))
+        }
     }
     
     // Helper function to retrieve access token (replace with your implementation)

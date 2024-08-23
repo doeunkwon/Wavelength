@@ -9,6 +9,7 @@ import SwiftUI
 
 class NewFriendViewModel: ObservableObject {
     
+    @Published var fid: String = ""
     private var encodedFriend = EncodedFriend()
 //    @Published var isLoading = false
 //    @Published var updateError: ProfileUpdateError?
@@ -28,8 +29,11 @@ class NewFriendViewModel: ObservableObject {
         defer { isLoading = false } // Set loading state to false even in case of error
 
         do {
-            try await friendService.createFriend(newData: encodedFriend)
+            let fetchedFID = try await friendService.createFriend(newData: encodedFriend)
             updateError = nil
+            DispatchQueue.main.async {
+                self.fid = fetchedFID
+            }
             print("Friend profile created successfully!")
         } catch {
             if let encodingError = error as? EncodingError {
@@ -48,9 +52,7 @@ class NewFriendViewModel: ObservableObject {
                 do {
                     
                     let editedProfile = editedProfileManager.profile
-                    let uuid = UUID().uuidString
                     
-                    encodedFriend.fid = uuid
                     encodedFriend.emoji = editedProfile.emoji
                     encodedFriend.color = editedProfile.color.toHex()
                     encodedFriend.firstName = editedProfile.firstName
@@ -67,7 +69,7 @@ class NewFriendViewModel: ObservableObject {
                     
                     DispatchQueue.main.async {
                         
-                        friend.fid = uuid
+                        friend.fid = self.fid
                         friend.emoji = editedProfile.emoji
                         friend.color = editedProfile.color
                         friend.firstName = editedProfile.firstName
