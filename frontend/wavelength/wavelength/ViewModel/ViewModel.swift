@@ -8,6 +8,7 @@
 import SwiftUI
 
 class ViewModel: ObservableObject {
+    @Published var bearerToken: String = ""
     @Published var user: User = User(
         uid: "",
         emoji: "",
@@ -27,9 +28,25 @@ class ViewModel: ObservableObject {
     @Published var scores: [Score] = []
     @Published var scoreChartData: [ScoreData] = []
 
+    let authenticationService = AuthenticationService()
     let userService = UserService()
     let friendService = FriendService()
     let scoreService = ScoreService()
+    
+    func getToken(username: String, password: String) {
+        print("FETCHING TOKEN")
+        Task {
+            do {
+                let token = try await authenticationService.signIn(username: username, password: password)
+                print(token)
+                self.bearerToken = token
+                // Navigate to the next view or perform other actions
+            } catch {
+                // Handle authentication errors
+                print("Authentication error:", error.localizedDescription)
+            }
+        }
+    }
 
     func getUser() {
         print("FETCHING USER")

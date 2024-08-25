@@ -16,6 +16,8 @@ enum UserServiceError: Error {
 
 class UserService {
     
+    @EnvironmentObject var viewModel: ViewModel
+    
     func getUser() async throws -> User {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
@@ -96,6 +98,6 @@ class UserService {
         // Replace this with your actual token retrieval logic
         // For example, using UserDefaults or Keychain
         // Won't be able to implement until I implement login screen !!!
-        return ServiceUtils.testToken
+        return viewModel.bearerToken
     }
 }

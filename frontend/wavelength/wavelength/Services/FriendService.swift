@@ -16,6 +16,8 @@ enum FriendServiceError: Error {
 
 class FriendService {
     
+    @EnvironmentObject var viewModel: ViewModel
+    
     func getFriends() async throws -> [Friend] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
@@ -132,6 +134,6 @@ class FriendService {
         // Replace this with your actual token retrieval logic
         // For example, using UserDefaults or Keychain
         // Won't be able to implement until I implement login screen !!!
-        return ServiceUtils.testToken
+        return viewModel.bearerToken
     }
 }

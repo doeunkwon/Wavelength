@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SignInView: View {
     
+    @EnvironmentObject var viewModel: ViewModel
+    
     @State var username: String = ""
     @State var password: String = ""
     
@@ -28,7 +30,10 @@ struct SignInView: View {
                 Spacer()
                 VStack (spacing: Padding.large) {
                     ButtonView(title: Strings.login.logIn, color: .wavelengthBackground, backgroundColor: .wavelengthPurple, largeFont: true, action: {
-                        print("Log in button tapped")
+                        viewModel.getToken(username: username, password: password)
+                        if viewModel.bearerToken != "" {
+                            print("login success")
+                        }
                     })
                     .shadow(
                         color: ShadowStyle.glow(.wavelengthPurple).color,
@@ -51,4 +56,5 @@ struct SignInView: View {
 
 #Preview {
     SignInView()
+        .environmentObject(ViewModel())
 }

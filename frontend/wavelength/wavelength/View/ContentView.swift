@@ -16,7 +16,7 @@ struct ContentView: View {
     var body: some View {
         
         NavigationStack {
-            if viewModel.user.uid.isEmpty {
+            if viewModel.bearerToken.isEmpty {
                 
                 SignInView()
                 
