@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftKeychainWrapper
 
 class ViewModel: ObservableObject {
+    
     @Published var isLoggedIn: Bool = false
     @Published var user: User = User(
         uid: "",
@@ -29,11 +30,19 @@ class ViewModel: ObservableObject {
     @Published var scores: [Score] = []
     @Published var scoreChartData: [ScoreData] = []
     
+    init() {
+        isLoggedIn = hasBearerToken()
+    }
 
     let authenticationService = AuthenticationService()
     let userService = UserService()
     let friendService = FriendService()
     let scoreService = ScoreService()
+    
+    func hasBearerToken() -> Bool {
+        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
+        return bearerToken != ""
+    }
     
     func getToken(username: String, password: String) {
         print("FETCHING TOKEN")

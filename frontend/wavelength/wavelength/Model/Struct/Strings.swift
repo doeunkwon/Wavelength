@@ -65,6 +65,8 @@ struct Strings {
         static let logOut: String = "Log out"
         static let confirmDelete: String = "Are you sure you want to delete your profile? This action cannot be undone."
         static let confirmDeleteProfile: String = "Confirm delete profile"
+        static let confirmLogout: String = "Are you sure you want to log out? You'll need to sign in again."
+        static let confirmLogoutProfile: String = "Confirm logout"
         
     }
     

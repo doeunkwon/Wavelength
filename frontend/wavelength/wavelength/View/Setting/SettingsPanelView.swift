@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftKeychainWrapper
 
 struct SettingsPanelView: View {
     
@@ -16,6 +17,7 @@ struct SettingsPanelView: View {
     @State private var showProfileFormViewSheet = false
     @State private var showChangePasswordViewSheet = false
     @State private var showConfirmDeleteAlert = false
+    @State private var showConfirmLogoutAlert = false
     
     @Binding var isLoggedIn: Bool
     
@@ -37,6 +39,19 @@ struct SettingsPanelView: View {
                     .interactiveDismissDisabled()
             }
             DividerLineView()
+            SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {
+                showConfirmLogoutAlert.toggle()
+            })
+            .alert(Strings.settings.confirmLogoutProfile, isPresented: $showConfirmLogoutAlert) {
+                Button(Strings.settings.logOut) {
+                        isLoggedIn = false
+                        KeychainWrapper.standard.removeObject(forKey: "bearerToken")
+                    }
+                Button(Strings.general.cancel, role: .cancel) {}
+                    } message: {
+                        Text(Strings.settings.confirmLogout)
+                    }
+            DividerLineView()
             SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash, action: {
                 showConfirmDeleteAlert.toggle()
             })
@@ -48,10 +63,6 @@ struct SettingsPanelView: View {
                     } message: {
                         Text(Strings.settings.confirmDelete)
                     }
-            DividerLineView()
-            SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {
-                isLoggedIn = false
-            })
         }
     }
 }
