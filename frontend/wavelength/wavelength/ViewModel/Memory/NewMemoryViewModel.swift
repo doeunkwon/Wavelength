@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftKeychainWrapper
 
 class NewMemoryViewModel {
     
@@ -35,10 +36,11 @@ class NewMemoryViewModel {
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 
+        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            let fetchedMID = try await memoryService.createMemory(newData: encodedMemory, fid: friend.fid)
-            try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount + addedTokens, memoryCount: user.memoryCount + 1))
-            try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount + addedTokens, memoryCount: friend.memoryCount + 1))
+            let fetchedMID = try await memoryService.createMemory(newData: encodedMemory, fid: friend.fid, bearerToken: bearerToken)
+            try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount + addedTokens, memoryCount: user.memoryCount + 1), bearerToken: bearerToken)
+            try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount + addedTokens, memoryCount: friend.memoryCount + 1), bearerToken: bearerToken)
             updateError = nil
             DispatchQueue.main.async {
                 self.mid = fetchedMID

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftKeychainWrapper
 
 class SettingsPanelViewModel: ObservableObject {
     
@@ -21,8 +22,10 @@ class SettingsPanelViewModel: ObservableObject {
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 
+        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
+        
         do {
-            try await userService.updateUser(newData: encodedUser)
+            try await userService.updateUser(newData: encodedUser, bearerToken: bearerToken)
             updateError = nil
             print("User profile updated successfully!")
         } catch {

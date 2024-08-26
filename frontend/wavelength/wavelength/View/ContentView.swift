@@ -16,19 +16,10 @@ struct ContentView: View {
     var body: some View {
         
         NavigationStack {
-            if viewModel.user.uid.isEmpty {
-                
-                VStack {
-                    Spacer()
-                    EmptyStateView(text: Strings.error.networkError, icon: Strings.icons.icloudslash)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.wavelengthBackground)
-                
-            } else {
+            if viewModel.isLoggedIn {
+            
                 TabView(selection: $selectedTab) {
-                    SettingsView()
+                    SettingsView(isLoggedIn: $viewModel.isLoggedIn)
                         .tag(0)
                     FriendsView(friends: $viewModel.friends, scoreChartData: viewModel.scoreChartData)
                         .tag(1)
@@ -36,12 +27,17 @@ struct ContentView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .background(.wavelengthBackground)
                 .ignoresSafeArea()
+                .onAppear(perform: {
+                    viewModel.getUser()
+                    viewModel.getFriends()
+                    viewModel.getScores()
+                })
+                
+            } else {
+                
+                SignInView(viewModel: viewModel)
+                
             }
         }
-        .onAppear(perform: {
-            viewModel.getUser()
-            viewModel.getFriends()
-            viewModel.getScores()
-        })
     }
 }
