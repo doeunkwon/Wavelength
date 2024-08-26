@@ -16,7 +16,9 @@ enum MemoryServiceError: Error {
 
 class MemoryService {
     
-    func getMemories(fid: String) async throws -> [Memory] {
+    @EnvironmentObject var viewModel: ViewModel
+    
+    func getMemories(fid: String, bearerToken: String) async throws -> [Memory] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {
             throw MemoryServiceError.unknownError("Failed to create URL")
@@ -24,7 +26,7 @@ class MemoryService {
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
-        urlRequest.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
@@ -58,14 +60,14 @@ class MemoryService {
         }
     }
     
-    func updateMemory(mid: String, newData: EncodedMemory) async throws {
+    func updateMemory(mid: String, newData: EncodedMemory, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(mid)") else {
             throw MemoryServiceError.unknownError("Failed to create URL")
         }
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "PUT"
-        urlRequest.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         // Convert user object to JSON data
@@ -87,7 +89,7 @@ class MemoryService {
         print("Memory updated successfully!")
     }
     
-    func createMemory(newData: EncodedMemory, fid: String) async throws -> String {
+    func createMemory(newData: EncodedMemory, fid: String, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {
             throw MemoryServiceError.unknownError("Failed to create URL")
@@ -95,7 +97,7 @@ class MemoryService {
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
-        urlRequest.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         // Convert user object to JSON data
@@ -121,13 +123,5 @@ class MemoryService {
         } catch {
             throw MemoryServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))
         }
-    }
-    
-    // Helper function to retrieve access token (replace with your implementation)
-    private func getToken() -> String {
-        // Replace this with your actual token retrieval logic
-        // For example, using UserDefaults or Keychain
-        // Won't be able to implement until I implement login screen !!!
-        return ServiceUtils.testToken
     }
 }

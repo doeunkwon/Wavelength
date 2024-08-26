@@ -16,3 +16,15 @@ enum ProfileUpdateError: Error {
   case networkError(Error)
   case unknownError(String)
 }
+
+enum ScoreServiceError: Error {
+    case unauthorized
+    case networkError(Error)
+    case unknownError(String)
+}
+
+enum AuthenticationServiceError: Error {
+    case invalidCredentials
+    case networkError(Error)
+    case unknownError(String)
+}

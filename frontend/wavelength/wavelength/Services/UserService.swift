@@ -16,7 +16,9 @@ enum UserServiceError: Error {
 
 class UserService {
     
-    func getUser() async throws -> User {
+    @EnvironmentObject var viewModel: ViewModel
+    
+    func getUser(bearerToken: String) async throws -> User {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
             throw UserServiceError.unknownError("Failed to create URL")
@@ -24,7 +26,7 @@ class UserService {
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
-        urlRequest.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
@@ -61,14 +63,14 @@ class UserService {
         }
     }
     
-    func updateUser(newData: EncodedUser) async throws {
+    func updateUser(newData: EncodedUser, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
             throw UserServiceError.unknownError("Failed to create URL")
         }
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "PUT"
-        urlRequest.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         // Convert user object to JSON data
@@ -89,13 +91,5 @@ class UserService {
 
         // Handle success response (optional) - You might not need to decode anything on success
         print("User updated successfully!")
-    }
-    
-    // Helper function to retrieve access token (replace with your implementation)
-    private func getToken() -> String {
-        // Replace this with your actual token retrieval logic
-        // For example, using UserDefaults or Keychain
-        // Won't be able to implement until I implement login screen !!!
-        return ServiceUtils.testToken
     }
 }

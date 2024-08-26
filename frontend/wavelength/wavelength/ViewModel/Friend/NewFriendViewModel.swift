@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftKeychainWrapper
 
 class NewFriendViewModel: ObservableObject {
     
@@ -28,8 +29,9 @@ class NewFriendViewModel: ObservableObject {
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 
+        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            let fetchedFID = try await friendService.createFriend(newData: encodedFriend)
+            let fetchedFID = try await friendService.createFriend(newData: encodedFriend, bearerToken: bearerToken)
             updateError = nil
             DispatchQueue.main.async {
                 self.fid = fetchedFID

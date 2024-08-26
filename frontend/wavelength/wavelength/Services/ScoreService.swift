@@ -8,15 +8,11 @@
 import Foundation
 import SwiftUI
 
-enum ScoreServiceError: Error {
-    case unauthorized
-    case networkError(Error)
-    case unknownError(String)
-}
-
 class ScoreService {
     
-    func getScores() async throws -> [Score] {
+    @EnvironmentObject var viewModel: ViewModel
+    
+    func getScores(bearerToken: String) async throws -> [Score] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores") else {
             throw ScoreServiceError.unknownError("Failed to create URL")
@@ -24,7 +20,7 @@ class ScoreService {
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
-        urlRequest.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
@@ -57,13 +53,5 @@ class ScoreService {
         } catch {
             throw ScoreServiceError.unknownError("Error decoding score data")
         }
-    }
-    
-    // Helper function to retrieve access token (replace with your implementation)
-    private func getToken() -> String {
-        // Replace this with your actual token retrieval logic
-        // For example, using UserDefaults or Keychain
-        // Won't be able to implement until I implement login screen !!!
-        return ServiceUtils.testToken
     }
 }

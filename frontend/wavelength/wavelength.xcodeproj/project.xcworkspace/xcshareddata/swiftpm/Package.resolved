@@ -1,5 +1,5 @@
 {
-  "originHash" : "595d1748b1c3db11b79ffd9f75f2eb43bd054d2196cd9f3ba2c5add22061bf3c",
+  "originHash" : "47e56286835b984ed5565e175f027dca8961408fd28f0b744a5282589fad1a7b",
   "pins" : [
     {
       "identity" : "mcemojipicker",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "e0b4903b75ae1cc418d276d84d1cb946b8a1d73c",
         "version" : "1.2.3"
+      }
+    },
+    {
+      "identity" : "swiftkeychainwrapper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jrendel/SwiftKeychainWrapper",
+      "state" : {
+        "revision" : "185a3165346a03767101c4f62e9a545a0fe0530f",
+        "version" : "4.0.1"
       }
     }
   ],

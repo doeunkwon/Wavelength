@@ -9,12 +9,14 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    @Binding var isLoggedIn: Bool
+    
     var body: some View {
         VStack (alignment: .leading, spacing: Padding.large) {
             Text(Strings.general.settings)
                 .font(.system(size: Fonts.title, weight: .semibold))
                 .foregroundStyle(.wavelengthText)
-            SettingsPanelView()
+            SettingsPanelView(isLoggedIn: $isLoggedIn)
                 .cornerRadius(CornerRadius.medium)
                 .shadow(
                     color: ShadowStyle.standard.color,
