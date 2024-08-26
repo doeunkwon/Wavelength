@@ -11,7 +11,7 @@ struct Strings {
     
     struct login {
         
-        static let logIn: String = "Log in"
+        static let login: String = "Login"
         static let createAnAccount: String = "Create an account"
         
     }
