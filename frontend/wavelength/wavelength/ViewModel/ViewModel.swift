@@ -50,7 +50,9 @@ class ViewModel: ObservableObject {
             do {
                 let token = try await authenticationService.signIn(username: username, password: password)
                 KeychainWrapper.standard.set(token, forKey: "bearerToken")
-                isLoggedIn = true
+                DispatchQueue.main.async {
+                    self.isLoggedIn = true
+                }
             } catch {
                 // Handle authentication errors
                 print("Authentication error:", error.localizedDescription)

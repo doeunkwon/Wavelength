@@ -1,6 +1,7 @@
 from fastapi import Depends, APIRouter, HTTPException
 from app.api.helpers.auth import get_current_user, hash_password
-from app.api.helpers.users import delete_user as delete_user_helper, update_user as update_user_helper, get_user as get_user_helper
+from app.api.helpers.users import delete_user as delete_user_helper, update_user as update_user_helper, get_user as get_user_helper, update_password as update_password_helper
+from database.neo4j import graph
 
 '''
 Functions for logged-in users to perform on their own protected data (hence user must be authenticated and requires a token).
@@ -70,5 +71,26 @@ async def update_user(token: str = Depends(get_current_user), new_data: dict = {
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error updating user: {str(e)}"
+        )
+    return
+
+# Function to update a user
+
+
+@router.put("/private/users/password")
+async def update_password(token: str = Depends(get_current_user), new_data: dict = {}):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+
+        uid = token["uid"]
+
+        return update_password_helper(uid, new_data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error updating password: {str(e)}"
         )
     return

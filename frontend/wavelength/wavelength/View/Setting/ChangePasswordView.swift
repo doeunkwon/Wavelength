@@ -15,6 +15,8 @@ struct ChangePasswordView: View {
     @State var newPassword: String
     @State var confirmPassword: String
     
+    private let changePasswordViewModel = ChangePasswordViewModel()
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: Padding.xlarge) {
@@ -36,7 +38,19 @@ struct ChangePasswordView: View {
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 DownButtonView()
             }, trailing: Button(Strings.form.save) {
-                print("Save pressed!")
+                if newPassword == confirmPassword {
+                    Task {
+                        do {
+                            try await changePasswordViewModel.updatePassword(oldPassword: currentPassword, newPassword: newPassword)
+                            print("Password successfully updated")
+                        } catch {
+                            // Handle authentication errors
+                            print("Updating error:", error.localizedDescription)
+                        }
+                    }
+                } else {
+                    print("Passwords do not match!")
+                }
             })
             .padding(Padding.large)
             .padding(.top, Padding.nudge)
@@ -46,4 +60,12 @@ struct ChangePasswordView: View {
 //            }
         }
     }
+}
+
+#Preview {
+    @State var currentPassword: String = ""
+    @State var newPassword: String = ""
+    @State var confirmPassword: String = ""
+    
+    return ChangePasswordView(currentPassword: currentPassword, newPassword: newPassword, confirmPassword: confirmPassword)
 }
