@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftKeychainWrapper
 
 class MemoriesViewModel: ObservableObject {
     @Published var memories: [Memory] = []
@@ -14,9 +15,10 @@ class MemoriesViewModel: ObservableObject {
     
     func getMemories(fid: String) {
         print("FETCHING MEMORIES")
+        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         Task {
             do {
-                let fetchedMemories = try await memoryService.getMemories(fid: fid)
+                let fetchedMemories = try await memoryService.getMemories(fid: fid, bearerToken: bearerToken)
                 DispatchQueue.main.async {
                     self.memories = fetchedMemories
                 }

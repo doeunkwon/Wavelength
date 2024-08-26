@@ -18,7 +18,7 @@ class FriendService {
     
     @EnvironmentObject var viewModel: ViewModel
     
-    func getFriends() async throws -> [Friend] {
+    func getFriends(bearerToken: String) async throws -> [Friend] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
             throw FriendServiceError.unknownError("Failed to create URL")
@@ -26,7 +26,7 @@ class FriendService {
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
-        urlRequest.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
@@ -64,14 +64,14 @@ class FriendService {
         }
     }
     
-    func updateFriend(fid: String, newData: EncodedFriend) async throws {
+    func updateFriend(fid: String, newData: EncodedFriend, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends/\(fid)") else {
             throw FriendServiceError.unknownError("Failed to create URL")
         }
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "PUT"
-        urlRequest.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         // Convert user object to JSON data
@@ -93,7 +93,7 @@ class FriendService {
         print("Friend updated successfully!")
     }
     
-    func createFriend(newData: EncodedFriend) async throws -> String {
+    func createFriend(newData: EncodedFriend, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
             throw FriendServiceError.unknownError("Failed to create URL")
@@ -101,7 +101,7 @@ class FriendService {
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
-        urlRequest.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         // Convert user object to JSON data
@@ -127,13 +127,5 @@ class FriendService {
         } catch {
             throw FriendServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))
         }
-    }
-    
-    // Helper function to retrieve access token (replace with your implementation)
-    private func getToken() -> String {
-        // Replace this with your actual token retrieval logic
-        // For example, using UserDefaults or Keychain
-        // Won't be able to implement until I implement login screen !!!
-        return viewModel.bearerToken
     }
 }

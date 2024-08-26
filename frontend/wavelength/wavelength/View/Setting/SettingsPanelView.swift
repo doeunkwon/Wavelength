@@ -17,6 +17,8 @@ struct SettingsPanelView: View {
     @State private var showChangePasswordViewSheet = false
     @State private var showConfirmDeleteAlert = false
     
+    @Binding var isLoggedIn: Bool
+    
     var body: some View {
         VStack(spacing: 0) {
             SettingsCellView(title: Strings.settings.editProfile, icon: user.emoji, isEmoji: true, action: {
@@ -47,7 +49,9 @@ struct SettingsPanelView: View {
                         Text(Strings.settings.confirmDelete)
                     }
             DividerLineView()
-            SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {print("Log out tapped!")})
+            SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {
+                isLoggedIn = false
+            })
         }
     }
 }

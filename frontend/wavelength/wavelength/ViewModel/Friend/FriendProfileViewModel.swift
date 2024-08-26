@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftKeychainWrapper
 
 class FriendProfileViewModel: ObservableObject {
     
@@ -21,8 +22,9 @@ class FriendProfileViewModel: ObservableObject {
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 
+        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            try await friendService.updateFriend(fid: fid, newData: encodedFriend)
+            try await friendService.updateFriend(fid: fid, newData: encodedFriend, bearerToken: bearerToken)
             updateError = nil
             print("Friend profile updated successfully!")
         } catch {
