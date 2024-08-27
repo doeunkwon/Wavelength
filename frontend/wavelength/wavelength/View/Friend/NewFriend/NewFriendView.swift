@@ -10,6 +10,8 @@ import MCEmojiPicker
 
 struct NewFriendView: View {
     
+    @EnvironmentObject private var viewModel: ViewModel
+    
     @StateObject private var newFriendViewModel: NewFriendViewModel
     
     init(friends: Binding<[Friend]>) {

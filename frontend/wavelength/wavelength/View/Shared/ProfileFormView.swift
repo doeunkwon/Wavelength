@@ -90,19 +90,19 @@ struct ProfileFormView: View {
                     
                     DividerLineView()
                     
-                    if let user = editedProfileManager.profile as? User {
-                        TextFieldInputView(placeholder: Strings.form.email, binding: Binding(get: { user.email }, set: { user.email = $0 }), isMultiLine: false)
-                        
-                        DividerLineView()
-                    }
+//                    if let user = editedProfileManager.profile as? User {
+//                        TextFieldInputView(placeholder: Strings.form.email, binding: Binding(get: { user.email }, set: { user.email = $0 }), isMultiLine: false)
+//                        
+//                        DividerLineView()
+//                    }
+//                    
+//                    if let user = editedProfileManager.profile as? User {
+//                        TextFieldInputView(placeholder: Strings.form.username, binding: Binding(get: { user.username }, set: { user.username = $0 }), isMultiLine: false)
+//                        
+//                        DividerLineView()
+//                    }
                     
-                    if let user = editedProfileManager.profile as? User {
-                        TextFieldInputView(placeholder: Strings.form.username, binding: Binding(get: { user.username }, set: { user.username = $0 }), isMultiLine: false)
-                        
-                        DividerLineView()
-                    }
-                    
-                    TextFieldInputView(placeholder: Strings.form.goals, binding: $editedProfileManager.profile.goals, isMultiLine: true)
+                    TextFieldInputView(placeholder: Strings.form.goalsAndAspirations, binding: $editedProfileManager.profile.goals, isMultiLine: true)
                     
                     DividerLineView()
                     

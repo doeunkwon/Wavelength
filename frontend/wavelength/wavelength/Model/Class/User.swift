@@ -9,7 +9,7 @@ import SwiftUI
 
 class User: ObservableObject, Profile {
     
-    let uid: String
+    @Published var uid: String
     @Published var emoji: String
     @Published var color: Color
     @Published var firstName: String

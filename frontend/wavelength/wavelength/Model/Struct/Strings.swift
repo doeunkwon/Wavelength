@@ -12,7 +12,10 @@ struct Strings {
     struct login {
         
         static let login: String = "Login"
-        static let createAnAccount: String = "Create an account"
+        static let createAProfile: String = "Create a profile"
+        static let letsGetStarted: String = "Let's get started."
+        static let chooseAStrongPassword: String = "Choose a strong password."
+        static let tellUsAboutYourself: String = "Tell us about yourself."
         
     }
     
@@ -47,6 +50,7 @@ struct Strings {
         static let firstName: String = "First name"
         static let lastName: String = "Last name"
         static let goals: String = "Goals"
+        static let goalsAndAspirations: String = "Goals & aspirations"
         static let username: String = "Username"
         static let email: String = "Email"
         static let create: String = "Create"

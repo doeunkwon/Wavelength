@@ -11,8 +11,9 @@ struct SignInView: View {
     
     @ObservedObject var viewModel: ViewModel
     
-    @State var username: String = ""
-    @State var password: String = ""
+    @State private var username: String = ""
+    @State private var password: String = ""
+    @State private var showSignUpViewModal: Bool = false
     
     let logo = UIImage(named: "wavelengthLogo")!
     
@@ -40,9 +41,15 @@ struct SignInView: View {
                         radius: ShadowStyle.standard.radius,
                         x: ShadowStyle.standard.x,
                         y: ShadowStyle.standard.y)
-                    Text(Strings.login.createAnAccount)
-                        .font(.system(size: Fonts.body))
-                        .foregroundStyle(.blue)
+                    Button(Strings.login.createAProfile) {
+                        showSignUpViewModal.toggle()
+                    }
+                    .font(.system(size: Fonts.body))
+                    .foregroundStyle(.blue)
+                    .sheet(isPresented: $showSignUpViewModal) {
+                        FirstSignUpView(viewModel: viewModel, showModal: $showSignUpViewModal)
+                            .interactiveDismissDisabled()
+                    }
                 }
             }
             .padding(Padding.large)

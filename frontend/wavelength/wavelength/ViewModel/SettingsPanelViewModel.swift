@@ -48,20 +48,20 @@ class SettingsPanelViewModel: ObservableObject {
                     encodedUser.color = user.color != editedProfile.color ? editedProfile.color.toHex() : nil
                     encodedUser.firstName = user.firstName != editedProfile.firstName ? editedProfile.firstName : nil
                     encodedUser.lastName = user.lastName != editedProfile.lastName ? editedProfile.lastName : nil
-                    encodedUser.username = {
-                        if let editedUser = editedProfile as? User {
-                            return user.username != editedUser.username ? editedUser.username : nil
-                        } else {
-                            return nil
-                        }
-                        }()
-                    encodedUser.email = {
-                        if let editedUser = editedProfile as? User {
-                            return user.email != editedUser.email ? editedUser.email : nil
-                        } else {
-                            return nil
-                        }
-                        }()
+//                    encodedUser.username = {
+//                        if let editedUser = editedProfile as? User {
+//                            return user.username != editedUser.username ? editedUser.username : nil
+//                        } else {
+//                            return nil
+//                        }
+//                        }()
+//                    encodedUser.email = {
+//                        if let editedUser = editedProfile as? User {
+//                            return user.email != editedUser.email ? editedUser.email : nil
+//                        } else {
+//                            return nil
+//                        }
+//                        }()
                     encodedUser.goals = user.goals != editedProfile.goals ? editedProfile.goals : nil
                     encodedUser.interests = user.interests != tagManager.interests ? tagManager.interests : nil
                     encodedUser.values = user.values != tagManager.values ? tagManager.values : nil
@@ -74,12 +74,12 @@ class SettingsPanelViewModel: ObservableObject {
                         user.color = editedProfile.color
                         user.firstName = editedProfile.firstName
                         user.lastName = editedProfile.lastName
-                        if let editedUser = editedProfile as? User {
-                            user.username = editedUser.username
-                        }
-                        if let editedUser = editedProfile as? User {
-                            user.email = editedUser.email
-                        }
+//                        if let editedUser = editedProfile as? User {
+//                            user.username = editedUser.username
+//                        }
+//                        if let editedUser = editedProfile as? User {
+//                            user.email = editedUser.email
+//                        }
                         user.goals = editedProfile.goals
                         user.interests = tagManager.interests
                         user.values = tagManager.values
