@@ -16,6 +16,8 @@ struct MemoryCellView: View {
     @ObservedObject var memory: Memory
     @ObservedObject var friend: Friend
     
+    @Binding var memories: [Memory]
+    
     var body: some View {
         Button {
             showMemoryViewModal.toggle()
@@ -52,7 +54,7 @@ struct MemoryCellView: View {
             .cornerRadius(CornerRadius.medium) // Add corner radius
         }
         .sheet(isPresented: $showMemoryViewModal) {
-            MemoryView(memory: memory, user: user, friend: friend)
+            MemoryView(memory: memory, user: user, friend: friend, memories: $memories)
                 .interactiveDismissDisabled()
         }
     }

@@ -15,7 +15,7 @@ class NewFriendViewModel: ObservableObject {
 //    @Published var isLoading = false
 //    @Published var updateError: ProfileUpdateError?
     private var isLoading = false
-    private var updateError: ProfileUpdateError?
+    private var updateError: UpdateError?
     
     private let friendService = FriendService()
     
@@ -26,6 +26,9 @@ class NewFriendViewModel: ObservableObject {
     }
     
     func createFriend() async throws {
+        
+        print("API CALL: CREATE FRIEND")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 

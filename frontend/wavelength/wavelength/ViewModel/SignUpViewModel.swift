@@ -20,7 +20,7 @@ class SignUpViewModel: ObservableObject {
 //    @Published var isLoading = false
 //    @Published var updateError: ProfileUpdateError?
     private var isLoading = false
-    private var updateError: ProfileUpdateError?
+    private var updateError: UpdateError?
     
     private let userService = UserService()
     
@@ -31,7 +31,10 @@ class SignUpViewModel: ObservableObject {
         self._showModal = showModal
     }
     
-    func createFriend() async throws {
+    func createUser() async throws {
+        
+        print("API CALL: CREATE USER")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 
@@ -92,7 +95,7 @@ class SignUpViewModel: ObservableObject {
                     encodedUser.tokenCount = 0
                     encodedUser.memoryCount = 0
                     
-                    try await createFriend()
+                    try await createUser()
                     
                     DispatchQueue.main.async {
                         

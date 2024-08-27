@@ -45,7 +45,7 @@ class ViewModel: ObservableObject {
     }
     
     func getToken(username: String, password: String) {
-        print("FETCHING TOKEN")
+        print("API CALL: GET TOKEN")
         Task {
             do {
                 let token = try await authenticationService.signIn(username: username, password: password)
@@ -61,7 +61,7 @@ class ViewModel: ObservableObject {
     }
 
     func getUser() {
-        print("FETCHING USER")
+        print("API CALL: GET USER")
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         Task {
             do {
@@ -77,7 +77,7 @@ class ViewModel: ObservableObject {
     }
     
     func getFriends() {
-        print("FETCHING FRIENDS")
+        print("API CALL: GET FRIENDS")
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         Task {
             do {
@@ -93,7 +93,7 @@ class ViewModel: ObservableObject {
     }
     
     func getScores() {
-        print("FETCHING SCORES")
+        print("API CALL: GET SCORES")
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         Task {
             do {

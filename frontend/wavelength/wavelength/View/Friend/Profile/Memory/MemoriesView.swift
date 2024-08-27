@@ -54,7 +54,7 @@ struct MemoriesView: View {
                             
                             LazyVStack(alignment: .leading, spacing: Padding.large) {
                                 ForEach(Array(sortedMemories), id: \.self) { memory in
-                                    MemoryCellView(memory: memory, friend: friend)
+                                    MemoryCellView(memory: memory, friend: friend, memories: $memoriesViewModel.memories)
                                 }
                             }
                             .shadow(

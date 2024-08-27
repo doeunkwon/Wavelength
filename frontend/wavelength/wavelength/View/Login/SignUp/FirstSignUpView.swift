@@ -45,7 +45,7 @@ struct FirstSignUpView: View {
             }), trailing: NavigationLink(destination: SecondSignUpView(email: email, username: username, viewModel: viewModel, showModal: $showModal)) {
                 Text("Next")
             })
-            .navigationTitle(Strings.login.letsGetStarted)
+            .navigationTitle(Strings.login.letsGetYouStarted)
             .navigationBarTitleDisplayMode(.inline)
         }
     }

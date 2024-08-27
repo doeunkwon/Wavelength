@@ -15,7 +15,7 @@ class NewMemoryViewModel {
 //    @Published var isLoading = false
 //    @Published var updateError: MemoryUpdateError?
     private var isLoading = false
-    private var updateError: MemoryUpdateError?
+    private var updateError: UpdateError?
     
     @Binding private var memories: [Memory]
     
@@ -33,6 +33,9 @@ class NewMemoryViewModel {
     }
     
     func createMemory(addedTokens: Int) async throws {
+        
+        print("API CALL: CREATE MEMORIES")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 

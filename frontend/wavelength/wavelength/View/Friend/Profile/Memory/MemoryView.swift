@@ -15,9 +15,9 @@ struct MemoryView: View {
     
     private var memoryViewModel: MemoryViewModel
     
-    init(memory: Memory, user: User, friend: Friend) {
+    init(memory: Memory, user: User, friend: Friend, memories: Binding<[Memory]>) {
         self.memory = memory
-        self.memoryViewModel = MemoryViewModel(user: user, friend: friend)
+        self.memoryViewModel = MemoryViewModel(user: user, friend: friend, memories: memories)
     }
     
     var body: some View {
@@ -61,7 +61,17 @@ struct MemoryView: View {
                 NavigationLink(destination: MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.form.save, action: memoryViewModel.completion), navTitle: Strings.memory.editMemory)) {
                     Label("Edit memory", systemImage: Strings.icons.pencil)
                 }
-                Button(role: .destructive, action: {print("Delete tapped!")}) {
+                Button(role: .destructive, action: {
+                    Task {
+                        do {
+                            try await memoryViewModel.deleteMemory(mid: memory.mid, memoryTokenCount: memory.tokens)
+                            dismiss()
+                        } catch {
+                            // Handle deletion errors
+                            print("Deleting error:", error.localizedDescription)
+                        }
+                    }
+                }) {
                     Label("Delete", systemImage: Strings.icons.trash)
                 }
             } label: {

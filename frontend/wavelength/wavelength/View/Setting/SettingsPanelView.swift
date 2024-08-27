@@ -57,8 +57,17 @@ struct SettingsPanelView: View {
             })
             .alert(Strings.settings.confirmDeleteProfile, isPresented: $showConfirmDeleteAlert) {
                 Button(Strings.settings.deleteProfile, role: .destructive) {
-                            // Perform account deletion logic here
+                    Task {
+                        do {
+                            try await settingsPanelViewModel.deleteUser()
+                            isLoggedIn = false
+                            KeychainWrapper.standard.removeObject(forKey: "bearerToken")
+                        } catch {
+                            // Handle deletion errors
+                            print("Deleting error:", error.localizedDescription)
                         }
+                    }
+                }
                 Button(Strings.general.cancel, role: .cancel) {}
                     } message: {
                         Text(Strings.settings.confirmDelete)

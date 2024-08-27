@@ -9,14 +9,19 @@ import SwiftUI
 
 struct FriendProfileView: View {
     
-    @StateObject private var friendProfileViewModel = FriendProfileViewModel()
-    
     @Environment(\.dismiss) private var dismiss
     
     @State private var showMemoriesViewSheet = false
     @State private var showProfileFormViewSheet = false
+
+    @ObservedObject private var friend: Friend
     
-    @ObservedObject var friend: Friend
+    @StateObject private var friendProfileViewModel: FriendProfileViewModel
+    
+    init(user: User, friend: Friend) {
+        self.friend = friend
+        self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(user: user))
+    }
     
     var body: some View {
         
@@ -72,7 +77,17 @@ struct FriendProfileView: View {
                 }) {
                     Label("Edit profile", systemImage: Strings.icons.person)
                 }
-                Button(role: .destructive, action: {print("Delete tapped!")}) {
+                Button(role: .destructive, action: {
+                    Task {
+                        do {
+                            try await friendProfileViewModel.deleteFriend(fid: friend.fid, friendMemoryCount: friend.memoryCount, friendTokenCount: friend.tokenCount)
+                            dismiss()
+                        } catch {
+                            // Handle deletion errors
+                            print("Deleting error:", error.localizedDescription)
+                        }
+                    }
+                }) {
                     Label("Delete", systemImage: Strings.icons.trash)
                 }
             } label: {

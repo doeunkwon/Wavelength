@@ -10,25 +10,32 @@ import SwiftKeychainWrapper
 
 class MemoryViewModel {
     
+    @ObservedObject private var user: User
+    @ObservedObject private var friend: Friend
+    
+    @Binding private var memories: [Memory]
+    
     private var encodedMemory = EncodedMemory()
 //    @Published var isLoading = false
 //    @Published var updateError: MemoryUpdateError?
     private var isLoading = false
-    private var updateError: MemoryUpdateError?
-    
-    @ObservedObject private var user: User
-    @ObservedObject private var friend: Friend
+    private var updateError: UpdateError?
+    private var deleteError: DeleteError?
     
     private let memoryService = MemoryService()
     private let userService = UserService()
     private let friendService = FriendService()
     
-    init(user: User, friend: Friend) {
+    init(user: User, friend: Friend, memories: Binding<[Memory]>) {
         self.user = user
         self.friend = friend
+        self._memories = memories
     }
     
     func updateMemory(mid: String, oldTokens: Int, newTokens: Int) async throws {
+        
+        print("API CALL: UPDATE MEMORY")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 
@@ -46,6 +53,45 @@ class MemoryViewModel {
                 updateError = .encodingError(encodingError)
             } else {
                 updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
+    }
+    
+    func deleteMemory(mid: String, memoryTokenCount: Int) async throws {
+        
+        print("API CALL: DELETE MEMORY")
+        
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
+        
+        do {
+            
+            try await memoryService.deleteMemory(mid: mid, bearerToken: bearerToken)
+            try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount - memoryTokenCount, memoryCount: friend.memoryCount - 1), bearerToken: bearerToken)
+            try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount - memoryTokenCount, memoryCount: user.memoryCount - 1), bearerToken: bearerToken)
+            
+            DispatchQueue.main.async {
+                
+                self.memories.removeAll { $0.mid == mid }
+                
+                self.user.memoryCount -= 1
+                self.user.tokenCount -= memoryTokenCount
+                
+                self.friend.memoryCount -= 1
+                self.friend.tokenCount -= memoryTokenCount
+                
+            }
+            
+            deleteError = nil
+            print("Memory deleted successfully!")
+        } catch {
+            if let encodingError = error as? EncodingError {
+                deleteError = .encodingError(encodingError)
+            } else {
+                deleteError = .networkError(error)
             }
             throw error // Re-throw the error for caller handling
         }
