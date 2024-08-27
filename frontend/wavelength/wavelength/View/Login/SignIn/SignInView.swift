@@ -35,24 +35,19 @@ struct SignInView: View {
                         ButtonView(title: Strings.login.logIn, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
                             viewModel.getToken(username: username, password: password)
                         })
-                        .shadow(
-                            color: ShadowStyle.standard.color,
-                            radius: ShadowStyle.standard.radius,
-                            x: ShadowStyle.standard.x,
-                            y: ShadowStyle.standard.y)
                         ButtonView(title: Strings.login.signUp, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
                             showSignUpViewModal.toggle()
                         })
-                        .shadow(
-                            color: ShadowStyle.standard.color,
-                            radius: ShadowStyle.standard.radius,
-                            x: ShadowStyle.standard.x,
-                            y: ShadowStyle.standard.y)
                         .sheet(isPresented: $showSignUpViewModal) {
                             FirstSignUpView(viewModel: viewModel, showModal: $showSignUpViewModal)
                                 .interactiveDismissDisabled()
                             }
                     }
+                    .shadow(
+                        color: ShadowStyle.subtle.color,
+                        radius: ShadowStyle.subtle.radius,
+                        x: ShadowStyle.subtle.x,
+                        y: ShadowStyle.subtle.y)
                 }
                 .padding(.bottom, logoSize)
                 Spacer()

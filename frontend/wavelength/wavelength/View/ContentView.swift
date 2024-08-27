@@ -28,6 +28,7 @@ struct ContentView: View {
                 .background(.wavelengthBackground)
                 .ignoresSafeArea()
                 .onAppear(perform: {
+                    selectedTab = 1
                     viewModel.getUser()
                     viewModel.getFriends()
                     viewModel.getScores()
