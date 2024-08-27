@@ -87,6 +87,9 @@ struct Strings {
         
         static let newFriend: String = "New friend"
         static let addAFriend: String = "Add a friend"
+        static let confirmDelete: String = "Are you sure you want to delete this profile? This action cannot be undone."
+        static let confirmDeleteProfile: String = "Confirm delete profile"
+        static let deleteProfile: String = "Delete profile"
         
     }
     
@@ -105,6 +108,9 @@ struct Strings {
         static let content: String = "Content"
         static let date: String = "Date"
         static let addAMemory: String = "Add a memory"
+        static let confirmDelete: String = "Are you sure you want to delete this memory? This action cannot be undone."
+        static let confirmDeleteMemory: String = "Confirm delete memory"
+        static let deleteMemory: String = "Delete memory"
         
     }
 

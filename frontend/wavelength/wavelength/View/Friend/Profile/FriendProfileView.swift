@@ -18,6 +18,8 @@ struct FriendProfileView: View {
     
     @StateObject private var friendProfileViewModel: FriendProfileViewModel
     
+    @State private var showConfirmDeleteAlert: Bool = false
+    
     init(user: User, friend: Friend) {
         self.friend = friend
         self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(user: user))
@@ -78,6 +80,15 @@ struct FriendProfileView: View {
                     Label("Edit profile", systemImage: Strings.icons.person)
                 }
                 Button(role: .destructive, action: {
+                    showConfirmDeleteAlert.toggle()
+                }) {
+                    Label("Delete", systemImage: Strings.icons.trash)
+                }
+            } label: {
+                EllipsisButtonView()
+            })
+            .alert(Strings.friend.confirmDeleteProfile, isPresented: $showConfirmDeleteAlert) {
+                Button(Strings.friend.deleteProfile, role: .destructive) {
                     Task {
                         do {
                             try await friendProfileViewModel.deleteFriend(fid: friend.fid, friendMemoryCount: friend.memoryCount, friendTokenCount: friend.tokenCount)
@@ -87,12 +98,11 @@ struct FriendProfileView: View {
                             print("Deleting error:", error.localizedDescription)
                         }
                     }
-                }) {
-                    Label("Delete", systemImage: Strings.icons.trash)
                 }
-            } label: {
-                EllipsisButtonView()
-            })
+                Button(Strings.general.cancel, role: .cancel) {}
+                } message: {
+                    Text(Strings.friend.confirmDelete)
+                }
             .sheet(isPresented: $showProfileFormViewSheet) {
                 ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: friendProfileViewModel.completion), navTitle: Strings.settings.editProfile)
                     .interactiveDismissDisabled()

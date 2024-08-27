@@ -13,6 +13,8 @@ struct MemoryView: View {
     
     @ObservedObject var memory: Memory
     
+    @State private var showConfirmDeleteAlert: Bool = false
+    
     private var memoryViewModel: MemoryViewModel
     
     init(memory: Memory, user: User, friend: Friend, memories: Binding<[Memory]>) {
@@ -62,6 +64,16 @@ struct MemoryView: View {
                     Label("Edit memory", systemImage: Strings.icons.pencil)
                 }
                 Button(role: .destructive, action: {
+                    showConfirmDeleteAlert.toggle()
+                }) {
+                    Label("Delete", systemImage: Strings.icons.trash)
+                }
+            } label: {
+                EllipsisButtonView()
+            })
+            .background(.wavelengthBackground)
+            .alert(Strings.memory.confirmDeleteMemory, isPresented: $showConfirmDeleteAlert) {
+                Button(Strings.memory.deleteMemory, role: .destructive) {
                     Task {
                         do {
                             try await memoryViewModel.deleteMemory(mid: memory.mid, memoryTokenCount: memory.tokens)
@@ -71,13 +83,11 @@ struct MemoryView: View {
                             print("Deleting error:", error.localizedDescription)
                         }
                     }
-                }) {
-                    Label("Delete", systemImage: Strings.icons.trash)
                 }
-            } label: {
-                EllipsisButtonView()
-            })
-            .background(.wavelengthBackground)
+                Button(Strings.general.cancel, role: .cancel) {}
+                } message: {
+                    Text(Strings.memory.confirmDelete)
+                }
         }
     }
 }

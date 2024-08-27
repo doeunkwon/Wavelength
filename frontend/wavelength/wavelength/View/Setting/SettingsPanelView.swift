@@ -44,13 +44,13 @@ struct SettingsPanelView: View {
             })
             .alert(Strings.settings.confirmLogoutProfile, isPresented: $showConfirmLogoutAlert) {
                 Button(Strings.settings.logOut) {
-                        isLoggedIn = false
-                        KeychainWrapper.standard.removeObject(forKey: "bearerToken")
-                    }
+                    isLoggedIn = false
+                    KeychainWrapper.standard.removeObject(forKey: "bearerToken")
+                }
                 Button(Strings.general.cancel, role: .cancel) {}
-                    } message: {
-                        Text(Strings.settings.confirmLogout)
-                    }
+            } message: {
+                Text(Strings.settings.confirmLogout)
+            }
             DividerLineView()
             SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash, action: {
                 showConfirmDeleteAlert.toggle()
