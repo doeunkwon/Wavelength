@@ -20,7 +20,7 @@ struct FriendProfileView: View {
     
     init(user: User, friend: Friend) {
         self.friend = friend
-        self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(friend: friend, user: user))
+        self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(user: user))
     }
     
     var body: some View {
@@ -80,7 +80,7 @@ struct FriendProfileView: View {
                 Button(role: .destructive, action: {
                     Task {
                         do {
-                            try await friendProfileViewModel.deleteFriend()
+                            try await friendProfileViewModel.deleteFriend(fid: friend.fid, friendMemoryCount: friend.memoryCount, friendTokenCount: friend.tokenCount)
                             dismiss()
                         } catch {
                             // Handle deletion errors
