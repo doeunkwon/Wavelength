@@ -14,7 +14,8 @@ class SettingsPanelViewModel: ObservableObject {
 //    @Published var isLoading = false
 //    @Published var updateError: ProfileUpdateError?
     private var isLoading = false
-    private var updateError: ProfileUpdateError?
+    private var updateError: UpdateError?
+    private var deleteError: DeleteError?
 
     private let userService = UserService()
     
@@ -33,6 +34,26 @@ class SettingsPanelViewModel: ObservableObject {
                 updateError = .encodingError(encodingError)
             } else {
                 updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
+    }
+    
+    func deleteUser() async throws {
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
+        
+        do {
+            try await userService.deleteUser(bearerToken: bearerToken)
+            deleteError = nil
+            print("User profile deleted successfully!")
+        } catch {
+            if let encodingError = error as? EncodingError {
+                deleteError = .encodingError(encodingError)
+            } else {
+                deleteError = .networkError(error)
             }
             throw error // Re-throw the error for caller handling
         }

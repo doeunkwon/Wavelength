@@ -15,7 +15,7 @@ class NewFriendViewModel: ObservableObject {
 //    @Published var isLoading = false
 //    @Published var updateError: ProfileUpdateError?
     private var isLoading = false
-    private var updateError: ProfileUpdateError?
+    private var updateError: UpdateError?
     
     private let friendService = FriendService()
     

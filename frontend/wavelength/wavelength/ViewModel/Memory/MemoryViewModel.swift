@@ -14,7 +14,7 @@ class MemoryViewModel {
 //    @Published var isLoading = false
 //    @Published var updateError: MemoryUpdateError?
     private var isLoading = false
-    private var updateError: MemoryUpdateError?
+    private var updateError: UpdateError?
     
     @ObservedObject private var user: User
     @ObservedObject private var friend: Friend

@@ -15,7 +15,7 @@ class NewMemoryViewModel {
 //    @Published var isLoading = false
 //    @Published var updateError: MemoryUpdateError?
     private var isLoading = false
-    private var updateError: MemoryUpdateError?
+    private var updateError: UpdateError?
     
     @Binding private var memories: [Memory]
     
