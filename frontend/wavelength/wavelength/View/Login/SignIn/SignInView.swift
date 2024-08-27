@@ -15,42 +15,51 @@ struct SignInView: View {
     @State private var password: String = ""
     @State private var showSignUpViewModal: Bool = false
     
-    let logo = UIImage(named: "wavelengthLogo")!
+    private let logo = UIImage(named: "wavelengthLogo")!
+    private let logoSize = 85.0
     
     var body: some View {
         NavigationStack {
             
             VStack {
                 Spacer()
-                VStack(spacing: Padding.large * 3) {
-                    Image(uiImage: logo)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(.wavelengthPurple)
-                        .frame(width: 85)
-                    SignInFormView(username: $username, password: $password)
-                }
-                .padding(.bottom, Padding.large * 3)
+                Image(uiImage: logo)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.wavelengthLightGrey)
+                    .frame(width: logoSize)
                 Spacer()
-                VStack (spacing: Padding.large) {
-                    ButtonView(title: Strings.login.login, color: .wavelengthBackground, backgroundColor: .wavelengthPurple, largeFont: true, action: {
-                        viewModel.getToken(username: username, password: password)
-                    })
-                    .shadow(
-                        color: ShadowStyle.standard.color,
-                        radius: ShadowStyle.standard.radius,
-                        x: ShadowStyle.standard.x,
-                        y: ShadowStyle.standard.y)
-                    Button(Strings.login.createAProfile) {
-                        showSignUpViewModal.toggle()
-                    }
-                    .font(.system(size: Fonts.body))
-                    .foregroundStyle(.blue)
-                    .sheet(isPresented: $showSignUpViewModal) {
-                        FirstSignUpView(viewModel: viewModel, showModal: $showSignUpViewModal)
-                            .interactiveDismissDisabled()
+                VStack(spacing: Padding.large) {
+                    SignInFormView(username: $username, password: $password)
+                    HStack (spacing: Padding.large) {
+                        ButtonView(title: Strings.login.logIn, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
+                            viewModel.getToken(username: username, password: password)
+                        })
+                        .shadow(
+                            color: ShadowStyle.standard.color,
+                            radius: ShadowStyle.standard.radius,
+                            x: ShadowStyle.standard.x,
+                            y: ShadowStyle.standard.y)
+                        ButtonView(title: Strings.login.signUp, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
+                            showSignUpViewModal.toggle()
+                        })
+                        .shadow(
+                            color: ShadowStyle.standard.color,
+                            radius: ShadowStyle.standard.radius,
+                            x: ShadowStyle.standard.x,
+                            y: ShadowStyle.standard.y)
+                        .sheet(isPresented: $showSignUpViewModal) {
+                            FirstSignUpView(viewModel: viewModel, showModal: $showSignUpViewModal)
+                                .interactiveDismissDisabled()
+                            }
                     }
                 }
+                .padding(.bottom, logoSize)
+                Spacer()
+                Text("Version 0.1 • Made with ❤️ by Doeun")
+                    .font(.system(size: Fonts.body2))
+                    .foregroundStyle(.wavelengthGrey)
+                    .padding(.top, Padding.large)
             }
             .padding(Padding.large)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
