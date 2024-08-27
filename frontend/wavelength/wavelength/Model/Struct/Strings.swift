@@ -14,7 +14,7 @@ struct Strings {
         static let logIn: String = "Log in"
         static let signUp: String = "Sign up"
         static let orCreateAProfile: String = "Or create a profile"
-        static let letsGetStarted: String = "Let's get started."
+        static let letsGetYouStarted: String = "Let's get you started."
         static let chooseAStrongPassword: String = "Choose a strong password."
         static let tellUsAboutYourself: String = "Tell us about yourself."
         

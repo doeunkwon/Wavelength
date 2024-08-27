@@ -14,7 +14,9 @@ class MemoriesViewModel: ObservableObject {
     let memoryService = MemoryService()
     
     func getMemories(fid: String) {
-        print("FETCHING MEMORIES")
+        
+        print("API CALL: GET MEMORIES")
+        
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         Task {
             do {

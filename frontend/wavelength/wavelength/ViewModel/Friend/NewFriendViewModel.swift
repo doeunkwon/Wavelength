@@ -26,6 +26,9 @@ class NewFriendViewModel: ObservableObject {
     }
     
     func createFriend() async throws {
+        
+        print("API CALL: CREATE FRIEND")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 

@@ -19,6 +19,9 @@ class ChangePasswordViewModel {
     private let userService = UserService()
     
     func updatePassword(oldPassword: String, newPassword: String) async throws {
+        
+        print("API CALL: UPDATE PASSWORD")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 

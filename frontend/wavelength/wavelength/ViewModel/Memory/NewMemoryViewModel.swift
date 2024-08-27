@@ -33,6 +33,9 @@ class NewMemoryViewModel {
     }
     
     func createMemory(addedTokens: Int) async throws {
+        
+        print("API CALL: CREATE MEMORIES")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 

@@ -29,6 +29,9 @@ class MemoryViewModel {
     }
     
     func updateMemory(mid: String, oldTokens: Int, newTokens: Int) async throws {
+        
+        print("API CALL: UPDATE MEMORY")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 

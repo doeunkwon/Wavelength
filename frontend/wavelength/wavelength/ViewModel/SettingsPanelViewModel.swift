@@ -20,6 +20,9 @@ class SettingsPanelViewModel: ObservableObject {
     private let userService = UserService()
     
     func updateUser() async throws {
+        
+        print("API CALL: UPDATE USER")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 
@@ -40,6 +43,9 @@ class SettingsPanelViewModel: ObservableObject {
     }
     
     func deleteUser() async throws {
+        
+        print("API CALL: DELETE USER")
+        
         isLoading = true
         defer { isLoading = false } // Set loading state to false even in case of error
 

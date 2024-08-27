@@ -10,6 +10,8 @@ import SwiftUI
 
 struct FriendCardView: View {
     
+    @EnvironmentObject private var user: User
+    
     @ObservedObject var friend: Friend
     
     var body: some View {
@@ -27,7 +29,7 @@ struct FriendCardView: View {
         /// Which means we should subtract 'Padding.large / 2' from our 'UIScreen.main.bounds.width / 2 - Padding.large'.
         /// ^ explains the UIScreen.main.bounds.width / 2 - (Padding.large + (Padding.large / 2))
         
-        NavigationLink(destination: FriendProfileView(friend: friend)) {
+        NavigationLink(destination: FriendProfileView(user: user, friend: friend)) {
                 ZStack {
                     VStack(alignment: .leading) {
                         ProfilePictureView(emoji: friend.emoji, color: friend.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
