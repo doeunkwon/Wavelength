@@ -12,6 +12,7 @@ struct FriendProfileView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var showMemoriesViewSheet = false
+    @State private var showScoreViewSheet = false
     @State private var showProfileFormViewSheet = false
 
     @ObservedObject private var friend: Friend
@@ -34,16 +35,21 @@ struct FriendProfileView: View {
                     HeaderView(emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, tokenCount: friend.tokenCount)
                     
                     HStack(alignment: .center, spacing: Padding.large) {
-                        ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageMatch, color: intToColor(value: friend.scorePercentage), action: {print("Score button tapped")})
+                        ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageMatch, color: intToColor(value: friend.scorePercentage)) {
+                            showScoreViewSheet.toggle()
+                        }
                         ButtonView(title: String(friend.memoryCount) + " " + Strings.memory.memories, color: .wavelengthText) {
                             showMemoriesViewSheet.toggle()
-                            }
+                        }
                     }
                     .shadow(
                         color: ShadowStyle.subtle.color,
                         radius: ShadowStyle.subtle.radius,
                         x: ShadowStyle.subtle.x,
                         y: ShadowStyle.subtle.y)
+                    .fullScreenCover(isPresented: $showScoreViewSheet) {
+                        ScoreView()
+                    }
                     .fullScreenCover(isPresented: $showMemoriesViewSheet) {
                         MemoriesView(friend: friend)
                     }

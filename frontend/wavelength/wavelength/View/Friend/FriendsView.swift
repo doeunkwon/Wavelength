@@ -46,7 +46,15 @@ struct FriendsView: View {
                                 .padding(.bottom, Padding.large)
                             
                             
-                            DashboardView(scorePercentage: user.scorePercentage, tokenCount: user.tokenCount, memoryCount: user.memoryCount, data: scoreChartData)
+                            DashboardView(
+                                firstEntry: (Strings.dashboard.overall, "\(user.scorePercentage)%"),
+                                firstEntryColor: intToColor(value: user.scorePercentage),
+                                secondEntry: (Strings.dashboard.tokens, (user.tokenCount > 0 ? "+" : "") + String(user.tokenCount)),
+                                secondEntryColor: .wavelengthTokenOrange,
+                                thirdEntry: (Strings.dashboard.memories, String(user.memoryCount)),
+                                thirdEntryColor: .wavelengthText,
+                                lineGraphColor: intToColor(value: user.scorePercentage),
+                                data: scoreChartData)
                             .padding(.horizontal, Padding.large)
                             
                             LazyVStack(alignment: .leading, spacing: Padding.large) {

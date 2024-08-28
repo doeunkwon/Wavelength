@@ -10,22 +10,37 @@ import Charts
 
 struct DashboardView: View {
     
-    let scorePercentage: Int
-    let tokenCount: Int
-    let memoryCount: Int
+    let firstEntry: (String, String)
+    let firstEntryColor: Color
+    let secondEntry: (String, String)
+    let secondEntryColor: Color
+    let thirdEntry: (String, String)
+    let thirdEntryColor: Color
+    let lineGraphColor: Color
     let data: [ScoreData]
+    
+    init(firstEntry: (String, String), firstEntryColor: Color, secondEntry: (String, String), secondEntryColor: Color, thirdEntry: (String, String), thirdEntryColor: Color, lineGraphColor: Color, data: [ScoreData]) {
+        self.firstEntry = firstEntry
+        self.firstEntryColor = firstEntryColor
+        self.secondEntry = secondEntry
+        self.secondEntryColor = secondEntryColor
+        self.thirdEntry = thirdEntry
+        self.thirdEntryColor = thirdEntryColor
+        self.lineGraphColor = lineGraphColor
+        self.data = data
+    }
     
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 HStack {
                     VStack(alignment: .leading, spacing: Padding.small) {
-                        Text(Strings.dashboard.overall)
+                        Text(firstEntry.0)
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
-                        Text("\(scorePercentage)%")
+                        Text(firstEntry.1)
                             .font(.system(size: Fonts.subtitle, weight: .medium))
-                            .foregroundColor(intToColor(value: scorePercentage))
+                            .foregroundColor(firstEntryColor)
                     }
                     .padding(Padding.medium)
                     Spacer()
@@ -33,12 +48,12 @@ struct DashboardView: View {
                 DividerLineView(vertical: true)
                 HStack {
                     VStack(alignment: .leading, spacing: Padding.small) {
-                        Text(Strings.dashboard.tokens)
+                        Text(secondEntry.0)
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
-                        Text((tokenCount > 0 ? "+" : "") + String(tokenCount))
+                        Text(secondEntry.1)
                             .font(.system(size: Fonts.subtitle, weight: .medium))
-                            .foregroundColor(.wavelengthTokenOrange)
+                            .foregroundColor(secondEntryColor)
                     }
                     .padding(Padding.medium)
                     Spacer()
@@ -46,12 +61,12 @@ struct DashboardView: View {
                 DividerLineView(vertical: true)
                 HStack {
                     VStack(alignment: .leading, spacing: Padding.small) {
-                        Text(Strings.dashboard.memories)
+                        Text(thirdEntry.0)
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
-                        Text(String(memoryCount))
+                        Text(thirdEntry.1)
                             .font(.system(size: Fonts.subtitle, weight: .medium))
-                            .foregroundColor(.wavelengthText)
+                            .foregroundColor(thirdEntryColor)
                     }
                     .padding(Padding.medium)
                     Spacer()
@@ -67,12 +82,12 @@ struct DashboardView: View {
                     )
                     .lineStyle(StrokeStyle(lineWidth: 2))
                     .interpolationMethod(.monotone)
-                    .foregroundStyle(intToColor(value: scorePercentage))
+                    .foregroundStyle(lineGraphColor)
                     .shadow(
-                        color: ShadowStyle.glow(intToColor(value: scorePercentage)).color,
-                        radius: ShadowStyle.glow(intToColor(value: scorePercentage)).radius,
-                        x: ShadowStyle.glow(intToColor(value: scorePercentage)).x,
-                        y: ShadowStyle.glow(intToColor(value: scorePercentage)).y)
+                        color: ShadowStyle.glow(lineGraphColor).color,
+                        radius: ShadowStyle.glow(lineGraphColor).radius,
+                        x: ShadowStyle.glow(lineGraphColor).x,
+                        y: ShadowStyle.glow(lineGraphColor).y)
                 }
             }
             .chartYScale(domain: (data.min(by: { $0.value < $1.value })?.value ?? 0)...(data.max(by: { $0.value < $1.value })?.value ?? 0))

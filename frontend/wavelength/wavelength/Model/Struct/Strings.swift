@@ -42,6 +42,16 @@ struct Strings {
         
     }
     
+    struct score {
+        
+        static let breakdown: String = "Breakdown"
+        static let history: String = "History"
+        static let trend: String = "Trend"
+        static let high: String = "High"
+        static let low: String = "Low"
+        
+    }
+    
     struct form {
         
         static let tapToEdit: String = "Tap to edit"
