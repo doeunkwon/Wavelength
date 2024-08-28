@@ -29,7 +29,7 @@ struct ScoreHeaderView: View {
 
                 // Foreground or the actual progress bar
                 Circle()
-                    .trim(from: 0.0, to: min(0.8, 1.0))
+                    .trim(from: 0.0, to: min(CGFloat(score) / 100.0, 1.0))
                     .stroke(style: StrokeStyle(lineWidth: Border.xlarge, lineCap: .round, lineJoin: .round))
                     .foregroundColor(intToColor(value: score))
                     .rotationEffect(Angle(degrees: 270.0))
@@ -45,7 +45,7 @@ struct ScoreHeaderView: View {
                 Text("You and \(friendFirstName) share")
                     .font(.system(size: Fonts.body2))
                     .foregroundStyle(.wavelengthDarkGrey)
-                Text("high compatibility")
+                Text("\(ScoreString.from(value: score).rawValue) compatibility")
                     .font(.system(size: Fonts.subtitle, weight: .semibold))
                     .foregroundStyle(intToColor(value: score))
             }
@@ -54,5 +54,5 @@ struct ScoreHeaderView: View {
 }
 
 #Preview {
-    ScoreHeaderView(score: 78, friendFirstName: "Austin")
+    ScoreHeaderView(score: 85, friendFirstName: "Austin")
 }

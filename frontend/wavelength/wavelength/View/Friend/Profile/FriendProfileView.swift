@@ -48,7 +48,7 @@ struct FriendProfileView: View {
                         x: ShadowStyle.subtle.x,
                         y: ShadowStyle.subtle.y)
                     .fullScreenCover(isPresented: $showScoreViewSheet) {
-                        ScoreView()
+                        ScoreView(score: friend.scorePercentage)
                     }
                     .fullScreenCover(isPresented: $showMemoriesViewSheet) {
                         MemoriesView(friend: friend)

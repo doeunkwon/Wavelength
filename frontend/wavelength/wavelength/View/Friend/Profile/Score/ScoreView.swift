@@ -11,11 +11,13 @@ struct ScoreView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    let score: Int
+    
     var body: some View {
         NavigationStack {
             ScrollView (showsIndicators: false) {
                 VStack (alignment: .leading, spacing: Padding.xlarge) {
-                    ScoreHeaderView(score: 78, friendFirstName: "Austin")
+                    ScoreHeaderView(score: score, friendFirstName: "Austin")
                     
                     VStack (alignment: .leading, spacing: Padding.medium) {
                         Text(Strings.score.history)
@@ -28,7 +30,7 @@ struct ScoreView: View {
                             secondEntryColor: intToColor(value: 84),
                             thirdEntry: (Strings.score.low, "67%"),
                             thirdEntryColor: intToColor(value: 67),
-                            lineGraphColor: intToColor(value: 78),
+                            lineGraphColor: intToColor(value: score),
                             data: Mock.scoreChartData)
                     }
                     
@@ -48,5 +50,5 @@ struct ScoreView: View {
 }
 
 #Preview {
-    ScoreView()
+    ScoreView(score: 90)
 }
