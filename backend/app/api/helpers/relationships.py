@@ -11,11 +11,22 @@ from database.neo4j import graph
 def get_memory_relationships(uid: str, fid: str):
     cypher_query = """
     MATCH (:User {uid: $uid})-[:HAS_MEMORY]->(m:Memory)-[:ABOUT]->(:Friend {fid: $fid})
-    RETURN m.content AS content, m.tokens AS tokens
+    RETURN m.content AS content
     """
     result = graph.query(cypher_query, {"uid": uid, "fid": fid})
-    memories = [(memory['content'], memory['tokens']) for memory in result]
+    memories = [(memory['content']) for memory in result]
     return memories
+
+
+def get_memory_tokens(uid: str, fid: str):
+    cypher_query = """
+    MATCH (:User {uid: $uid})-[:HAS_MEMORY]->(m:Memory)-[:ABOUT]->(:Friend {fid: $fid})
+    RETURN m.tokens AS tokens
+    """
+    result = graph.query(cypher_query, {"uid": uid, "fid": fid})
+    memory_tokens = [memory['tokens'] for memory in result]
+
+    return memory_tokens
 
 #
 # ________________________________________________________________________________________________________________________________________________________
