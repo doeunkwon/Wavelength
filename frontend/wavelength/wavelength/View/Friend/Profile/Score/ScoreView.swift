@@ -82,7 +82,7 @@ struct ScoreView: View {
                                 "Goals": breakdown[1],
                                 "Values": breakdown[2],
                                 "Interests": breakdown[3]
-                            ]
+                            ] /// pretty sketchy
                         )
                         
                     }
