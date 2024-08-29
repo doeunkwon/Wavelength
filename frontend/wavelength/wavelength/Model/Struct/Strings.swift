@@ -46,7 +46,7 @@ struct Strings {
         
         static let breakdown: String = "Breakdown"
         static let history: String = "History"
-        static let trend: String = "Trend"
+        static let change: String = "Change"
         static let high: String = "High"
         static let low: String = "Low"
         

@@ -12,12 +12,14 @@ struct DecodedScore: Decodable {
     let sid: String
     let timestamp: String
     let percentage: Int
+    let breakdown: [Int]?
     let analysis: String?
     
     enum CodingKeys: String, CodingKey {
         case sid
         case timestamp
         case percentage
+        case breakdown
         case analysis
     }
 }

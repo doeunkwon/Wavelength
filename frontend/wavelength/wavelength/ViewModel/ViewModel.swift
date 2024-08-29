@@ -92,12 +92,12 @@ class ViewModel: ObservableObject {
         }
     }
     
-    func getScores() {
-        print("API CALL: GET SCORES")
+    func getUserScores() {
+        print("API CALL: GET USER SCORES")
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         Task {
             do {
-                let fetchedScores = try await scoreService.getScores(bearerToken: bearerToken)
+                let fetchedScores = try await scoreService.getUserScores(bearerToken: bearerToken)
                 DispatchQueue.main.async {
                     self.scores = fetchedScores
                     self.scoreChartData = prepareChartData(from: fetchedScores)

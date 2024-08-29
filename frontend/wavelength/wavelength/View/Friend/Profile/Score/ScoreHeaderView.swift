@@ -17,7 +17,7 @@ struct ScoreHeaderView: View {
             ZStack (alignment: .center) {
                 
                 Text("\(score)")
-                    .font(.system(size: Fonts.title, weight: .semibold))
+                    .font(.system(size: Fonts.title))
                     .foregroundStyle(intToColor(value: score))
                 
                 // Background for the progress bar
@@ -44,9 +44,9 @@ struct ScoreHeaderView: View {
             VStack (alignment: .leading, spacing: Padding.xsmall) {
                 Text("You and \(friendFirstName) share")
                     .font(.system(size: Fonts.body2))
-                    .foregroundStyle(.wavelengthDarkGrey)
+                    .foregroundStyle(.wavelengthText)
                 Text("\(ScoreString.from(value: score).rawValue) compatibility")
-                    .font(.system(size: Fonts.subtitle, weight: .semibold))
+                    .font(.system(size: Fonts.subtitle))
                     .foregroundStyle(intToColor(value: score))
             }
         }

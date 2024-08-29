@@ -31,7 +31,7 @@ struct ContentView: View {
                     selectedTab = 1
                     viewModel.getUser()
                     viewModel.getFriends()
-                    viewModel.getScores()
+                    viewModel.getUserScores()
                 })
                 
             } else {

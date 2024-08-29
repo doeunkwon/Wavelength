@@ -7,69 +7,85 @@
 
 import SwiftUI
 
+enum TrendColor {
+    static func from(value: String) -> Color {
+        if value.isEmpty {
+            return .gray // Or handle empty strings as needed
+        }
+
+        let firstCharacter = value.first!
+
+        switch firstCharacter {
+        case "+":
+            return intToColor(value: 100)
+        case "0":
+            return intToColor(value: 50)
+        case "-":
+            return intToColor(value: 0)
+        default:
+            return .gray // Or handle other characters as needed
+        }
+    }
+}
+
 struct ScoreView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    private let score: Int
-    private let scoreChartData: [ScoreData]
-    private let breakdown: [Int]
+    @StateObject private var scoreViewModel: ScoreViewModel = ScoreViewModel()
+    
+    private let fid: String
     private let friendFirstName: String
     
-    init(score: Int, scoreChartData: [ScoreData], breakdown: [Int], friendFirstName: String) {
-        self.score = score
-        self.scoreChartData = scoreChartData
-        self.breakdown = breakdown
+    init(fid: String, friendFirstName: String) {
+        self.fid = fid
         self.friendFirstName = friendFirstName
-    }
-    
-    private var highValue: Double {
-        return scoreChartData.max(by: { $0.value < $1.value })?.value ?? 0
-    }
-    
-    private var lowValue: Double {
-        return scoreChartData.min(by: { $0.value < $1.value })?.value ?? 0
-    }
-    
-    private var latestValue: Double {
-        return scoreChartData.max(by: { $0.entry < $1.entry })?.value ?? 0
-    }
-    
-    private var oldestValue: Double {
-        return scoreChartData.min(by: { $0.entry < $1.entry })?.value ?? 0
     }
     
     var body: some View {
         NavigationStack {
             ScrollView (showsIndicators: false) {
                 VStack (alignment: .leading, spacing: Padding.xlarge) {
-                    ScoreHeaderView(score: score, friendFirstName: friendFirstName)
+                    ScoreHeaderView(score: scoreViewModel.latestScore.percentage, friendFirstName: friendFirstName)
                     
                     VStack (alignment: .leading, spacing: Padding.medium) {
                         Text(Strings.score.history)
                             .font(.system(size: Fonts.body))
                             .foregroundStyle(.wavelengthDarkGrey)
+                        
                         DashboardView(
                             firstEntry: (
-                                Strings.score.trend,
-                                (latestValue - oldestValue > 0 ? "+" : "") + "\(Int((latestValue - oldestValue) / oldestValue * 100))%"
+                                Strings.score.change,
+                                scoreViewModel.trendValue
                             ),
-                            firstEntryColor: .green,
+                            firstEntryColor: TrendColor.from(value: scoreViewModel.trendValue),
                             secondEntry: (
                                 Strings.score.high,
-                                "\(Int(highValue))%"
+                                "\(Int(scoreViewModel.highValue))%"
                             ),
-                            secondEntryColor: intToColor(value: 84),
+                            secondEntryColor: intToColor(value: Int(scoreViewModel.highValue)),
                             thirdEntry: (
                                 Strings.score.low,
-                                "\(Int(lowValue))%"
+                                "\(Int(scoreViewModel.lowValue))%"
                             ),
-                            thirdEntryColor: intToColor(value: 67),
-                            lineGraphColor: intToColor(value: score),
-                            data: scoreChartData)
+                            thirdEntryColor: intToColor(value: Int(scoreViewModel.lowValue)),
+                            lineGraphColor: intToColor(value: scoreViewModel.latestScore.percentage),
+                            data: scoreViewModel.scoreChartData)
                     }
                     
-                    SliderFieldView(title: Strings.score.breakdown, pairs: ["Memories":breakdown[0], "Goals": breakdown[1], "Values": breakdown[2], "Interests":breakdown[3]])
+                    if let breakdown = scoreViewModel.latestScore.breakdown {
+                        
+                        SliderFieldView(
+                            title: Strings.score.breakdown,
+                            pairs: [
+                                "Memories": breakdown[0],
+                                "Goals": breakdown[1],
+                                "Values": breakdown[2],
+                                "Interests": breakdown[3]
+                            ]
+                        )
+                        
+                    }
                     
                 }
                 .padding(Padding.large)
@@ -81,9 +97,12 @@ struct ScoreView: View {
                 DownButtonView()
             })
         }
+        .onAppear {
+            scoreViewModel.getFriendScores(fid: fid)
+        }
     }
 }
 
 #Preview {
-    ScoreView(score: 90, scoreChartData: Mock.scoreChartData, breakdown: [85, 95, 92, 88], friendFirstName: "Austin")
+    ScoreView(fid: "ce78e86b-bc41-41c2-9592-bc11c56839e0", friendFirstName: "Austin")
 }
