@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from app.api.helpers.friends import delete_friend as delete_friend_helper
-from app.api.helpers.relationships import get_value_relationships as get_value_relationships_helper, update_value_relationship as update_value_relationship_helper, get_memory_relationships as get_memory_relationships_helper, create_score_relationships as create_score_relationship_helper
+from app.api.helpers.relationships import get_memory_relationships as get_memory_relationships_helper, create_user_score_relationships as create_user_score_relationship_helper, create_friend_score_relationships as create_friend_score_relationship_helper
 
 router = APIRouter()
 
@@ -125,8 +125,27 @@ async def create_friendship_relationship(
 # Relationship endpoints related to SCORE
 
 
+@router.post("/private/relationships/score/{sid}")
+async def create_user_score_relationship(
+    sid: str,
+    token: str = Depends(get_current_user)
+):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+        uid = token["uid"]
+        return create_user_score_relationship_helper(uid, sid)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error creating relationship: {str(e)}"
+        )
+
+
 @router.post("/private/relationships/score")
-async def create_score_relationship(
+async def create_friend_score_relationship(
     data: dict,
     token: str = Depends(get_current_user)
 ):
@@ -137,9 +156,8 @@ async def create_score_relationship(
 
     try:
         sid = data["sid"]
-        model = data["model"]
-        general_id = token["uid"] if model == "User" else data["fid"]
-        return create_score_relationship_helper(general_id, sid, model)
+        fid = data["fid"]
+        return create_friend_score_relationship_helper(fid, sid)
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error creating relationship: {str(e)}"

@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Dict
 from pydantic import BaseModel
 
 '''
@@ -13,6 +13,7 @@ class Value(BaseModel):
 
 class Score(BaseModel):
     percentage: int
+    breakdown: Optional[List[int]]
     analysis: Optional[str]
 
 
