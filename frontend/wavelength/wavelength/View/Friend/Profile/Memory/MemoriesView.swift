@@ -42,7 +42,7 @@ struct MemoriesView: View {
                         VStack(spacing: 0) {
                             HStack {
                                 Text(String(memoriesViewModel.memories.count) + " " + Strings.memory.memories)
-                                    .font(.system(size: Fonts.title, weight: .semibold))
+                                    .font(.system(size: Fonts.title))
                                     .foregroundStyle(.wavelengthText)
                                 Spacer()
                             }

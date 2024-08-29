@@ -49,7 +49,7 @@ struct ScoreView: View {
                     ScoreHeaderView(score: scoreViewModel.latestScore.percentage, friendFirstName: friendFirstName)
                     
                     VStack (alignment: .leading, spacing: Padding.medium) {
-                        Text(Strings.score.history)
+                        Text(Strings.score.progress)
                             .font(.system(size: Fonts.body))
                             .foregroundStyle(.wavelengthDarkGrey)
                         

@@ -8,11 +8,11 @@
 import SwiftUI
 
 enum ScoreString: String {
-    case veryLow = "very low"
-    case low = "low"
-    case medium = "medium"
-    case high = "high"
-    case veryHigh = "very high"
+    case veryLow = "very poorly"
+    case low = "poorly"
+    case medium = "decently"
+    case high = "well"
+    case veryHigh = "very well"
 
     static func from(value: Int) -> ScoreString {
         switch value {

@@ -45,7 +45,7 @@ struct Strings {
     struct score {
         
         static let breakdown: String = "Breakdown"
-        static let history: String = "History"
+        static let progress: String = "Progress"
         static let change: String = "Change"
         static let high: String = "High"
         static let low: String = "Low"

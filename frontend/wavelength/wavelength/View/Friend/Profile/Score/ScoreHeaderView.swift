@@ -42,10 +42,10 @@ struct ScoreHeaderView: View {
                 
             }
             VStack (alignment: .leading, spacing: Padding.xsmall) {
-                Text("You and \(friendFirstName) share")
+                Text("You and \(friendFirstName) are")
                     .font(.system(size: Fonts.body2))
                     .foregroundStyle(.wavelengthText)
-                Text("\(ScoreString.from(value: score).rawValue) compatibility")
+                Text("\(ScoreString.from(value: score).rawValue) matched")
                     .font(.system(size: Fonts.subtitle))
                     .foregroundStyle(intToColor(value: score))
             }
@@ -54,5 +54,5 @@ struct ScoreHeaderView: View {
 }
 
 #Preview {
-    ScoreHeaderView(score: 85, friendFirstName: "Austin")
+    ScoreHeaderView(score: 90, friendFirstName: "Austin")
 }

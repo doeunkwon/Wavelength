@@ -39,7 +39,7 @@ struct DashboardView: View {
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
                         Text(firstEntry.1)
-                            .font(.system(size: Fonts.subtitle, weight: .medium))
+                            .font(.system(size: Fonts.subtitle))
                             .foregroundColor(firstEntryColor)
                     }
                     .padding(Padding.medium)
@@ -52,7 +52,7 @@ struct DashboardView: View {
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
                         Text(secondEntry.1)
-                            .font(.system(size: Fonts.subtitle, weight: .medium))
+                            .font(.system(size: Fonts.subtitle))
                             .foregroundColor(secondEntryColor)
                     }
                     .padding(Padding.medium)
@@ -65,7 +65,7 @@ struct DashboardView: View {
                             .font(.system(size: Fonts.body2))
                             .foregroundColor(.wavelengthDarkGrey)
                         Text(thirdEntry.1)
-                            .font(.system(size: Fonts.subtitle, weight: .medium))
+                            .font(.system(size: Fonts.subtitle))
                             .foregroundColor(thirdEntryColor)
                     }
                     .padding(Padding.medium)
