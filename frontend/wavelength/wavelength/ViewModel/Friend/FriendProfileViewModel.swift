@@ -15,6 +15,7 @@ class FriendProfileViewModel: ObservableObject {
     
     @Published var isLoading = false
     @Published var updateError: UpdateError?
+    @Published var showProfileFormViewSheet = false
     
     private let friends: [Friend]
     
@@ -199,6 +200,8 @@ class FriendProfileViewModel: ObservableObject {
                         friend.goals = editedProfile.goals
                         friend.interests = tagManager.interests
                         friend.values = tagManager.values
+                        
+                        self.showProfileFormViewSheet.toggle()
                     }
                 } catch {
                   // Handle errors

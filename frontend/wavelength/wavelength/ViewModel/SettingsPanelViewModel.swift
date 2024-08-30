@@ -13,16 +13,11 @@ class SettingsPanelViewModel: ObservableObject {
     private var encodedUser = EncodedUser()
     @Published var isLoading = false
     @Published var updateError: UpdateError?
-    
-    @Binding private var showModal: Bool
+    @Published var showProfileFormViewSheet = false
     
     private var deleteError: DeleteError?
 
     private let userService = UserService()
-    
-    init(showModal: Binding<Bool>) {
-        self._showModal = showModal
-    }
     
     func updateUser() async throws {
         
@@ -135,9 +130,9 @@ class SettingsPanelViewModel: ObservableObject {
                         user.interests = tagManager.interests
                         user.values = tagManager.values
                         
+                        self.showProfileFormViewSheet.toggle()
+                        
                     }
-                    
-                    showModal.toggle()
                     
                 } catch {
                   // Handle errors

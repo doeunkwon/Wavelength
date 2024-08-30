@@ -12,8 +12,8 @@ struct NewFriendView: View {
     
     @StateObject private var newFriendViewModel: NewFriendViewModel
     
-    init(friendsManager: FriendsManager) {
-        self._newFriendViewModel = StateObject(wrappedValue: NewFriendViewModel(friendsManager: friendsManager))
+    init(friendsManager: FriendsManager, showNewFriendViewModal: Binding<Bool>) {
+        self._newFriendViewModel = StateObject(wrappedValue: NewFriendViewModel(friendsManager: friendsManager, showNewFriendViewModal: showNewFriendViewModal))
     }
     
     /// Enter in an arbitrary 'fid' for now. 'fid' will be generated on the backend.

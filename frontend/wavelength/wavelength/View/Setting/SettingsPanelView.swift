@@ -12,28 +12,20 @@ struct SettingsPanelView: View {
     
     @EnvironmentObject var user: User
     
-    @StateObject var settingsPanelViewModel: SettingsPanelViewModel
+    @StateObject var settingsPanelViewModel = SettingsPanelViewModel()
     
     @State private var showChangePasswordViewSheet = false
     @State private var showConfirmDeleteAlert = false
     @State private var showConfirmLogoutAlert = false
     
-    @Binding private var showProfileFormViewSheet: Bool
-    
     @Binding var isLoggedIn: Bool
-    
-    init(isLoggedIn: Binding<Bool>, showProfileFormViewSheet: Binding<Bool>) {
-        self._settingsPanelViewModel = StateObject(wrappedValue: SettingsPanelViewModel(showModal: showProfileFormViewSheet))
-        self._isLoggedIn = isLoggedIn
-        self._showProfileFormViewSheet = showProfileFormViewSheet
-    }
     
     var body: some View {
         VStack(spacing: 0) {
             SettingsCellView(title: Strings.settings.editProfile, icon: user.emoji, isEmoji: true, action: {
-                showProfileFormViewSheet.toggle()
+                settingsPanelViewModel.showProfileFormViewSheet.toggle()
             })
-            .sheet(isPresented: $showProfileFormViewSheet) {
+            .sheet(isPresented: $settingsPanelViewModel.showProfileFormViewSheet) {
                 ZStack {
                     ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: settingsPanelViewModel.completion), navTitle: Strings.settings.editProfile)
                     if settingsPanelViewModel.isLoading {

@@ -116,7 +116,9 @@ struct MemoryFormView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 leadingButtonContent
-            }, trailing: Button(action: { buttonConfig.action(memory, editedMemory)
+            }, trailing: Button(action: { 
+                buttonConfig.action(memory, editedMemory)
+                dismiss()
             }) {
                 Text(buttonConfig.title)
             })

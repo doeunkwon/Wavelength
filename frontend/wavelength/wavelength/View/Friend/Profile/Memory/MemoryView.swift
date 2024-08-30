@@ -61,6 +61,7 @@ struct MemoryView: View {
                 DownButtonView()
             }, trailing: Menu {
                 NavigationLink(destination:
+
                     ZStack {
                         MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.form.save, action: memoryViewModel.completion), navTitle: Strings.memory.editMemory)
                     

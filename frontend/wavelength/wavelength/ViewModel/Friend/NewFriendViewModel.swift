@@ -21,8 +21,11 @@ class NewFriendViewModel: ObservableObject {
     
     @ObservedObject private var friendsManager: FriendsManager
     
-    init(friendsManager: FriendsManager) {
+    @Binding private var showNewFriendViewModal: Bool
+    
+    init(friendsManager: FriendsManager, showNewFriendViewModal: Binding<Bool>) {
         self.friendsManager = friendsManager
+        self._showNewFriendViewModal = showNewFriendViewModal
     }
     
     func createFriend() async throws {
@@ -98,6 +101,8 @@ class NewFriendViewModel: ObservableObject {
                         
                         self.friendsManager.addFriend(friend: friend)
                     }
+                    
+                    showNewFriendViewModal.toggle()
                 } catch {
                   // Handle errors
                     print("Error updating user: \(error)")

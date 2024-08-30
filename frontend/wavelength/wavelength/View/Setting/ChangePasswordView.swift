@@ -47,7 +47,7 @@ struct ChangePasswordView: View {
                     Task {
                         do {
                             try await changePasswordViewModel.updatePassword(oldPassword: currentPassword, newPassword: newPassword)
-                            print("Password successfully updated")
+                            dismiss()
                         } catch {
                             // Handle authentication errors
                             print("Updating error:", error.localizedDescription)

@@ -9,8 +9,6 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @State private var showProfileFormViewSheet = false
-    
     @Binding var isLoggedIn: Bool
     
     var body: some View {
@@ -18,7 +16,7 @@ struct SettingsView: View {
             Text(Strings.general.settings)
                 .font(.system(size: Fonts.title, weight: .semibold))
                 .foregroundStyle(.wavelengthText)
-            SettingsPanelView(isLoggedIn: $isLoggedIn, showProfileFormViewSheet: $showProfileFormViewSheet)
+            SettingsPanelView(isLoggedIn: $isLoggedIn)
                 .cornerRadius(CornerRadius.medium)
                 .shadow(
                     color: ShadowStyle.standard.color,

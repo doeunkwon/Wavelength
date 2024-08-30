@@ -13,7 +13,6 @@ struct FriendProfileView: View {
     
     @State private var showMemoriesViewSheet = false
     @State private var showScoreViewSheet = false
-    @State private var showProfileFormViewSheet = false
 
     @ObservedObject private var friend: Friend
     
@@ -89,7 +88,7 @@ struct FriendProfileView: View {
             }), trailing: Menu {
                 Button(action: {
                     print("Edit tapped!")
-                    showProfileFormViewSheet.toggle()
+                    friendProfileViewModel.showProfileFormViewSheet.toggle()
                 }) {
                     Label("Edit profile", systemImage: Strings.icons.person)
                 }
@@ -130,7 +129,7 @@ struct FriendProfileView: View {
                 } message: {
                     Text(Strings.friend.confirmDelete)
                 }
-            .sheet(isPresented: $showProfileFormViewSheet) {
+                .sheet(isPresented: $friendProfileViewModel.showProfileFormViewSheet) {
                 ZStack {
                     ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: friendProfileViewModel.completion), navTitle: Strings.settings.editProfile)
                     if friendProfileViewModel.isLoading {
