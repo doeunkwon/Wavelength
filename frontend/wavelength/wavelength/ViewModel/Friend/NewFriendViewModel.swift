@@ -19,6 +19,7 @@ class NewFriendViewModel: ObservableObject {
     
     private let friendService = FriendService()
     private let scoreService = ScoreService()
+    private let breakdownService = BreakdownService()
     
     @ObservedObject private var user: User
     
@@ -40,10 +41,11 @@ class NewFriendViewModel: ObservableObject {
         do {
             let fetchedFID = try await friendService.createFriend(newData: encodedFriend, bearerToken: bearerToken)
             _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: 70), bearerToken: bearerToken)
+            _ = try await scoreService.createFriendScore(newData: EncodedScore(percentage: 70, analysis: ""), fid: fetchedFID, bearerToken: bearerToken)
+            _ = try await breakdownService.createBreakdown(newData: EncodedBreakdown(goal:70, value: 70, interest: 70, memory: 70), fid: fetchedFID, bearerToken: bearerToken)
             updateError = nil
             DispatchQueue.main.async {
                 self.fid = fetchedFID
-                self.user.scorePercentage = 70
             }
             print("Friend profile created successfully!")
         } catch {
