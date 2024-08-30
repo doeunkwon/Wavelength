@@ -11,7 +11,11 @@ class Value(BaseModel):
     title: str
 
 
-class Score(BaseModel):
+class UserScore(BaseModel):
+    percentage: int
+
+
+class FriendScore(BaseModel):
     percentage: int
     analysis: Optional[str]
 

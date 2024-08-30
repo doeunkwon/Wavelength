@@ -2,7 +2,7 @@ import uuid
 from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from fastapi import Depends, HTTPException, Body, APIRouter
-from app.models import Score
+from app.models import UserScore, FriendScore
 from app.api.helpers.general import get_neo4j_datetime_iso8601
 
 router = APIRouter()
@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.post("/private/scores")
 async def create_user_score(
-        score: Score = Body(...),
+        score: UserScore = Body(...),
         token: str = Depends(get_current_user)):
 
     # Check if user is authorized
@@ -68,9 +68,10 @@ async def create_user_score(
                 RETURN s
                 """
                 # Execute the query with score data (including timestamp)
+
                 result = graph.query(
                     cypher_query, {
-                        "sid": new_sid, "timestamp": neo4j_timestamp, **score.model_dump()}
+                        "sid": new_sid, "timestamp": neo4j_timestamp, "percentage": score.percentage, "analysis": None}
                 )
                 # Assuming a single score is created
                 created_score = result[0]["s"]
@@ -105,9 +106,9 @@ async def create_user_score(
 
 
 @router.post("/private/scores/{fid}")
-async def create_user_score(
+async def create_friend_score(
         fid: str,
-        score: Score = Body(...),
+        score: FriendScore = Body(...),
         token: str = Depends(get_current_user)):
 
     # Check if user is authorized

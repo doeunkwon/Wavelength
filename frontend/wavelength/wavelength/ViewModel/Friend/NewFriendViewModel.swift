@@ -18,11 +18,15 @@ class NewFriendViewModel: ObservableObject {
     private var updateError: UpdateError?
     
     private let friendService = FriendService()
+    private let scoreService = ScoreService()
+    
+    @ObservedObject private var user: User
     
     @Binding private var friends: [Friend]
     
-    init(friends: Binding<[Friend]>) {
+    init(friends: Binding<[Friend]>, user: User) {
         self._friends = friends
+        self.user = user
     }
     
     func createFriend() async throws {
@@ -35,9 +39,11 @@ class NewFriendViewModel: ObservableObject {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
             let fetchedFID = try await friendService.createFriend(newData: encodedFriend, bearerToken: bearerToken)
+            _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: 70), bearerToken: bearerToken)
             updateError = nil
             DispatchQueue.main.async {
                 self.fid = fetchedFID
+                self.user.scorePercentage = 70
             }
             print("Friend profile created successfully!")
         } catch {
@@ -65,7 +71,7 @@ class NewFriendViewModel: ObservableObject {
                     encodedFriend.goals = editedProfile.goals
                     encodedFriend.interests = tagManager.interests
                     encodedFriend.values = tagManager.values
-                    encodedFriend.scorePercentage = 50
+                    encodedFriend.scorePercentage = 70
                     encodedFriend.scoreAnalysis = ""
                     encodedFriend.tokenCount = 0
                     encodedFriend.memoryCount = 0

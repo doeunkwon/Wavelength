@@ -153,14 +153,24 @@ def score(uid: str, fid: str):
                 token_sum = sum(memory_tokens)
                 memory_count = len(memory_tokens)
 
-                max_token_per_memory = 5
+                memory_score = 0
 
-                # multiply by 2 since user can enter from to -5 tokens to 5 tokens, meaning 10 numbers to choose from, which is DOUBLE max_token_per_memory
-                total_denominator = (max_token_per_memory * 2) * memory_count
-                total_numerator = (max_token_per_memory *
-                                   memory_count) + token_sum
+                if memory_count != 0:
 
-                memory_score = int((total_numerator / total_denominator) * 100)
+                    max_token_per_memory = 5
+
+                    # multiply by 2 since user can enter from to -5 tokens to 5 tokens, meaning 10 numbers to choose from, which is DOUBLE max_token_per_memory
+                    total_denominator = (
+                        max_token_per_memory * 2) * memory_count
+                    total_numerator = (max_token_per_memory *
+                                       memory_count) + token_sum
+
+                    memory_score = int(
+                        (total_numerator / total_denominator) * 100)
+
+                else:
+
+                    memory_score = 50
 
                 compatibility_scores["memory"] = memory_score
 
