@@ -23,7 +23,7 @@ struct FriendProfileView: View {
     
     init(user: User, friend: Friend) {
         self.friend = friend
-        self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(user: user))
+        self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(user: user, friend: friend))
     }
     
     var body: some View {
@@ -79,6 +79,19 @@ struct FriendProfileView: View {
             }, label: {
                 LeftButtonView()
             }), trailing: Menu {
+                Button(action: {
+                    print("Update score tapped!")
+                    Task {
+                        do {
+                            try await friendProfileViewModel.updateScore(fid: friend.fid)
+                        } catch {
+                            // Handle deletion errors
+                            print("Updating score error:", error.localizedDescription)
+                        }
+                    }
+                }) {
+                    Label("Update score", systemImage: Strings.icons.waveformPathEcg)
+                }
                 Button(action: {
                     print("Edit tapped!")
                     showProfileFormViewSheet.toggle()

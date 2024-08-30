@@ -19,15 +19,11 @@ class NewFriendViewModel: ObservableObject {
     
     private let friendService = FriendService()
     private let scoreService = ScoreService()
-    private let breakdownService = BreakdownService()
-    
-    @ObservedObject private var user: User
     
     @Binding private var friends: [Friend]
     
-    init(friends: Binding<[Friend]>, user: User) {
+    init(friends: Binding<[Friend]>) {
         self._friends = friends
-        self.user = user
     }
     
     func createFriend() async throws {
@@ -40,9 +36,6 @@ class NewFriendViewModel: ObservableObject {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
             let fetchedFID = try await friendService.createFriend(newData: encodedFriend, bearerToken: bearerToken)
-            _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: 70), bearerToken: bearerToken)
-            _ = try await scoreService.createFriendScore(newData: EncodedScore(percentage: 70, analysis: ""), fid: fetchedFID, bearerToken: bearerToken)
-            _ = try await breakdownService.createBreakdown(newData: EncodedBreakdown(goal:70, value: 70, interest: 70, memory: 70), fid: fetchedFID, bearerToken: bearerToken)
             updateError = nil
             DispatchQueue.main.async {
                 self.fid = fetchedFID
@@ -73,7 +66,7 @@ class NewFriendViewModel: ObservableObject {
                     encodedFriend.goals = editedProfile.goals
                     encodedFriend.interests = tagManager.interests
                     encodedFriend.values = tagManager.values
-                    encodedFriend.scorePercentage = 70
+                    encodedFriend.scorePercentage = -1
                     encodedFriend.scoreAnalysis = ""
                     encodedFriend.tokenCount = 0
                     encodedFriend.memoryCount = 0
@@ -90,7 +83,7 @@ class NewFriendViewModel: ObservableObject {
                         friend.goals = editedProfile.goals
                         friend.interests = tagManager.interests
                         friend.values = tagManager.values
-                        friend.scorePercentage = 50
+                        friend.scorePercentage = -1
                         friend.scoreAnalysis = ""
                         friend.tokenCount = 0
                         friend.memoryCount = 0

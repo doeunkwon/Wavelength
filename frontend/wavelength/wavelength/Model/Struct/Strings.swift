@@ -153,6 +153,7 @@ struct Strings {
         static let person2: String = "person.2"
         static let icloudslash: String = "icloud.slash"
         static let personLineDottedPerson: String = "person.line.dotted.person"
+        static let waveformPathEcg: String = "waveform.path.ecg"
         
     }
 }

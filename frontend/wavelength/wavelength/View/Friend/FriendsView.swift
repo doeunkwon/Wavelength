@@ -95,7 +95,7 @@ struct FriendsView: View {
                             .accentColor(.wavelengthGrey)
                     }
                     .sheet(isPresented: $showNewFriendViewModal) {
-                        NewFriendView(friends: $friends, user: user)
+                        NewFriendView(friends: $friends)
                             .interactiveDismissDisabled()
                     }
                 }
