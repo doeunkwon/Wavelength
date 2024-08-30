@@ -85,8 +85,6 @@ class MemoryService {
         guard (200...299).contains(httpResponse.statusCode) else {
             throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
         }
-
-        print("Memory updated successfully!")
     }
     
     func createMemory(newData: EncodedMemory, fid: String, bearerToken: String) async throws -> String {

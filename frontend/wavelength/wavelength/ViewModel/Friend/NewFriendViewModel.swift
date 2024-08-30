@@ -19,6 +19,7 @@ class NewFriendViewModel: ObservableObject {
     
     private let friendService = FriendService()
     private let scoreService = ScoreService()
+    private let breakdownService = BreakdownService()
     
     @ObservedObject private var friendsManager: FriendsManager
     
@@ -36,6 +37,7 @@ class NewFriendViewModel: ObservableObject {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
             let fetchedFID = try await friendService.createFriend(newData: encodedFriend, bearerToken: bearerToken)
+            let _ = try await breakdownService.createBreakdown(newData: EncodedBreakdown(goal: 0, value: 0, interest: 0, memory: 0), fid: fetchedFID, bearerToken: bearerToken)
             updateError = nil
             DispatchQueue.main.async {
                 self.fid = fetchedFID

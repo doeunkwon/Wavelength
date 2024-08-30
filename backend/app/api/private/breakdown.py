@@ -113,10 +113,9 @@ async def get_breakdown(
         )
 
 
-@router.put("/private/breakdown/{bid}/{fid}")
+@router.put("/private/breakdown/{fid}")
 async def update_breakdown(
         fid: str,
-        bid: str,
         breakdown_data: dict,
         token: str = Depends(get_current_user)):
 
@@ -128,55 +127,66 @@ async def update_breakdown(
 
         uid = token["uid"]
 
-        print("CHECKPOINT 1")
-
         # Fetch existing memory data
         cypher_query = f"""
-        MATCH (:User {{uid: $uid}})-[FRIENDS_WITH]->(:Friend {{fid: $fid}})-[:HAS_BREAKDOWN]->(b:Breakdown {{bid: $bid}})
+        MATCH (:User {{uid: $uid}})-[FRIENDS_WITH]->(:Friend {{fid: $fid}})-[:HAS_BREAKDOWN]->(b:Breakdown)
         RETURN b
         """
 
-        print("CHECKPOINT 2")
-
         result = graph.query(
-            cypher_query, {"uid": uid, "fid": fid, "bid": bid})
+            cypher_query, {"uid": uid, "fid": fid})
+        print(result)
         existing_breakdown = result[0]
-
-        print("CHECKPOINT 3")
 
         # Check if memory exists
         if not existing_breakdown:
             raise HTTPException(status_code=404, detail="Breakdown not found.")
 
+        print("CHECKPOINT 1")
+
         # Merge existing and update data
         merged_data = {**existing_breakdown["b"], **breakdown_data}
 
+        print("CHECKPOINT 2")
+
         # Build Cypher query with identifier and SET clause
         cypher_query = f"""
-        MATCH (b:Breakdown {{bid: $bid}})
+        MATCH (:Friend {{fid: $fid}})-[:HAS_BREAKDOWN]->(b:Breakdown)
         SET """
+
+        print("CHECKPOINT 3")
 
         set_clauses = [f"b.{field} = $breakdown_{
             field}" for field in merged_data if field != "bid"]
 
+        print("CHECKPOINT 4")
+
         if not set_clauses:
             raise HTTPException(
                 status_code=400, detail="No valid update fields provided.")
+
+        print("CHECKPOINT 5")
 
         cypher_query += ", ".join(set_clauses)
         cypher_query += """
         RETURN b
         """
 
+        print("CHECKPOINT 6")
+
         # Prepare data with breakdown ID and merged update values
-        data = {"bid": bid}
+        data = {"fid": fid}
         for field, value in merged_data.items():
             if field != "bid":
                 data[f"breakdown_{field}"] = value
 
+        print("CHECKPOINT 7")
+
         # Execute the query with identifier and data
         result = graph.query(cypher_query, data)
         updated_breakdown = result[0]["b"]
+
+        print("CHECKPOINT 8")
 
         return updated_breakdown
     except Exception as e:

@@ -42,9 +42,15 @@ struct FriendCardView: View {
                                 .font(.system(size: Fonts.body))
                                 .foregroundColor(Color.wavelengthText)
                             Spacer()
-                            Text(String(friend.scorePercentage) + "%")
-                                .font(.system(size: Fonts.body))
-                                .foregroundColor(intToColor(value: friend.scorePercentage))
+                            if friend.scorePercentage == -1 {
+                                Text("?")
+                                    .font(.system(size: Fonts.body, weight: .semibold))
+                                    .foregroundColor(.wavelengthDarkGrey)
+                            } else {
+                                Text(String(friend.scorePercentage) + "%")
+                                    .font(.system(size: Fonts.body))
+                                    .foregroundColor(intToColor(value: friend.scorePercentage))
+                            }
                         }
                     }
                     .padding(Padding.medium)
