@@ -29,6 +29,12 @@ enum ScoreServiceError: Error {
     case unknownError(String)
 }
 
+enum BreakdownServiceError: Error {
+    case unauthorized
+    case networkError(Error)
+    case unknownError(String)
+}
+
 enum AuthenticationServiceError: Error {
     case invalidCredentials
     case networkError(Error)

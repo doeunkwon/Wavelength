@@ -12,7 +12,6 @@ class Score: Hashable, Equatable {
     let sid: String
     let timestamp: Date
     let percentage: Int
-    let breakdown: [Int]?
     let analysis: String?
     
     static func == (lhs: Score, rhs: Score) -> Bool {
@@ -24,11 +23,10 @@ class Score: Hashable, Equatable {
         hasher.combine(sid)
     }
     
-    init(sid: String, timestamp: Date, percentage: Int, breakdown: [Int]? = nil, analysis: String? = nil) {
+    init(sid: String, timestamp: Date, percentage: Int, analysis: String? = nil) {
         self.sid = sid
         self.timestamp = timestamp
         self.percentage = percentage
-        self.breakdown = breakdown
         self.analysis = analysis
     }
 }

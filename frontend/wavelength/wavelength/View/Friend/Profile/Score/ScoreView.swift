@@ -73,19 +73,15 @@ struct ScoreView: View {
                             data: scoreViewModel.scoreChartData)
                     }
                     
-                    if let breakdown = scoreViewModel.latestScore.breakdown {
-                        
-                        SliderFieldView(
-                            title: Strings.score.breakdown,
-                            pairs: [
-                                "Memories": breakdown[0],
-                                "Goals": breakdown[1],
-                                "Values": breakdown[2],
-                                "Interests": breakdown[3]
-                            ] /// pretty sketchy
-                        )
-                        
-                    }
+                    SliderFieldView(
+                        title: Strings.score.breakdown,
+                        pairs: [
+                            "Memories": scoreViewModel.breakdown.memory,
+                            "Goals": scoreViewModel.breakdown.goal,
+                            "Values": scoreViewModel.breakdown.value,
+                            "Interests": scoreViewModel.breakdown.interest
+                        ] /// pretty sketchy
+                    )
                     
                 }
                 .padding(Padding.large)

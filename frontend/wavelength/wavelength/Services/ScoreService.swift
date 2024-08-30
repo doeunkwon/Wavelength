@@ -10,8 +10,6 @@ import SwiftUI
 
 class ScoreService {
     
-    @EnvironmentObject var viewModel: ViewModel
-    
     func getUserScores(bearerToken: String) async throws -> [Score] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores") else {
@@ -45,7 +43,6 @@ class ScoreService {
                     sid: decodedScore.sid,
                     timestamp: dateFormatter.date(from: decodedScore.timestamp) ?? Date(),
                     percentage: decodedScore.percentage,
-                    breakdown: decodedScore.breakdown,
                     analysis: decodedScore.analysis
                 )
             }
@@ -89,7 +86,6 @@ class ScoreService {
                     sid: decodedScore.sid,
                     timestamp: dateFormatter.date(from: decodedScore.timestamp) ?? Date(),
                     percentage: decodedScore.percentage,
-                    breakdown: decodedScore.breakdown,
                     analysis: decodedScore.analysis
                 )
             }

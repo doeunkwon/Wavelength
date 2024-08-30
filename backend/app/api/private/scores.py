@@ -20,61 +20,81 @@ async def create_user_score(
         return HTTPException(status_code=401, detail="Unauthorized access")
 
     try:
-        # Count existing scores for the user
-        count_query = """
-        MATCH (u:User {uid: $uid})-[:HAS_SCORE]->(s:Score)
-        RETURN count(s) AS score_count
-        """
-        user_scores = graph.query(count_query, {"uid": token.get("uid")})
-        score_count = user_scores[0]["score_count"]
 
-        # Check if adding the score will exceed limit
-        if score_count >= 20:
-            # Delete the oldest score (assuming scores are linked by a relationship)
-            delete_query = """
-            MATCH (u:User {uid: $uid})-[:HAS_SCORE]->(s:Score)
-            WITH s ORDER BY s.timestamp ASC LIMIT 1
-            DETACH DELETE s
-            """
-            graph.query(delete_query, {"uid": token.get("uid")})
+        uid = token["uid"]
 
-        # Generate a new UUID for the score ID (existing logic)
-        new_sid = str(uuid.uuid4())
+        # # Count existing scores for the user
+        # count_query = """
+        # MATCH (u:User {uid: $uid})-[:HAS_SCORE]->(s:Score)
+        # RETURN count(s) AS score_count
+        # """
+        # user_scores = graph.query(count_query, {"uid": token.get("uid")})
+        # score_count = user_scores[0]["score_count"]
 
-        # Check for duplicate ID and create score (existing logic)
-        check_query = """
-        MATCH (s:Score {sid: $sid})
-        RETURN s
-        """
-        result = graph.query(check_query, {"sid": new_sid})
+        # # Check if adding the score will exceed limit
+        # if score_count >= 20:
+        #     # Delete the oldest score (assuming scores are linked by a relationship)
+        #     delete_query = """
+        #     MATCH (u:User {uid: $uid})-[:HAS_SCORE]->(s:Score)
+        #     WITH s ORDER BY s.timestamp ASC LIMIT 1
+        #     DETACH DELETE s
+        #     """
+        #     graph.query(delete_query, {"uid": token.get("uid")})
 
-        # If no score found with the generated ID, proceed with creation
-        if len(result) == 0:
-            neo4j_timestamp = get_neo4j_datetime_iso8601()
+        while True:
 
-            # Cypher query to create a new score node with generated ID
-            cypher_query = """
-            CREATE (s:Score {
-                sid: $sid,
-                timestamp: $timestamp,
-                percentage: $percentage,
-                analysis: $analysis
-            })
+            # Generate a new UUID for the score ID (existing logic)
+            new_sid = str(uuid.uuid4())
+
+            # Check for duplicate ID and create score (existing logic)
+            check_query = """
+            MATCH (s:Score {sid: $sid})
             RETURN s
             """
-            # Execute the query with score data (including timestamp)
-            result = graph.query(
-                cypher_query, {
-                    "sid": new_sid, "timestamp": neo4j_timestamp, **score.model_dump()}
-            )
-            # Assuming a single score is created
-            created_score = result[0]["s"]
-            return created_score  # Return the created score here
-        else:
-            # Handle duplicate score ID case (optional)
-            raise HTTPException(
-                status_code=409, detail="Score ID already exists."
-            )
+            result = graph.query(check_query, {"sid": new_sid})
+
+            # If no score found with the generated ID, proceed with creation
+            if len(result) == 0:
+                neo4j_timestamp = get_neo4j_datetime_iso8601()
+
+                # Cypher query to create a new score node with generated ID
+                cypher_query = """
+                CREATE (s:Score {
+                    sid: $sid,
+                    timestamp: $timestamp,
+                    percentage: $percentage,
+                    analysis: $analysis
+                })
+                RETURN s
+                """
+                # Execute the query with score data (including timestamp)
+                result = graph.query(
+                    cypher_query, {
+                        "sid": new_sid, "timestamp": neo4j_timestamp, **score.model_dump()}
+                )
+                # Assuming a single score is created
+                created_score = result[0]["s"]
+
+                try:
+
+                    cypher_query = """
+                    MATCH (user:User {uid: $uid}), (score:Score {sid: $sid})
+                    CREATE (user)-[:HAS_SCORE]->(score)
+                    """
+                    graph.query(cypher_query, {
+                                "uid": uid, "sid": created_score["sid"]})
+                    # Return the created memory's mid
+                    return {"sid": created_score["sid"]}
+
+                except Exception as e:
+                    raise HTTPException(
+                        status_code=404, detail="Memory not found.")
+
+            else:
+                # Handle duplicate score ID case (optional)
+                raise HTTPException(
+                    status_code=409, detail="Score ID already exists."
+                )
 
     except Exception as e:
         raise HTTPException(
@@ -84,8 +104,9 @@ async def create_user_score(
 # Function to create a new friend score
 
 
-@router.post("/private/scores")
+@router.post("/private/scores/{fid}")
 async def create_user_score(
+        fid: str,
         score: Score = Body(...),
         token: str = Depends(get_current_user)):
 
@@ -145,7 +166,22 @@ async def create_user_score(
                 )
                 # Assuming a single score is created
                 created_score = result[0]["s"]
-                return created_score  # Return the created score here
+
+                try:
+
+                    cypher_query = """
+                    MATCH (friend:Friend {fid: $fid}), (score:Score {sid: $sid})
+                    CREATE (friend)-[:HAS_SCORE]->(score)
+                    """
+                    graph.query(cypher_query, {
+                                "fid": fid, "sid": created_score["sid"]})
+                    # Return the created memory's mid
+                    return {"sid": created_score["sid"]}
+
+                except Exception as e:
+                    raise HTTPException(
+                        status_code=404, detail="Memory not found.")
+
             else:
                 # Handle duplicate score ID case (optional)
                 raise HTTPException(
