@@ -58,7 +58,6 @@ async def create_user_score(
                 sid: $sid,
                 timestamp: $timestamp,
                 percentage: $percentage,
-                breakdown: $breakdown,
                 analysis: $analysis
             })
             RETURN s
@@ -135,7 +134,6 @@ async def create_user_score(
                     sid: $sid,
                     timestamp: $timestamp,
                     percentage: $percentage,
-                    breakdown: $breakdown,
                     analysis: $analysis
                 })
                 RETURN s

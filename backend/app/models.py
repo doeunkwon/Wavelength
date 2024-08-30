@@ -13,8 +13,14 @@ class Value(BaseModel):
 
 class Score(BaseModel):
     percentage: int
-    breakdown: Optional[List[int]]
     analysis: Optional[str]
+
+
+class Breakdown(BaseModel):
+    goal: int
+    value: int
+    interest: int
+    memory: int
 
 
 class User(BaseModel):
