@@ -41,8 +41,8 @@ def delete_friend(uid: str, fid: str):
         MATCH (:User {{uid: $uid}})-[:FRIENDS_WITH]->(f:Friend {{fid: $fid}})
         OPTIONAL MATCH (m:Memory)-[:ABOUT]->(f)
         OPTIONAL MATCH (f)-[:HAS_SCORE]->(s:Score)
-        OPTIONAL MATCH (f)-[:HAS_VALUE]->(v:Value)
-        DETACH DELETE s, v, m, f
+        OPTIONAL MATCH (f)-[:HAS_BREAKDOWN]->(b:Breakdown)
+        DETACH DELETE s, b, m, f
         """
 
         # Execute the query with identifier
