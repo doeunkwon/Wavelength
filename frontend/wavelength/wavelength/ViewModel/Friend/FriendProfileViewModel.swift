@@ -12,7 +12,7 @@ class FriendProfileViewModel: ObservableObject {
     
     @ObservedObject private var user: User
     @ObservedObject private var friend: Friend
-    private let friendsCount: Int
+    private let friends: [Friend]
     
     private var encodedFriend = EncodedFriend()
 //    @Published var isLoading = false
@@ -27,10 +27,10 @@ class FriendProfileViewModel: ObservableObject {
     private let breakdownService = BreakdownService()
     private let scoreService = ScoreService()
     
-    init(user: User, friend: Friend, friendsCount: Int) {
+    init(user: User, friend: Friend, friends: [Friend]) {
         self.user = user
         self.friend = friend
-        self.friendsCount = friendsCount
+        self.friends = friends
     }
     
     func updateScore(fid: String) async throws {
@@ -52,10 +52,18 @@ class FriendProfileViewModel: ObservableObject {
             
             let newFriendScore = (goalScore + valueScore + interestScore + memoryScore) / 4
             
+            let filteredFriendsCount = friends.filter { $0.scorePercentage >= 0 }.count
+            
             let userScore = user.scorePercentage
             let oldFriendScore = friend.scorePercentage
             
-            let newUserScore = userScore - (oldFriendScore / friendsCount) + (newFriendScore / friendsCount)
+            var newUserScore = 0
+            
+            if oldFriendScore >= 0 {
+                newUserScore = userScore - (oldFriendScore / filteredFriendsCount) + (newFriendScore / filteredFriendsCount)
+            } else {
+                newUserScore = ((userScore * filteredFriendsCount) + newFriendScore) / (filteredFriendsCount + 1)
+            }
             
             _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: newUserScore), bearerToken: bearerToken)
             _ = try await scoreService.createFriendScore(newData: EncodedScore(percentage: newFriendScore, analysis: ""), fid: fid, bearerToken: bearerToken)

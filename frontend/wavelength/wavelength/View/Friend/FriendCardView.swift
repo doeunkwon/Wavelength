@@ -30,7 +30,7 @@ struct FriendCardView: View {
         /// Which means we should subtract 'Padding.large / 2' from our 'UIScreen.main.bounds.width / 2 - Padding.large'.
         /// ^ explains the UIScreen.main.bounds.width / 2 - (Padding.large + (Padding.large / 2))
         
-        NavigationLink(destination: FriendProfileView(user: user, friend: friend, friendsCount: friendsManager.friends.count)) {
+        NavigationLink(destination: FriendProfileView(user: user, friend: friend, friends: friendsManager.friends)) {
                 ZStack {
                     VStack(alignment: .leading) {
                         ProfilePictureView(emoji: friend.emoji, color: friend.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
