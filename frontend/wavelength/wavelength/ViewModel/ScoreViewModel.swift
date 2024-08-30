@@ -20,18 +20,33 @@ class ScoreViewModel: ObservableObject {
     @Published var oldestValue: Double = 0.0
     @Published var trendValue: String = ""
     
+    @Published var isLoading = false
+    @Published var readError: ReadError?
     
     private let scoreService = ScoreService()
     private let breakdownService = BreakdownService()
     
     func getFriendScores(fid: String) {
+        
         print("API CALL: GET FRIEND SCORES")
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
+        
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         Task {
             do {
                 let fetchedScores = try await scoreService.getFriendScores(fid: fid, bearerToken: bearerToken)
                 let fetchedBreakdown = try await breakdownService.getBreakdown(fid: fid, bearerToken: bearerToken)
                 DispatchQueue.main.async {
+                    self.readError = nil
                     self.scores = fetchedScores
                     self.breakdown = fetchedBreakdown
                     self.scoreChartData = prepareChartData(from: fetchedScores)
@@ -45,8 +60,13 @@ class ScoreViewModel: ObservableObject {
                     self.trendValue = "\(difference > 0 ? "+" : "")\(Int(difference))"
                 }
             } catch {
-                // Handle error
-                print("Error fetching scores: \(error)")
+                DispatchQueue.main.async {
+                    if let encodingError = error as? EncodingError {
+                        self.readError = .encodingError(encodingError)
+                    } else {
+                        self.readError = .networkError(error)
+                    }
+                }
             }
         }
     }
