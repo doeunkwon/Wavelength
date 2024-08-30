@@ -11,10 +11,8 @@ import SwiftKeychainWrapper
 class ChangePasswordViewModel {
     
     private var encodedPassword = EncodedPassword()
-//    @Published var isLoading = false
-//    @Published var updateError: ProfileUpdateError?
-    private var isLoading = false
-    private var updateError: UpdateError?
+    @Published var isLoading = false
+    @Published var updateError: UpdateError?
     
     private let userService = UserService()
     
@@ -22,8 +20,15 @@ class ChangePasswordViewModel {
         
         print("API CALL: UPDATE PASSWORD")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         
@@ -32,13 +37,16 @@ class ChangePasswordViewModel {
         
         do {
             try await userService.updatePassword(newData: encodedPassword, bearerToken: bearerToken)
-            updateError = nil
-            print("User profile updated successfully!")
+            DispatchQueue.main.async {
+                self.updateError = nil
+            }
         } catch {
-            if let encodingError = error as? EncodingError {
-                updateError = .encodingError(encodingError)
-            } else {
-                updateError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.updateError = .encodingError(encodingError)
+                } else {
+                    self.updateError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }

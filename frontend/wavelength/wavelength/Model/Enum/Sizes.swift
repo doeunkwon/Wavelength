@@ -28,6 +28,7 @@ enum Frame {
     static let friendCard: CGFloat = UIScreen.main.bounds.width / 2 - (Padding.medium * 2) - (Padding.large + (Padding.large / 2))
     static let friendCardBackground: CGFloat = UIScreen.main.bounds.width / 2 - (Padding.large + (Padding.large / 2))
     static let memoryCell: CGFloat = 100
+    static let loadingSquare: CGFloat = 55
 }
 
 enum Padding {

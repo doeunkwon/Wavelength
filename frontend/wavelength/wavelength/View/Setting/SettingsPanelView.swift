@@ -27,8 +27,13 @@ struct SettingsPanelView: View {
                 showProfileFormViewSheet.toggle()
             })
             .sheet(isPresented: $showProfileFormViewSheet) {
-                ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: settingsPanelViewModel.completion), navTitle: Strings.settings.editProfile)
-                    .interactiveDismissDisabled()
+                ZStack {
+                    ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: settingsPanelViewModel.completion), navTitle: Strings.settings.editProfile)
+                    if settingsPanelViewModel.isLoading {
+                        LoadingView()
+                    }
+                }
+                .interactiveDismissDisabled()
             }
             DividerLineView()
             SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock, action: {

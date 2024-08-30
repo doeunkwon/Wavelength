@@ -12,13 +12,13 @@ class FriendProfileViewModel: ObservableObject {
     
     @ObservedObject private var user: User
     @ObservedObject private var friend: Friend
+    
+    @Published var isLoading = false
+    @Published var updateError: UpdateError?
+    
     private let friends: [Friend]
     
     private var encodedFriend = EncodedFriend()
-//    @Published var isLoading = false
-//    @Published var updateError: ProfileUpdateError?
-    private var isLoading = false
-    private var updateError: UpdateError?
     private var deleteError: DeleteError?
     
     private let friendService = FriendService()
@@ -37,8 +37,15 @@ class FriendProfileViewModel: ObservableObject {
         
         print("API CALL: UPDATE FRIEND")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
@@ -73,18 +80,18 @@ class FriendProfileViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 
+                self.updateError = nil
                 self.friend.scorePercentage = newFriendScore
                 self.user.scorePercentage = newUserScore
                 
             }
-            
-            updateError = nil
-            print("Friend profile updated successfully!")
         } catch {
-            if let encodingError = error as? EncodingError {
-                updateError = .encodingError(encodingError)
-            } else {
-                updateError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.updateError = .encodingError(encodingError)
+                } else {
+                    self.updateError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }
@@ -95,19 +102,31 @@ class FriendProfileViewModel: ObservableObject {
         
         print("API CALL: UPDATE FRIEND")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
             try await friendService.updateFriend(fid: fid, newData: encodedFriend, bearerToken: bearerToken)
-            updateError = nil
-            print("Friend profile updated successfully!")
+            
+            DispatchQueue.main.async {
+                self.updateError = nil
+            }
+            
         } catch {
-            if let encodingError = error as? EncodingError {
-                updateError = .encodingError(encodingError)
-            } else {
-                updateError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.updateError = .encodingError(encodingError)
+                } else {
+                    self.updateError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }
@@ -117,8 +136,15 @@ class FriendProfileViewModel: ObservableObject {
         
         print("API CALL: DELETE FRIEND")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         
@@ -135,12 +161,13 @@ class FriendProfileViewModel: ObservableObject {
             }
             
             deleteError = nil
-            print("Friend profile deleted successfully!")
         } catch {
-            if let encodingError = error as? EncodingError {
-                deleteError = .encodingError(encodingError)
-            } else {
-                deleteError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.deleteError = .encodingError(encodingError)
+                } else {
+                    self.deleteError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }

@@ -20,11 +20,16 @@ struct ContentView: View {
         NavigationStack {
             if viewModel.isLoggedIn {
             
-                TabView(selection: $selectedTab) {
-                    SettingsView(isLoggedIn: $viewModel.isLoggedIn)
-                        .tag(0)
-                    FriendsView(scoreChartData: viewModel.scoreChartData)
-                        .tag(1)
+                ZStack {
+                    TabView(selection: $selectedTab) {
+                        SettingsView(isLoggedIn: $viewModel.isLoggedIn)
+                            .tag(0)
+                        FriendsView(scoreChartData: viewModel.scoreChartData)
+                            .tag(1)
+                    }
+                    if viewModel.isLoading {
+                        LoadingView()
+                    }
                 }
                 .environmentObject(friendsManager)
                 .tabViewStyle(.page(indexDisplayMode: .never))
@@ -32,13 +37,11 @@ struct ContentView: View {
                 .ignoresSafeArea()
                 .onAppear(perform: {
                     selectedTab = 1
-                    viewModel.getUser()
                     Task {
                         do {
-                            friendsManager.friends = await viewModel.getFriends()
+                            friendsManager.friends = try await viewModel.getUserInfo()
                         }
                     }
-                    viewModel.getUserScores()
                 })
                 
             } else {

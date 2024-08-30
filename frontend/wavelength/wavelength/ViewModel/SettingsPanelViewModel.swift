@@ -11,10 +11,9 @@ import SwiftKeychainWrapper
 class SettingsPanelViewModel: ObservableObject {
     
     private var encodedUser = EncodedUser()
-//    @Published var isLoading = false
-//    @Published var updateError: ProfileUpdateError?
-    private var isLoading = false
-    private var updateError: UpdateError?
+    @Published var isLoading = false
+    @Published var updateError: UpdateError?
+    
     private var deleteError: DeleteError?
 
     private let userService = UserService()
@@ -23,20 +22,30 @@ class SettingsPanelViewModel: ObservableObject {
         
         print("API CALL: UPDATE USER")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         
         do {
             try await userService.updateUser(newData: encodedUser, bearerToken: bearerToken)
-            updateError = nil
-            print("User profile updated successfully!")
+            DispatchQueue.main.async {
+                self.updateError = nil
+            }
         } catch {
-            if let encodingError = error as? EncodingError {
-                updateError = .encodingError(encodingError)
-            } else {
-                updateError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.updateError = .encodingError(encodingError)
+                } else {
+                    self.updateError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }
@@ -46,20 +55,29 @@ class SettingsPanelViewModel: ObservableObject {
         
         print("API CALL: DELETE USER")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         
         do {
             try await userService.deleteUser(bearerToken: bearerToken)
+            
             deleteError = nil
-            print("User profile deleted successfully!")
         } catch {
-            if let encodingError = error as? EncodingError {
-                deleteError = .encodingError(encodingError)
-            } else {
-                deleteError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.deleteError = .encodingError(encodingError)
+                } else {
+                    self.deleteError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }

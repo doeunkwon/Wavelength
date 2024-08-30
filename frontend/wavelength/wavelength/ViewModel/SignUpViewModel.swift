@@ -6,27 +6,23 @@
 //
 
 import SwiftUI
-
-import SwiftUI
 import SwiftKeychainWrapper
 
 class SignUpViewModel: ObservableObject {
     
     @Published var uid: String = ""
+    @Published var isLoading = false
+    @Published var updateError: UpdateError?
     
     @Binding private var showModal: Bool
     
     private var encodedUser = EncodedUser()
-//    @Published var isLoading = false
-//    @Published var updateError: ProfileUpdateError?
-    private var isLoading = false
-    private var updateError: UpdateError?
     
     private let userService = UserService()
     
-    private let login: (String, String) -> Void
+    private let login: (String, String) async throws -> ()
     
-    init(login: @escaping (String, String) -> Void, showModal: Binding<Bool>) {
+    init(login: @escaping (String, String) async throws -> (), showModal: Binding<Bool>) {
         self.login = login
         self._showModal = showModal
     }
@@ -35,21 +31,29 @@ class SignUpViewModel: ObservableObject {
         
         print("API CALL: CREATE USER")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         do {
             let fetchedUID = try await userService.createUser(newData: encodedUser)
-            updateError = nil
             DispatchQueue.main.async {
+                self.updateError = nil
                 self.uid = fetchedUID
             }
-            print("User profile created successfully!")
         } catch {
-            if let encodingError = error as? EncodingError {
-                updateError = .encodingError(encodingError)
-            } else {
-                updateError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.updateError = .encodingError(encodingError)
+                } else {
+                    self.updateError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }

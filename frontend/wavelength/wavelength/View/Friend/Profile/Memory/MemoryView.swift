@@ -60,7 +60,15 @@ struct MemoryView: View {
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 DownButtonView()
             }, trailing: Menu {
-                NavigationLink(destination: MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.form.save, action: memoryViewModel.completion), navTitle: Strings.memory.editMemory)) {
+                NavigationLink(destination:
+                    ZStack {
+                        MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.form.save, action: memoryViewModel.completion), navTitle: Strings.memory.editMemory)
+                    
+                        if memoryViewModel.isLoading {
+                            LoadingView()
+                        }
+                    }
+                ) {
                     Label("Edit memory", systemImage: Strings.icons.pencil)
                 }
                 Button(role: .destructive, action: {

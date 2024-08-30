@@ -11,6 +11,12 @@ enum UpdateError: Error {
   case unknownError(String)
 }
 
+enum ReadError: Error {
+  case encodingError(Error)
+  case networkError(Error)
+  case unknownError(String)
+}
+
 enum CreateError: Error {
   case encodingError(Error)
   case networkError(Error)

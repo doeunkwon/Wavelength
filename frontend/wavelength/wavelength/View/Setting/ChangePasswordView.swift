@@ -19,18 +19,23 @@ struct ChangePasswordView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading, spacing: Padding.xlarge) {
-                SecureFieldInputView(placeholder: Strings.form.currentPassword, binding: $currentPassword)
-                
-                DividerLineView()
-                
-                SecureFieldInputView(placeholder: Strings.form.newPassword, binding: $newPassword)
-                
-                DividerLineView()
-                
-                SecureFieldInputView(placeholder: Strings.form.confirmPassword, binding: $confirmPassword)
-                
-                Spacer()
+            ZStack {
+                VStack(alignment: .leading, spacing: Padding.xlarge) {
+                    SecureFieldInputView(placeholder: Strings.form.currentPassword, binding: $currentPassword)
+                    
+                    DividerLineView()
+                    
+                    SecureFieldInputView(placeholder: Strings.form.newPassword, binding: $newPassword)
+                    
+                    DividerLineView()
+                    
+                    SecureFieldInputView(placeholder: Strings.form.confirmPassword, binding: $confirmPassword)
+                    
+                    Spacer()
+                }
+                if changePasswordViewModel.isLoading {
+                    LoadingView()
+                }
             }
             .navigationTitle(Strings.settings.changePassword)
             .navigationBarTitleDisplayMode(.inline)

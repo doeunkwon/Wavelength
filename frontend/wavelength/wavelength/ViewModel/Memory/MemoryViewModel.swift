@@ -16,10 +16,8 @@ class MemoryViewModel {
     @Binding private var memories: [Memory]
     
     private var encodedMemory = EncodedMemory()
-//    @Published var isLoading = false
-//    @Published var updateError: MemoryUpdateError?
-    private var isLoading = false
-    private var updateError: UpdateError?
+    @Published var isLoading = false
+    @Published var updateError: UpdateError?
     private var deleteError: DeleteError?
     
     private let memoryService = MemoryService()
@@ -36,8 +34,15 @@ class MemoryViewModel {
         
         print("API CALL: UPDATE MEMORY")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
@@ -46,13 +51,16 @@ class MemoryViewModel {
                 try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount - oldTokens + newTokens), bearerToken: bearerToken)
                 try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount - oldTokens + newTokens), bearerToken: bearerToken)
             }
-            updateError = nil
-            print("Memory updated successfully!")
+            DispatchQueue.main.async {
+                self.updateError = nil
+            }
         } catch {
-            if let encodingError = error as? EncodingError {
-                updateError = .encodingError(encodingError)
-            } else {
-                updateError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.updateError = .encodingError(encodingError)
+                } else {
+                    self.updateError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }
@@ -62,8 +70,15 @@ class MemoryViewModel {
         
         print("API CALL: DELETE MEMORY")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         
@@ -88,10 +103,12 @@ class MemoryViewModel {
             deleteError = nil
             print("Memory deleted successfully!")
         } catch {
-            if let encodingError = error as? EncodingError {
-                deleteError = .encodingError(encodingError)
-            } else {
-                deleteError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.deleteError = .encodingError(encodingError)
+                } else {
+                    self.deleteError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }

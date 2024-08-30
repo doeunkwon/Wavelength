@@ -28,6 +28,8 @@ class ViewModel: ObservableObject {
         values: [])
     @Published var scores: [Score] = []
     @Published var scoreChartData: [ScoreData] = []
+    @Published var isLoading = false
+    @Published var readError: ReadError?
     
     init() {
         isLoggedIn = hasBearerToken()
@@ -43,65 +45,74 @@ class ViewModel: ObservableObject {
         return bearerToken != ""
     }
     
-    func getToken(username: String, password: String) {
+    func getToken(username: String, password: String) async throws {
+        
         print("API CALL: GET TOKEN")
-        Task {
-            do {
-                let token = try await authenticationService.signIn(username: username, password: password)
-                KeychainWrapper.standard.set(token, forKey: "bearerToken")
-                DispatchQueue.main.async {
-                    self.isLoggedIn = true
-                }
-            } catch {
-                // Handle authentication errors
-                print("Authentication error:", error.localizedDescription)
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
             }
+        }
+        
+        do {
+            let token = try await authenticationService.signIn(username: username, password: password)
+            KeychainWrapper.standard.set(token, forKey: "bearerToken")
+            DispatchQueue.main.async {
+                self.readError = nil
+                self.isLoggedIn = true
+            }
+        } catch {
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.readError = .encodingError(encodingError)
+                } else {
+                    self.readError = .networkError(error)
+                }
+            }
+            throw error
         }
     }
 
-    func getUser() {
+    func getUserInfo() async throws -> [Friend] {
+        
         print("API CALL: GET USER")
-        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
-        Task {
-            do {
-                let fetchedUser = try await userService.getUser(bearerToken: bearerToken)
-                DispatchQueue.main.async {
-                    self.user = fetchedUser
-                }
-            } catch {
-                // Handle error
-                print("Error fetching user: \(error)")
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
             }
         }
-    }
-    
-    func getFriends() async -> [Friend] {
-        print("API CALL: GET FRIENDS")
+        
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
+            let fetchedUser = try await userService.getUser(bearerToken: bearerToken)
             let fetchedFriends = try await friendService.getFriends(bearerToken: bearerToken)
+            let fetchedScores = try await scoreService.getUserScores(bearerToken: bearerToken)
+            DispatchQueue.main.async {
+                self.readError = nil
+                self.user = fetchedUser
+                self.scores = fetchedScores
+                self.scoreChartData = prepareChartData(from: fetchedScores)
+            }
             return fetchedFriends
         } catch {
-            // Handle error
-            print("Error fetching friends: \(error)")
-            return [] // Return an empty array or handle the error appropriately
-        }
-    }
-    
-    func getUserScores() {
-        print("API CALL: GET USER SCORES")
-        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
-        Task {
-            do {
-                let fetchedScores = try await scoreService.getUserScores(bearerToken: bearerToken)
-                DispatchQueue.main.async {
-                    self.scores = fetchedScores
-                    self.scoreChartData = prepareChartData(from: fetchedScores)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.readError = .encodingError(encodingError)
+                } else {
+                    self.readError = .networkError(error)
                 }
-            } catch {
-                // Handle error
-                print("Error fetching scores: \(error)")
             }
+            throw error
         }
     }
 }

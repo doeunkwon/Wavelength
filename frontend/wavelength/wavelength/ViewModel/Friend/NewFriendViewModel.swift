@@ -11,11 +11,9 @@ import SwiftKeychainWrapper
 class NewFriendViewModel: ObservableObject {
     
     @Published var fid: String = ""
+    @Published var isLoading = false
+    @Published var updateError: UpdateError?
     private var encodedFriend = EncodedFriend()
-//    @Published var isLoading = false
-//    @Published var updateError: ProfileUpdateError?
-    private var isLoading = false
-    private var updateError: UpdateError?
     
     private let friendService = FriendService()
     private let scoreService = ScoreService()
@@ -31,23 +29,31 @@ class NewFriendViewModel: ObservableObject {
         
         print("API CALL: CREATE FRIEND")
         
-        isLoading = true
-        defer { isLoading = false } // Set loading state to false even in case of error
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
             let fetchedFID = try await friendService.createFriend(newData: encodedFriend, bearerToken: bearerToken)
             let _ = try await breakdownService.createBreakdown(newData: EncodedBreakdown(goal: 0, value: 0, interest: 0, memory: 0), fid: fetchedFID, bearerToken: bearerToken)
-            updateError = nil
             DispatchQueue.main.async {
+                self.updateError = nil
                 self.fid = fetchedFID
             }
-            print("Friend profile created successfully!")
         } catch {
-            if let encodingError = error as? EncodingError {
-                updateError = .encodingError(encodingError)
-            } else {
-                updateError = .networkError(error)
+            DispatchQueue.main.async {
+                if let encodingError = error as? EncodingError {
+                    self.updateError = .encodingError(encodingError)
+                } else {
+                    self.updateError = .networkError(error)
+                }
             }
             throw error // Re-throw the error for caller handling
         }

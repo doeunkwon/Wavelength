@@ -33,7 +33,14 @@ struct SignInView: View {
                     SignInFormView(username: $username, password: $password)
                     HStack (spacing: Padding.large) {
                         ButtonView(title: Strings.login.logIn, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
-                            viewModel.getToken(username: username, password: password)
+                            Task {
+                                do {
+                                    try await viewModel.getToken(username: username, password: password)
+                                } catch {
+                                    // Handle authentication errors
+                                    print("Reading error:", error.localizedDescription)
+                                }
+                            }
                         })
                         ButtonView(title: Strings.login.signUp, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
                             showSignUpViewModal.toggle()

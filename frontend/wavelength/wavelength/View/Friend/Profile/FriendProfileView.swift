@@ -123,8 +123,13 @@ struct FriendProfileView: View {
                     Text(Strings.friend.confirmDelete)
                 }
             .sheet(isPresented: $showProfileFormViewSheet) {
-                ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: friendProfileViewModel.completion), navTitle: Strings.settings.editProfile)
-                    .interactiveDismissDisabled()
+                ZStack {
+                    ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: friendProfileViewModel.completion), navTitle: Strings.settings.editProfile)
+                    if friendProfileViewModel.isLoading {
+                        LoadingView()
+                    }
+                }
+                .interactiveDismissDisabled()
             }
             .background(Color.wavelengthBackground)
         }
