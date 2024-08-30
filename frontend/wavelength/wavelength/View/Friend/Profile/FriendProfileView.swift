@@ -21,9 +21,9 @@ struct FriendProfileView: View {
     
     @State private var showConfirmDeleteAlert: Bool = false
     
-    init(user: User, friend: Friend) {
+    init(user: User, friend: Friend, friendsCount: Int) {
         self.friend = friend
-        self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(user: user, friend: friend))
+        self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(user: user, friend: friend, friendsCount: friendsCount))
     }
     
     var body: some View {

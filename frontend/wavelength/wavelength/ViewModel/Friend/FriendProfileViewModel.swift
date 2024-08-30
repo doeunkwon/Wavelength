@@ -12,6 +12,7 @@ class FriendProfileViewModel: ObservableObject {
     
     @ObservedObject private var user: User
     @ObservedObject private var friend: Friend
+    private let friendsCount: Int
     
     private var encodedFriend = EncodedFriend()
 //    @Published var isLoading = false
@@ -26,9 +27,10 @@ class FriendProfileViewModel: ObservableObject {
     private let breakdownService = BreakdownService()
     private let scoreService = ScoreService()
     
-    init(user: User, friend: Friend) {
+    init(user: User, friend: Friend, friendsCount: Int) {
         self.user = user
         self.friend = friend
+        self.friendsCount = friendsCount
     }
     
     func updateScore(fid: String) async throws {
@@ -48,15 +50,21 @@ class FriendProfileViewModel: ObservableObject {
             let interestScore = llmScore.interest
             let memoryScore = llmScore.memory
             
-            let averageScore = (goalScore + valueScore + interestScore + memoryScore) / 4
+            let newFriendScore = (goalScore + valueScore + interestScore + memoryScore) / 4
             
-            _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: 70), bearerToken: bearerToken)
-            _ = try await scoreService.createFriendScore(newData: EncodedScore(percentage: averageScore, analysis: ""), fid: fid, bearerToken: bearerToken)
+            let userScore = user.scorePercentage
+            let oldFriendScore = friend.scorePercentage
+            
+            let newUserScore = userScore - (oldFriendScore / friendsCount) + (newFriendScore / friendsCount)
+            
+            _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: newUserScore), bearerToken: bearerToken)
+            _ = try await scoreService.createFriendScore(newData: EncodedScore(percentage: newFriendScore, analysis: ""), fid: fid, bearerToken: bearerToken)
             _ = try await breakdownService.createBreakdown(newData: EncodedBreakdown(goal:goalScore, value: valueScore, interest: interestScore, memory: memoryScore), fid: fid, bearerToken: bearerToken)
             
             DispatchQueue.main.async {
                 
-                self.friend.scorePercentage = averageScore
+                self.friend.scorePercentage = newFriendScore
+                self.user.scorePercentage = newUserScore
                 
             }
             

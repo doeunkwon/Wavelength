@@ -20,10 +20,10 @@ class NewFriendViewModel: ObservableObject {
     private let friendService = FriendService()
     private let scoreService = ScoreService()
     
-    @Binding private var friends: [Friend]
+    @ObservedObject private var friendsManager: FriendsManager
     
-    init(friends: Binding<[Friend]>) {
-        self._friends = friends
+    init(friendsManager: FriendsManager) {
+        self.friendsManager = friendsManager
     }
     
     func createFriend() async throws {
@@ -88,7 +88,7 @@ class NewFriendViewModel: ObservableObject {
                         friend.tokenCount = 0
                         friend.memoryCount = 0
                         
-                        self.friends.append(friend)
+                        self.friendsManager.addFriend(friend: friend)
                     }
                 } catch {
                   // Handle errors

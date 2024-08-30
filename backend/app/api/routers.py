@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from app.api.public.users import router as pub_users_router
 from app.api.public.scores import router as pub_scores_router
+from app.api.public.breakdown import router as pub_breakdown_router
 
 from app.api.private.auth import router as pri_auth_router
 from app.api.private.friends import router as pri_friends_router
@@ -16,6 +17,7 @@ app = FastAPI()
 
 app.include_router(pub_users_router)
 app.include_router(pub_scores_router)
+app.include_router(pub_breakdown_router)
 
 app.include_router(pri_auth_router)
 app.include_router(pri_friends_router)

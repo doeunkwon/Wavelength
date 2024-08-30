@@ -26,7 +26,6 @@ class ViewModel: ObservableObject {
         tokenCount: 0,
         memoryCount: 0,
         values: [])
-    @Published var friends: [Friend] = []
     @Published var scores: [Score] = []
     @Published var scoreChartData: [ScoreData] = []
     
@@ -76,19 +75,16 @@ class ViewModel: ObservableObject {
         }
     }
     
-    func getFriends() {
+    func getFriends() async -> [Friend] {
         print("API CALL: GET FRIENDS")
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
-        Task {
-            do {
-                let fetchedFriends = try await friendService.getFriends(bearerToken: bearerToken)
-                DispatchQueue.main.async {
-                    self.friends = fetchedFriends
-                }
-            } catch {
-                // Handle error
-                print("Error fetching friends: \(error)")
-            }
+        do {
+            let fetchedFriends = try await friendService.getFriends(bearerToken: bearerToken)
+            return fetchedFriends
+        } catch {
+            // Handle error
+            print("Error fetching friends: \(error)")
+            return [] // Return an empty array or handle the error appropriately
         }
     }
     
