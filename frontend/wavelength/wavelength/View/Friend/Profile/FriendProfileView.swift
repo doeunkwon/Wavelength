@@ -80,6 +80,12 @@ struct FriendProfileView: View {
                 LeftButtonView()
             }), trailing: Menu {
                 Button(action: {
+                    print("Edit tapped!")
+                    showProfileFormViewSheet.toggle()
+                }) {
+                    Label("Edit profile", systemImage: Strings.icons.person)
+                }
+                Button(action: {
                     print("Update score tapped!")
                     Task {
                         do {
@@ -90,13 +96,7 @@ struct FriendProfileView: View {
                         }
                     }
                 }) {
-                    Label("Update score", systemImage: Strings.icons.waveformPathEcg)
-                }
-                Button(action: {
-                    print("Edit tapped!")
-                    showProfileFormViewSheet.toggle()
-                }) {
-                    Label("Edit profile", systemImage: Strings.icons.person)
+                    Label("Grade match", systemImage: Strings.icons.waveformPathEcg)
                 }
                 Button(role: .destructive, action: {
                     showConfirmDeleteAlert.toggle()

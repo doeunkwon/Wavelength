@@ -73,38 +73,40 @@ struct DashboardView: View {
                 }
             }
             .frame(height:Frame.dashboardTop)
-            DividerLineView()
-            Chart {
-                ForEach(data, id: \.id) { item in
-                    LineMark(
-                        x: .value("", item.entry),
-                        y: .value("", item.value)
-                    )
-                    .lineStyle(StrokeStyle(lineWidth: 2))
-                    .interpolationMethod(.monotone)
-                    .foregroundStyle(lineGraphColor)
-                    .shadow(
-                        color: ShadowStyle.glow(lineGraphColor).color,
-                        radius: ShadowStyle.glow(lineGraphColor).radius,
-                        x: ShadowStyle.glow(lineGraphColor).x,
-                        y: ShadowStyle.glow(lineGraphColor).y)
+            if data.count > 1 {
+                DividerLineView()
+                Chart {
+                    ForEach(data, id: \.id) { item in
+                        LineMark(
+                            x: .value("", item.entry),
+                            y: .value("", item.value)
+                        )
+                        .lineStyle(StrokeStyle(lineWidth: 2))
+                        .interpolationMethod(.monotone)
+                        .foregroundStyle(lineGraphColor)
+                        .shadow(
+                            color: ShadowStyle.glow(lineGraphColor).color,
+                            radius: ShadowStyle.glow(lineGraphColor).radius,
+                            x: ShadowStyle.glow(lineGraphColor).x,
+                            y: ShadowStyle.glow(lineGraphColor).y)
+                    }
                 }
-            }
-            .chartYScale(domain: (data.min(by: { $0.value < $1.value })?.value ?? 0)...(data.max(by: { $0.value < $1.value })?.value ?? 0))
-            .chartYAxis {AxisMarks(values: .automatic) {
-                    AxisValueLabel()
-                    .foregroundStyle(.wavelengthGrey)
+                .chartYScale(domain: (data.min(by: { $0.value < $1.value })?.value ?? 0)...(data.max(by: { $0.value < $1.value })?.value ?? 0))
+                .chartYAxis {AxisMarks(values: .automatic) {
+                        AxisValueLabel()
+                        .foregroundStyle(.wavelengthGrey)
 
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 1))
-                        .foregroundStyle(.wavelengthLightGrey)
+                        AxisGridLine(stroke: StrokeStyle(lineWidth: 1))
+                            .foregroundStyle(.wavelengthLightGrey)
+                    }
                 }
-            }
-            .chartXAxis {
-                AxisMarks(position: .bottom) { _ in
+                .chartXAxis {
+                    AxisMarks(position: .bottom) { _ in
+                    }
                 }
+                .frame(height:Frame.dashboardBottom)
+                .padding(Padding.large)
             }
-            .frame(height:Frame.dashboardBottom)
-            .padding(Padding.large)
             
         }
         .overlay( /// apply a rounded border
