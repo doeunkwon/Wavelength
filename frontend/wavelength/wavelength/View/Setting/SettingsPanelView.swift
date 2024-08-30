@@ -12,14 +12,21 @@ struct SettingsPanelView: View {
     
     @EnvironmentObject var user: User
     
-    @StateObject var settingsPanelViewModel = SettingsPanelViewModel()
+    @StateObject var settingsPanelViewModel: SettingsPanelViewModel
     
-    @State private var showProfileFormViewSheet = false
     @State private var showChangePasswordViewSheet = false
     @State private var showConfirmDeleteAlert = false
     @State private var showConfirmLogoutAlert = false
     
+    @Binding private var showProfileFormViewSheet: Bool
+    
     @Binding var isLoggedIn: Bool
+    
+    init(isLoggedIn: Binding<Bool>, showProfileFormViewSheet: Binding<Bool>) {
+        self._settingsPanelViewModel = StateObject(wrappedValue: SettingsPanelViewModel(showModal: showProfileFormViewSheet))
+        self._isLoggedIn = isLoggedIn
+        self._showProfileFormViewSheet = showProfileFormViewSheet
+    }
     
     var body: some View {
         VStack(spacing: 0) {

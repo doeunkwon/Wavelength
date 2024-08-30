@@ -14,9 +14,15 @@ class SettingsPanelViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var updateError: UpdateError?
     
+    @Binding private var showModal: Bool
+    
     private var deleteError: DeleteError?
 
     private let userService = UserService()
+    
+    init(showModal: Binding<Bool>) {
+        self._showModal = showModal
+    }
     
     func updateUser() async throws {
         
@@ -130,6 +136,9 @@ class SettingsPanelViewModel: ObservableObject {
                         user.values = tagManager.values
                         
                     }
+                    
+                    showModal.toggle()
+                    
                 } catch {
                   // Handle errors
                     print("Error updating user: \(error)")

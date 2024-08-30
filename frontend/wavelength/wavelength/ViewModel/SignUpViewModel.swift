@@ -115,9 +115,9 @@ class SignUpViewModel: ObservableObject {
                         user.tokenCount = 0
                         user.memoryCount = 0
                         
-                        self.showModal.toggle()
-                        
                     }
+                    
+                    showModal.toggle()
                     
                 } catch {
                   // Handle errors
