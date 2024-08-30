@@ -33,3 +33,21 @@ struct DecodedMID: Decodable {
         case mid
     }
 }
+
+struct DecodedSID: Decodable {
+    
+    let sid: String
+    
+    enum CodingKeys: String, CodingKey {
+        case sid
+    }
+}
+
+struct DecodedBID: Decodable {
+    
+    let bid: String
+    
+    enum CodingKeys: String, CodingKey {
+        case bid
+    }
+}
