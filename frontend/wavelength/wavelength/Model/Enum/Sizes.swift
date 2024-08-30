@@ -48,4 +48,5 @@ enum CornerRadius {
 enum Border {
     static let small: CGFloat = 1
     static let medium: CGFloat = 3
+    static let xlarge: CGFloat = 8
 }

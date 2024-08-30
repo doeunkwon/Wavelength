@@ -14,8 +14,19 @@ def get_memory_relationships(uid: str, fid: str):
     RETURN m.content AS content
     """
     result = graph.query(cypher_query, {"uid": uid, "fid": fid})
-    memories = [memory['content'] for memory in result]
+    memories = [(memory['content']) for memory in result]
     return memories
+
+
+def get_memory_tokens(uid: str, fid: str):
+    cypher_query = """
+    MATCH (:User {uid: $uid})-[:HAS_MEMORY]->(m:Memory)-[:ABOUT]->(:Friend {fid: $fid})
+    RETURN m.tokens AS tokens
+    """
+    result = graph.query(cypher_query, {"uid": uid, "fid": fid})
+    memory_tokens = [memory['tokens'] for memory in result]
+
+    return memory_tokens
 
 #
 # ________________________________________________________________________________________________________________________________________________________
@@ -53,7 +64,7 @@ def update_value_relationship(general_id: str, model: str, vid: str, percentage:
 # Relationship endpoints related to SCORE
 
 
-def create_score_relationships(general_id: str, sid: str, model: str):
+def create_user_score_relationships(uid: str, sid: str):
     # Handle score not found case
     try:
         cypher_query = """
@@ -63,11 +74,31 @@ def create_score_relationships(general_id: str, sid: str, model: str):
 
         result = graph.query(cypher_query, {"sid": sid})
         score = result[0]
-        cypher_query = f"""
-        MATCH (user:{model} {{{'uid' if model == 'User' else 'fid'}: $general_id}}), (score:Score {{sid: $sid}})
+        cypher_query = """
+        MATCH (user:User {uid: $uid}), (score:Score {sid: $sid})
         CREATE (user)-[has:HAS_SCORE]->(score)
         """
-        graph.query(cypher_query, {"general_id": general_id, "sid": sid})
-        return {"message": "Score relationship successfully created."}
+        graph.query(cypher_query, {"uid": uid, "sid": sid})
+        return {"message": "User score relationship successfully created."}
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="Score not found.")
+
+
+def create_friend_score_relationships(fid: str, sid: str):
+    # Handle score not found case
+    try:
+        cypher_query = """
+        MATCH (s:Score {sid: $sid})
+        RETURN s
+        """
+
+        result = graph.query(cypher_query, {"sid": sid})
+        score = result[0]
+        cypher_query = """
+        MATCH (friend:Friend {fid: $fid}), (score:Score {sid: $sid})
+        CREATE (friend)-[has:HAS_SCORE]->(score)
+        """
+        graph.query(cypher_query, {"fid": fid, "sid": sid})
+        return {"message": "Friend score relationship successfully created."}
     except Exception as e:
         raise HTTPException(status_code=404, detail="Score not found.")

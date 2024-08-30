@@ -12,6 +12,7 @@ struct FriendProfileView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var showMemoriesViewSheet = false
+    @State private var showScoreViewSheet = false
     @State private var showProfileFormViewSheet = false
 
     @ObservedObject private var friend: Friend
@@ -20,9 +21,9 @@ struct FriendProfileView: View {
     
     @State private var showConfirmDeleteAlert: Bool = false
     
-    init(user: User, friend: Friend) {
+    init(user: User, friend: Friend, friends: [Friend]) {
         self.friend = friend
-        self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(user: user))
+        self._friendProfileViewModel = StateObject(wrappedValue: FriendProfileViewModel(user: user, friend: friend, friends: friends))
     }
     
     var body: some View {
@@ -34,16 +35,21 @@ struct FriendProfileView: View {
                     HeaderView(emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, tokenCount: friend.tokenCount)
                     
                     HStack(alignment: .center, spacing: Padding.large) {
-                        ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageMatch, color: intToColor(value: friend.scorePercentage), action: {print("Score button tapped")})
+                        ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageMatch, color: intToColor(value: friend.scorePercentage)) {
+                            showScoreViewSheet.toggle()
+                        }
                         ButtonView(title: String(friend.memoryCount) + " " + Strings.memory.memories, color: .wavelengthText) {
                             showMemoriesViewSheet.toggle()
-                            }
+                        }
                     }
                     .shadow(
                         color: ShadowStyle.subtle.color,
                         radius: ShadowStyle.subtle.radius,
                         x: ShadowStyle.subtle.x,
                         y: ShadowStyle.subtle.y)
+                    .fullScreenCover(isPresented: $showScoreViewSheet) {
+                        ScoreView(fid: friend.fid, friendFirstName: friend.firstName)
+                    }
                     .fullScreenCover(isPresented: $showMemoriesViewSheet) {
                         MemoriesView(friend: friend)
                     }
@@ -78,6 +84,19 @@ struct FriendProfileView: View {
                     showProfileFormViewSheet.toggle()
                 }) {
                     Label("Edit profile", systemImage: Strings.icons.person)
+                }
+                Button(action: {
+                    print("Update score tapped!")
+                    Task {
+                        do {
+                            try await friendProfileViewModel.updateScore(fid: friend.fid)
+                        } catch {
+                            // Handle deletion errors
+                            print("Updating score error:", error.localizedDescription)
+                        }
+                    }
+                }) {
+                    Label("Grade match", systemImage: Strings.icons.waveformPathEcg)
                 }
                 Button(role: .destructive, action: {
                     showConfirmDeleteAlert.toggle()

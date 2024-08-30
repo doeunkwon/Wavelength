@@ -24,13 +24,22 @@ struct ButtonView: View {
 
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .font(.system(size: (largeFont ?? false) ? Fonts.subtitle : Fonts.body, weight: .medium))
-                .frame(maxWidth: .infinity) // Expand text to fill available width
-                .padding(.vertical, Padding.large) // Add padding for spacing
+            if title == String(-1) + Strings.profile.percentageMatch {
+                Text("?")
+                    .font(.system(size: (largeFont ?? false) ? Fonts.subtitle : Fonts.body, weight: .semibold))
+                    .frame(maxWidth: .infinity) // Expand text to fill available width
+                    .padding(.vertical, Padding.large) // Add padding for spacing
+                    .foregroundColor(.wavelengthDarkGrey) // Set text color
+            } else {
+                Text(title)
+                    .font(.system(size: (largeFont ?? false) ? Fonts.subtitle : Fonts.body))
+                    .frame(maxWidth: .infinity) // Expand text to fill available width
+                    .padding(.vertical, Padding.large) // Add padding for spacing
+                    .foregroundColor(color) // Set text color
+            }
         }
-        .foregroundColor(color) // Set text color
         .background(backgroundColor) // Set background color
         .cornerRadius(CornerRadius.medium) // Add corner radius
+        .disabled(title == String(-1) + Strings.profile.percentageMatch)
     }
 }

@@ -11,6 +11,8 @@ import SwiftKeychainWrapper
 class FriendProfileViewModel: ObservableObject {
     
     @ObservedObject private var user: User
+    @ObservedObject private var friend: Friend
+    private let friends: [Friend]
     
     private var encodedFriend = EncodedFriend()
 //    @Published var isLoading = false
@@ -21,10 +23,73 @@ class FriendProfileViewModel: ObservableObject {
     
     private let friendService = FriendService()
     private let userService = UserService()
+    private let llmService = LLMService()
+    private let breakdownService = BreakdownService()
+    private let scoreService = ScoreService()
     
-    init(user: User) {
+    init(user: User, friend: Friend, friends: [Friend]) {
         self.user = user
+        self.friend = friend
+        self.friends = friends
     }
+    
+    func updateScore(fid: String) async throws {
+        
+        print("API CALL: UPDATE FRIEND")
+        
+        isLoading = true
+        defer { isLoading = false } // Set loading state to false even in case of error
+
+        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
+        do {
+            
+            let llmScore: LLMScore = try await llmService.generateLLMScore(fid: fid, bearerToken: bearerToken)
+            
+            let goalScore = llmScore.goal
+            let valueScore = llmScore.value
+            let interestScore = llmScore.interest
+            let memoryScore = llmScore.memory
+            
+            let newFriendScore = (goalScore + valueScore + interestScore + memoryScore) / 4
+            
+            let filteredFriendsCount = friends.filter { $0.scorePercentage >= 0 }.count
+            
+            let userScore = user.scorePercentage
+            let oldFriendScore = friend.scorePercentage
+            
+            var newUserScore = 0
+            
+            if oldFriendScore >= 0 {
+                newUserScore = userScore - (oldFriendScore / filteredFriendsCount) + (newFriendScore / filteredFriendsCount)
+            } else {
+                newUserScore = ((userScore * filteredFriendsCount) + newFriendScore) / (filteredFriendsCount + 1)
+            }
+            
+            _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: newUserScore), bearerToken: bearerToken)
+            _ = try await scoreService.createFriendScore(newData: EncodedScore(percentage: newFriendScore, analysis: ""), fid: fid, bearerToken: bearerToken)
+            _ = try await breakdownService.updateBreakdown(fid: friend.fid, newData: EncodedBreakdown(goal:goalScore, value: valueScore, interest: interestScore, memory: memoryScore), bearerToken: bearerToken)
+            try await friendService.updateFriend(fid: fid, newData: EncodedFriend(scorePercentage: newFriendScore), bearerToken: bearerToken)
+            try await userService.updateUser(newData: EncodedUser(scorePercentage: newUserScore), bearerToken: bearerToken)
+            
+            DispatchQueue.main.async {
+                
+                self.friend.scorePercentage = newFriendScore
+                self.user.scorePercentage = newUserScore
+                
+            }
+            
+            updateError = nil
+            print("Friend profile updated successfully!")
+        } catch {
+            if let encodingError = error as? EncodingError {
+                updateError = .encodingError(encodingError)
+            } else {
+                updateError = .networkError(error)
+            }
+            throw error // Re-throw the error for caller handling
+        }
+    }
+
     
     func updateFriend(fid: String) async throws {
         

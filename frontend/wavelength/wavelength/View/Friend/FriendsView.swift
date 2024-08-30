@@ -10,14 +10,13 @@ import SwiftUI
 struct FriendsView: View {
     
     @EnvironmentObject var user: User
+    @EnvironmentObject var friendsManager: FriendsManager
     
     @State private var showNewFriendViewModal = false
     
-    @Binding private var friends: [Friend]
     private let scoreChartData: [ScoreData]
     
-    init(friends: Binding<[Friend]>, scoreChartData: [ScoreData]) {
-        self._friends = friends
+    init(scoreChartData: [ScoreData]) {
         self.scoreChartData = scoreChartData
     }
     
@@ -26,7 +25,7 @@ struct FriendsView: View {
             ZStack(alignment: .bottom) {
                     
                 /// No friends
-                if friends.count == 0 {
+                if friendsManager.friends.count == 0 {
                     
                     VStack {
                         Spacer()
@@ -46,16 +45,25 @@ struct FriendsView: View {
                                 .padding(.bottom, Padding.large)
                             
                             
-                            DashboardView(scorePercentage: user.scorePercentage, tokenCount: user.tokenCount, memoryCount: user.memoryCount, data: scoreChartData)
+                            DashboardView(
+                                firstEntry: (Strings.dashboard.overall, "\(user.scorePercentage)%"),
+                                firstEntryColor: intToColor(value: user.scorePercentage),
+                                secondEntry: (Strings.dashboard.tokens, (user.tokenCount > 0 ? "+" : "") + String(user.tokenCount)),
+                                secondEntryColor: .wavelengthTokenOrange,
+                                thirdEntry: (Strings.dashboard.memories, String(user.memoryCount)),
+                                thirdEntryColor: .wavelengthText,
+                                lineGraphColor: intToColor(value: user.scorePercentage),
+                                data: scoreChartData)
                             .padding(.horizontal, Padding.large)
                             
                             LazyVStack(alignment: .leading, spacing: Padding.large) {
-                                let sortedFriends = friends.sorted { $0.scorePercentage > $1.scorePercentage }
+                                let sortedFriends = friendsManager.friends.sorted { $0.scorePercentage > $1.scorePercentage }
                                 ForEach(Array(stride(from: sortedFriends.startIndex, to: sortedFriends.endIndex, by: 2)), id: \.self) { index in
                                     let friend1 = sortedFriends[index]
                                     let friend2 = index + 1 < sortedFriends.endIndex ? sortedFriends[index + 1] : nil
                                     FriendCardsRowView(friend1: friend1, friend2: friend2)
                                 }
+                                .environmentObject(friendsManager)
                             }
                             .shadow(
                                 color: ShadowStyle.standard.color,
@@ -87,7 +95,7 @@ struct FriendsView: View {
                             .accentColor(.wavelengthGrey)
                     }
                     .sheet(isPresented: $showNewFriendViewModal) {
-                        NewFriendView(friends: $friends)
+                        NewFriendView(friendsManager: friendsManager)
                             .interactiveDismissDisabled()
                     }
                 }

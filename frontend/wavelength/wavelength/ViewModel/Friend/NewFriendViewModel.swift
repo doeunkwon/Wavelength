@@ -18,11 +18,13 @@ class NewFriendViewModel: ObservableObject {
     private var updateError: UpdateError?
     
     private let friendService = FriendService()
+    private let scoreService = ScoreService()
+    private let breakdownService = BreakdownService()
     
-    @Binding private var friends: [Friend]
+    @ObservedObject private var friendsManager: FriendsManager
     
-    init(friends: Binding<[Friend]>) {
-        self._friends = friends
+    init(friendsManager: FriendsManager) {
+        self.friendsManager = friendsManager
     }
     
     func createFriend() async throws {
@@ -35,6 +37,7 @@ class NewFriendViewModel: ObservableObject {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
             let fetchedFID = try await friendService.createFriend(newData: encodedFriend, bearerToken: bearerToken)
+            let _ = try await breakdownService.createBreakdown(newData: EncodedBreakdown(goal: 0, value: 0, interest: 0, memory: 0), fid: fetchedFID, bearerToken: bearerToken)
             updateError = nil
             DispatchQueue.main.async {
                 self.fid = fetchedFID
@@ -65,7 +68,7 @@ class NewFriendViewModel: ObservableObject {
                     encodedFriend.goals = editedProfile.goals
                     encodedFriend.interests = tagManager.interests
                     encodedFriend.values = tagManager.values
-                    encodedFriend.scorePercentage = 50
+                    encodedFriend.scorePercentage = -1
                     encodedFriend.scoreAnalysis = ""
                     encodedFriend.tokenCount = 0
                     encodedFriend.memoryCount = 0
@@ -82,12 +85,12 @@ class NewFriendViewModel: ObservableObject {
                         friend.goals = editedProfile.goals
                         friend.interests = tagManager.interests
                         friend.values = tagManager.values
-                        friend.scorePercentage = 50
+                        friend.scorePercentage = -1
                         friend.scoreAnalysis = ""
                         friend.tokenCount = 0
                         friend.memoryCount = 0
                         
-                        self.friends.append(friend)
+                        self.friendsManager.addFriend(friend: friend)
                     }
                 } catch {
                   // Handle errors

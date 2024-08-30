@@ -36,7 +36,7 @@ struct MemoryView: View {
                         Spacer()
                         
                         Text((memory.tokens > 0 ? "+" : "") + "\(memory.tokens) tokens")
-                            .font(.system(size: Fonts.body, weight: .medium))
+                            .font(.system(size: Fonts.body))
                             .foregroundStyle(.wavelengthTokenOrange)
                     }
                     

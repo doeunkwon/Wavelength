@@ -1,4 +1,3 @@
-import uuid
 from fastapi import HTTPException, APIRouter
 from database.neo4j import graph
 

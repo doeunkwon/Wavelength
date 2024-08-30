@@ -22,7 +22,7 @@ struct HeaderView: View {
                 Text(firstName + " " + lastName)
                     .font(.system(size: Fonts.subtitle))
                 Text((tokenCount > 0 ? "+" : "") + String(tokenCount) + " " + Strings.general.tokens)
-                    .font(.system(size: Fonts.body, weight: .medium))
+                    .font(.system(size: Fonts.body))
                     .foregroundStyle(.wavelengthTokenOrange)
             }
             .padding(.leading, Padding.medium)

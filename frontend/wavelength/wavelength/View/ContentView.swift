@@ -11,6 +11,8 @@ struct ContentView: View {
     
     @ObservedObject var viewModel: ViewModel
     
+    @StateObject var friendsManager = FriendsManager(friends: [])
+    
     @State private var selectedTab = 1
     
     var body: some View {
@@ -21,17 +23,22 @@ struct ContentView: View {
                 TabView(selection: $selectedTab) {
                     SettingsView(isLoggedIn: $viewModel.isLoggedIn)
                         .tag(0)
-                    FriendsView(friends: $viewModel.friends, scoreChartData: viewModel.scoreChartData)
+                    FriendsView(scoreChartData: viewModel.scoreChartData)
                         .tag(1)
                 }
+                .environmentObject(friendsManager)
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .background(.wavelengthBackground)
                 .ignoresSafeArea()
                 .onAppear(perform: {
                     selectedTab = 1
                     viewModel.getUser()
-                    viewModel.getFriends()
-                    viewModel.getScores()
+                    Task {
+                        do {
+                            friendsManager.friends = await viewModel.getFriends()
+                        }
+                    }
+                    viewModel.getUserScores()
                 })
                 
             } else {

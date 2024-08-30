@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Dict
 from pydantic import BaseModel
 
 '''
@@ -11,9 +11,20 @@ class Value(BaseModel):
     title: str
 
 
-class Score(BaseModel):
+class UserScore(BaseModel):
+    percentage: int
+
+
+class FriendScore(BaseModel):
     percentage: int
     analysis: Optional[str]
+
+
+class Breakdown(BaseModel):
+    goal: int
+    value: int
+    interest: int
+    memory: int
 
 
 class User(BaseModel):

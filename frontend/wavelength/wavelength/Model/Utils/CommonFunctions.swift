@@ -9,8 +9,6 @@ import Foundation
 import SwiftUI
 
 func intToColor(value: Int) -> Color {
-    let maxVal = 100.0
-    let red = CGFloat(maxVal - Double(value)) / maxVal
-    let green = CGFloat(Double(value)) / maxVal
-    return Color(red: red, green: green, blue: 0.0, opacity: 1.0)
+    let greenValue = CGFloat(value) / 100.0
+    return Color(hue: greenValue / 3, saturation: 0.7, brightness: 0.8, opacity: 1.0)
 }

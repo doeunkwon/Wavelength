@@ -18,7 +18,7 @@ struct SliderCellView: View {
                 Text(title)
                     .font(.system(size: Fonts.body))
                 Spacer()
-                Text(String(percentage) + "%")
+                Text(String(percentage))
                     .font(.system(size: Fonts.body))
                     .foregroundColor(intToColor(value: percentage))
             }
