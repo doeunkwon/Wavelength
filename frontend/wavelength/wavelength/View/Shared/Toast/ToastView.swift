@@ -31,7 +31,7 @@ struct ToastView: View {
                     .foregroundColor(.wavelengthGrey)
             }
         }
-        .padding()
+        .padding(Padding.medium + Padding.nudge)
         .frame(minWidth: 0, maxWidth: width)
         .overlay( /// apply a rounded border
             RoundedRectangle(cornerRadius: CornerRadius.medium)

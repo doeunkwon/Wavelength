@@ -24,7 +24,7 @@ struct ButtonView: View {
 
     var body: some View {
         Button(action: action) {
-            if title == String(-1) + Strings.profile.percentageMatch {
+            if title == String(-1) + Strings.profile.percentageScore {
                 Text("?")
                     .font(.system(size: (largeFont ?? false) ? Fonts.subtitle : Fonts.body, weight: .semibold))
                     .frame(maxWidth: .infinity) // Expand text to fill available width
@@ -39,7 +39,10 @@ struct ButtonView: View {
             }
         }
         .background(backgroundColor) // Set background color
+        .overlay( /// apply a rounded border
+            RoundedRectangle(cornerRadius: CornerRadius.medium)
+                .stroke(.wavelengthWhite, lineWidth: Border.medium))
         .cornerRadius(CornerRadius.medium) // Add corner radius
-        .disabled(title == String(-1) + Strings.profile.percentageMatch)
+        .disabled(title == String(-1) + Strings.profile.percentageScore)
     }
 }

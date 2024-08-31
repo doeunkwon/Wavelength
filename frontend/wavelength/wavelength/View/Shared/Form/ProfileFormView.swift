@@ -64,10 +64,10 @@ struct ProfileFormView: View {
                                 ProfilePictureView(emoji: editedProfileManager.profile.emoji, color: editedProfileManager.profile.color, frameSize: Frame.friendCard, emojiSize: Fonts.icon)
                             }
                             .shadow(
-                                color: ShadowStyle.standard.color,
-                                radius: ShadowStyle.standard.radius,
-                                x: ShadowStyle.standard.x,
-                                y: ShadowStyle.standard.y)
+                                color: ShadowStyle.low.color,
+                                radius: ShadowStyle.low.radius,
+                                x: ShadowStyle.low.x,
+                                y: ShadowStyle.low.y)
                             
                         }
                         .emojiPicker(

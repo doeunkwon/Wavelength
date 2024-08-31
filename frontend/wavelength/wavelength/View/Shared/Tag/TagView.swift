@@ -19,6 +19,8 @@ struct TagView: View {
     var body: some View {
         HStack {
             Text(text)
+                .font(.system(size: Fonts.body))
+                .foregroundColor(.wavelengthText)
             if editable {
                 Button {
                     if flag == Strings.general.values {
@@ -34,7 +36,6 @@ struct TagView: View {
                 }
             }
         }
-        .font(.system(size: Fonts.body))
         .padding(.horizontal, Padding.medium + Padding.nudge)
         .padding(.vertical, Padding.medium)
         .overlay( /// apply a rounded border

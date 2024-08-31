@@ -77,44 +77,7 @@ struct MemoryFormView: View {
                     .padding(Padding.large)
                 }
                 
-                ZStack (alignment: .center) {
-                    RoundedRectangle(cornerRadius: CornerRadius.max)
-                        .frame(width: 180, height: 50)
-                        .foregroundColor(.wavelengthOffWhite)
-                        .shadow(
-                            color: ShadowStyle.subtle.color,
-                            radius: ShadowStyle.subtle.radius,
-                            x: ShadowStyle.subtle.x,
-                            y: ShadowStyle.subtle.y)
-                    HStack (alignment: .center, spacing: Padding.large) {
-                        
-                        Button {
-                            if editedMemory.tokens > -5 {
-                                editedMemory.tokens -= 1
-                            }
-                        } label: {
-                            Image(systemName: Strings.icons.chevronLeft)
-                                .font(Font.body.weight(.semibold))
-                                .foregroundColor(editedMemory.tokens <= -5 ? .wavelengthGrey : .wavelengthTokenOrange)
-                        }
-                        .disabled(editedMemory.tokens <= -5)
-                        
-                        Text((editedMemory.tokens > 0 ? "+" : "") + "\($editedMemory.tokens.wrappedValue) \(Strings.general.tokens)")
-                            .font(.system(size: Fonts.body))
-                            .foregroundColor(.wavelengthTokenOrange)
-                        
-                        Button {
-                            if editedMemory.tokens < 5 {
-                                editedMemory.tokens += 1
-                            }
-                        } label: {
-                            Image(systemName: Strings.icons.chevronRight)
-                                .font(Font.body.weight(.semibold))
-                                .foregroundColor(editedMemory.tokens >= 5 ? .wavelengthGrey : .wavelengthTokenOrange)
-                        }
-                        .disabled(editedMemory.tokens >= 5)
-                    }
-                }
+                TokenCountButtonView(tokens: $editedMemory.tokens)
                 .padding(.vertical, Padding.large)
             }
             .navigationTitle(navTitle)

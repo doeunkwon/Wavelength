@@ -21,8 +21,8 @@ enum Fonts {
 enum Frame {
     static let large: CGFloat = 150
     static let medium: CGFloat = 80
-    static let small: CGFloat = 40
-    static let xsmall: CGFloat = 35
+    static let small: CGFloat = 50
+    static let xsmall: CGFloat = 40
     static let dashboardTop: CGFloat = 65
     static let dashboardBottom: CGFloat = 110
     static let friendCard: CGFloat = UIScreen.main.bounds.width / 2 - (Padding.medium * 2) - (Padding.large + (Padding.large / 2))
@@ -30,6 +30,7 @@ enum Frame {
     static let memoryCell: CGFloat = 100
     static let loadingSquare: CGFloat = 55
     static let toastWidth: CGFloat = UIScreen.main.bounds.width - (Padding.xlarge * 2)
+    static let floatingButtonHeight: CGFloat = 50
 }
 
 enum Padding {

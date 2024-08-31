@@ -21,6 +21,8 @@ struct HeaderView: View {
             VStack(alignment: .leading) {
                 Text(firstName + " " + lastName)
                     .font(.system(size: Fonts.subtitle))
+                    .lineLimit(1)
+                    .truncationMode(.tail)
                 Text((tokenCount > 0 ? "+" : "") + String(tokenCount) + " " + Strings.general.tokens)
                     .font(.system(size: Fonts.body))
                     .foregroundStyle(.wavelengthTokenOrange)

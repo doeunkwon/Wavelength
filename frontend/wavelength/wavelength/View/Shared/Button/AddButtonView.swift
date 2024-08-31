@@ -29,10 +29,10 @@ struct AddButtonView<Content: View>: View {
                     .frame(width: size)
                     .foregroundColor(color?.opacity(0.1) ?? .wavelengthOffWhite)
                     .shadow(
-                        color: (color != nil) ? ShadowStyle.glow(color!).color : ShadowStyle.subtle.color,
-                        radius: (color != nil) ? ShadowStyle.glow(color!).radius : ShadowStyle.subtle.radius,
-                        x: (color != nil) ? ShadowStyle.glow(color!).x : ShadowStyle.subtle.x,
-                        y: (color != nil) ? ShadowStyle.glow(color!).y : ShadowStyle.subtle.y
+                        color: (color != nil) ? ShadowStyle.glow(color!).color : ShadowStyle.high.color,
+                        radius: (color != nil) ? ShadowStyle.glow(color!).radius : ShadowStyle.high.radius,
+                        x: (color != nil) ? ShadowStyle.glow(color!).x : ShadowStyle.high.x,
+                        y: (color != nil) ? ShadowStyle.glow(color!).y : ShadowStyle.high.y
                     )
 
                 Button {

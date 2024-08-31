@@ -87,7 +87,7 @@ struct Strings {
     
     struct dashboard {
         
-        static let overall: String = "Overall"
+        static let overall: String = "Score"
         static let tokens: String = "Tokens"
         static let memories: String = "Memories"
         
@@ -105,7 +105,7 @@ struct Strings {
     
     struct profile {
 
-        static let percentageMatch: String = "% match"
+        static let percentageScore: String = "% score"
         
     }
     

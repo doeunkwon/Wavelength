@@ -31,10 +31,10 @@ struct SettingsView: View {
             SettingsPanelView(isLoggedIn: $isLoggedIn, settingsToast: $settingsToast)
                 .cornerRadius(CornerRadius.medium)
                 .shadow(
-                    color: ShadowStyle.standard.color,
-                    radius: ShadowStyle.standard.radius,
-                    x: ShadowStyle.standard.x,
-                    y: ShadowStyle.standard.y)
+                    color: ShadowStyle.low.color,
+                    radius: ShadowStyle.low.radius,
+                    x: ShadowStyle.low.x,
+                    y: ShadowStyle.low.y)
             Spacer()
         }
         .padding(.horizontal, Padding.large)

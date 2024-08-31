@@ -24,10 +24,10 @@ struct TagsFieldInputView: View {
                 RoundedRectangle(cornerRadius: CornerRadius.max)
                     .foregroundColor(.wavelengthOffWhite)
                     .shadow(
-                        color: ShadowStyle.subtle.color,
-                        radius: ShadowStyle.subtle.radius,
-                        x: ShadowStyle.subtle.x,
-                        y: ShadowStyle.subtle.y)
+                        color: ShadowStyle.low.color,
+                        radius: ShadowStyle.low.radius,
+                        x: ShadowStyle.low.x,
+                        y: ShadowStyle.low.y)
                 
                 HStack {
                     TextField(placeholder, text: $newItem)

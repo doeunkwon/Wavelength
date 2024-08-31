@@ -53,7 +53,7 @@ struct FriendsView: View {
                                 
                                 Spacer()
                                 
-                                AddButtonView(showModal: $showNewFriendViewModal, size: Frame.small, fontSize: Fonts.subtitle, color: user.color) {
+                                AddButtonView(showModal: $showNewFriendViewModal, size: Frame.xsmall, fontSize: Fonts.subtitle, color: user.color) {
                                     NewFriendView(friendsManager: friendsManager, showNewFriendViewModal: $showNewFriendViewModal)
                                         .interactiveDismissDisabled()
                                 }
@@ -82,10 +82,10 @@ struct FriendsView: View {
                                 .environmentObject(friendsManager)
                             }
                             .shadow(
-                                color: ShadowStyle.standard.color,
-                                radius: ShadowStyle.standard.radius,
-                                x: ShadowStyle.standard.x,
-                                y: ShadowStyle.standard.y)
+                                color: ShadowStyle.low.color,
+                                radius: ShadowStyle.low.radius,
+                                x: ShadowStyle.low.x,
+                                y: ShadowStyle.low.y)
                             .padding(Padding.large)
                                 
                         }

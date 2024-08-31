@@ -24,9 +24,9 @@ struct ProfilePictureView: View {
                 .foregroundStyle(.clear)
                 .overlay(
                     LinearGradient(
-                        gradient: Gradient(colors: [color, color.opacity(0.85), color.opacity(0.60)]),
+                        gradient: Gradient(colors: [color, color.opacity(0.75)]),
                         startPoint: .bottom,
-                        endPoint: .topTrailing
+                        endPoint: .top
                     )
                     .cornerRadius(CornerRadius.medium)
                 )

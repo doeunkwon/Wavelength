@@ -15,38 +15,38 @@ enum ToastStyle {
 }
 
 enum ShadowStyle {
-    case standard
-    case subtle
+    case high
+    case low
     case glow(Color)
 
     var color: Color {
         switch self {
-        case .standard: return .shadowStandard
-        case .subtle: return .shadowSubtle
-        case .glow(let baseColor): return baseColor.opacity(0.25)
+        case .high: return .shadowStandard
+        case .low: return .shadowSubtle
+        case .glow(let baseColor): return baseColor.opacity(0.5)
         }
     }
 
     var radius: CGFloat {
         switch self {
-        case .standard: return 8
-        case .subtle: return 4
+        case .high: return 10
+        case .low: return 5
         case .glow: return 12
         }
     }
 
     var x: CGFloat {
         switch self {
-        case .standard: return 0
-        case .subtle: return 0
+        case .high: return 0
+        case .low: return 0
         case .glow: return 0
         }
     }
 
     var y: CGFloat {
         switch self {
-        case .standard: return 6
-        case .subtle: return 6
+        case .high: return 12
+        case .low: return 12
         case .glow: return 0
         }
     }

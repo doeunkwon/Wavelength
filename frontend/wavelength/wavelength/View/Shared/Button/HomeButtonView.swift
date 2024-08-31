@@ -20,7 +20,7 @@ struct HomeButtonView: View {
     var body: some View {
             ZStack {
                 Circle()
-                    .frame(width: Frame.small)
+                    .frame(width: Frame.xsmall)
                     .foregroundColor(color.opacity(0.1))
                     .shadow(
                         color: ShadowStyle.glow(color).color,

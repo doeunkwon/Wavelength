@@ -17,7 +17,7 @@ struct EmojiCircleView: View {
     var body: some View {
         ZStack {
             Circle()
-                .frame(width: Frame.small)
+                .frame(width: Frame.xsmall)
                 .foregroundColor(user.color)
                 .opacity(0.1)
             if isEmoji {

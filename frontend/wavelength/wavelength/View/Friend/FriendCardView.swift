@@ -41,6 +41,8 @@ struct FriendCardView: View {
                             Text(friend.firstName)
                                 .font(.system(size: Fonts.body))
                                 .foregroundColor(Color.wavelengthText)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
                             Spacer()
                             if friend.scorePercentage == -1 {
                                 Text("?")

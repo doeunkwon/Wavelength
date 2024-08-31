@@ -36,14 +36,14 @@ struct TagsView: View {
             label.text = word
             label.sizeToFit()
             
-            /// Padding.medium + Padding.nudge is the horizontal padding applied to the tags. Since it's applied to both sides of the label, we multiply by 2
-            /// We must also add the padding applied between each tag, which is Padding.medium + Padding.nudge, and so (Padding.medium + Padding.nudge) / 2 per each tag
+            /// Padding.medium + Padding.nudge is the horizontal padding applied INSIDE each tag. Since it's applied to both sides of the label, we multiply by 2
+            /// We must also add the padding applied between each tag on the OUTSIDE, which is Padding.medium + Padding.nudge, and so (Padding.medium + Padding.nudge) / 2 per each tag
             /// If editable, then we must also account for the space taken up by the xmark, which is ~Padding.xlarge
             let textCushion = ((Padding.medium + Padding.nudge) * 2) + ((Padding.medium + Padding.nudge) / 2) + (editable ? Padding.xlarge : 0)
             let labelWidth = label.frame.size.width + textCushion
             
             /// Makes sure width + labelWidth is less than screenWidth including the edges paddings
-            if (width + labelWidth) < screenWidth - (Padding.large * 2) {
+            if (width + labelWidth) < screenWidth - ((Padding.large * 2) + Padding.nudge) {
                 width += labelWidth
                 tempItems.append(word)
             } else {
