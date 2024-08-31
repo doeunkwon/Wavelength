@@ -89,24 +89,30 @@ struct MemoryFormView: View {
                     HStack (alignment: .center, spacing: Padding.large) {
                         
                         Button {
-                            editedMemory.tokens -= 1
+                            if editedMemory.tokens > -5 {
+                                editedMemory.tokens -= 1
+                            }
                         } label: {
                             Image(systemName: Strings.icons.chevronLeft)
                                 .font(Font.body.weight(.semibold))
-                                .foregroundColor(.wavelengthTokenOrange)
+                                .foregroundColor(editedMemory.tokens <= -5 ? .wavelengthGrey : .wavelengthTokenOrange)
                         }
+                        .disabled(editedMemory.tokens <= -5)
                         
                         Text((editedMemory.tokens > 0 ? "+" : "") + "\($editedMemory.tokens.wrappedValue) \(Strings.general.tokens)")
                             .font(.system(size: Fonts.body))
                             .foregroundColor(.wavelengthTokenOrange)
                         
                         Button {
-                            editedMemory.tokens += 1
+                            if editedMemory.tokens < 5 {
+                                editedMemory.tokens += 1
+                            }
                         } label: {
                             Image(systemName: Strings.icons.chevronRight)
                                 .font(Font.body.weight(.semibold))
-                                .foregroundColor(.wavelengthTokenOrange)
+                                .foregroundColor(editedMemory.tokens >= 5 ? .wavelengthGrey : .wavelengthTokenOrange)
                         }
+                        .disabled(editedMemory.tokens >= 5)
                     }
                 }
                 .padding(.vertical, Padding.large)
