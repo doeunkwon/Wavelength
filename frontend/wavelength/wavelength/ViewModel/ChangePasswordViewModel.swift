@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftKeychainWrapper
 
-class ChangePasswordViewModel {
+class ChangePasswordViewModel: ObservableObject {
     
     private var encodedPassword = EncodedPassword()
     @Published var isLoading = false

@@ -71,11 +71,11 @@ struct SettingsPanelView: View {
                             isLoggedIn = false
                             KeychainWrapper.standard.removeObject(forKey: "bearerToken")
                             
-                            let task = DispatchWorkItem {
+                            DispatchQueue.main.async {
+                                
                                 contentToastManager.insertToast(style: .success, message: Strings.toast.deleteProfile)
+                                
                             }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
                         } catch {
                             // Handle deletion errors
                             print("Deleting error:", error.localizedDescription)
