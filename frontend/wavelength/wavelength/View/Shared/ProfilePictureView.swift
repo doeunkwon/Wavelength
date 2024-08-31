@@ -20,8 +20,16 @@ struct ProfilePictureView: View {
             Rectangle()
                 .aspectRatio(1, contentMode: .fit)
                 .frame(width: frameSize)
-                .foregroundColor(color)
                 .cornerRadius(CornerRadius.medium)
+                .foregroundStyle(.clear)
+                .overlay(
+                    LinearGradient(
+                        gradient: Gradient(colors: [color, color.opacity(0.85), color.opacity(0.60)]),
+                        startPoint: .bottom,
+                        endPoint: .topTrailing
+                    )
+                    .cornerRadius(CornerRadius.medium)
+                )
             if emoji.count == 0 && emojiSize == Fonts.icon {
                 Text(Strings.form.tapToEdit)
                     .font(.system(size: Fonts.body))
