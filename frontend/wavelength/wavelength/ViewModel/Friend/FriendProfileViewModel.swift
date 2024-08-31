@@ -60,17 +60,20 @@ class FriendProfileViewModel: ObservableObject {
             
             let newFriendScore = (goalScore + valueScore + interestScore + memoryScore) / 4
             
-            let filteredFriendsCount = friends.filter { $0.scorePercentage >= 0 }.count
+            let filteredFriends = friends.filter { $0.scorePercentage >= 0 }
             
-            let userScore = user.scorePercentage
+            let filteredFriendsCount = filteredFriends.count
+            
+            let filteredFriendsScoreSum = filteredFriends.reduce(0) { $0 + $1.scorePercentage }
+            
             let oldFriendScore = friend.scorePercentage
             
             var newUserScore = 0
             
             if oldFriendScore >= 0 {
-                newUserScore = userScore - (oldFriendScore / filteredFriendsCount) + (newFriendScore / filteredFriendsCount)
+                newUserScore = (filteredFriendsScoreSum - oldFriendScore + newFriendScore) / filteredFriendsCount
             } else {
-                newUserScore = ((userScore * filteredFriendsCount) + newFriendScore) / (filteredFriendsCount + 1)
+                newUserScore = (filteredFriendsScoreSum + newFriendScore) / (filteredFriendsCount + 1)
             }
             
             _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: newUserScore), bearerToken: bearerToken)
@@ -151,11 +154,23 @@ class FriendProfileViewModel: ObservableObject {
         
         do {
             
+            let filteredFriends = friends.filter { $0.scorePercentage >= 0 }
+            
+            let filteredFriendsCount = filteredFriends.count
+            
+            let filteredFriendsScoreSum = filteredFriends.reduce(0) { $0 + $1.scorePercentage }
+            
+            let friendScore = friend.scorePercentage
+            
+            let newUserScore = (filteredFriendsScoreSum - friendScore) / (filteredFriendsCount - 1)
+            
             try await friendService.deleteFriend(fid: fid, bearerToken: bearerToken)
-            try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount - friendTokenCount, memoryCount: user.memoryCount - friendMemoryCount), bearerToken: bearerToken)
+            _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: newUserScore), bearerToken: bearerToken)
+            try await userService.updateUser(newData: EncodedUser(scorePercentage: newUserScore, tokenCount: user.tokenCount - friendTokenCount, memoryCount: user.memoryCount - friendMemoryCount), bearerToken: bearerToken)
             
             DispatchQueue.main.async {
                 
+                self.user.scorePercentage = newUserScore
                 self.user.memoryCount -= friendMemoryCount
                 self.user.tokenCount -= friendTokenCount
                 
