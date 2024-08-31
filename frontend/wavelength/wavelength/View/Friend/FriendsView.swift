@@ -14,10 +14,13 @@ struct FriendsView: View {
     
     @State private var showNewFriendViewModal = false
     
+    @Binding private var selectedTab: Int
+    
     private let scoreChartData: [ScoreData]
     
-    init(scoreChartData: [ScoreData]) {
+    init(scoreChartData: [ScoreData], selectedTab: Binding<Int>) {
         self.scoreChartData = scoreChartData
+        self._selectedTab = selectedTab
     }
     
     var body: some View {
@@ -36,14 +39,27 @@ struct FriendsView: View {
                 } else {
                     
                     ScrollView(.vertical, showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 0) {
+                        VStack(alignment: .center, spacing: 0) {
                             
-                            Text(Strings.general.yourCircle)
-                                .font(.system(size: Fonts.title, weight: .semibold))
-                                .foregroundStyle(.wavelengthText)
-                                .padding(.horizontal, Padding.large)
-                                .padding(.bottom, Padding.large)
-                            
+                            HStack (alignment: .center) {
+                                
+                                SettingsButtonView(selectedTab: $selectedTab, color: user.color)
+                                
+                                Spacer()
+                                
+                                Text(Strings.general.yourCircle)
+                                    .font(.system(size: Fonts.subtitle, weight: .semibold))
+                                    .foregroundStyle(.wavelengthText)
+                                
+                                Spacer()
+                                
+                                AddButtonView(showModal: $showNewFriendViewModal, size: Frame.small, fontSize: Fonts.subtitle, color: user.color) {
+                                    NewFriendView(friendsManager: friendsManager, showNewFriendViewModal: $showNewFriendViewModal)
+                                        .interactiveDismissDisabled()
+                                }
+                            }
+                            .padding(.horizontal, Padding.large)
+                            .padding(.bottom, Padding.large)
                             
                             DashboardView(
                                 firstEntry: (Strings.dashboard.overall, "\(user.scorePercentage)%"),
@@ -76,29 +92,6 @@ struct FriendsView: View {
                     }
                     
                 }
-                
-                ZStack {
-                    Circle()
-                        .frame(width: 45)
-                        .foregroundColor(.wavelengthOffWhite)
-                        .shadow(
-                            color: ShadowStyle.subtle.color,
-                            radius: ShadowStyle.subtle.radius,
-                            x: ShadowStyle.subtle.x,
-                            y: ShadowStyle.subtle.y)
-                    Button {
-                        showNewFriendViewModal.toggle()
-                    } label: {
-                        Image(systemName: Strings.icons.plus)
-                            .font(.system(size: Fonts.title))
-                            .accentColor(.wavelengthGrey)
-                    }
-                    .sheet(isPresented: $showNewFriendViewModal) {
-                        NewFriendView(friendsManager: friendsManager, showNewFriendViewModal: $showNewFriendViewModal)
-                            .interactiveDismissDisabled()
-                    }
-                }
-                .padding(.vertical, Padding.large)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.wavelengthBackground)

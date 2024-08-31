@@ -23,9 +23,9 @@ struct ContentView: View {
             
                 ZStack {
                     TabView(selection: $selectedTab) {
-                        SettingsView(isLoggedIn: $viewModel.isLoggedIn)
+                        SettingsView(isLoggedIn: $viewModel.isLoggedIn, selectedTab: $selectedTab)
                             .tag(0)
-                        FriendsView(scoreChartData: viewModel.scoreChartData)
+                        FriendsView(scoreChartData: viewModel.scoreChartData, selectedTab: $selectedTab)
                             .tag(1)
                     }
                     if viewModel.isLoading {
