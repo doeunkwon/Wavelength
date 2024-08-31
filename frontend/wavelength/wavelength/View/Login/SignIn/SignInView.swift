@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SignInView: View {
     
+    @EnvironmentObject private var contentToastManager: ToastManager
+    
     @ObservedObject var viewModel: ViewModel
     
     @State private var username: String = ""
@@ -69,6 +71,7 @@ struct SignInView: View {
             .ignoresSafeArea(.keyboard)
             
         }
+        .toast(toast: $contentToastManager.toast)
     }
 }
 

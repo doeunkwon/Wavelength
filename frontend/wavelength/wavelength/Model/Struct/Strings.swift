@@ -130,6 +130,15 @@ struct Strings {
         
     }
     
+    struct toast {
+        
+        static let updatePassword: String = "Your password has been updated."
+        static let deleteProfile: String = "Your profile has been deleted."
+        static let updateScore: String = "Your score has been updated."
+        static let createProfile: String = "Your profile has been created."
+        
+    }
+    
     struct icons {
         
         static let gear: String = "gear"

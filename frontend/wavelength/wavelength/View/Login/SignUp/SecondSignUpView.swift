@@ -11,6 +11,8 @@ struct SecondSignUpView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    @EnvironmentObject var contentToastManager: ToastManager
+    
     @ObservedObject private var viewModel: ViewModel
     
     @State var password: String = ""
@@ -47,7 +49,7 @@ struct SecondSignUpView: View {
                 dismiss()
             }, label: {
                 LeftButtonView()
-            }), trailing: NavigationLink(destination: ThirdSignUpView(email: email, username: username, password: password, login: viewModel.getToken, showModal: $showModal)) {
+            }), trailing: NavigationLink(destination: ThirdSignUpView(email: email, username: username, password: password, login: viewModel.getToken, showModal: $showModal, contentToastManager: contentToastManager)) {
                 Text("Next")
             }
                 .disabled(password != confirmPassword || password == "" || confirmPassword == "")

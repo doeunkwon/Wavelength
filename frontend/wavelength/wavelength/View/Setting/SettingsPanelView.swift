@@ -11,6 +11,7 @@ import SwiftKeychainWrapper
 struct SettingsPanelView: View {
     
     @EnvironmentObject var user: User
+    @EnvironmentObject var contentToastManager: ToastManager
     
     @StateObject var settingsPanelViewModel = SettingsPanelViewModel()
     
@@ -19,6 +20,8 @@ struct SettingsPanelView: View {
     @State private var showConfirmLogoutAlert = false
     
     @Binding var isLoggedIn: Bool
+    
+    @Binding var settingsToast: Toast?
     
     var body: some View {
         VStack(spacing: 0) {
@@ -39,7 +42,7 @@ struct SettingsPanelView: View {
                 showChangePasswordViewSheet.toggle()
             })
             .sheet(isPresented: $showChangePasswordViewSheet) {
-                ChangePasswordView(currentPassword: "", newPassword: "", confirmPassword: "")
+                ChangePasswordView(currentPassword: "", newPassword: "", confirmPassword: "", settingsToast: $settingsToast)
                     .interactiveDismissDisabled()
             }
             DividerLineView()
@@ -64,8 +67,15 @@ struct SettingsPanelView: View {
                     Task {
                         do {
                             try await settingsPanelViewModel.deleteUser()
+                            
                             isLoggedIn = false
                             KeychainWrapper.standard.removeObject(forKey: "bearerToken")
+                            
+                            let task = DispatchWorkItem {
+                                contentToastManager.insertToast(style: .success, message: Strings.toast.deleteProfile)
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
                         } catch {
                             // Handle deletion errors
                             print("Deleting error:", error.localizedDescription)

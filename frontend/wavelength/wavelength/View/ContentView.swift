@@ -12,6 +12,7 @@ struct ContentView: View {
     @ObservedObject var viewModel: ViewModel
     
     @StateObject var friendsManager = FriendsManager(friends: [])
+    @StateObject var contentToastManager = ToastManager()
     
     @State private var selectedTab = 1
     
@@ -50,5 +51,6 @@ struct ContentView: View {
                 
             }
         }
+        .environmentObject(contentToastManager)
     }
 }

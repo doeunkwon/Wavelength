@@ -15,6 +15,8 @@ struct ChangePasswordView: View {
     @State var newPassword: String
     @State var confirmPassword: String
     
+    @Binding var settingsToast: Toast?
+    
     private let changePasswordViewModel = ChangePasswordViewModel()
     
     var body: some View {
@@ -47,6 +49,13 @@ struct ChangePasswordView: View {
                     Task {
                         do {
                             try await changePasswordViewModel.updatePassword(oldPassword: currentPassword, newPassword: newPassword)
+                            
+                            let task = DispatchWorkItem{
+                                settingsToast = Toast(style: .success, message: Strings.toast.updatePassword)
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
+                            
                             dismiss()
                         } catch {
                             // Handle authentication errors
@@ -65,12 +74,4 @@ struct ChangePasswordView: View {
 //            }
         }
     }
-}
-
-#Preview {
-    @State var currentPassword: String = ""
-    @State var newPassword: String = ""
-    @State var confirmPassword: String = ""
-    
-    return ChangePasswordView(currentPassword: currentPassword, newPassword: newPassword, confirmPassword: confirmPassword)
 }

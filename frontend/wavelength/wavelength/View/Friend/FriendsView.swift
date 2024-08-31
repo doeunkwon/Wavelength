@@ -87,7 +87,6 @@ struct FriendsView: View {
                             x: ShadowStyle.subtle.x,
                             y: ShadowStyle.subtle.y)
                     Button {
-                        print("Add new friend!")
                         showNewFriendViewModal.toggle()
                     } label: {
                         Image(systemName: Strings.icons.plus)

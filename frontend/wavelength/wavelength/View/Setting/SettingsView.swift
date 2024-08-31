@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    @State private var settingsToast: Toast? = nil
+    
     @Binding var isLoggedIn: Bool
     
     var body: some View {
@@ -16,7 +18,7 @@ struct SettingsView: View {
             Text(Strings.general.settings)
                 .font(.system(size: Fonts.title, weight: .semibold))
                 .foregroundStyle(.wavelengthText)
-            SettingsPanelView(isLoggedIn: $isLoggedIn)
+            SettingsPanelView(isLoggedIn: $isLoggedIn, settingsToast: $settingsToast)
                 .cornerRadius(CornerRadius.medium)
                 .shadow(
                     color: ShadowStyle.standard.color,
@@ -28,5 +30,6 @@ struct SettingsView: View {
         .padding(.horizontal, Padding.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.wavelengthBackground)
+        .toast(toast: $settingsToast)
     }
 }

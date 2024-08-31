@@ -17,6 +17,7 @@ struct FriendProfileView: View {
     @ObservedObject private var friend: Friend
     
     @StateObject private var friendProfileViewModel: FriendProfileViewModel
+    @State private var friendProfileToast: Toast? = nil
     
     @State private var showConfirmDeleteAlert: Bool = false
     
@@ -93,10 +94,10 @@ struct FriendProfileView: View {
                     Label("Edit profile", systemImage: Strings.icons.person)
                 }
                 Button(action: {
-                    print("Update score tapped!")
                     Task {
                         do {
                             try await friendProfileViewModel.updateScore(fid: friend.fid)
+                            friendProfileToast = Toast(style: .success, message: Strings.toast.updateScore)
                         } catch {
                             // Handle deletion errors
                             print("Updating score error:", error.localizedDescription)
@@ -139,6 +140,7 @@ struct FriendProfileView: View {
                 .interactiveDismissDisabled()
             }
             .background(Color.wavelengthBackground)
+            .toast(toast: $friendProfileToast)
         }
     }
 }

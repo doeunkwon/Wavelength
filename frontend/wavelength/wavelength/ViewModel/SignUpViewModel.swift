@@ -14,6 +14,8 @@ class SignUpViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var updateError: UpdateError?
     
+    @ObservedObject private var contentToastManager: ToastManager
+    
     @Binding private var showModal: Bool
     
     private var encodedUser = EncodedUser()
@@ -22,9 +24,10 @@ class SignUpViewModel: ObservableObject {
     
     private let login: (String, String) async throws -> ()
     
-    init(login: @escaping (String, String) async throws -> (), showModal: Binding<Bool>) {
+    init(login: @escaping (String, String) async throws -> (), showModal: Binding<Bool>, contentToastManager: ToastManager) {
         self.login = login
         self._showModal = showModal
+        self.contentToastManager = contentToastManager
     }
     
     func createUser() async throws {
@@ -46,6 +49,7 @@ class SignUpViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.updateError = nil
                 self.uid = fetchedUID
+                self.contentToastManager.insertToast(style: .success, message: Strings.toast.createProfile)
             }
         } catch {
             DispatchQueue.main.async {

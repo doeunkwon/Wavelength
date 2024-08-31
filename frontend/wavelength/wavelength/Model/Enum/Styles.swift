@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+enum ToastStyle {
+  case error
+  case warning
+  case success
+  case info
+}
+
 enum ShadowStyle {
     case standard
     case subtle
