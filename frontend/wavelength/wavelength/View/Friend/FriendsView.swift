@@ -43,7 +43,7 @@ struct FriendsView: View {
                             
                             HStack (alignment: .center) {
                                 
-                                SettingsButtonView(selectedTab: $selectedTab, color: user.color)
+                                TabButtonView(selectedTab: $selectedTab, destinationTab: 0, icon: Strings.icons.gearshape, color: user.color)
                                 
                                 Spacer()
                                 

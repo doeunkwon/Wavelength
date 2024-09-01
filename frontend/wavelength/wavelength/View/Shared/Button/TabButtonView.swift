@@ -1,5 +1,5 @@
 //
-//  SettingsButtonView.swift
+//  TabButtonView.swift
 //  wavelength
 //
 //  Created by Doeun Kwon on 2024-08-31.
@@ -7,13 +7,17 @@
 
 import SwiftUI
 
-struct SettingsButtonView: View {
+struct TabButtonView: View {
     
     @Binding private var selectedTab: Int
+    private let destinationTab: Int
+    private let icon: String
     private let color: Color
     
-    init(selectedTab: Binding<Int>, color: Color) {
+    init(selectedTab: Binding<Int>, destinationTab: Int, icon: String, color: Color) {
         self._selectedTab = selectedTab
+        self.destinationTab = destinationTab
+        self.icon = icon
         self.color = color
     }
     
@@ -31,10 +35,10 @@ struct SettingsButtonView: View {
 
                 Button {
                     withAnimation {
-                        selectedTab = 0
+                        selectedTab = destinationTab
                     }
                 } label: {
-                    Image(systemName: Strings.icons.gearshape)
+                    Image(systemName: icon)
                         .font(.system(size: Fonts.subtitle))
                         .accentColor(color)
                 }

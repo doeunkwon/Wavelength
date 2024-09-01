@@ -82,27 +82,15 @@ struct ProfileFormView: View {
                         Spacer()
                     }
                     
-                    TextFieldInputView(placeholder: Strings.form.firstName, binding: $editedProfileManager.profile.firstName, isMultiLine: false)
+                    TextFieldInputView(title: Strings.form.firstName, placeholder: "Hershey", binding: $editedProfileManager.profile.firstName, isMultiLine: false)
                     
                     DividerLineView()
                     
-                    TextFieldInputView(placeholder: Strings.form.lastName, binding: $editedProfileManager.profile.lastName, isMultiLine: false)
+                    TextFieldInputView(title: Strings.form.lastName, placeholder: "Bear", binding: $editedProfileManager.profile.lastName, isMultiLine: false)
                     
                     DividerLineView()
                     
-//                    if let user = editedProfileManager.profile as? User {
-//                        TextFieldInputView(placeholder: Strings.form.email, binding: Binding(get: { user.email }, set: { user.email = $0 }), isMultiLine: false)
-//                        
-//                        DividerLineView()
-//                    }
-//                    
-//                    if let user = editedProfileManager.profile as? User {
-//                        TextFieldInputView(placeholder: Strings.form.username, binding: Binding(get: { user.username }, set: { user.username = $0 }), isMultiLine: false)
-//                        
-//                        DividerLineView()
-//                    }
-                    
-                    TextFieldInputView(placeholder: Strings.form.goalsAndAspirations, binding: $editedProfileManager.profile.goals, isMultiLine: true)
+                    TextFieldInputView(title: Strings.form.goals, placeholder: "To locate the cabinet with the best treats hidden inside. Will use super-sniffing powers to track down the delicious scent and get those yummy goodies.", binding: $editedProfileManager.profile.goals, isMultiLine: true)
                     
                     DividerLineView()
                     

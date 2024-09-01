@@ -27,11 +27,11 @@ struct FirstSignUpView: View {
         
         NavigationStack {
             VStack(spacing: Padding.xlarge) {
-                TextFieldInputView(placeholder: Strings.form.email, binding: $email, isMultiLine: false)
+                TextFieldInputView(title: Strings.form.email, placeholder: "jupyter@mars.com", binding: $email, isMultiLine: false)
                 
                 DividerLineView()
                 
-                TextFieldInputView(placeholder: Strings.form.username, binding: $username, isMultiLine: false)
+                TextFieldInputView(title: Strings.form.username, placeholder: "smartypants", binding: $username, isMultiLine: false)
                 Spacer()
             }
             .padding(Padding.large)

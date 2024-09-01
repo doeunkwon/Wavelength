@@ -66,11 +66,11 @@ struct MemoryFormView: View {
                         
                         DividerLineView()
                         
-                        TextFieldInputView(placeholder: Strings.memory.title, binding: $editedMemory.title, isMultiLine: false)
+                        TextFieldInputView(title: Strings.memory.title, placeholder: "Mini golf.", binding: $editedMemory.title, isMultiLine: false)
                         
                         DividerLineView()
                         
-                        TextFieldInputView(placeholder: Strings.memory.content, binding: $editedMemory.content, isMultiLine: true)
+                        TextFieldInputView(title: Strings.memory.content, placeholder: "One weekend, we were hanging out and he suggested a spontaneous game of mini-golf.", binding: $editedMemory.content, isMultiLine: true)
                         
                         Spacer()
                     }

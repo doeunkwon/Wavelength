@@ -49,6 +49,7 @@ struct Strings {
         static let change: String = "Change"
         static let high: String = "High"
         static let low: String = "Low"
+        static let analysis: String = "Analysis"
         
     }
     

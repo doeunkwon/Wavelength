@@ -26,7 +26,7 @@ struct SettingsView: View {
                         .foregroundStyle(.wavelengthText)
                     Spacer()
                 }
-                HomeButtonView(selectedTab: $selectedTab, color: user.color)
+                TabButtonView(selectedTab: $selectedTab, destinationTab: 1, icon: Strings.icons.squareGrid2by2, color: user.color)
             }
             SettingsPanelView(isLoggedIn: $isLoggedIn, settingsToast: $settingsToast)
                 .cornerRadius(CornerRadius.medium)

@@ -34,11 +34,11 @@ struct SecondSignUpView: View {
         
         NavigationStack {
             VStack(spacing: Padding.xlarge) {
-                SecureFieldInputView(placeholder: Strings.form.password, binding: $password)
+                SecureFieldInputView(title: Strings.form.password, placeholder: "Make it at least 8 characters long.", binding: $password)
                 
                 DividerLineView()
                 
-                SecureFieldInputView(placeholder: Strings.form.confirmPassword, binding: $confirmPassword)
+                SecureFieldInputView(title: Strings.form.confirmPassword, placeholder: "Double check!", binding: $confirmPassword)
                 Spacer()
             }
             .padding(Padding.large)
