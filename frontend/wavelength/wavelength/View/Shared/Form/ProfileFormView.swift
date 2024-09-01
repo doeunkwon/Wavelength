@@ -86,7 +86,7 @@ struct ProfileFormView: View {
                     
                     DividerLineView()
                     
-                    TextFieldInputView(title: Strings.form.lastName, placeholder: "Bear", binding: $editedProfileManager.profile.lastName, isMultiLine: false)
+                    TextFieldInputView(title: Strings.form.lastName, placeholder: "Kwon", binding: $editedProfileManager.profile.lastName, isMultiLine: false)
                     
                     DividerLineView()
                     

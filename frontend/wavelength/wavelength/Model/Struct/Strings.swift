@@ -77,10 +77,11 @@ struct Strings {
         
         static let editProfile: String = "Edit profile"
         static let changePassword: String = "Change password"
+        static let goodbye: String = "Goodbye 🥹"
         static let deleteProfile: String = "Delete profile"
         static let logOut: String = "Log out"
         static let confirmDelete: String = "Are you sure you want to delete your profile? This action cannot be undone."
-        static let confirmDeleteProfile: String = "Confirm delete profile"
+        static let confirmDeleteProfile: String = "Hold your horses 🐴"
         static let confirmLogout: String = "Are you sure you want to log out? You'll need to sign in again."
         static let confirmLogoutProfile: String = "Confirm logout"
         

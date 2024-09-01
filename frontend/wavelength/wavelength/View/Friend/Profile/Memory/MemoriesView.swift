@@ -19,6 +19,8 @@ struct MemoriesView: View {
     
     @State private var showNewMemoryViewModal = false
     
+    @State private var viewIsLoading: Bool = true
+    
     init(friend: Friend) {
         self.friend = friend
     }
@@ -28,7 +30,11 @@ struct MemoriesView: View {
                 
             ZStack (alignment: .bottom) {
                 
-                if memoriesViewModel.memories.count == 0 {
+                if viewIsLoading {
+                    
+                    EmptyLoadingView()
+                    
+                } else if memoriesViewModel.memories.count == 0 {
                     
                     VStack {
                         Spacer()
@@ -86,7 +92,17 @@ struct MemoriesView: View {
             .background(.wavelengthBackground)
         }
         .onAppear(perform: {
-            memoriesViewModel.getMemories(fid: friend.fid)
+            Task {
+                do {
+                    
+                    memoriesViewModel.getMemories(fid: friend.fid) { isFinished in
+                        if isFinished {
+                            viewIsLoading = memoriesViewModel.isLoading
+                        }
+                    }
+                    
+                }
+            }
         })
     }
 }

@@ -20,6 +20,9 @@ struct TokenCountButtonView: View {
             RoundedRectangle(cornerRadius: CornerRadius.max)
                 .frame(width: 180, height: Frame.floatingButtonHeight)
                 .foregroundColor(.wavelengthOffWhite)
+                .overlay( /// apply a rounded border
+                    RoundedRectangle(cornerRadius: CornerRadius.max)
+                        .stroke(.wavelengthWhite, lineWidth: Border.small))
                 .shadow(
                     color: ShadowStyle.high.color,
                     radius: ShadowStyle.high.radius,

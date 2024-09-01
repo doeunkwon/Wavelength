@@ -31,6 +31,7 @@ enum Frame {
     static let loadingSquare: CGFloat = 55
     static let toastWidth: CGFloat = UIScreen.main.bounds.width - (Padding.xlarge * 2)
     static let floatingButtonHeight: CGFloat = 50
+    static let customNavbarHeight: CGFloat = 50
 }
 
 enum Padding {

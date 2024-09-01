@@ -28,6 +28,9 @@ struct AddButtonView<Content: View>: View {
                 Circle()
                     .frame(width: size)
                     .foregroundColor(color?.opacity(0.1) ?? .wavelengthOffWhite)
+                    .overlay( /// apply a rounded border
+                        RoundedRectangle(cornerRadius: CornerRadius.max)
+                            .stroke((color != nil) ? .clear : .wavelengthWhite, lineWidth: Border.small))
                     .shadow(
                         color: (color != nil) ? ShadowStyle.glow(color!).color : ShadowStyle.high.color,
                         radius: (color != nil) ? ShadowStyle.glow(color!).radius : ShadowStyle.high.radius,

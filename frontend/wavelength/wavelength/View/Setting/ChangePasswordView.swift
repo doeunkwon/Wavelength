@@ -23,15 +23,15 @@ struct ChangePasswordView: View {
         NavigationStack {
             ZStack {
                 VStack(alignment: .leading, spacing: Padding.xlarge) {
-                    SecureFieldInputView(title: Strings.form.currentPassword, placeholder: "Hope you remember it.", binding: $currentPassword)
+                    SecureFieldInputView(title: Strings.form.currentPassword, placeholder: "Lmk if you forgot it: bkwon38@gmail.com", binding: $currentPassword)
                     
                     DividerLineView()
                     
-                    SecureFieldInputView(title: Strings.form.newPassword, placeholder: "Get creative.", binding: $newPassword)
+                    SecureFieldInputView(title: Strings.form.newPassword, placeholder: "We don't have rules to our passwords!", binding: $newPassword)
                     
                     DividerLineView()
                     
-                    SecureFieldInputView(title: Strings.form.confirmPassword, placeholder: "Double check!", binding: $confirmPassword)
+                    SecureFieldInputView(title: Strings.form.confirmPassword, placeholder: "But be responsible", binding: $confirmPassword)
                     
                     Spacer()
                 }

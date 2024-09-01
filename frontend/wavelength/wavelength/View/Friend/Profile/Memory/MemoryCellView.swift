@@ -52,6 +52,9 @@ struct MemoryCellView: View {
             .frame(maxHeight: Frame.memoryCell)
             .background(.wavelengthOffWhite) // Set text color
             .cornerRadius(CornerRadius.medium) // Add corner radius
+            .overlay( /// apply a rounded border
+                RoundedRectangle(cornerRadius: CornerRadius.medium)
+                    .stroke(.wavelengthWhite, lineWidth: Border.small))
         }
         .sheet(isPresented: $showMemoryViewModal) {
             MemoryView(memory: memory, user: user, friend: friend, memories: $memories)

@@ -13,6 +13,8 @@ struct ScoreView: View {
     
     @StateObject private var scoreViewModel: ScoreViewModel = ScoreViewModel()
     
+    @State private var viewIsLoading: Bool = true
+    
     private let fid: String
     private let friendFirstName: String
     
@@ -26,70 +28,82 @@ struct ScoreView: View {
             
             ZStack {
                 
-                ScrollView (showsIndicators: false) {
-                    VStack (alignment: .leading, spacing: Padding.xlarge) {
-                        ScoreHeaderView(score: scoreViewModel.latestScore.percentage, friendFirstName: friendFirstName)
-                        
-                        BasicFieldView(content:
-                        scoreViewModel.latestAnalysis)
-                        
-                        DividerLineView()
-                        
-                        VStack (alignment: .leading, spacing: Padding.medium) {
-                            Text(Strings.score.progress)
-                                .font(.system(size: Fonts.body))
-                                .foregroundStyle(.wavelengthDarkGrey)
+                if viewIsLoading {
+                    
+                    EmptyLoadingView()
+                    
+                } else {
+                    
+                    ScrollView (showsIndicators: false) {
+                        VStack (alignment: .leading, spacing: Padding.xlarge) {
+                            ScoreHeaderView(score: scoreViewModel.latestScore.percentage, friendFirstName: friendFirstName)
                             
-                            DashboardView(
-                                firstEntry: (
-                                    Strings.score.change,
-                                    scoreViewModel.trendValue
-                                ),
-                                firstEntryColor: TrendColor.from(value: scoreViewModel.trendValue),
-                                secondEntry: (
-                                    Strings.score.high,
-                                    "\(Int(scoreViewModel.highValue))%"
-                                ),
-                                secondEntryColor: intToColor(value: Int(scoreViewModel.highValue)),
-                                thirdEntry: (
-                                    Strings.score.low,
-                                    "\(Int(scoreViewModel.lowValue))%"
-                                ),
-                                thirdEntryColor: intToColor(value: Int(scoreViewModel.lowValue)),
-                                lineGraphColor: intToColor(value: scoreViewModel.latestScore.percentage),
-                                data: scoreViewModel.scoreChartData)
+                            BasicFieldView(content:
+                                            scoreViewModel.latestAnalysis)
+                            
+                            DividerLineView()
+                            
+                            VStack (alignment: .leading, spacing: Padding.medium) {
+                                Text(Strings.score.progress)
+                                    .font(.system(size: Fonts.body))
+                                    .foregroundStyle(.wavelengthDarkGrey)
+                                
+                                DashboardView(
+                                    firstEntry: (
+                                        Strings.score.change,
+                                        scoreViewModel.trendValue
+                                    ),
+                                    firstEntryColor: TrendColor.from(value: scoreViewModel.trendValue),
+                                    secondEntry: (
+                                        Strings.score.high,
+                                        "\(Int(scoreViewModel.highValue))%"
+                                    ),
+                                    secondEntryColor: intToColor(value: Int(scoreViewModel.highValue)),
+                                    thirdEntry: (
+                                        Strings.score.low,
+                                        "\(Int(scoreViewModel.lowValue))%"
+                                    ),
+                                    thirdEntryColor: intToColor(value: Int(scoreViewModel.lowValue)),
+                                    lineGraphColor: intToColor(value: scoreViewModel.latestScore.percentage),
+                                    data: scoreViewModel.scoreChartData)
+                            }
+                            
+                            DividerLineView()
+                            
+                            SliderFieldView(
+                                title: Strings.score.breakdown,
+                                pairs: [
+                                    "Memories": scoreViewModel.breakdown.memory,
+                                    "Goals": scoreViewModel.breakdown.goal,
+                                    "Values": scoreViewModel.breakdown.value,
+                                    "Interests": scoreViewModel.breakdown.interest
+                                ] /// pretty sketchy
+                            )
+                            
                         }
-                        
-                        DividerLineView()
-                        
-                        SliderFieldView(
-                            title: Strings.score.breakdown,
-                            pairs: [
-                                "Memories": scoreViewModel.breakdown.memory,
-                                "Goals": scoreViewModel.breakdown.goal,
-                                "Values": scoreViewModel.breakdown.value,
-                                "Interests": scoreViewModel.breakdown.interest
-                            ] /// pretty sketchy
-                        )
-                        
+                        .padding(Padding.large)
                     }
-                    .padding(Padding.large)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.wavelengthBackground)
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: Button(action: { dismiss() }) {
-                    DownButtonView()
-                })
-                
-                if scoreViewModel.isLoading {
-                    LoadingView()
                 }
                 
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(.wavelengthBackground)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading: Button(action: { dismiss() }) {
+                DownButtonView()
+            })
         }
         .onAppear {
-            scoreViewModel.getFriendScores(fid: fid)
+            Task {
+                do {
+                    scoreViewModel.getFriendScores(fid: fid) { isFinished in
+                        if isFinished {
+                            viewIsLoading = scoreViewModel.isLoading
+                        }
+                    }
+                }
+            }
+            
         }
     }
 }

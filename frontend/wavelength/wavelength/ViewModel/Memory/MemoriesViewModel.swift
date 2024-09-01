@@ -15,7 +15,7 @@ class MemoriesViewModel: ObservableObject {
 
     let memoryService = MemoryService()
     
-    func getMemories(fid: String) {
+    func getMemories(fid: String, completion: @escaping (Bool) -> Void) {
         
         print("API CALL: GET MEMORIES")
         
@@ -37,6 +37,7 @@ class MemoriesViewModel: ObservableObject {
                     self.readError = nil
                     self.memories = fetchedMemories
                 }
+                completion(true)
             } catch {
                 DispatchQueue.main.async {
                     if let encodingError = error as? EncodingError {

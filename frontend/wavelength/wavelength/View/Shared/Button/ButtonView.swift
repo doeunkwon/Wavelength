@@ -41,7 +41,7 @@ struct ButtonView: View {
         .background(backgroundColor) // Set background color
         .overlay( /// apply a rounded border
             RoundedRectangle(cornerRadius: CornerRadius.medium)
-                .stroke(.wavelengthWhite, lineWidth: Border.medium))
+                .stroke(.wavelengthWhite, lineWidth: Border.small))
         .cornerRadius(CornerRadius.medium) // Add corner radius
         .disabled(title == String(-1) + Strings.profile.percentageScore)
     }

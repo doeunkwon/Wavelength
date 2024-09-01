@@ -32,6 +32,9 @@ struct ContentView: View {
                         FriendsView(scoreChartData: viewModel.scoreChartData, selectedTab: $selectedTab)
                             .tag(1)
                     }
+                    .onAppear(perform: {
+                        selectedTab = 1
+                    })
                     .background(.wavelengthBackground)
                     .ignoresSafeArea()
                 }
@@ -46,7 +49,6 @@ struct ContentView: View {
         .environmentObject(contentToastManager)
         .tabViewStyle(.page(indexDisplayMode: .never))
         .onAppear(perform: {
-            selectedTab = 1
             Task {
                 do {
                     friendsManager.friends = try await viewModel.getUserInfo()

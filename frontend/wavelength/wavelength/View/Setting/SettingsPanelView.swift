@@ -63,7 +63,7 @@ struct SettingsPanelView: View {
                 showConfirmDeleteAlert.toggle()
             })
             .alert(Strings.settings.confirmDeleteProfile, isPresented: $showConfirmDeleteAlert) {
-                Button(Strings.settings.deleteProfile, role: .destructive) {
+                Button(Strings.settings.goodbye, role: .destructive) {
                     Task {
                         do {
                             try await settingsPanelViewModel.deleteUser()

@@ -27,7 +27,7 @@ class ScoreViewModel: ObservableObject {
     private let scoreService = ScoreService()
     private let breakdownService = BreakdownService()
     
-    func getFriendScores(fid: String) {
+    func getFriendScores(fid: String, completion: @escaping (Bool) -> Void) {
         
         print("API CALL: GET FRIEND SCORES")
         
@@ -61,6 +61,7 @@ class ScoreViewModel: ObservableObject {
                     let difference = self.latestValue - self.oldestValue
                     self.trendValue = "\(difference > 0 ? "+" : "")\(Int(difference))"
                 }
+                completion(true)
             } catch {
                 DispatchQueue.main.async {
                     if let encodingError = error as? EncodingError {

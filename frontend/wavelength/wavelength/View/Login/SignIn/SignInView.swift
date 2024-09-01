@@ -23,52 +23,62 @@ struct SignInView: View {
     var body: some View {
         NavigationStack {
             
-            VStack {
-                Spacer()
-                Image(uiImage: logo)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundColor(.wavelengthLightGrey)
-                    .frame(width: logoSize)
-                Spacer()
-                VStack(spacing: Padding.large) {
-                    SignInFormView(username: $username, password: $password)
-                    HStack (spacing: Padding.large) {
-                        ButtonView(title: Strings.login.logIn, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
-                            Task {
-                                do {
-                                    try await viewModel.getToken(username: username, password: password)
-                                } catch {
-                                    // Handle authentication errors
-                                    print("Reading error:", error.localizedDescription)
+            ZStack {
+                
+                VStack {
+                    Spacer()
+                    Image(uiImage: logo)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(.wavelengthLightGrey)
+                        .frame(width: logoSize)
+                    Spacer()
+                    VStack(spacing: Padding.large) {
+                        SignInFormView(username: $username, password: $password)
+                        HStack (spacing: Padding.large) {
+                            ButtonView(title: Strings.login.logIn, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
+                                Task {
+                                    do {
+                                        try await viewModel.getToken(username: username, password: password)
+                                    } catch {
+                                        // Handle authentication errors
+                                        print("Reading error:", error.localizedDescription)
+                                    }
                                 }
-                            }
-                        })
-                        ButtonView(title: Strings.login.signUp, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
-                            showSignUpViewModal.toggle()
-                        })
-                        .sheet(isPresented: $showSignUpViewModal) {
-                            FirstSignUpView(viewModel: viewModel, showModal: $showSignUpViewModal)
-                                .interactiveDismissDisabled()
-                            }
+                            })
+                            .disabled(viewModel.isLoading)
+                            ButtonView(title: Strings.login.signUp, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
+                                showSignUpViewModal.toggle()
+                            })
+                            .disabled(viewModel.isLoading)
+                            .sheet(isPresented: $showSignUpViewModal) {
+                                FirstSignUpView(viewModel: viewModel, showModal: $showSignUpViewModal)
+                                    .interactiveDismissDisabled()
+                                }
+                        }
+                        .shadow(
+                            color: ShadowStyle.low.color,
+                            radius: ShadowStyle.low.radius,
+                            x: ShadowStyle.low.x,
+                            y: ShadowStyle.low.y)
                     }
-                    .shadow(
-                        color: ShadowStyle.low.color,
-                        radius: ShadowStyle.low.radius,
-                        x: ShadowStyle.low.x,
-                        y: ShadowStyle.low.y)
+                    .padding(.bottom, logoSize)
+                    Spacer()
+                    Text("Version 0.1 • Made with ❤️ by Doeun")
+                        .font(.system(size: Fonts.body2))
+                        .foregroundStyle(.wavelengthGrey)
+                        .padding(.top, Padding.large)
                 }
-                .padding(.bottom, logoSize)
-                Spacer()
-                Text("Version 0.1 • Made with ❤️ by Doeun")
-                    .font(.system(size: Fonts.body2))
-                    .foregroundStyle(.wavelengthGrey)
-                    .padding(.top, Padding.large)
+                .padding(Padding.large)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.wavelengthBackground)
+                .ignoresSafeArea(.keyboard)
+                
+                if viewModel.isLoading {
+                    LoadingView()
+                }
+                
             }
-            .padding(Padding.large)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.wavelengthBackground)
-            .ignoresSafeArea(.keyboard)
             
         }
         .toast(toast: $contentToastManager.toast)

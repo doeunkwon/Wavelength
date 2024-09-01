@@ -22,5 +22,11 @@ struct EmptyStateView: View {
             
         }
         .foregroundColor(.wavelengthGrey)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.wavelengthBackground)
     }
+}
+
+#Preview {
+    EmptyStateView(text: Strings.friend.addAFriend, icon: Strings.icons.person2)
 }
