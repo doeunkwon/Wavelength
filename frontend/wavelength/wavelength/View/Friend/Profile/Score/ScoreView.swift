@@ -30,6 +30,11 @@ struct ScoreView: View {
                     VStack (alignment: .leading, spacing: Padding.xlarge) {
                         ScoreHeaderView(score: scoreViewModel.latestScore.percentage, friendFirstName: friendFirstName)
                         
+                        BasicFieldView(content:
+                        scoreViewModel.latestAnalysis)
+                        
+                        DividerLineView()
+                        
                         VStack (alignment: .leading, spacing: Padding.medium) {
                             Text(Strings.score.progress)
                                 .font(.system(size: Fonts.body))
@@ -54,6 +59,8 @@ struct ScoreView: View {
                                 lineGraphColor: intToColor(value: scoreViewModel.latestScore.percentage),
                                 data: scoreViewModel.scoreChartData)
                         }
+                        
+                        DividerLineView()
                         
                         SliderFieldView(
                             title: Strings.score.breakdown,

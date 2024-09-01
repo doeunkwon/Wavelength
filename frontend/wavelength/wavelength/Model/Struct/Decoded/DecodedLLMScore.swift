@@ -13,11 +13,13 @@ struct DecodedLLMScore: Decodable {
     let value: Int
     let interest: Int
     let memory: Int
+    let analysis: String
     
     enum CodingKeys: String, CodingKey {
         case goal
         case value
         case interest
         case memory
+        case analysis
     }
 }

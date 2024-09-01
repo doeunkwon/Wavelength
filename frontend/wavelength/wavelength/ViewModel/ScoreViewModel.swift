@@ -14,6 +14,7 @@ class ScoreViewModel: ObservableObject {
     @Published var breakdown: Breakdown = Breakdown(bid: "", goal: 0, value: 0, interest: 0, memory: 0)
     @Published var scoreChartData: [ScoreData] = []
     @Published var latestScore: Score = Score(sid: "", timestamp: Date(), percentage: 0)
+    @Published var latestAnalysis: String = ""
     @Published var highValue: Double = 0.0
     @Published var lowValue: Double = 0.0
     @Published var latestValue: Double = 0.0
@@ -52,6 +53,7 @@ class ScoreViewModel: ObservableObject {
                     self.scoreChartData = prepareChartData(from: fetchedScores)
                     self.latestScore = self.scores.max(by: { $0.timestamp < $1.timestamp })
                     ?? Score(sid: "", timestamp: Date(), percentage: 0)
+                    self.latestAnalysis = self.latestScore.analysis ?? ""
                     self.highValue = self.scoreChartData.map { $0.value }.max() ?? 0
                     self.lowValue = self.scoreChartData.map { $0.value }.min() ?? 0
                     self.latestValue = self.scoreChartData.max(by: { $0.entry < $1.entry })?.value ?? 0

@@ -46,7 +46,7 @@ enum ShadowStyle {
     var y: CGFloat {
         switch self {
         case .high: return 12
-        case .low: return 12
+        case .low: return 6
         case .glow: return 0
         }
     }

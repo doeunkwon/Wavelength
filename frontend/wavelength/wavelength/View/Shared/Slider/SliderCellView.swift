@@ -13,6 +13,9 @@ struct SliderCellView: View {
     let percentage: Int
     
     var body: some View {
+        
+        let color = intToColor(value: percentage)
+        
         VStack (spacing: Padding.large) {
             HStack {
                 Text(title)
@@ -20,11 +23,11 @@ struct SliderCellView: View {
                 Spacer()
                 Text(String(percentage))
                     .font(.system(size: Fonts.body))
-                    .foregroundColor(intToColor(value: percentage))
+                    .foregroundColor(color)
             }
             
             ProgressView(value: Double(percentage), total: 100)
-                .tint(intToColor(value: percentage))
+                .tint(color)
         }
     }
 }

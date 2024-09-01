@@ -59,11 +59,13 @@ struct FriendProfileView: View {
                                 MemoriesView(friend: friend)
                             }
                             
-                            BasicFieldView(content: friend.goals)
+                            BasicFieldView(title: Strings.form.goals, content: friend.goals)
                             
                             DividerLineView()
                             
                             TagsFieldView(title: Strings.general.values, items: friend.values, tagColor: friend.color)
+                            
+                            DividerLineView()
                             
                             TagsFieldView(title: Strings.general.interests, items: friend.interests, tagColor: friend.color)
                             

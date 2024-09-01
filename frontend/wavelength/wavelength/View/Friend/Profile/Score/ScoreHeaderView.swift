@@ -45,7 +45,7 @@ struct ScoreHeaderView: View {
                 Text("You and \(friendFirstName) are")
                     .font(.system(size: Fonts.body2))
                     .foregroundStyle(.wavelengthText)
-                Text("\(ScoreString.from(value: score).rawValue) aligned")
+                Text("\(ScoreString.from(value: score).rawValue)")
                     .font(.system(size: Fonts.subtitle))
                     .foregroundStyle(intToColor(value: score))
             }

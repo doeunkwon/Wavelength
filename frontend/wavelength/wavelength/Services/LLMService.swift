@@ -33,7 +33,7 @@ class LLMService {
         do {
             let decoder = JSONDecoder()
             let decodedLLMScore = try decoder.decode(DecodedLLMScore.self, from: data)
-            let llmScore = LLMScore(goal: decodedLLMScore.goal, value: decodedLLMScore.value, interest: decodedLLMScore.interest, memory: decodedLLMScore.memory)
+            let llmScore = LLMScore(goal: decodedLLMScore.goal, value: decodedLLMScore.value, interest: decodedLLMScore.interest, memory: decodedLLMScore.memory, analysis: decodedLLMScore.analysis)
             return llmScore
         } catch {
             throw BreakdownServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))

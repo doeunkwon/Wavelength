@@ -57,6 +57,8 @@ class FriendProfileViewModel: ObservableObject {
             let valueScore = llmScore.value
             let interestScore = llmScore.interest
             let memoryScore = llmScore.memory
+            let writtenAnalysis = llmScore.analysis
+            let trimmedWrittenAnalysis = writtenAnalysis.trimmingCharacters(in: .whitespacesAndNewlines)
             
             let newFriendScore = (goalScore + valueScore + interestScore + memoryScore) / 4
             
@@ -77,9 +79,9 @@ class FriendProfileViewModel: ObservableObject {
             }
             
             _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: newUserScore), bearerToken: bearerToken)
-            _ = try await scoreService.createFriendScore(newData: EncodedScore(percentage: newFriendScore, analysis: ""), fid: fid, bearerToken: bearerToken)
+            _ = try await scoreService.createFriendScore(newData: EncodedScore(percentage: newFriendScore, analysis: trimmedWrittenAnalysis), fid: fid, bearerToken: bearerToken)
             _ = try await breakdownService.updateBreakdown(fid: friend.fid, newData: EncodedBreakdown(goal:goalScore, value: valueScore, interest: interestScore, memory: memoryScore), bearerToken: bearerToken)
-            try await friendService.updateFriend(fid: fid, newData: EncodedFriend(scorePercentage: newFriendScore), bearerToken: bearerToken)
+            try await friendService.updateFriend(fid: fid, newData: EncodedFriend(scorePercentage: newFriendScore, scoreAnalysis: trimmedWrittenAnalysis), bearerToken: bearerToken)
             try await userService.updateUser(newData: EncodedUser(scorePercentage: newUserScore), bearerToken: bearerToken)
             
             DispatchQueue.main.async {

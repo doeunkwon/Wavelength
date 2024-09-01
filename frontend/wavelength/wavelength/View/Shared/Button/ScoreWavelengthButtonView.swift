@@ -27,7 +27,9 @@ struct ScoreWavelengthButtonView: View {
                         LinearGradient(
                             gradient: Gradient(colors: [
                                 .wavelengthOffWhite.opacity(0.9),
+                                .wavelengthOffWhite.opacity(0.98),
                                 .wavelengthOffWhite,
+                                .wavelengthOffWhite.opacity(0.98),
                                 .wavelengthOffWhite.opacity(0.9)
                             ]),
                             startPoint: .bottom,

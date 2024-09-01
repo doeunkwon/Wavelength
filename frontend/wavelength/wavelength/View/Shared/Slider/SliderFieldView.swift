@@ -25,7 +25,8 @@ struct SliderFieldView: View {
                         DividerLineView()
                     }
                     SliderCellView(title: value.key, percentage: value.value)
-                        .padding(.vertical, Padding.xlarge)
+                        .padding(.top, Padding.large)
+                        .padding(.bottom, Padding.large + Padding.nudge)
                         .padding(.horizontal, Padding.large)
                 }
             }
