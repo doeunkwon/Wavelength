@@ -15,14 +15,18 @@ struct ToastView: View {
     var onCancelTapped: (() -> Void)
 
     var body: some View {
-        HStack(alignment: .center, spacing: 12) {
+        HStack(alignment: .center, spacing: Padding.medium) {
             Image(systemName: style.iconFileName)
                 .foregroundColor(style.themeColor)
+                .shadow(
+                    color: ShadowStyle.glow(style.themeColor).color,
+                    radius: ShadowStyle.glow(style.themeColor).radius,
+                    x: ShadowStyle.glow(style.themeColor).x,
+                    y: ShadowStyle.glow(style.themeColor).y)
             Text(message)
-                .font(.system(size: Fonts.body))
                 .foregroundColor(.wavelengthText)
 
-            Spacer(minLength: 10)
+            Spacer()
 
             Button {
                 onCancelTapped()
@@ -31,7 +35,8 @@ struct ToastView: View {
                     .foregroundColor(.wavelengthGrey)
             }
         }
-        .padding(Padding.medium + Padding.nudge)
+        .font(.system(size: Fonts.body))
+        .padding(Padding.large)
         .frame(minWidth: 0, maxWidth: width)
         .overlay( /// apply a rounded border
             RoundedRectangle(cornerRadius: CornerRadius.medium)
