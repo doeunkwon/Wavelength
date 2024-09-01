@@ -16,34 +16,25 @@ struct ContentView: View {
     
     @State private var selectedTab = 1
     
+    @State private var viewIsLoading: Bool = true
+    
     var body: some View {
         
         NavigationStack {
             if viewModel.isLoggedIn {
-            
-                ZStack {
+                
+                if viewIsLoading {
+                    EmptyLoadingView()
+                } else {
                     TabView(selection: $selectedTab) {
                         SettingsView(isLoggedIn: $viewModel.isLoggedIn, selectedTab: $selectedTab)
                             .tag(0)
                         FriendsView(scoreChartData: viewModel.scoreChartData, selectedTab: $selectedTab)
                             .tag(1)
                     }
-                    if viewModel.isLoading {
-                        LoadingView()
-                    }
+                    .background(.wavelengthBackground)
+                    .ignoresSafeArea()
                 }
-                .environmentObject(friendsManager)
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .background(.wavelengthBackground)
-                .ignoresSafeArea()
-                .onAppear(perform: {
-                    selectedTab = 1
-                    Task {
-                        do {
-                            friendsManager.friends = try await viewModel.getUserInfo()
-                        }
-                    }
-                })
                 
             } else {
                 
@@ -51,6 +42,17 @@ struct ContentView: View {
                 
             }
         }
+        .environmentObject(friendsManager)
         .environmentObject(contentToastManager)
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .onAppear(perform: {
+            selectedTab = 1
+            Task {
+                do {
+                    friendsManager.friends = try await viewModel.getUserInfo()
+                    viewIsLoading = viewModel.isLoading
+                }
+            }
+        })
     }
 }

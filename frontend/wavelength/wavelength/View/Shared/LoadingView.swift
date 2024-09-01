@@ -15,7 +15,7 @@ struct LoadingView: View {
                 .aspectRatio(1, contentMode: .fit)
                 .frame(height: Frame.loadingSquare)
                 .foregroundStyle(.wavelengthLightGrey)
-                .opacity(0.70)
+                .opacity(0.90)
             ProgressView()
                 .scaleEffect(1.5)
             
