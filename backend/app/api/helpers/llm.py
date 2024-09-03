@@ -30,16 +30,91 @@ examples = [
         "input": '''
             Individual 1 (Me):
             - Name: You
-            - Goals: Become a successful entrepreneur, travel the world, start a family.
-            - Interests: ["Hiking", "Reading", "Cooking", "Photography"]
-            - Values: ["Honesty", "Kindness", "Loyalty", "Independence"]
+            - Goals: Travel the world, explore different cultures, document experiences.
+            - Interests: ["Photography", "Traveling", "Culinary arts", "Blogging"]
+            - Values: ["Curiosity", "Adventure", "Creativity", "Authenticity"]
             Individual 2:
-            - Name: Jane Smith
-            - Goals: Find a stable job, buy a house, spend more time with loved ones.
-            - Interests: ["Video games", "Movies", "Outdoors"]
-            - Values: ["Family", "Friendship", "Hard work"]
+            - Name: Emily White
+            - Goals: Become a travel journalist, publish travel guides, experience new cultures.
+            - Interests: ["Traveling", "Photography", "Writing", "Exploring cuisines"]
+            - Values: ["Curiosity", "Adventure", "Creativity", "Open-mindedness"]
         ''',
-        "output": "goal:::50,,,value:::85,,,interest:::30,,,explanation:::Although you and Jane's ambitions differ—focusing on entrepreneurship versus stability—you both aim to build a fulfilling life, particularly with the goal of starting a family. Despite some differences, both value strong interpersonal relationships, such as loyalty and family, which indicates high compatibility in what you both prioritize. Your interests show minimal overlap; while both of you enjoy outdoor activities, your interests in reading and photography differ significantly from Jane's interest in video games and movies."
+        "output": "goal>>88||value>>92||interest>>95||explanation>>You and Emily have very similar goals centered around travel and cultural exploration, leading to high compatibility. Your values are nearly identical, emphasizing curiosity, adventure, and creativity. Your interests also align closely, particularly in travel and photography, resulting in a high interest compatibility score."
+    },
+    {
+        "input": '''
+            Individual 1 (Me):
+            - Name: You
+            - Goals: Become a well-known writer, publish a novel, live in a quiet town.
+            - Interests: ["Literature", "Travel", "History", "Coffee culture"]
+            - Values: ["Creativity", "Solitude", "Authenticity", "Reflection"]
+            Individual 2:
+            - Name: Alex Thompson
+            - Goals: Climb the corporate ladder, earn a high income, enjoy city life.
+            - Interests: ["Finance", "Networking", "Fine dining", "Sports"]
+            - Values: ["Ambition", "Wealth", "Success", "Networking"]
+        ''',
+        "output": "goal>>28||value>>42||interest>>22||explanation>>Your goals and Alex's differ significantly, with you focusing on creative pursuits and a quiet lifestyle, while Alex aims for career success and city living. Your values also diverge, with you valuing creativity and solitude, and Alex prioritizing ambition and success. There is minimal overlap in your interests, leading to low interest compatibility."
+    },
+    {
+        "input": '''
+            Individual 1 (Me):
+            - Name: You
+            - Goals: Master several musical instruments, perform in a band, create original music.
+            - Interests: ["Music", "Live performances", "Songwriting", "Music festivals"]
+            - Values: ["Creativity", "Passion", "Expression", "Collaboration"]
+            Individual 2:
+            - Name: Jake Rogers
+            - Goals: Play guitar professionally, tour with a band, produce music.
+            - Interests: ["Music", "Guitar", "Concerts", "Music production"]
+            - Values: ["Creativity", "Dedication", "Artistry", "Teamwork"]
+        ''',
+        "output": "goal>>82||value>>89||interest>>98||explanation>>Your goals and Jake's are closely aligned around a deep commitment to music, indicating high compatibility. Your values, centered on creativity and collaboration, are also highly compatible. Your shared passion for music leads to an almost perfect interest compatibility score."
+    },
+    {
+        "input": '''
+            Individual 1 (Me):
+            - Name: You
+            - Goals: Advance in academic research, publish in top journals, mentor students.
+            - Interests: ["Research", "Reading", "Debating", "Philosophy"]
+            - Values: ["Knowledge", "Integrity", "Critical thinking", "Curiosity"]
+            Individual 2:
+            - Name: Laura Evans
+            - Goals: Start a family, build a home, volunteer in the community.
+            - Interests: ["Gardening", "Cooking", "Crafting", "Community service"]
+            - Values: ["Family", "Generosity", "Stability", "Empathy"]
+        ''',
+        "output": "goal>>36||value>>54||interest>>17||explanation>>Your goals and Laura's are quite different, with you focused on academic achievements and Laura on family and community. While there is some overlap in values like integrity and generosity, the overall compatibility is moderate. Your interests have minimal overlap, leading to low interest compatibility."
+    },
+    {
+        "input": '''
+            Individual 1 (Me):
+            - Name: You
+            - Goals: Retire early, travel extensively, live off the grid.
+            - Interests: ["Sustainable living", "Travel", "Minimalism", "Hiking"]
+            - Values: ["Freedom", "Simplicity", "Self-reliance", "Environmentalism"]
+            Individual 2:
+            - Name: Mark Johnson
+            - Goals: Become a CEO, accumulate wealth, live in luxury.
+            - Interests: ["Investing", "Luxury goods", "Networking", "Golf"]
+            - Values: ["Wealth", "Power", "Status", "Influence"]
+        ''',
+        "output": "goal>>19||value>>27||interest>>11||explanation>>Your goals and Mark's are almost entirely opposed, with you seeking a simple, off-grid lifestyle, and Mark aiming for wealth and luxury. Your values clash significantly, with your emphasis on freedom and simplicity contrasting sharply with Mark's focus on power and status. Your interests are also largely incompatible, resulting in very low overall compatibility."
+    },
+    {
+        "input": '''
+            Individual 1 (Me):
+            - Name: You
+            - Goals: Start a tech company, innovate in AI, create impactful products.
+            - Interests: ["Technology", "Startups", "AI research", "Gaming"]
+            - Values: ["Innovation", "Creativity", "Ambition", "Disruption"]
+            Individual 2:
+            - Name: Rachel Green
+            - Goals: Work in healthcare, improve patient outcomes, live a balanced life.
+            - Interests: ["Healthcare", "Yoga", "Meditation", "Travel"]
+            - Values: ["Compassion", "Health", "Work-life balance", "Care"]
+        ''',
+        "output": "goal>>48||value>>57||interest>>33||explanation>>Your goals and Rachel's share some common ground in wanting to create positive change, but in very different domains—tech versus healthcare. There is some alignment in values, like ambition and care, though they manifest differently. Your interests overlap slightly in areas like technology and wellness, but overall interest compatibility remains low."
     },
     {
         "input": '''
@@ -54,60 +129,16 @@ examples = [
             - Interests: ["Science", "Reading", "Socializing", "Fitness"]
             - Values: ["Intelligence", "Ambition", "Loyalty"]
         ''',
-        "output": "goal:::55,,,value:::60,,,interest:::25,,,explanation:::Both you and Emily have ambitious goals, though in very different fields—art and medicine—which suggests some alignment but with significant differences. There is some overlap in your values, such as compassion and loyalty, but differences like freedom versus ambition lower your overall compatibility. Your interests are quite distinct, with one focused on the arts and volunteering and the other on science and fitness, leading to low interest compatibility."
-    },
-    {
-        "input": '''
-            Individual 1 (Me):
-            - Name: You
-            - Goals: Start a successful business, travel, impact society.
-            - Interests: ["Entrepreneurship", "Technology", "Social justice", "Networking", "Traveling"]
-            - Values: ["Innovation", "Leadership", "Equality", "Progress", "Success"]
-            Individual 2:
-            - Name: Sarah Patel
-            - Goals: Find a stable job, start a family, enjoy comfort.
-            - Interests: ["Cooking", "Gardening", "Spending time with loved ones"]
-            - Values: ["Family", "Tradition", "Security", "Simplicity"]
-        ''',
-        "output": "goal:::25,,,value:::50,,,interest:::20,,,explanation:::Your goals and Sarah's are quite different, with you focusing on business and societal impact, and Sarah focusing on personal and family stability, indicating significant misalignment. There is some overlap in your values, such as a concern for others and a focus on family, but differing priorities—such as innovation versus tradition—reduce overall compatibility. Your interests are in different domains—entrepreneurship and technology versus home-centered activities—resulting in low interest compatibility."
-    },
-    {
-        "input": '''
-            Individual 1 (Me):
-            - Name: You
-            - Goals: Become a professional athlete, achieve fame, live a luxurious lifestyle.
-            - Interests: ["Sports", "Gaming", "Socializing", "Traveling"]
-            - Values: ["Success", "Competition", "Excitement", "Materialism"]
-            Individual 2:
-            - Name: Olivia Johnson
-            - Goals: Find a stable job, start a family, build a comfortable home.
-            - Interests: ["Reading", "Cooking", "Gardening", "Spending time with loved ones"]
-            - Values: ["Family", "Stability", "Security", "Simplicity"]
-        ''',
-        "output": "goal:::15,,,value:::30,,,interest:::10,,,explanation:::Your goals and Olivia's are vastly different, with you focused on fame and luxury, while Olivia is focused on stability and family. Your values also clash, with you prioritizing success and materialism, while Olivia values family and security. Your interests show minimal overlap, with your interests centered around sports and socializing, while Olivia's interests are more home-centered. Overall, your compatibility is very low."
-    },
-    {
-        "input": '''
-            Individual 1 (Me):
-            - Name: You
-            - Goals: Pursue a career in environmental science, protect the planet, make a positive impact.
-            - Interests: ["Nature", "Science", "Environmental activism", "Traveling"]
-            - Values: ["Sustainability", "Compassion", "Community", "Purpose"]
-            Individual 2:
-            - Name: Maya Patel
-            - Goals: Start a successful business, become financially independent, enjoy a comfortable lifestyle.
-            - Interests: ["Business", "Finance", "Fashion", "Traveling"]
-            - Values: ["Success", "Ambition", "Independence", "Materialism"]
-        ''',
-        "output": "goal:::40,,,value:::45,,,interest:::25,,,explanation:::Your goals and Maya's are somewhat aligned, as you both value personal success and fulfillment. However, your approaches to achieving these goals differ significantly, with you prioritizing environmental impact and Maya focusing on financial independence. Your values show some overlap, such as independence, but differing priorities—sustainability versus materialism—reduce your overall compatibility. Your interests are in different domains, with you focused on environmental issues and Maya focused on business and fashion, resulting in low interest compatibility."
+        "output": "goal>>56||value>>62||interest>>27||explanation>>Both you and Emily have ambitious goals, though in very different fields—art and medicine—which suggests some alignment but with significant differences. There is some overlap in your values, such as compassion and loyalty, but differences like freedom versus ambition lower your overall compatibility. Your interests are quite distinct, with one focused on the arts and volunteering and the other on science and fitness, leading to low interest compatibility."
     }
 ]
+
 
 # Create the FewShotPromptTemplate
 few_shot_prompt = FewShotPromptTemplate(
     examples=examples,
     example_prompt=example_prompt_template,
-    prefix="Task: Provide separate compatibility scores for goals, values, and interests between two individuals. Also provide a concise explanation for these scores.",
+    prefix="Task: Provide separate compatibility scores for goals, values, and interests between two individuals. Accompany each score with a concise explanation. In the explanation, refer to Individual 1 using second-person pronouns.",
     suffix="""
     Individual 1 (Me):
     - Name: {user_firstname} {user_lastname}
@@ -120,9 +151,7 @@ few_shot_prompt = FewShotPromptTemplate(
     - Interests: {friend_interests}
     - Values: {friend_values}
 
-    Provide the scores and explanation in the following strict format: goal:::<goal_score>,,,value:::<value_score>,,,interest:::<interest_score>,,,explanation:::<explanation>.
-
-    **Important:** Adhere strictly to the format above. In the explanation, refer to Individual 1 as "You". Do not include any additional text, commentary, or extraneous details.
+    Provide the scores and explanation in the following strict format: goal>><goal_score>||value>><value_score>||interest>><interest_score>||explanation>><explanation>
     """,
     input_variables=["user_firstname", "user_lastname", "user_goals", "user_interests", "user_values",
                      "friend_firstname", "friend_lastname", "friend_goals", "friend_interests", "friend_values"],
@@ -159,10 +188,8 @@ def score(uid: str, fid: str):
     print(output)
 
     # Post-process the output to ensure it's in the correct format
-    compatibility_results = dict(item.split(":::")
-                                 for item in output.split(",,,"))
-
-    print("CHECKPOINT 1")
+    compatibility_results = dict(item.split(">>")
+                                 for item in output.split("||"))
 
     # Expected keys and their order
     expected_keys = ['goal', 'value', 'interest', 'explanation']

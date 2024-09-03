@@ -164,7 +164,7 @@ class FriendProfileViewModel: ObservableObject {
             
             let friendScore = friend.scorePercentage
             
-            let newUserScore = (filteredFriendsScoreSum - friendScore) / (filteredFriendsCount - 1)
+            let newUserScore = filteredFriendsCount - 1 == 0 ? 0 : (filteredFriendsScoreSum - friendScore) / (filteredFriendsCount - 1)
             
             try await friendService.deleteFriend(fid: fid, bearerToken: bearerToken)
             _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: newUserScore), bearerToken: bearerToken)

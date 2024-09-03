@@ -23,21 +23,35 @@ struct ContentView: View {
         NavigationStack {
             if viewModel.isLoggedIn {
                 
-                if viewIsLoading {
-                    EmptyLoadingView()
-                } else {
-                    TabView(selection: $selectedTab) {
-                        SettingsView(isLoggedIn: $viewModel.isLoggedIn, selectedTab: $selectedTab)
-                            .tag(0)
-                        FriendsView(scoreChartData: viewModel.scoreChartData, selectedTab: $selectedTab)
-                            .tag(1)
+                /// This ZStack is here so I can add the onAppear modifier
+                ZStack {
+                    if viewIsLoading {
+                        EmptyLoadingView()
+                    } else {
+                        TabView(selection: $selectedTab) {
+                            SettingsView(isLoggedIn: $viewModel.isLoggedIn, selectedTab: $selectedTab)
+                                .tag(0)
+                            FriendsView(scoreChartData: viewModel.scoreChartData, selectedTab: $selectedTab)
+                                .tag(1)
+                                .environmentObject(friendsManager)
+                        }
+                        .tabViewStyle(.page(indexDisplayMode: .never))
+                        .onAppear(perform: {
+                            selectedTab = 1
+                        })
+                        .background(.wavelengthBackground)
+                        .ignoresSafeArea()
                     }
-                    .onAppear(perform: {
-                        selectedTab = 1
-                    })
-                    .background(.wavelengthBackground)
-                    .ignoresSafeArea()
                 }
+                .onAppear(perform: {
+                    Task {
+                        do {
+                            friendsManager.friends = try await viewModel.getUserInfo()
+                            viewIsLoading = viewModel.isLoading
+                        }
+                    }
+                })
+                
                 
             } else {
                 
@@ -45,16 +59,6 @@ struct ContentView: View {
                 
             }
         }
-        .environmentObject(friendsManager)
         .environmentObject(contentToastManager)
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .onAppear(perform: {
-            Task {
-                do {
-                    friendsManager.friends = try await viewModel.getUserInfo()
-                    viewIsLoading = viewModel.isLoading
-                }
-            }
-        })
     }
 }
