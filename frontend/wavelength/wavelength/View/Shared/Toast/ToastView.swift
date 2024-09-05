@@ -37,7 +37,7 @@ struct ToastView: View {
         }
         .font(.system(size: Fonts.body))
         .padding(Padding.large)
-        .frame(minWidth: 0, maxWidth: width)
+        .frame(width: width)
         .overlay( /// apply a rounded border
             RoundedRectangle(cornerRadius: CornerRadius.medium)
                 .stroke(style.themeColor, lineWidth: Border.medium)

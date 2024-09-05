@@ -20,6 +20,7 @@ struct FriendProfileView: View {
     @State private var friendProfileToast: Toast? = nil
     
     @State private var showConfirmDeleteAlert: Bool = false
+    @State private var showConfirmScoreAlert: Bool = false
     
     init(user: User, friend: Friend, friends: [Friend]) {
         self.friend = friend
@@ -40,8 +41,10 @@ struct FriendProfileView: View {
                             HeaderView(emoji: friend.emoji, color: friend.color, firstName: friend.firstName, lastName: friend.lastName, tokenCount: friend.tokenCount)
                             
                             HStack(alignment: .center, spacing: Padding.large) {
-                                ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageScore, color: intToColor(value: friend.scorePercentage)) {
-                                    showScoreViewSheet.toggle()
+                                if friend.scorePercentage != -1 {
+                                    ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageScore, color: intToColor(value: friend.scorePercentage)) {
+                                        showScoreViewSheet.toggle()
+                                    }
                                 }
                                 ButtonView(title: String(friend.memoryCount) + " " + Strings.memory.memories, color: .wavelengthText) {
                                     showMemoriesViewSheet.toggle()
@@ -78,15 +81,23 @@ struct FriendProfileView: View {
                     }
                     
                     ScoreWavelengthButtonView(color: friend.color) {
-                        Task {
-                            do {
-                                try await friendProfileViewModel.updateScore(fid: friend.fid)
-                                friendProfileToast = Toast(style: .success, message: Strings.toast.updateScore)
-                            } catch {
-                                // Handle deletion errors
-                                print("Updating score error:", error.localizedDescription)
+                        showConfirmScoreAlert.toggle()
+                    }
+                    .alert("Confirm score", isPresented: $showConfirmScoreAlert) {
+                        Button("Score!") {
+                            Task {
+                                do {
+                                    try await friendProfileViewModel.updateScore(fid: friend.fid)
+                                    friendProfileToast = Toast(style: .success, message: Strings.toast.updateScore)
+                                } catch {
+                                    // Handle deletion errors
+                                    print("Updating score error:", error.localizedDescription)
+                                }
                             }
                         }
+                        Button(Strings.general.cancel, role: .cancel) {}
+                    } message: {
+                        Text("Would you like to score your wavelength with \(friend.firstName)?")
                     }
                     .padding(.vertical, Padding.large)
                     .shadow(

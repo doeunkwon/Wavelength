@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftKeychainWrapper
 
 struct ContentView: View {
     
@@ -48,6 +49,16 @@ struct ContentView: View {
                         do {
                             friendsManager.friends = try await viewModel.getUserInfo()
                             viewIsLoading = viewModel.isLoading
+                        } catch let error as UserServiceError {
+                            switch error {
+                                case .unauthorized:
+                                    self.viewModel.isLoggedIn = false
+                                    KeychainWrapper.standard.removeObject(forKey: "bearerToken")
+                                case .networkError(let underlyingError):
+                                    print("Network error: \(underlyingError)")
+                                case .unknownError(let message):
+                                    print("Unknown error: \(message)")
+                            }
                         }
                     }
                 })

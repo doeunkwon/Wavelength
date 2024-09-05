@@ -36,17 +36,6 @@ struct SignInView: View {
                     VStack(spacing: Padding.large) {
                         SignInFormView(username: $username, password: $password)
                         HStack (spacing: Padding.large) {
-                            ButtonView(title: Strings.login.logIn, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
-                                Task {
-                                    do {
-                                        try await viewModel.getToken(username: username, password: password)
-                                    } catch {
-                                        // Handle authentication errors
-                                        print("Reading error:", error.localizedDescription)
-                                    }
-                                }
-                            })
-                            .disabled(viewModel.isLoading)
                             ButtonView(title: Strings.login.signUp, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
                                 showSignUpViewModal.toggle()
                             })
@@ -55,9 +44,23 @@ struct SignInView: View {
                                 FirstSignUpView(viewModel: viewModel, showModal: $showSignUpViewModal)
                                     .interactiveDismissDisabled()
                                 }
+                            ButtonView(
+                                title: Strings.login.logIn,
+                                color: (viewModel.isLoading || username.isEmpty || password.isEmpty) ? .wavelengthGrey : .wavelengthText,
+                                backgroundColor: .wavelengthOffWhite,
+                                action: {
+                                Task {
+                                    do {
+                                        try await viewModel.getToken(username: username, password: password)
+                                    } catch {
+                                        contentToastManager.insertToast(style: .error, message: "Incorrect username or password.")
+                                    }
+                                }
+                            })
+                            .disabled(viewModel.isLoading || username.isEmpty || password.isEmpty)
                         }
                         .shadow(
-                            color: ShadowStyle.low.color,
+                            color: (viewModel.isLoading || username.isEmpty || password.isEmpty) ? .clear : ShadowStyle.low.color,
                             radius: ShadowStyle.low.radius,
                             x: ShadowStyle.low.x,
                             y: ShadowStyle.low.y)

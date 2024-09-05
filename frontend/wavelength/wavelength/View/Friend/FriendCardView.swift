@@ -45,9 +45,9 @@ struct FriendCardView: View {
                                 .truncationMode(.tail)
                             Spacer()
                             if friend.scorePercentage == -1 {
-                                Text("?")
-                                    .font(.system(size: Fonts.body, weight: .semibold))
-                                    .foregroundColor(.wavelengthDarkGrey)
+                                Text("0%")
+                                    .font(.system(size: Fonts.body))
+                                    .foregroundColor(intToColor(value: 0))
                             } else {
                                 Text(String(friend.scorePercentage) + "%")
                                     .font(.system(size: Fonts.body))

@@ -83,9 +83,9 @@ struct SettingsPanelView: View {
                     }
                 }
                 Button(Strings.general.cancel, role: .cancel) {}
-                    } message: {
-                        Text(Strings.settings.confirmDelete)
-                    }
+            } message: {
+                Text(Strings.settings.confirmDelete)
+            }
         }
     }
 }

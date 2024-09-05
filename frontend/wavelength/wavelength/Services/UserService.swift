@@ -8,12 +8,6 @@
 import Foundation
 import SwiftUI
 
-enum UserServiceError: Error {
-    case unauthorized
-    case networkError(Error)
-    case unknownError(String)
-}
-
 class UserService {
     
     @EnvironmentObject var viewModel: ViewModel
@@ -33,9 +27,15 @@ class UserService {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw UserServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
         }
-
+        
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            
+            if httpResponse.statusCode == 401 {
+                throw UserServiceError.unauthorized
+            } else {
+                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            }
+            
         }
 
         do {

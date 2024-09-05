@@ -46,3 +46,9 @@ enum AuthenticationServiceError: Error {
     case networkError(Error)
     case unknownError(String)
 }
+
+enum UserServiceError: Error {
+    case unauthorized
+    case networkError(Error)
+    case unknownError(String)
+}

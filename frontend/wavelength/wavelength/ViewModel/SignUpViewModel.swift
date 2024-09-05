@@ -99,7 +99,7 @@ class SignUpViewModel: ObservableObject {
                     encodedUser.goals = editedProfile.goals
                     encodedUser.interests = tagManager.interests
                     encodedUser.values = tagManager.values
-                    encodedUser.scorePercentage = 50
+                    encodedUser.scorePercentage = 0
                     encodedUser.tokenCount = 0
                     encodedUser.memoryCount = 0
                     
@@ -115,7 +115,7 @@ class SignUpViewModel: ObservableObject {
                         user.goals = editedProfile.goals
                         user.interests = tagManager.interests
                         user.values = tagManager.values
-                        user.scorePercentage = 50
+                        user.scorePercentage = 0
                         user.tokenCount = 0
                         user.memoryCount = 0
                         
