@@ -10,8 +10,6 @@ import SwiftUI
 
 class UserService {
     
-    @EnvironmentObject var viewModel: ViewModel
-    
     func getUser(bearerToken: String) async throws -> User {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
@@ -86,7 +84,11 @@ class UserService {
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            if httpResponse.statusCode == 401 {
+                throw UserServiceError.unauthorized
+            } else {
+                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            }
         }
 
         // Handle success response (optional) - You might not need to decode anything on success
@@ -116,7 +118,11 @@ class UserService {
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            if httpResponse.statusCode == 401 {
+                throw UserServiceError.unauthorized
+            } else {
+                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            }
         }
 
         // Handle success response (optional) - You might not need to decode anything on success
@@ -146,7 +152,11 @@ class UserService {
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            if httpResponse.statusCode == 401 {
+                throw UserServiceError.unauthorized
+            } else {
+                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            }
         }
 
         do {
@@ -173,13 +183,13 @@ class UserService {
         throw UserServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
       }
 
-      guard (200...299).contains(httpResponse.statusCode) else {
-        if httpResponse.statusCode == 401 {
-          throw UserServiceError.unauthorized
-        } else {
-          throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+        guard (200...299).contains(httpResponse.statusCode) else {
+            if httpResponse.statusCode == 401 {
+                throw UserServiceError.unauthorized
+            } else {
+                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            }
         }
-      }
       
       // User deleted successfully (no data to decode on success for DELETE)
       print("User deleted successfully!")

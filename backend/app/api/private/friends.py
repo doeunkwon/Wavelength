@@ -4,8 +4,13 @@ from app.models import Friend
 from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from app.api.helpers.friends import delete_friend as delete_friend_helper, get_friend as get_friend_helper
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
+import logging
 
 router = APIRouter()
+
+# Set up basic logging configuration
+logging.basicConfig(level=logging.ERROR)
 
 
 @router.post("/private/friends")
@@ -83,9 +88,16 @@ async def create_friend(
                     status_code=409, detail="Friend ID already exists."
                 )
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error creating friend: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 # The final "return" statement is removed since we already return inside the loop <- (July 20, 2024: Again, what does "loop" mean?)
@@ -113,9 +125,17 @@ async def get_friends(token: str = Depends(get_current_user)):
             friend = record["f"]
             friends.append(friend)
         return friends
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error fetching friends: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 
@@ -136,9 +156,16 @@ async def get_friend(
         uid = token["uid"]
         return get_friend_helper(uid, fid)
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error fetching friend: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 # Function to delete a friend
@@ -158,9 +185,17 @@ async def delete_friend(
         uid = token["uid"]
 
         return delete_friend_helper(uid, fid)
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error deleting friend: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 # Function to update a friend
@@ -219,7 +254,15 @@ async def update_friend(
         updated_friend = result[0]
 
         return updated_friend["f"]
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error updating friend: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )

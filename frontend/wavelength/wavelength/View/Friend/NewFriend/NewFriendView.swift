@@ -11,6 +11,7 @@ import MCEmojiPicker
 struct NewFriendView: View {
     
     @StateObject private var newFriendViewModel: NewFriendViewModel
+    @StateObject private var newFriendToastManager = ToastManager()
     
     init(friendsManager: FriendsManager, showNewFriendViewModal: Binding<Bool>) {
         self._newFriendViewModel = StateObject(wrappedValue: NewFriendViewModel(friendsManager: friendsManager, showNewFriendViewModal: showNewFriendViewModal))
@@ -21,10 +22,11 @@ struct NewFriendView: View {
     
     var body: some View {
         ZStack {
-            ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.create, action: newFriendViewModel.completion), navTitle: Strings.friend.newFriend)
+            ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.create, action: newFriendViewModel.completion), navTitle: Strings.friend.newFriend, toastManager: newFriendToastManager)
             if newFriendViewModel.isLoading {
                 LoadingView()
             }
         }
+        .toast(toast: $newFriendToastManager.toast)
     }
 }

@@ -17,8 +17,6 @@ class MemoryViewModel {
     
     private var encodedMemory = EncodedMemory()
     @Published var isLoading = false
-    @Published var updateError: UpdateError?
-    private var deleteError: DeleteError?
     
     private let memoryService = MemoryService()
     private let userService = UserService()
@@ -51,17 +49,7 @@ class MemoryViewModel {
                 try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount - oldTokens + newTokens), bearerToken: bearerToken)
                 try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount - oldTokens + newTokens), bearerToken: bearerToken)
             }
-            DispatchQueue.main.async {
-                self.updateError = nil
-            }
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.updateError = .encodingError(encodingError)
-                } else {
-                    self.updateError = .networkError(error)
-                }
-            }
             throw error // Re-throw the error for caller handling
         }
     }
@@ -99,17 +87,7 @@ class MemoryViewModel {
                 self.friend.tokenCount -= memoryTokenCount
                 
             }
-            
-            deleteError = nil
-            print("Memory deleted successfully!")
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.deleteError = .encodingError(encodingError)
-                } else {
-                    self.deleteError = .networkError(error)
-                }
-            }
             throw error // Re-throw the error for caller handling
         }
     }

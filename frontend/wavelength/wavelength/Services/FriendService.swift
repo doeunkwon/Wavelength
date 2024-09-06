@@ -8,15 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum FriendServiceError: Error {
-    case unauthorized
-    case networkError(Error)
-    case unknownError(String)
-}
-
 class FriendService {
-    
-    @EnvironmentObject var viewModel: ViewModel
     
     func getFriends(bearerToken: String) async throws -> [Friend] {
         
@@ -145,11 +137,7 @@ class FriendService {
       }
 
       guard (200...299).contains(httpResponse.statusCode) else {
-        if httpResponse.statusCode == 401 {
-          throw FriendServiceError.unauthorized
-        } else {
           throw FriendServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
-        }
       }
       
       // Friend deleted successfully (no data to decode on success for DELETE)

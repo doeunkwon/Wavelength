@@ -3,8 +3,13 @@ from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from fastapi import Depends, HTTPException, Body, APIRouter
 from app.models import Memory
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
+import logging
 
 router = APIRouter()
+
+# Set up basic logging configuration
+logging.basicConfig(level=logging.ERROR)
 
 # Function to create a new memory
 
@@ -79,9 +84,16 @@ async def create_memory(
                     status_code=409, detail="Memory ID already exists."
                 )
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error creating memory: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 # Function to fetch all memories with a friend
@@ -116,9 +128,16 @@ async def get_memories(
 
         return memories
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error fetching memories: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 # Function to delete a memory
@@ -147,9 +166,18 @@ async def delete_memory(
         graph.query(cypher_query, {"uid": uid, "mid": mid})
 
         return {"message": "Memory successfully deleted."}
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error deleting memory: {str(e)}")
+            status_code=500, detail=f"Error fetching user: {str(e)}"
+        )
 
 # Function to update a memory
 
@@ -211,11 +239,18 @@ async def update_memory(
         updated_memory = result[0]["m"]
 
         return updated_memory
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error updating memory: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
-    return
 
 # Function to fetch a single memory by MID
 
@@ -251,7 +286,14 @@ async def get_memory(
         except Exception as e:
             raise HTTPException(status_code=404, detail="Memory not found.")
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error fetching memory: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )

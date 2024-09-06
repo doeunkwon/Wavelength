@@ -4,8 +4,13 @@ from database.neo4j import graph
 from fastapi import Depends, HTTPException, Body, APIRouter
 from app.models import UserScore, FriendScore
 from app.api.helpers.general import get_neo4j_datetime_iso8601
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
+import logging
 
 router = APIRouter()
+
+# Set up basic logging configuration
+logging.basicConfig(level=logging.ERROR)
 
 # Function to create a new user score
 
@@ -97,9 +102,16 @@ async def create_user_score(
                     status_code=409, detail="Score ID already exists."
                 )
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error creating score: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 # Function to create a new friend score
@@ -189,9 +201,16 @@ async def create_friend_score(
                     status_code=409, detail="Score ID already exists."
                 )
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error creating score: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 
@@ -224,9 +243,16 @@ async def get_all_user_scores(
         # Return a list of all scores for the user
         return scores
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error fetching scores: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 # Function to fetch all friend scores
@@ -259,9 +285,16 @@ async def get_all_friend_scores(
         # Return a list of all scores for the user
         return scores
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error fetching scores: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 
@@ -304,6 +337,15 @@ async def delete_score(
 
         except Exception as e:
             raise HTTPException(status_code=404, detail="Score not found.")
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error deleting score: {str(e)}")
+            status_code=500, detail=f"Error fetching user: {str(e)}"
+        )

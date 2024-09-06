@@ -52,8 +52,17 @@ struct SignInView: View {
                                 Task {
                                     do {
                                         try await viewModel.getToken(username: username, password: password)
-                                    } catch {
-                                        contentToastManager.insertToast(style: .error, message: "Incorrect username or password.")
+                                    } catch let error as AuthenticationServiceError {
+                                        switch error {
+                                        case .invalidCredentials:
+                                            contentToastManager.insertToast(style: .error, message: "Incorrect username or password.")
+                                        case .networkError(let underlyingError):
+                                            print("Network error: \(underlyingError)")
+                                            contentToastManager.insertToast(style: .error, message: "Network error")
+                                        case .unknownError(let message):
+                                            print("Unknown error: \(message)")
+                                            contentToastManager.insertToast(style: .error, message: "Unknown error")
+                                        }
                                     }
                                 }
                             })

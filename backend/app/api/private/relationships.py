@@ -4,8 +4,13 @@ from app.api.helpers.auth import get_current_user
 from database.neo4j import graph
 from app.api.helpers.friends import delete_friend as delete_friend_helper
 from app.api.helpers.relationships import get_memory_relationships as get_memory_relationships_helper, create_user_score_relationships as create_user_score_relationship_helper, create_friend_score_relationships as create_friend_score_relationship_helper
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
+import logging
 
 router = APIRouter()
+
+# Set up basic logging configuration
+logging.basicConfig(level=logging.ERROR)
 
 #
 # ________________________________________________________________________________________________________________________________________________________
@@ -47,9 +52,17 @@ async def create_memory_relationship(
             raise HTTPException(
                 status_code=404, detail="Friend not found"
             )
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error creating relationship: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 
@@ -68,9 +81,17 @@ async def get_memory_relationships(
         uid = token["uid"]
 
         return get_memory_relationships_helper(uid, fid)
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error fetching relationships: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 #
@@ -113,9 +134,17 @@ async def create_friendship_relationship(
 
         except Exception as e:
             raise HTTPException(status_code=404, detail="Friend not found.")
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error creating relationship: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 #
@@ -138,9 +167,17 @@ async def create_user_score_relationship(
     try:
         uid = token["uid"]
         return create_user_score_relationship_helper(uid, sid)
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error creating relationship: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )
 
 
@@ -158,7 +195,15 @@ async def create_friend_score_relationship(
         sid = data["sid"]
         fid = data["fid"]
         return create_friend_score_relationship_helper(fid, sid)
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error creating relationship: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )

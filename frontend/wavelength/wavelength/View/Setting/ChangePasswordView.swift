@@ -15,7 +15,7 @@ struct ChangePasswordView: View {
     @State var newPassword: String
     @State var confirmPassword: String
     
-    @Binding var settingsToast: Toast?
+    @ObservedObject var settingsToastManager: ToastManager
     
     @StateObject private var changePasswordViewModel = ChangePasswordViewModel()
     
@@ -52,14 +52,20 @@ struct ChangePasswordView: View {
 
                             DispatchQueue.main.async {
                     
-                                settingsToast = Toast(style: .success, message: Strings.toast.updatePassword)
+                                settingsToastManager.insertToast(style: .success, message: Strings.toast.updatePassword)
                                 
                             }
                             
                             dismiss()
                         } catch {
-                            // Handle authentication errors
-                            print("Updating error:", error.localizedDescription)
+                            print("Error:", error.localizedDescription)
+                            DispatchQueue.main.async {
+                    
+                                settingsToastManager.insertToast(style: .error, message: "Network error.")
+                                
+                            }
+                            
+                            dismiss()
                         }
                     }
                 } else {

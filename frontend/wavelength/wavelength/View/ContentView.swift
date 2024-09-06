@@ -51,13 +51,13 @@ struct ContentView: View {
                             viewIsLoading = viewModel.isLoading
                         } catch let error as UserServiceError {
                             switch error {
-                                case .unauthorized:
-                                    self.viewModel.isLoggedIn = false
-                                    KeychainWrapper.standard.removeObject(forKey: "bearerToken")
-                                case .networkError(let underlyingError):
-                                    print("Network error: \(underlyingError)")
-                                case .unknownError(let message):
-                                    print("Unknown error: \(message)")
+                            case .unauthorized:
+                                self.viewModel.isLoggedIn = false
+                                KeychainWrapper.standard.removeObject(forKey: "bearerToken")
+                            case .networkError(let underlyingError):
+                                print("Network error: \(underlyingError)")
+                            case .unknownError(let message):
+                                print("Unknown error: \(message)")
                             }
                         }
                     }

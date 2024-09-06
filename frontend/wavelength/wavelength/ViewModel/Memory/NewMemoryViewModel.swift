@@ -13,7 +13,6 @@ class NewMemoryViewModel {
     @Published var mid: String = ""
     private var encodedMemory = EncodedMemory()
     @Published var isLoading = false
-    @Published var updateError: UpdateError?
     
     @Binding private var memories: [Memory]
     
@@ -50,17 +49,9 @@ class NewMemoryViewModel {
             try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount + addedTokens, memoryCount: user.memoryCount + 1), bearerToken: bearerToken)
             try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount + addedTokens, memoryCount: friend.memoryCount + 1), bearerToken: bearerToken)
             DispatchQueue.main.async {
-                self.updateError = nil
                 self.mid = fetchedMID
             }
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.updateError = .encodingError(encodingError)
-                } else {
-                    self.updateError = .networkError(error)
-                }
-            }
             throw error // Re-throw the error for caller handling
         }
     }

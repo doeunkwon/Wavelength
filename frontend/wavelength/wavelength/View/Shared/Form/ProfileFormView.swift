@@ -12,7 +12,10 @@ struct ProfileFormView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State var isEmojiPickerVisible: Bool = false
+    
     @ObservedObject var profileManager: ProfileManager
+    @ObservedObject var toastManager: ToastManager
+    
     @StateObject private var editedProfileManager: ProfileManager
     @StateObject private var tagManager: TagManager
     
@@ -20,7 +23,7 @@ struct ProfileFormView: View {
     let buttonConfig: ProfileFormTrailingButtonConfig
     let navTitle: String
     
-    init(profileManager: ProfileManager, leadingButtonContent: AnyView, buttonConfig: ProfileFormTrailingButtonConfig, navTitle: String) {
+    init(profileManager: ProfileManager, leadingButtonContent: AnyView, buttonConfig: ProfileFormTrailingButtonConfig, navTitle: String, toastManager: ToastManager) {
         self.profileManager = profileManager
         _tagManager = StateObject(wrappedValue: TagManager(values: profileManager.profile.values, interests: profileManager.profile.interests))
         _editedProfileManager = if let user = profileManager.profile as? User {
@@ -33,6 +36,7 @@ struct ProfileFormView: View {
         self.leadingButtonContent = leadingButtonContent
         self.buttonConfig = buttonConfig
         self.navTitle = navTitle
+        self.toastManager = toastManager
     }
     
     var body: some View {
@@ -108,7 +112,17 @@ struct ProfileFormView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 leadingButtonContent
-            }, trailing: Button(action: { buttonConfig.action(profileManager, editedProfileManager, tagManager)
+            }, trailing: Button(action: {
+                Task {
+                    do {
+                        try await buttonConfig.action(profileManager, editedProfileManager, tagManager)
+                    } catch {
+                        print("Error:", error.localizedDescription)
+                        DispatchQueue.main.async {
+                            toastManager.insertToast(style: .error, message: "Network error.")
+                        }
+                    }
+                }
             }) {
                 Text(buttonConfig.title)
             })

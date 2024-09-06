@@ -13,6 +13,8 @@ struct SettingsPanelView: View {
     @EnvironmentObject var user: User
     @EnvironmentObject var contentToastManager: ToastManager
     
+    @ObservedObject var settingsToastManager: ToastManager
+    @StateObject var settingsPanelToastManager = ToastManager()
     @StateObject var settingsPanelViewModel = SettingsPanelViewModel()
     
     @State private var showChangePasswordViewSheet = false
@@ -21,8 +23,6 @@ struct SettingsPanelView: View {
     
     @Binding var isLoggedIn: Bool
     
-    @Binding var settingsToast: Toast?
-    
     var body: some View {
         VStack(spacing: 0) {
             SettingsCellView(title: Strings.settings.editProfile, icon: user.emoji, isEmoji: true, action: {
@@ -30,11 +30,12 @@ struct SettingsPanelView: View {
             })
             .sheet(isPresented: $settingsPanelViewModel.showProfileFormViewSheet) {
                 ZStack {
-                    ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: settingsPanelViewModel.completion), navTitle: Strings.settings.editProfile)
+                    ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: settingsPanelViewModel.completion), navTitle: Strings.settings.editProfile, toastManager: settingsPanelToastManager)
                     if settingsPanelViewModel.isLoading {
                         LoadingView()
                     }
                 }
+                .toast(toast: $settingsPanelToastManager.toast)
                 .interactiveDismissDisabled()
             }
             DividerLineView()
@@ -42,7 +43,7 @@ struct SettingsPanelView: View {
                 showChangePasswordViewSheet.toggle()
             })
             .sheet(isPresented: $showChangePasswordViewSheet) {
-                ChangePasswordView(currentPassword: "", newPassword: "", confirmPassword: "", settingsToast: $settingsToast)
+                ChangePasswordView(currentPassword: "", newPassword: "", confirmPassword: "", settingsToastManager: settingsToastManager)
                     .interactiveDismissDisabled()
             }
             DividerLineView()
@@ -77,8 +78,10 @@ struct SettingsPanelView: View {
                                 
                             }
                         } catch {
-                            // Handle deletion errors
-                            print("Deleting error:", error.localizedDescription)
+                            print("Error:", error.localizedDescription)
+                            DispatchQueue.main.async {
+                                settingsToastManager.insertToast(style: .error, message: "Network error.")
+                            }
                         }
                     }
                 }

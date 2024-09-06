@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileFormTrailingButtonConfig {
     let title: String
-    let action: (ProfileManager, ProfileManager, TagManager) -> Void
+    let action: (ProfileManager, ProfileManager, TagManager) async throws -> Void
 }
 
 struct MemoryFormTrailingButtonConfig {

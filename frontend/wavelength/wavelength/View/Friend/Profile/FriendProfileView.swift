@@ -17,7 +17,7 @@ struct FriendProfileView: View {
     @ObservedObject private var friend: Friend
     
     @StateObject private var friendProfileViewModel: FriendProfileViewModel
-    @State private var friendProfileToast: Toast? = nil
+    @StateObject private var friendProfileToastManager = ToastManager()
     
     @State private var showConfirmDeleteAlert: Bool = false
     @State private var showConfirmScoreAlert: Bool = false
@@ -88,10 +88,15 @@ struct FriendProfileView: View {
                             Task {
                                 do {
                                     try await friendProfileViewModel.updateScore(fid: friend.fid)
-                                    friendProfileToast = Toast(style: .success, message: Strings.toast.updateScore)
+                                    
+                                    DispatchQueue.main.async {
+                                        friendProfileToastManager.insertToast(style: .success, message: Strings.toast.updateScore)
+                                    }
                                 } catch {
-                                    // Handle deletion errors
-                                    print("Updating score error:", error.localizedDescription)
+                                    print("Error:", error.localizedDescription)
+                                    DispatchQueue.main.async {
+                                        friendProfileToastManager.insertToast(style: .error, message: "Network error.")
+                                    }
                                 }
                             }
                         }
@@ -139,8 +144,12 @@ struct FriendProfileView: View {
                             try await friendProfileViewModel.deleteFriend(fid: friend.fid, friendMemoryCount: friend.memoryCount, friendTokenCount: friend.tokenCount)
                             dismiss()
                         } catch {
-                            // Handle deletion errors
-                            print("Deleting error:", error.localizedDescription)
+                            print("Error:", error.localizedDescription)
+                            DispatchQueue.main.async {
+                    
+                                friendProfileToastManager.insertToast(style: .error, message: "Network error.")
+                                
+                            }
                         }
                     }
                 }
@@ -150,15 +159,17 @@ struct FriendProfileView: View {
                 }
                 .sheet(isPresented: $friendProfileViewModel.showProfileFormViewSheet) {
                 ZStack {
-                    ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: friendProfileViewModel.completion), navTitle: Strings.settings.editProfile)
+                    ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: friendProfileViewModel.completion), navTitle: Strings.settings.editProfile, toastManager: friendProfileToastManager)
                     if friendProfileViewModel.isLoading {
                         LoadingView()
                     }
+                    
                 }
+                .toast(toast: $friendProfileToastManager.toast)
                 .interactiveDismissDisabled()
             }
             .background(Color.wavelengthBackground)
-            .toast(toast: $friendProfileToast)
         }
+        .toast(toast: $friendProfileToastManager.toast)
     }
 }

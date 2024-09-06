@@ -22,7 +22,6 @@ class ScoreViewModel: ObservableObject {
     @Published var trendValue: String = ""
     
     @Published var isLoading = false
-    @Published var readError: ReadError?
     
     private let scoreService = ScoreService()
     private let breakdownService = BreakdownService()
@@ -47,7 +46,6 @@ class ScoreViewModel: ObservableObject {
                 let fetchedScores = try await scoreService.getFriendScores(fid: fid, bearerToken: bearerToken)
                 let fetchedBreakdown = try await breakdownService.getBreakdown(fid: fid, bearerToken: bearerToken)
                 DispatchQueue.main.async {
-                    self.readError = nil
                     self.scores = fetchedScores
                     self.breakdown = fetchedBreakdown
                     self.scoreChartData = prepareChartData(from: fetchedScores)
@@ -63,13 +61,7 @@ class ScoreViewModel: ObservableObject {
                 }
                 completion(true)
             } catch {
-                DispatchQueue.main.async {
-                    if let encodingError = error as? EncodingError {
-                        self.readError = .encodingError(encodingError)
-                    } else {
-                        self.readError = .networkError(error)
-                    }
-                }
+                throw error
             }
         }
     }

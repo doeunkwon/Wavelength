@@ -11,7 +11,7 @@ struct SettingsView: View {
     
     @EnvironmentObject private var user: User
     
-    @State private var settingsToast: Toast? = nil
+    @StateObject private var settingsToastManager = ToastManager()
     
     @Binding var isLoggedIn: Bool
     @Binding var selectedTab: Int
@@ -28,7 +28,7 @@ struct SettingsView: View {
                 }
                 TabButtonView(selectedTab: $selectedTab, destinationTab: 1, icon: Strings.icons.squareGrid2by2, color: user.color)
             }
-            SettingsPanelView(isLoggedIn: $isLoggedIn, settingsToast: $settingsToast)
+            SettingsPanelView(settingsToastManager: settingsToastManager, isLoggedIn: $isLoggedIn)
                 .cornerRadius(CornerRadius.medium)
                 .shadow(
                     color: ShadowStyle.low.color,
@@ -40,6 +40,6 @@ struct SettingsView: View {
         .padding(.horizontal, Padding.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.wavelengthBackground)
-        .toast(toast: $settingsToast)
+        .toast(toast: $settingsToastManager.toast)
     }
 }

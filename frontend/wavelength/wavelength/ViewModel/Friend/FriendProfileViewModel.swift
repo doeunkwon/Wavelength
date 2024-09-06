@@ -14,13 +14,11 @@ class FriendProfileViewModel: ObservableObject {
     @ObservedObject private var friend: Friend
     
     @Published var isLoading = false
-    @Published var updateError: UpdateError?
     @Published var showProfileFormViewSheet = false
     
     private let friends: [Friend]
     
     private var encodedFriend = EncodedFriend()
-    private var deleteError: DeleteError?
     
     private let friendService = FriendService()
     private let userService = UserService()
@@ -86,19 +84,11 @@ class FriendProfileViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.updateError = nil
                 self.friend.scorePercentage = newFriendScore
                 self.user.scorePercentage = newUserScore
                 
             }
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.updateError = .encodingError(encodingError)
-                } else {
-                    self.updateError = .networkError(error)
-                }
-            }
             throw error // Re-throw the error for caller handling
         }
     }
@@ -122,18 +112,7 @@ class FriendProfileViewModel: ObservableObject {
         do {
             try await friendService.updateFriend(fid: fid, newData: encodedFriend, bearerToken: bearerToken)
             
-            DispatchQueue.main.async {
-                self.updateError = nil
-            }
-            
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.updateError = .encodingError(encodingError)
-                } else {
-                    self.updateError = .networkError(error)
-                }
-            }
             throw error // Re-throw the error for caller handling
         }
     }
@@ -178,52 +157,37 @@ class FriendProfileViewModel: ObservableObject {
                 
             }
             
-            deleteError = nil
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.deleteError = .encodingError(encodingError)
-                } else {
-                    self.deleteError = .networkError(error)
-                }
-            }
             throw error // Re-throw the error for caller handling
         }
     }
     
-    func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) {
+    func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) async throws {
             
         if let friend = profileManager.profile as? Friend {
-            Task {
-                do {
-                    let editedProfile = editedProfileManager.profile
-                    
-                    encodedFriend.emoji = friend.emoji != editedProfile.emoji ? editedProfile.emoji : nil
-                    encodedFriend.color = friend.color != editedProfile.color ? editedProfile.color.toHex() : nil
-                    encodedFriend.firstName = friend.firstName != editedProfile.firstName ? editedProfile.firstName : nil
-                    encodedFriend.lastName = friend.lastName != editedProfile.lastName ? editedProfile.lastName : nil
-                    encodedFriend.goals = friend.goals != editedProfile.goals ? editedProfile.goals : nil
-                    encodedFriend.interests = friend.interests != tagManager.interests ? tagManager.interests : nil
-                    encodedFriend.values = friend.values != tagManager.values ? tagManager.values : nil
-                    
-                    try await updateFriend(fid: friend.fid)
-                    
-                    DispatchQueue.main.async {
-                        
-                        friend.emoji = editedProfile.emoji
-                        friend.color = editedProfile.color
-                        friend.firstName = editedProfile.firstName
-                        friend.lastName = editedProfile.lastName
-                        friend.goals = editedProfile.goals
-                        friend.interests = tagManager.interests
-                        friend.values = tagManager.values
-                        
-                        self.showProfileFormViewSheet.toggle()
-                    }
-                } catch {
-                  // Handle errors
-                    print("Error updating user: \(error)")
-                }
+            let editedProfile = editedProfileManager.profile
+            
+            encodedFriend.emoji = friend.emoji != editedProfile.emoji ? editedProfile.emoji : nil
+            encodedFriend.color = friend.color != editedProfile.color ? editedProfile.color.toHex() : nil
+            encodedFriend.firstName = friend.firstName != editedProfile.firstName ? editedProfile.firstName : nil
+            encodedFriend.lastName = friend.lastName != editedProfile.lastName ? editedProfile.lastName : nil
+            encodedFriend.goals = friend.goals != editedProfile.goals ? editedProfile.goals : nil
+            encodedFriend.interests = friend.interests != tagManager.interests ? tagManager.interests : nil
+            encodedFriend.values = friend.values != tagManager.values ? tagManager.values : nil
+            
+            try await updateFriend(fid: friend.fid)
+            
+            DispatchQueue.main.async {
+                
+                friend.emoji = editedProfile.emoji
+                friend.color = editedProfile.color
+                friend.firstName = editedProfile.firstName
+                friend.lastName = editedProfile.lastName
+                friend.goals = editedProfile.goals
+                friend.interests = tagManager.interests
+                friend.values = tagManager.values
+                
+                self.showProfileFormViewSheet.toggle()
             }
         }
         

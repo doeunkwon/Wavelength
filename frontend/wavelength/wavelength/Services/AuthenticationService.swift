@@ -38,7 +38,12 @@ class AuthenticationService {
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw AuthenticationServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            
+            if httpResponse.statusCode == 400 {
+                throw AuthenticationServiceError.invalidCredentials
+            } else {
+                throw AuthenticationServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            }
         }
 
         do {

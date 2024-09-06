@@ -29,7 +29,6 @@ class ViewModel: ObservableObject {
     @Published var scores: [Score] = []
     @Published var scoreChartData: [ScoreData] = []
     @Published var isLoading = false
-    @Published var readError: ReadError?
     
     init() {
         isLoggedIn = hasBearerToken()
@@ -63,17 +62,9 @@ class ViewModel: ObservableObject {
             let token = try await authenticationService.signIn(username: username, password: password)
             KeychainWrapper.standard.set(token, forKey: "bearerToken")
             DispatchQueue.main.async {
-                self.readError = nil
                 self.isLoggedIn = true
             }
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.readError = .encodingError(encodingError)
-                } else {
-                    self.readError = .networkError(error)
-                }
-            }
             throw error
         }
     }
@@ -98,20 +89,12 @@ class ViewModel: ObservableObject {
             let fetchedFriends = try await friendService.getFriends(bearerToken: bearerToken)
             let fetchedScores = try await scoreService.getUserScores(bearerToken: bearerToken)
             DispatchQueue.main.async {
-                self.readError = nil
                 self.user = fetchedUser
                 self.scores = fetchedScores
                 self.scoreChartData = prepareChartData(from: fetchedScores)
             }
             return fetchedFriends
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.readError = .encodingError(encodingError)
-                } else {
-                    self.readError = .networkError(error)
-                }
-            }
             throw error
         }
     }

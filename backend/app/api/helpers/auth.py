@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
+from fastapi import HTTPException
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
@@ -7,10 +9,14 @@ from config import SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
 from database.neo4j import graph
 from dotenv import load_dotenv
 from helper import get_env_variable
+import logging
 
 '''
 Handles user login and authorization for users to access their own protected data.
 '''
+
+# Set up basic logging configuration
+logging.basicConfig(level=logging.ERROR)
 
 load_dotenv()
 
@@ -66,35 +72,35 @@ def login(form: OAuth2PasswordRequestForm = Depends()):
 
         # Execute the query with username from form
         result = graph.query(cypher_query, {"username": form.username})
-        user = result[0]["u"]
 
         # Handle user not found case
-        if not user:
+        if len(result) == 0:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="User does not exist."
             )
+
+        user = result[0]["u"]
 
         # Verify password directly from user object
         if not verify_password(form.password, user["password"]):
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect password."
             )
 
         access_token = create_access_token(data={"sub": user["uid"]})
 
         return {"access_token": access_token, "token_type": "bearer"}
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
             status_code=500, detail=f"Error fetching user: {str(e)}"
         )
-
-
-def logout():
-    # Logout by relying on token expiration
-    # No additional logic needed as tokens expire after a set time (ACCESS_TOKEN_EXPIRE_MINUTES)
-
-    return {"message": "Successfully logged out"}
 
 
 # Function to retrieve user by username
@@ -108,14 +114,17 @@ async def get_user_by_uid(uid: str):
 
         # Execute the query with uid
         result = graph.query(cypher_query, {"uid": uid})
-        user = result[0]
 
         # Handle user not found case
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
+        if len(result) == 0:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="User does not exist."
+            )
+
+        user = result[0]["u"]
 
         # Return the user data
-        return user["u"]
+        return user
 
     except Exception as e:
         raise HTTPException(

@@ -12,7 +12,6 @@ class ChangePasswordViewModel: ObservableObject {
     
     private var encodedPassword = EncodedPassword()
     @Published var isLoading = false
-    @Published var updateError: UpdateError?
     
     private let userService = UserService()
     
@@ -37,17 +36,7 @@ class ChangePasswordViewModel: ObservableObject {
         
         do {
             try await userService.updatePassword(newData: encodedPassword, bearerToken: bearerToken)
-            DispatchQueue.main.async {
-                self.updateError = nil
-            }
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.updateError = .encodingError(encodingError)
-                } else {
-                    self.updateError = .networkError(error)
-                }
-            }
             throw error // Re-throw the error for caller handling
         }
     }

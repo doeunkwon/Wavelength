@@ -4,6 +4,8 @@ from app.models import User
 from app.api.helpers.auth import hash_password
 from app.api.helpers.users import delete_user as delete_user_helper, update_user as update_user_helper, get_user as get_user_helper
 from database.neo4j import graph
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
+import logging
 
 '''
 Master endpoints.
@@ -71,7 +73,14 @@ async def create_user(user: User = Body(...)):
                     status_code=409, detail="User ID already exists."
                 )
 
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
     except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
         raise HTTPException(
-            status_code=500, detail=f"Error creating user: {str(e)}"
+            status_code=500, detail=f"Error fetching user: {str(e)}"
         )

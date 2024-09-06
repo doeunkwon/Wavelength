@@ -8,15 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum MemoryServiceError: Error {
-    case unauthorized
-    case networkError(Error)
-    case unknownError(String)
-}
-
 class MemoryService {
-    
-    @EnvironmentObject var viewModel: ViewModel
     
     func getMemories(fid: String, bearerToken: String) async throws -> [Memory] {
         
@@ -139,11 +131,7 @@ class MemoryService {
       }
 
       guard (200...299).contains(httpResponse.statusCode) else {
-        if httpResponse.statusCode == 401 {
-          throw MemoryServiceError.unauthorized
-        } else {
           throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
-        }
       }
       
       // Memory deleted successfully (no data to decode on success for DELETE)

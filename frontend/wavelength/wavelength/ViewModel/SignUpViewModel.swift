@@ -12,7 +12,6 @@ class SignUpViewModel: ObservableObject {
     
     @Published var uid: String = ""
     @Published var isLoading = false
-    @Published var updateError: UpdateError?
     
     @ObservedObject private var contentToastManager: ToastManager
     
@@ -47,87 +46,71 @@ class SignUpViewModel: ObservableObject {
         do {
             let fetchedUID = try await userService.createUser(newData: encodedUser)
             DispatchQueue.main.async {
-                self.updateError = nil
                 self.uid = fetchedUID
                 self.contentToastManager.insertToast(style: .success, message: Strings.toast.createProfile)
             }
         } catch {
-            DispatchQueue.main.async {
-                if let encodingError = error as? EncodingError {
-                    self.updateError = .encodingError(encodingError)
-                } else {
-                    self.updateError = .networkError(error)
-                }
-            }
             throw error // Re-throw the error for caller handling
         }
     }
     
-    func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) {
+    func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) async throws {
         
         if let user = profileManager.profile as? User {
-            Task {
-                do {
-                    
-                    let editedProfile = editedProfileManager.profile
-                    
-                    encodedUser.emoji = editedProfile.emoji
-                    encodedUser.color = editedProfile.color.toHex()
-                    encodedUser.firstName = editedProfile.firstName
-                    encodedUser.lastName = editedProfile.lastName
-                    encodedUser.username = {
-                        if let editedUser = editedProfile as? User {
-                            return editedUser.username
-                        } else {
-                            return nil
-                        }
-                        }()
-                    encodedUser.email = {
-                        if let editedUser = editedProfile as? User {
-                            return editedUser.email
-                        } else {
-                            return nil
-                        }
-                        }()
-                    encodedUser.password = {
-                        if let editedUser = editedProfile as? User {
-                            return editedUser.password
-                        } else {
-                            return nil
-                        }
-                        }()
-                    encodedUser.goals = editedProfile.goals
-                    encodedUser.interests = tagManager.interests
-                    encodedUser.values = tagManager.values
-                    encodedUser.scorePercentage = 0
-                    encodedUser.tokenCount = 0
-                    encodedUser.memoryCount = 0
-                    
-                    try await createUser()
-                    
-                    DispatchQueue.main.async {
-                        
-                        user.uid = self.uid
-                        user.emoji = editedProfile.emoji
-                        user.color = editedProfile.color
-                        user.firstName = editedProfile.firstName
-                        user.lastName = editedProfile.lastName
-                        user.goals = editedProfile.goals
-                        user.interests = tagManager.interests
-                        user.values = tagManager.values
-                        user.scorePercentage = 0
-                        user.tokenCount = 0
-                        user.memoryCount = 0
-                        
-                    }
-                    
-                    showModal.toggle()
-                    
-                } catch {
-                  // Handle errors
-                    print("Error updating user: \(error)")
+            
+            let editedProfile = editedProfileManager.profile
+            
+            encodedUser.emoji = editedProfile.emoji
+            encodedUser.color = editedProfile.color.toHex()
+            encodedUser.firstName = editedProfile.firstName
+            encodedUser.lastName = editedProfile.lastName
+            encodedUser.username = {
+                if let editedUser = editedProfile as? User {
+                    return editedUser.username
+                } else {
+                    return nil
                 }
+                }()
+            encodedUser.email = {
+                if let editedUser = editedProfile as? User {
+                    return editedUser.email
+                } else {
+                    return nil
+                }
+                }()
+            encodedUser.password = {
+                if let editedUser = editedProfile as? User {
+                    return editedUser.password
+                } else {
+                    return nil
+                }
+                }()
+            encodedUser.goals = editedProfile.goals
+            encodedUser.interests = tagManager.interests
+            encodedUser.values = tagManager.values
+            encodedUser.scorePercentage = 0
+            encodedUser.tokenCount = 0
+            encodedUser.memoryCount = 0
+            
+            try await createUser()
+            
+            DispatchQueue.main.async {
+                
+                user.uid = self.uid
+                user.emoji = editedProfile.emoji
+                user.color = editedProfile.color
+                user.firstName = editedProfile.firstName
+                user.lastName = editedProfile.lastName
+                user.goals = editedProfile.goals
+                user.interests = tagManager.interests
+                user.values = tagManager.values
+                user.scorePercentage = 0
+                user.tokenCount = 0
+                user.memoryCount = 0
+                
             }
+            
+            showModal.toggle()
         }
         
     }
