@@ -10,33 +10,33 @@ import SwiftUI
 enum Mock {
     
     // MARK: - User
-    
-    static let user: User = User(uid: "1", emoji: "🌎", color: .blue, firstName: "Drew", lastName: "Kasey", username: "drewkasey", email: "drewkasey@gmail.com", password: "Abc123", goals: "I aspire to be an entrepreneur who builds clever apps that address underserved problems in society. I love working out my body so while I build out apps, I still want to achieve athletic milestones, like running a marathon and building a beautiful physique.", interests: ["Programming", "Designing", "Boxing", "Muay Thai", "Running", "EDM", "Nature"], scorePercentage: 63, tokenCount: 25, memoryCount: 135, values: ["Discipline", "Hardwork", "Growth", "Integrity", "Learning", "Positivity"])
-    
+
+    static let user: User = User(uid: "2", emoji: "🚀", color: .green, firstName: "Alex", lastName: "Johnson", username: "alexjohnson", email: "alexj@example.com", password: "Xyz789", goals: "I want to create a non-profit organization focused on providing clean energy solutions to underserved areas. My passion for technology also drives me to develop innovative products that enhance daily life.", interests: ["Renewable Energy", "Robotics", "Hiking", "Cycling", "Electronic Music", "Traveling"], scorePercentage: 78, tokenCount: 40, memoryCount: 110, values: ["Innovation", "Sustainability", "Compassion", "Efficiency", "Adventure", "Balance"])
+
     // MARK: - Friend
-    
-    static let friend: Friend = Friend(fid: "1", scorePercentage: 75, scoreAnalysis: "", tokenCount: 12, memoryCount: 67, emoji: "📀", color: .yellow, firstName: "Kael", lastName: "Ramirez", goals: "He aspires to become a renowned architect, designing innovative and sustainable structures that shape the urban landscape. Additionally, Kael seeks to master the art of photography, capturing the beauty of the world through his lens.", interests: ["Architecture", "Photography", "Technology", "Music"], values: ["Learning", "Growth", "Integrity", "Kindness", "Perspective"])
-    
+
+    static let friend: Friend = Friend(fid: "4", scorePercentage: 88, scoreAnalysis: "", tokenCount: 22, memoryCount: 90, emoji: "🌟", color: .red, firstName: "Taylor", lastName: "Nguyen", goals: "Taylor dreams of becoming a world-class chef, specializing in fusion cuisine that combines flavors from different cultures. Additionally, Taylor is passionate about fitness and aims to compete in triathlons.", interests: ["Cooking", "Fitness", "Traveling", "Music Production"], values: ["Creativity", "Discipline", "Perseverance", "Health", "Culture"])
+
     static let friends: [Friend] = [
-        Friend(fid: "1", scorePercentage: 75, scoreAnalysis: "", tokenCount: 12, memoryCount: 67, emoji: "📀", color: .yellow, firstName: "Kael", lastName: "Ramirez", goals: "He aspires to become a renowned architect, designing innovative and sustainable structures that shape the urban landscape. Additionally, Kael seeks to master the art of photography, capturing the beauty of the world through his lens.", interests: ["Architecture", "Photography", "Technology", "Music"], values: ["Learning", "Growth", "Integrity", "Kindness", "Perspective"]),
-        Friend(fid: "2", scorePercentage: 82, scoreAnalysis: "", tokenCount: -5, memoryCount: 23, emoji: "👽", color: .purple, firstName: "Jasper", lastName: "Chen", goals: "Jasper dreams of creating groundbreaking software solutions that revolutionize industries. He is driven by a passion for coding and problem-solving, and aims to become a leading figure in the tech world.", interests: ["Coding", "Gaming", "Science Fiction", "Music", "Racing", "Travelling"], values: ["Money", "Status", "Growth", "Learning"]),
-        Friend(fid: "3", scorePercentage: 34, scoreAnalysis: "", tokenCount: 18, memoryCount: 45, emoji: "🤖", color: .blue, firstName: "Orion", lastName: "Patel", goals: "With a deep love for storytelling, Orion aspires to write captivating novels that transport readers to different worlds. He seeks to develop his writing craft and share his unique perspective with the world.", interests: ["Writing", "Reading", "Philosophy", "AI", "Quantum Computing", "Bouldering", "Cooking", "Coffee"], values: ["Discipline", "Integrity", "Growth", "Positivity"]),
+        Friend(fid: "4", scorePercentage: 88, scoreAnalysis: "", tokenCount: 22, memoryCount: 90, emoji: "🌟", color: .red, firstName: "Taylor", lastName: "Nguyen", goals: "Taylor dreams of becoming a world-class chef, specializing in fusion cuisine that combines flavors from different cultures. Additionally, Taylor is passionate about fitness and aims to compete in triathlons.", interests: ["Cooking", "Fitness", "Traveling", "Music Production"], values: ["Creativity", "Discipline", "Perseverance", "Health", "Culture"]),
+        Friend(fid: "5", scorePercentage: 67, scoreAnalysis: "", tokenCount: 15, memoryCount: 30, emoji: "🌊", color: .blue, firstName: "Jordan", lastName: "Lee", goals: "Jordan seeks to explore the depths of the ocean, combining their love for marine biology with underwater photography. They also aim to educate people about marine conservation through storytelling.", interests: ["Marine Biology", "Photography", "Environmentalism", "Diving"], values: ["Curiosity", "Conservation", "Adventure", "Education"]),
+        Friend(fid: "6", scorePercentage: 41, scoreAnalysis: "", tokenCount: 8, memoryCount: 60, emoji: "⚡️", color: .orange, firstName: "Blake", lastName: "Wright", goals: "Blake aims to revolutionize the world of digital marketing by developing tools that simplify data-driven strategies. He also dreams of becoming a professional e-sports competitor in his free time.", interests: ["Digital Marketing", "E-Sports", "Data Science", "Basketball"], values: ["Innovation", "Competition", "Growth", "Resilience"]),
     ]
-    
+
     // MARK: - Memory
 
-    static let memory1: Memory = Memory(mid: "1", date: Date(), title: "Text message during my Africa trip 2024 to Nigeria.", content: "He asked me to hang out after my Africa trip. I thought it was quite nice that he thought of me while I was on my trip because it’s easy to forget these things!", tokens: 2)
-    
-    static let memory2: Memory = Memory(mid: "2", date: Date(), title: "Bought me a coffee.", content: "He’d already left the office when I realized I’d forgotten my wallet. Figuring I’d have to skip my usual coffee run, I was about to head back to my desk when he appeared in the doorway, grinning and holding out a steaming cup. It was a small gesture, but it made my day.", tokens: 1)
-    
+    static let memory1: Memory = Memory(mid: "3", date: Date(), title: "Surprise road trip to the mountains.", content: "Taylor surprised me with a spontaneous road trip to the mountains. We hiked to a stunning waterfall, and it was the perfect break from the usual routine.", tokens: 3)
+
+    static let memory2: Memory = Memory(mid: "4", date: Date(), title: "Celebrating my promotion.", content: "Jordan threw a surprise party to celebrate my promotion at work. The thoughtfulness of organizing such an event with all my friends meant the world to me.", tokens: 2)
+
     static let memories: [Memory] = [
-        Memory(mid: "1", date: Date(), title: "Text message during my Africa trip 2024 to Nigeria.", content: "He asked me to hang out after my Africa trip. I thought it was quite nice that he thought of me while I was on my trip because it’s easy to forget these things!", tokens: 2),
-        Memory(mid: "2", date: Date(), title: "Bought me a coffee.", content: "He’d already left the office when I realized I’d forgotten my wallet. Figuring I’d have to skip my usual coffee run, I was about to head back to my desk when he appeared in the doorway, grinning and holding out a steaming cup. It was a small gesture, but it made my day.", tokens: 1)
+        Memory(mid: "3", date: Date(), title: "Surprise road trip to the mountains.", content: "Taylor surprised me with a spontaneous road trip to the mountains. We hiked to a stunning waterfall, and it was the perfect break from the usual routine.", tokens: 3),
+        Memory(mid: "4", date: Date(), title: "Celebrating my promotion.", content: "Jordan threw a surprise party to celebrate my promotion at work. The thoughtfulness of organizing such an event with all my friends meant the world to me.", tokens: 2)
     ]
-    
+
     // MARK: - TagManager
-    
-    static let tagManager: TagManager = TagManager(values: ["Money", "Status", "Growth", "Learning"], interests: ["Writing", "Reading", "Philosophy", "AI", "Quantum Computing", "Bouldering", "Cooking", "Coffee"])
+
+    static let tagManager: TagManager = TagManager(values: ["Curiosity", "Adventure", "Growth", "Creativity"], interests: ["Hiking", "Diving", "Digital Marketing", "E-Sports", "Cooking", "Photography"])
     
     // MARK: - Score
     
