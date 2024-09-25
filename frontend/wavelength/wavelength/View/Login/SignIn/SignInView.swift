@@ -52,16 +52,16 @@ struct SignInView: View {
                                 Task {
                                     do {
                                         try await viewModel.getToken(username: username, password: password)
-                                    } catch let error as AuthenticationServiceError {
+                                    } catch let error as ServiceError {
                                         switch error {
-                                        case .invalidCredentials:
-                                            contentToastManager.insertToast(style: .error, message: Strings.Authentication.incorrectCredentials)
-                                        case .networkError(let underlyingError):
-                                            print("\(Strings.Errors.network): \(underlyingError)")
-                                            contentToastManager.insertToast(style: .error, message: Strings.Errors.network)
-                                        case .unknownError(let message):
-                                            print("Unknown error: \(message)")
-                                            contentToastManager.insertToast(style: .error, message: "Unknown error")
+                                        case .unauthorized:
+                                            contentToastManager.insertToast(style: .error, message: error.localizedDescription)
+                                        case .onlineError(let message):
+                                            print(Strings.Errors.online(message: message))
+                                            contentToastManager.insertToast(style: .error, message: Strings.Errors.online(message: message))
+                                        case .offlineError(let message):
+                                            print(Strings.Errors.offline(message: message))
+                                            contentToastManager.insertToast(style: .error, message: Strings.Errors.offline(message: message))
                                         }
                                     }
                                 }

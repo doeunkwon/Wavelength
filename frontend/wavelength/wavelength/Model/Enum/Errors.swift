@@ -5,34 +5,22 @@
 //  Created by Doeun Kwon on 2024-08-20.
 //
 
-enum ScoreServiceError: Error {
-    case networkError(Error)
-    case unknownError(String)
-}
+import SwiftUI
 
-enum BreakdownServiceError: Error {
-    case networkError(Error)
-    case unknownError(String)
-}
-
-enum AuthenticationServiceError: Error {
-    case invalidCredentials
-    case networkError(Error)
-    case unknownError(String)
-}
-
-enum UserServiceError: Error {
+enum ServiceError: LocalizedError {
+    
     case unauthorized
-    case networkError(Error)
-    case unknownError(String)
-}
-
-enum FriendServiceError: Error {
-    case networkError(Error)
-    case unknownError(String)
-}
-
-enum MemoryServiceError: Error {
-    case networkError(Error)
-    case unknownError(String)
+    case onlineError(String)
+    case offlineError(String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .unauthorized:
+            return Strings.Authentication.incorrectCredentials
+        case .onlineError(let message):
+            return "An online error occurred: \(message)"
+        case .offlineError(let message):
+            return "An offline error occurred: \(message)"
+        }
+    }
 }

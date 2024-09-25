@@ -49,15 +49,15 @@ struct ContentView: View {
                         do {
                             friendsManager.friends = try await viewModel.getUserInfo()
                             viewIsLoading = viewModel.isLoading
-                        } catch let error as UserServiceError {
+                        } catch let error as ServiceError {
                             switch error {
                             case .unauthorized:
                                 self.viewModel.isLoggedIn = false
                                 KeychainWrapper.standard.removeObject(forKey: "bearerToken")
-                            case .networkError(let underlyingError):
-                                print("Network error: \(underlyingError)")
-                            case .unknownError(let message):
-                                print("Unknown error: \(message)")
+                            case .onlineError(let message):
+                                print(Strings.Errors.online(message: message))
+                            case .offlineError(let message):
+                                print(Strings.Errors.offline(message: message))
                             }
                         }
                     }

@@ -12,7 +12,7 @@ class AuthenticationService {
     func signIn(username: String, password: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/login") else {
-          throw AuthenticationServiceError.unknownError("Failed to create URL")
+          throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
           
         var urlRequest = URLRequest(url: url)
@@ -34,15 +34,15 @@ class AuthenticationService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
         
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw AuthenticationServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
             
             if httpResponse.statusCode == 400 {
-                throw AuthenticationServiceError.invalidCredentials
+                throw ServiceError.unauthorized
             } else {
-                throw AuthenticationServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+                throw ServiceError.onlineError(Strings.Errors.serverError)
             }
         }
 
@@ -51,7 +51,7 @@ class AuthenticationService {
             let decodedResponse = try decoder.decode(DecodedAuthentication.self, from: data)
             return decodedResponse.access_token
         } catch {
-            throw AuthenticationServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     

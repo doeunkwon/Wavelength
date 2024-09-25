@@ -107,8 +107,12 @@ struct Strings {
     
     // MARK: - Errors
     struct Errors {
-        static let generic = "Error"
-        static let network = "Network error"
+        static func online(message: String) -> String { return "Online Error: \(message)" }
+        static func offline(message: String) -> String { return "Offline Error: \(message)" }
+        static let invalidResponse: String = "Invalid response"
+        static let serverError: String = "Server error"
+        static let decodeFailed: String = "Failed to decode JSON"
+        static let urlFailed: String = "Failed to create URL"
     }
     
     // MARK: - Dashboard

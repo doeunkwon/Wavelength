@@ -13,7 +13,7 @@ class MemoryService {
     func getMemories(fid: String, bearerToken: String) async throws -> [Memory] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {
-            throw MemoryServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -23,11 +23,11 @@ class MemoryService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
 
         do {
@@ -48,13 +48,13 @@ class MemoryService {
             
             return memories
         } catch {
-            throw MemoryServiceError.unknownError("Error decoding memory data")
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     
     func updateMemory(mid: String, newData: CodableMemory, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(mid)") else {
-            throw MemoryServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -71,18 +71,18 @@ class MemoryService {
         let (_, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
     }
     
     func createMemory(newData: CodableMemory, fid: String, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {
-            throw MemoryServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -99,11 +99,11 @@ class MemoryService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
 
         do {
@@ -111,13 +111,13 @@ class MemoryService {
             let decodedMID = try decoder.decode(DecodedMID.self, from: data)
             return decodedMID.mid
         } catch {
-            throw MemoryServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     
     func deleteMemory(mid: String, bearerToken: String) async throws {
       guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(mid)") else {
-        throw MemoryServiceError.unknownError("Failed to create URL")
+        throw ServiceError.offlineError(Strings.Errors.urlFailed)
       }
 
       var urlRequest = URLRequest(url: url)
@@ -127,14 +127,11 @@ class MemoryService {
       let (_, response) = try await URLSession.shared.data(for: urlRequest)
 
       guard let httpResponse = response as? HTTPURLResponse else {
-        throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+        throw ServiceError.onlineError(Strings.Errors.invalidResponse)
       }
 
       guard (200...299).contains(httpResponse.statusCode) else {
-          throw MemoryServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+          throw ServiceError.onlineError(Strings.Errors.serverError)
       }
-      
-      // Memory deleted successfully (no data to decode on success for DELETE)
-      print("Memory deleted successfully!")
     }
 }

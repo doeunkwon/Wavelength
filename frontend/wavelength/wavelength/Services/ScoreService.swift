@@ -13,7 +13,7 @@ class ScoreService {
     func getUserScores(bearerToken: String) async throws -> [Score] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores") else {
-            throw ScoreServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -23,11 +23,11 @@ class ScoreService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw ScoreServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw ScoreServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
         
 
@@ -49,14 +49,14 @@ class ScoreService {
             
             return scores
         } catch {
-            throw ScoreServiceError.unknownError("Error decoding score data")
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     
     func getFriendScores(fid: String, bearerToken: String) async throws -> [Score] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores/\(fid)") else {
-            throw ScoreServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -66,11 +66,11 @@ class ScoreService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw ScoreServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw ScoreServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
         
 
@@ -92,14 +92,14 @@ class ScoreService {
             
             return scores
         } catch {
-            throw ScoreServiceError.unknownError("Error decoding score data")
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     
     func createUserScore(newData: CodableScore, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores") else {
-            throw ScoreServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -116,11 +116,11 @@ class ScoreService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw ScoreServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw ScoreServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
 
         do {
@@ -128,14 +128,14 @@ class ScoreService {
             let decodedSID = try decoder.decode(DecodedSID.self, from: data)
             return decodedSID.sid
         } catch {
-            throw ScoreServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     
     func createFriendScore(newData: CodableScore, fid: String, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores/\(fid)") else {
-            throw ScoreServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -152,11 +152,11 @@ class ScoreService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw ScoreServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw ScoreServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
 
         do {
@@ -164,7 +164,7 @@ class ScoreService {
             let decodedSID = try decoder.decode(DecodedSID.self, from: data)
             return decodedSID.sid
         } catch {
-            throw ScoreServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     

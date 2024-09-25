@@ -13,7 +13,7 @@ class FriendService {
     func getFriends(bearerToken: String) async throws -> [Friend] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
-            throw FriendServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -23,11 +23,11 @@ class FriendService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw FriendServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw FriendServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
 
         do {
@@ -52,13 +52,13 @@ class FriendService {
             
             return friends
         } catch {
-            throw FriendServiceError.unknownError("Error decoding friend data")
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     
     func updateFriend(fid: String, newData: CodableFriend, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends/\(fid)") else {
-            throw FriendServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -75,20 +75,18 @@ class FriendService {
         let (_, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw FriendServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw FriendServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
-
-        print("Friend updated successfully!")
     }
     
     func createFriend(newData: CodableFriend, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
-            throw FriendServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -105,11 +103,11 @@ class FriendService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw FriendServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw FriendServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+            throw ServiceError.onlineError(Strings.Errors.serverError)
         }
 
         do {
@@ -117,13 +115,13 @@ class FriendService {
             let decodedFID = try decoder.decode(DecodedFID.self, from: data)
             return decodedFID.fid
         } catch {
-            throw FriendServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     
     func deleteFriend(fid: String, bearerToken: String) async throws {
       guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends/\(fid)") else {
-        throw FriendServiceError.unknownError("Failed to create URL")
+        throw ServiceError.offlineError(Strings.Errors.urlFailed)
       }
 
       var urlRequest = URLRequest(url: url)
@@ -133,14 +131,11 @@ class FriendService {
       let (_, response) = try await URLSession.shared.data(for: urlRequest)
 
       guard let httpResponse = response as? HTTPURLResponse else {
-        throw FriendServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+        throw ServiceError.onlineError(Strings.Errors.invalidResponse)
       }
 
       guard (200...299).contains(httpResponse.statusCode) else {
-          throw FriendServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+          throw ServiceError.onlineError(Strings.Errors.serverError)
       }
-      
-      // Friend deleted successfully (no data to decode on success for DELETE)
-      print("Friend deleted successfully!")
     }
 }

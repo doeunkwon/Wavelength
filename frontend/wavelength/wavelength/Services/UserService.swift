@@ -13,7 +13,7 @@ class UserService {
     func getUser(bearerToken: String) async throws -> User {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
-            throw UserServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -23,15 +23,15 @@ class UserService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
         
         guard (200...299).contains(httpResponse.statusCode) else {
             
             if httpResponse.statusCode == 401 {
-                throw UserServiceError.unauthorized
+                throw ServiceError.unauthorized
             } else {
-                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+                throw ServiceError.onlineError(Strings.Errors.serverError)
             }
             
         }
@@ -57,13 +57,13 @@ class UserService {
             )
             return user
         } catch {
-            throw UserServiceError.unknownError("Error decoding user data")
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     
     func updateUser(newData: CodableUser, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
-            throw UserServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -80,24 +80,21 @@ class UserService {
         let (_, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
             if httpResponse.statusCode == 401 {
-                throw UserServiceError.unauthorized
+                throw ServiceError.unauthorized
             } else {
-                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+                throw ServiceError.onlineError(Strings.Errors.serverError)
             }
         }
-
-        // Handle success response (optional) - You might not need to decode anything on success
-        print("User updated successfully!")
     }
     
     func updatePassword(newData: EncodedPassword, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users/password") else {
-            throw UserServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -114,25 +111,22 @@ class UserService {
         let (_, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
             if httpResponse.statusCode == 401 {
-                throw UserServiceError.unauthorized
+                throw ServiceError.unauthorized
             } else {
-                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+                throw ServiceError.onlineError(Strings.Errors.serverError)
             }
         }
-
-        // Handle success response (optional) - You might not need to decode anything on success
-        print("Password updated successfully!")
     }
     
     func createUser(newData: CodableUser) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/public/users") else {
-            throw UserServiceError.unknownError("Failed to create URL")
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
         }
 
         var urlRequest = URLRequest(url: url)
@@ -148,14 +142,14 @@ class UserService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw UserServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
             if httpResponse.statusCode == 401 {
-                throw UserServiceError.unauthorized
+                throw ServiceError.unauthorized
             } else {
-                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+                throw ServiceError.onlineError(Strings.Errors.serverError)
             }
         }
 
@@ -164,35 +158,32 @@ class UserService {
             let decodedUID = try decoder.decode(DecodedUID.self, from: data)
             return decodedUID.uid
         } catch {
-            throw UserServiceError.networkError(NSError(domain: "JSON", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode JSON"]))
+            throw ServiceError.offlineError(Strings.Errors.decodeFailed)
         }
     }
     
     func deleteUser(bearerToken: String) async throws {
-      guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
-        throw UserServiceError.unknownError("Failed to create URL")
-      }
+        guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
+            throw ServiceError.offlineError(Strings.Errors.urlFailed)
+        }
 
-      var urlRequest = URLRequest(url: url)
-      urlRequest.httpMethod = "DELETE"
-      urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "DELETE"
+        urlRequest.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
 
-      let (_, response) = try await URLSession.shared.data(for: urlRequest)
+        let (_, response) = try await URLSession.shared.data(for: urlRequest)
 
-      guard let httpResponse = response as? HTTPURLResponse else {
-        throw UserServiceError.networkError(NSError(domain: "HTTP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"]))
-      }
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ServiceError.onlineError(Strings.Errors.invalidResponse)
+        }
 
         guard (200...299).contains(httpResponse.statusCode) else {
             if httpResponse.statusCode == 401 {
-                throw UserServiceError.unauthorized
+                throw ServiceError.unauthorized
             } else {
-                throw UserServiceError.networkError(NSError(domain: "HTTP", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+                throw ServiceError.onlineError(Strings.Errors.serverError)
             }
         }
-      
-      // User deleted successfully (no data to decode on success for DELETE)
-      print("User deleted successfully!")
     }
     
 }

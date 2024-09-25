@@ -93,9 +93,9 @@ struct FriendProfileView: View {
                                         friendProfileToastManager.insertToast(style: .success, message: Strings.Score.updated)
                                     }
                                 } catch {
-                                    print("Error:", error.localizedDescription)
+                                    print(Strings.Errors.online(message: error.localizedDescription))
                                     DispatchQueue.main.async {
-                                        friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.network)
+                                        friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.online(message: error.localizedDescription))
                                     }
                                 }
                             }
@@ -141,10 +141,10 @@ struct FriendProfileView: View {
                             try await friendProfileViewModel.deleteFriend(fid: friend.fid, friendMemoryCount: friend.memoryCount, friendTokenCount: friend.tokenCount)
                             dismiss()
                         } catch {
-                            print("\(Strings.Errors.generic):", error.localizedDescription)
+                            print(Strings.Errors.online(message: error.localizedDescription))
                             DispatchQueue.main.async {
                     
-                                friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.network)
+                                friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.online(message: error.localizedDescription))
                                 
                             }
                         }
