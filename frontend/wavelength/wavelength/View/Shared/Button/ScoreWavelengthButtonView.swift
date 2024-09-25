@@ -22,29 +22,15 @@ struct ScoreWavelengthButtonView: View {
             ZStack (alignment: .center) {
                 RoundedRectangle(cornerRadius: CornerRadius.max)
                     .frame(width: 210, height: Frame.floatingButtonHeight)
-                    .foregroundColor(.clear)
-                    .overlay(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                .wavelengthOffWhite.opacity(0.9),
-                                .wavelengthOffWhite.opacity(0.98),
-                                .wavelengthOffWhite,
-                                .wavelengthOffWhite.opacity(0.98),
-                                .wavelengthOffWhite.opacity(0.9)
-                            ]),
-                            startPoint: .bottom,
-                            endPoint: .top
-                        )
-                        .cornerRadius(CornerRadius.max)
-                    )
+                    .foregroundColor(.wavelengthOffWhite)
                     .overlay( /// apply a rounded border
                         RoundedRectangle(cornerRadius: CornerRadius.max)
-                            .stroke(.wavelengthWhite, lineWidth: Border.medium)
+                            .stroke(.wavelengthWhite, lineWidth: Border.small)
                     )
                 HStack (alignment: .center, spacing: Padding.medium) {
                     
-                    Text("Score wavelength")
-                    Image(systemName: Strings.icons.waveformPathEcg)
+                    Text(Strings.Score.buttonTitle)
+                    Image(systemName: Strings.Icons.waveform)
                     
                 }
                 .foregroundStyle(.wavelengthText)

@@ -23,15 +23,15 @@ struct ChangePasswordView: View {
         NavigationStack {
             ZStack {
                 VStack(alignment: .leading, spacing: Padding.xlarge) {
-                    SecureFieldInputView(title: Strings.form.currentPassword, placeholder: "Lmk if you forgot it: bkwon38@gmail.com", binding: $currentPassword)
+                    SecureFieldInputView(title: Strings.Authentication.currentPassword, placeholder: Strings.Actions.tapToEdit, binding: $currentPassword)
                     
                     DividerLineView()
                     
-                    SecureFieldInputView(title: Strings.form.newPassword, placeholder: "We don't have rules to our passwords!", binding: $newPassword)
+                    SecureFieldInputView(title: Strings.Authentication.newPassword, placeholder: Strings.Actions.tapToEdit, binding: $newPassword)
                     
                     DividerLineView()
                     
-                    SecureFieldInputView(title: Strings.form.confirmPassword, placeholder: "But be responsible", binding: $confirmPassword)
+                    SecureFieldInputView(title: Strings.Authentication.confirmPassword, placeholder: Strings.Actions.tapToEdit, binding: $confirmPassword)
                     
                     Spacer()
                 }
@@ -39,12 +39,12 @@ struct ChangePasswordView: View {
                     LoadingView()
                 }
             }
-            .navigationTitle(Strings.settings.changePassword)
+            .navigationTitle(Strings.Authentication.changePassword)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 DownButtonView()
-            }, trailing: Button(Strings.form.save) {
+            }, trailing: Button(Strings.Actions.save) {
                 if newPassword == confirmPassword {
                     Task {
                         do {
@@ -52,7 +52,7 @@ struct ChangePasswordView: View {
 
                             DispatchQueue.main.async {
                     
-                                settingsToastManager.insertToast(style: .success, message: Strings.toast.updatePassword)
+                                settingsToastManager.insertToast(style: .success, message: Strings.Authentication.passwordUpdated)
                                 
                             }
                             

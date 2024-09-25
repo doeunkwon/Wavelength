@@ -23,13 +23,13 @@ struct TagView: View {
                 .foregroundColor(.wavelengthText)
             if editable {
                 Button {
-                    if flag == Strings.general.values {
+                    if flag == Strings.Profile.values {
                         tagManager.removeValueTag(tag: text)
-                    } else if flag == Strings.general.interests {
+                    } else if flag == Strings.Profile.interests {
                         tagManager.removeInterestTag(tag: text)
                     }
                 } label: {
-                    Image(systemName: Strings.icons.xmark)
+                    Image(systemName: Strings.Icons.xmark)
                         .font(.system(size: Fonts.body))
                         .foregroundColor(.wavelengthGrey)
                         .padding(.leading, Padding.xsmall)

@@ -23,7 +23,7 @@ struct HeaderView: View {
                     .font(.system(size: Fonts.subtitle))
                     .lineLimit(1)
                     .truncationMode(.tail)
-                Text((tokenCount > 0 ? "+" : "") + String(tokenCount) + " " + Strings.general.tokens)
+                Text(Strings.Dashboard.tokens(str: (tokenCount > 0 ? "+" : "") + String(tokenCount)))
                     .font(.system(size: Fonts.body))
                     .foregroundStyle(.wavelengthTokenOrange)
             }

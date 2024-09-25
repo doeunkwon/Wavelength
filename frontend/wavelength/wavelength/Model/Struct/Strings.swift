@@ -9,162 +9,150 @@ import SwiftUI
 
 struct Strings {
     
-    struct login {
-        
-        static let logIn: String = "Log in"
-        static let signUp: String = "Sign up"
-        static let orCreateAProfile: String = "Or create a profile"
-        static let letsGetYouStarted: String = "Let's get you started."
-        static let chooseAStrongPassword: String = "Choose a strong password."
-        static let tellUsAboutYourself: String = "Tell us about yourself."
-        
+    // MARK: - Authentication
+    struct Authentication {
+        static let login = "Log in"
+        static let signUp = "Sign up"
+        static let orCreateProfile = "Or create a profile"
+        static let letsGetStarted = "Let's get you started."
+        static let chooseStrongPassword = "Choose a strong password."
+        static let tellUsAboutYourself = "Tell us about yourself."
+        static let incorrectCredentials = "Incorrect username or password."
+        static let password = "Password"
+        static let currentPassword = "Current password"
+        static let newPassword = "New password"
+        static let confirmPassword = "Confirm password"
+        static let changePassword = "Change password"
+        static let passwordUpdated = "Your password has been updated."
+        static let signInAgain = "You'll need to sign in again."
     }
     
-    struct error {
-        
-        static let networkError: String = "Network error"
-        
+    // MARK: - Profile
+    struct Profile {
+        static let edit = "Edit profile"
+        static let created = "Your profile has been created."
+        static let firstName = "First name"
+        static let lastName = "Last name"
+        static let username = "Username"
+        static let email = "Email"
+        static let emoji = "Emoji"
+        static let pickEmoji = "Pick an emoji"
+        static let chooseColor = "Choose a color"
+        static let goals = "Goals"
+        static let goalsAndAspirations = "Goals & aspirations"
+        static let interests = "Interests"
+        static let addInterest = "Add an interest"
+        static let addValue = "Add a value"
+        static let values = "Values"
+        static func percentageScore(int: Int) -> String {return "\(int)% score"}
     }
     
-    struct general {
-        
-        static let tokens: String = "tokens"
-        static let values: String = "Values"
-        static let username: String = "Username"
-        static let email: String = "Email"
-        static let interests: String = "Interests"
-        static let emoji: String = "Emoji"
-        static let addAValue: String = "Add a value"
-        static let addAnInterest: String = "Add an interest"
-        static let cancel: String = "Cancel"
-        static let settings: String = "Settings"
-        static let yourCircle: String = "Your circle"
-        
+    // MARK: - Memory
+    struct Memory {
+        static func memories(int: Int) -> String { return "\(int) Memories" }
+        static let memories = "Memories"
+        static let new = "New memory"
+        static let title = "Title"
+        static let content = "Content"
+        static let date = "Date"
+        static let add = "Add a memory"
+        static let edit = "Edit memory"
+        static let delete = "Delete memory"
+        static let deleted = "Your memory has been deleted."
+        static let deleteMessage = "This action cannot be undone."
     }
     
-    struct score {
-        
-        static let breakdown: String = "Breakdown"
-        static let progress: String = "Progress"
-        static let change: String = "Change"
-        static let high: String = "High"
-        static let low: String = "Low"
-        static let analysis: String = "Analysis"
-        
+    // MARK: - Friends
+    struct Friends {
+        static let new = "New friend"
+        static let add = "Add a friend"
+        static let yourCircle = "Your circle"
     }
     
-    struct form {
-        
-        static let tapToEdit: String = "Tap to edit"
-        static let currentPassword: String = "Current password"
-        static let newPassword: String = "New password"
-        static let confirmPassword: String = "Confirm password"
-        static let firstName: String = "First name"
-        static let lastName: String = "Last name"
-        static let goals: String = "Goals"
-        static let goalsAndAspirations: String = "Goals & aspirations"
-        static let username: String = "Username"
-        static let email: String = "Email"
-        static let create: String = "Create"
-        static let save: String = "Save"
-        static let pickAnEmoji: String = "Pick an emoji"
-        static let chooseAColor: String = "Choose a color"
-        static let password: String = "Password"
-        
+    // MARK: - Settings
+    struct Settings {
+        static let title = "Settings"
+        static let edit = "Edit profile"
+        static let changePassword = "Change password"
+        static let delete = "Delete profile"
+        static let logOut = "Log out"
+        static let deleteMessage = "This action cannot be undone."
+        static let deleteToast = "Your profile has been deleted."
+        static let logOutMessage = "You'll need to sign in again."
     }
     
-    struct settings {
-        
-        static let editProfile: String = "Edit profile"
-        static let changePassword: String = "Change password"
-        static let goodbye: String = "Goodbye 🥹"
-        static let deleteProfile: String = "Delete profile"
-        static let logOut: String = "Log out"
-        static let confirmDelete: String = "Are you sure you want to delete your profile? This action cannot be undone."
-        static let confirmDeleteProfile: String = "Hold your horses 🐴"
-        static let confirmLogout: String = "Are you sure you want to log out? You'll need to sign in again."
-        static let confirmLogoutProfile: String = "Confirm logout"
-        
+    // MARK: - Actions
+    struct Actions {
+        static let create = "Create"
+        static let save = "Save"
+        static let delete = "Delete"
+        static let edit = "Edit"
+        static let cancel = "Cancel"
+        static let score = "Score"
+        static let tapToEdit = "Tap to edit"
     }
     
-    struct dashboard {
-        
-        static let overall: String = "Score"
-        static let tokens: String = "Tokens"
-        static let memories: String = "Memories"
-        
+    // MARK: - Score
+    struct Score {
+        static let buttonTitle = "Score Wavelength"
+        static let overall = "Score"
+        static let breakdown = "Breakdown"
+        static let progress = "Progress"
+        static let change = "Change"
+        static let high = "High"
+        static let low = "Low"
+        static let analysis = "Analysis"
+        static let updated = "Your score has been updated."
     }
     
-    struct friend {
-        
-        static let newFriend: String = "New friend"
-        static let addAFriend: String = "Add a friend"
-        static let confirmDelete: String = "Are you sure you want to delete this profile? This action cannot be undone."
-        static let confirmDeleteProfile: String = "Confirm delete profile"
-        static let deleteProfile: String = "Delete profile"
-        
+    // MARK: - Errors
+    struct Errors {
+        static let generic = "Error"
+        static let network = "Network error"
     }
     
-    struct profile {
-
-        static let percentageScore: String = "% score"
-        
+    // MARK: - Dashboard
+    struct Dashboard {
+        static func tokens(str: String) -> String { return "\(str) Tokens" }
+        static let tokens = "Tokens"
+        static let memories = "Memories"
     }
     
-    struct memory {
-        
-        static let memories: String = "memories"
-        static let newMemory: String = "New memory"
-        static let editMemory: String = "Edit memory"
-        static let title: String = "Title"
-        static let content: String = "Content"
-        static let date: String = "Date"
-        static let addAMemory: String = "Add a memory"
-        static let confirmDelete: String = "Are you sure you want to delete this memory? This action cannot be undone."
-        static let confirmDeleteMemory: String = "Confirm delete memory"
-        static let deleteMemory: String = "Delete memory"
-        
-    }
-
-    struct chat {
-     
-        static let message: String = "Message"
-        
+    // MARK: - General
+    struct General {
+        static let cancel = "Cancel"
+        static let versionInfo = "Version 0.1 • Made with ❤️ by Doeun"
+        static let tokens = "Tokens"
     }
     
-    struct toast {
-        
-        static let updatePassword: String = "Your password has been updated."
-        static let deleteProfile: String = "Your profile has been deleted."
-        static let updateScore: String = "Your score has been updated."
-        static let createProfile: String = "Your profile has been created."
-        
+    // MARK: - Icons
+    struct Icons {
+        static let gear = "gear"
+        static let gearshape = "gearshape"
+        static let grid = "square.grid.2x2"
+        static let bubble = "bubble"
+        static let person = "person"
+        static let lock = "lock"
+        static let trash = "trash"
+        static let doorOpen = "door.left.hand.open"
+        static let arrowRight = "arrow.right"
+        static let plus = "plus"
+        static let slider = "slider.horizontal.3"
+        static let chevronUp = "chevron.up"
+        static let chevronDown = "chevron.down"
+        static let chevronLeft = "chevron.left"
+        static let chevronRight = "chevron.right"
+        static let ellipsis = "ellipsis"
+        static let pencil = "pencil"
+        static let xmark = "xmark"
+        static let personTwo = "person.2"
+        static let icloudSlash = "icloud.slash"
+        static let personDotted = "person.line.dotted.person"
+        static let waveform = "waveform.path.ecg"
     }
     
-    struct icons {
-        
-        static let gear: String = "gear"
-        static let gearshape: String = "gearshape"
-        static let squareGrid2by2: String = "square.grid.2x2"
-        static let bubble: String = "bubble"
-        static let person: String = "person"
-        static let lock: String = "lock"
-        static let trash: String = "trash"
-        static let doorLeftHandOpen: String = "door.left.hand.open"
-        static let arrowRight: String = "arrow.right"
-        static let plus: String = "plus"
-        static let sliderHorizontalThree: String = "slider.horizontal.3"
-        static let chevronUp: String = "chevron.up"
-        static let chevronDown: String = "chevron.down"
-        static let chevronLeft: String = "chevron.left"
-        static let chevronRight: String = "chevron.right"
-        static let ellipsis: String = "ellipsis"
-        static let pencil: String = "pencil"
-        static let xmark: String = "xmark"
-        static let person2: String = "person.2"
-        static let icloudslash: String = "icloud.slash"
-        static let personLineDottedPerson: String = "person.line.dotted.person"
-        static let waveformPathEcg: String = "waveform.path.ecg"
-        
+    // MARK: - Images
+    struct Images {
+        static let wavelengthLogo = "wavelengthLogo"
     }
 }

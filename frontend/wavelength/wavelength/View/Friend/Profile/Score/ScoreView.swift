@@ -44,23 +44,23 @@ struct ScoreView: View {
                             DividerLineView()
                             
                             VStack (alignment: .leading, spacing: Padding.medium) {
-                                Text(Strings.score.progress)
+                                Text(Strings.Score.progress)
                                     .font(.system(size: Fonts.body))
                                     .foregroundStyle(.wavelengthDarkGrey)
                                 
                                 DashboardView(
                                     firstEntry: (
-                                        Strings.score.change,
+                                        Strings.Score.change,
                                         scoreViewModel.trendValue
                                     ),
                                     firstEntryColor: TrendColor.from(value: scoreViewModel.trendValue),
                                     secondEntry: (
-                                        Strings.score.high,
+                                        Strings.Score.high,
                                         "\(Int(scoreViewModel.highValue))%"
                                     ),
                                     secondEntryColor: intToColor(value: Int(scoreViewModel.highValue)),
                                     thirdEntry: (
-                                        Strings.score.low,
+                                        Strings.Score.low,
                                         "\(Int(scoreViewModel.lowValue))%"
                                     ),
                                     thirdEntryColor: intToColor(value: Int(scoreViewModel.lowValue)),
@@ -71,7 +71,7 @@ struct ScoreView: View {
                             DividerLineView()
                             
                             SliderFieldView(
-                                title: Strings.score.breakdown,
+                                title: Strings.Score.breakdown,
                                 pairs: [
                                     "Memories": scoreViewModel.breakdown.memory,
                                     "Goals": scoreViewModel.breakdown.goal,

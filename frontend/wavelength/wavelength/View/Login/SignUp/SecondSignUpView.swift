@@ -34,11 +34,11 @@ struct SecondSignUpView: View {
         
         NavigationStack {
             VStack(spacing: Padding.xlarge) {
-                SecureFieldInputView(title: Strings.form.password, placeholder: "Enter password", binding: $password)
+                SecureFieldInputView(title: Strings.Authentication.password, placeholder: Strings.Actions.tapToEdit, binding: $password)
                 
                 DividerLineView()
                 
-                SecureFieldInputView(title: Strings.form.confirmPassword, placeholder: "Confirm password", binding: $confirmPassword)
+                SecureFieldInputView(title: Strings.Authentication.confirmPassword, placeholder: Strings.Actions.tapToEdit, binding: $confirmPassword)
                 Spacer()
             }
             .padding(Padding.large)
@@ -54,7 +54,7 @@ struct SecondSignUpView: View {
             }
                 .disabled(password != confirmPassword || password == "" || confirmPassword == "")
             )
-            .navigationTitle(Strings.login.chooseAStrongPassword)
+            .navigationTitle(Strings.Authentication.chooseStrongPassword)
             .navigationBarTitleDisplayMode(.inline)
         }
     }

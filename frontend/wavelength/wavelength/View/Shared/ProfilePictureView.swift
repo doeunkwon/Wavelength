@@ -31,7 +31,7 @@ struct ProfilePictureView: View {
                     .cornerRadius(CornerRadius.medium)
                 )
             if emoji.count == 0 && emojiSize == Fonts.icon {
-                Text(Strings.form.tapToEdit)
+                Text(Strings.Actions.tapToEdit)
                     .font(.system(size: Fonts.body))
                     .foregroundColor(.wavelengthGrey)
             } else {

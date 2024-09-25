@@ -20,7 +20,7 @@ struct ThirdSignUpView: View {
     
     var body: some View {
         ZStack {
-            ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(LeftButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.create, action: signUpViewModel.completion), navTitle: Strings.login.tellUsAboutYourself, toastManager: thidSignUpToastManager)
+            ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(LeftButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.Actions.create, action: signUpViewModel.completion), navTitle: Strings.Authentication.tellUsAboutYourself, toastManager: thidSignUpToastManager)
             if signUpViewModel.isLoading {
                 LoadingView()
             }

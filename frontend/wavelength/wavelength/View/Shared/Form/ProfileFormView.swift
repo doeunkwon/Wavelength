@@ -51,10 +51,10 @@ struct ProfileFormView: View {
                         Spacer()
                         
                         Menu {
-                            Button(Strings.form.pickAnEmoji, action: {
+                            Button(Strings.Profile.pickEmoji, action: {
                                 isEmojiPickerVisible.toggle()
                             })
-                            Button(Strings.form.chooseAColor, action: {
+                            Button(Strings.Profile.chooseColor, action: {
                                 UIColorWellHelper.helper.execute?()
                             })
                         } label: {
@@ -86,22 +86,24 @@ struct ProfileFormView: View {
                         Spacer()
                     }
                     
-                    TextFieldInputView(title: Strings.form.firstName, placeholder: "Hershey", binding: $editedProfileManager.profile.firstName, isMultiLine: false)
+                    TextFieldInputView(title: Strings.Profile.firstName, placeholder: Strings.Actions.tapToEdit, binding: $editedProfileManager.profile.firstName, isMultiLine: false)
                     
                     DividerLineView()
                     
-                    TextFieldInputView(title: Strings.form.lastName, placeholder: "Kwon", binding: $editedProfileManager.profile.lastName, isMultiLine: false)
+                    TextFieldInputView(title: Strings.Profile.lastName, placeholder: Strings.Actions.tapToEdit, binding: $editedProfileManager.profile.lastName, isMultiLine: false)
                     
                     DividerLineView()
                     
-                    TextFieldInputView(title: Strings.form.goals, placeholder: "To locate the cabinet with the best treats hidden inside. Will use super-sniffing powers to track down the delicious scent and get those yummy goodies.", binding: $editedProfileManager.profile.goals, isMultiLine: true)
+                    TextFieldInputView(title: Strings.Profile.goals, placeholder: Strings.Actions.tapToEdit, binding: $editedProfileManager.profile.goals, isMultiLine: true)
                     
                     DividerLineView()
                     
                     VStack (spacing: Padding.xlarge) {
-                        TagsFieldInputView(flag: Strings.general.values, placeholder: Strings.general.addAValue, color: editedProfileManager.profile.color)
+                        TagsFieldInputView(flag: Strings.Profile.values, placeholder: Strings.Profile.addValue, color: editedProfileManager.profile.color)
                         
-                        TagsFieldInputView(flag: Strings.general.interests, placeholder: Strings.general.addAnInterest, color: editedProfileManager.profile.color)
+                        DividerLineView()
+                        
+                        TagsFieldInputView(flag: Strings.Profile.interests, placeholder: Strings.Profile.addInterest, color: editedProfileManager.profile.color)
                     }
                     .environmentObject(tagManager)
                     

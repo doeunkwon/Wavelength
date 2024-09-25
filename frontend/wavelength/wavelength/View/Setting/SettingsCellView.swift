@@ -25,7 +25,7 @@ struct SettingsCellView: View {
                     .font(.system(size: Fonts.body))
                     .foregroundColor(.wavelengthText)
                 Spacer()
-                Image(systemName: Strings.icons.arrowRight)
+                Image(systemName: Strings.Icons.arrowRight)
                     .font(.system(size: Fonts.subtitle))
                     .foregroundColor(.wavelengthGrey)
             }

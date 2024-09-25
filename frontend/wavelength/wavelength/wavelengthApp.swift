@@ -12,6 +12,10 @@ struct wavelengthApp: App {
     
     @StateObject var viewModel = ViewModel()
     
+    init() {
+        UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+    }
+    
     var body: some Scene {
         
         WindowGroup {

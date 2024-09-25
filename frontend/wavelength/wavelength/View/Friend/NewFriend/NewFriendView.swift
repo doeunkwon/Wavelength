@@ -22,7 +22,7 @@ struct NewFriendView: View {
     
     var body: some View {
         ZStack {
-            ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.create, action: newFriendViewModel.completion), navTitle: Strings.friend.newFriend, toastManager: newFriendToastManager)
+            ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.Actions.create, action: newFriendViewModel.completion), navTitle: Strings.Friends.new, toastManager: newFriendToastManager)
             if newFriendViewModel.isLoading {
                 LoadingView()
             }

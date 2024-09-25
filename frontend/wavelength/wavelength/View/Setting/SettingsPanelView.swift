@@ -25,12 +25,12 @@ struct SettingsPanelView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            SettingsCellView(title: Strings.settings.editProfile, icon: user.emoji, isEmoji: true, action: {
+            SettingsCellView(title: Strings.Profile.edit, icon: user.emoji, isEmoji: true, action: {
                 settingsPanelViewModel.showProfileFormViewSheet.toggle()
             })
             .sheet(isPresented: $settingsPanelViewModel.showProfileFormViewSheet) {
                 ZStack {
-                    ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: settingsPanelViewModel.completion), navTitle: Strings.settings.editProfile, toastManager: settingsPanelToastManager)
+                    ProfileFormView(profileManager: ProfileManager(profile: user), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.Actions.save, action: settingsPanelViewModel.completion), navTitle: Strings.Profile.edit, toastManager: settingsPanelToastManager)
                     if settingsPanelViewModel.isLoading {
                         LoadingView()
                     }
@@ -39,7 +39,7 @@ struct SettingsPanelView: View {
                 .interactiveDismissDisabled()
             }
             DividerLineView()
-            SettingsCellView(title: Strings.settings.changePassword, icon: Strings.icons.lock, action: {
+            SettingsCellView(title: Strings.Settings.changePassword, icon: Strings.Icons.lock, action: {
                 showChangePasswordViewSheet.toggle()
             })
             .sheet(isPresented: $showChangePasswordViewSheet) {
@@ -47,24 +47,24 @@ struct SettingsPanelView: View {
                     .interactiveDismissDisabled()
             }
             DividerLineView()
-            SettingsCellView(title: Strings.settings.logOut, icon: Strings.icons.doorLeftHandOpen, action: {
+            SettingsCellView(title: Strings.Settings.logOut, icon: Strings.Icons.doorOpen, action: {
                 showConfirmLogoutAlert.toggle()
             })
-            .alert(Strings.settings.confirmLogoutProfile, isPresented: $showConfirmLogoutAlert) {
-                Button(Strings.settings.logOut) {
+            .alert(Strings.Settings.logOut, isPresented: $showConfirmLogoutAlert) {
+                Button(Strings.Settings.logOut) {
                     isLoggedIn = false
                     KeychainWrapper.standard.removeObject(forKey: "bearerToken")
                 }
-                Button(Strings.general.cancel, role: .cancel) {}
+                Button(Strings.Actions.cancel, role: .cancel) {}
             } message: {
-                Text(Strings.settings.confirmLogout)
+                Text(Strings.Settings.logOutMessage)
             }
             DividerLineView()
-            SettingsCellView(title: Strings.settings.deleteProfile, icon: Strings.icons.trash, action: {
+            SettingsCellView(title: Strings.Settings.delete, icon: Strings.Icons.trash, action: {
                 showConfirmDeleteAlert.toggle()
             })
-            .alert(Strings.settings.confirmDeleteProfile, isPresented: $showConfirmDeleteAlert) {
-                Button(Strings.settings.goodbye, role: .destructive) {
+            .alert(Strings.Settings.delete, isPresented: $showConfirmDeleteAlert) {
+                Button(Strings.Settings.delete, role: .destructive) {
                     Task {
                         do {
                             try await settingsPanelViewModel.deleteUser()
@@ -74,7 +74,7 @@ struct SettingsPanelView: View {
                             
                             DispatchQueue.main.async {
                                 
-                                contentToastManager.insertToast(style: .success, message: Strings.toast.deleteProfile)
+                                contentToastManager.insertToast(style: .success, message: Strings.Settings.deleteToast)
                                 
                             }
                         } catch {
@@ -85,9 +85,9 @@ struct SettingsPanelView: View {
                         }
                     }
                 }
-                Button(Strings.general.cancel, role: .cancel) {}
+                Button(Strings.Actions.cancel, role: .cancel) {}
             } message: {
-                Text(Strings.settings.confirmDelete)
+                Text(Strings.Settings.deleteMessage)
             }
         }
     }

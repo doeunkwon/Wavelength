@@ -38,7 +38,7 @@ struct MemoriesView: View {
                     
                     VStack {
                         Spacer()
-                        EmptyStateView(text: Strings.memory.addAMemory, icon: Strings.icons.personLineDottedPerson)
+                        EmptyStateView(text: Strings.Memory.add, icon: Strings.Icons.personDotted)
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -48,7 +48,7 @@ struct MemoriesView: View {
                     ScrollView {
                         VStack(spacing: 0) {
                             HStack {
-                                Text(String(memoriesViewModel.memories.count) + " " + Strings.memory.memories)
+                                Text(String(memoriesViewModel.memories.count) + " " + Strings.Memory.memories)
                                     .font(.system(size: Fonts.title))
                                     .foregroundStyle(.wavelengthText)
                                 Spacer()

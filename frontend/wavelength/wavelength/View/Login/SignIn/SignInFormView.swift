@@ -14,10 +14,10 @@ struct SignInFormView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            TextFieldInputView(placeholder: Strings.form.username, binding: $username, isMultiLine: false)
+            TextFieldInputView(placeholder: Strings.Profile.username, binding: $username, isMultiLine: false)
                 .padding(Padding.large)
             DividerLineView()
-            SecureFieldInputView(placeholder: Strings.form.password, binding: $password)
+            SecureFieldInputView(placeholder: Strings.Authentication.password, binding: $password)
                 .padding(Padding.large)
         }
         .overlay( /// apply a rounded border

@@ -21,12 +21,12 @@ struct SettingsView: View {
             ZStack (alignment: .trailing) {
                 HStack {
                     Spacer()
-                    Text(Strings.general.settings)
+                    Text(Strings.Settings.title)
                         .font(.system(size: Fonts.subtitle, weight: .semibold))
                         .foregroundStyle(.wavelengthText)
                     Spacer()
                 }
-                TabButtonView(selectedTab: $selectedTab, destinationTab: 1, icon: Strings.icons.squareGrid2by2, color: user.color)
+                TabButtonView(selectedTab: $selectedTab, destinationTab: 1, icon: Strings.Icons.grid, color: user.color)
             }
             SettingsPanelView(settingsToastManager: settingsToastManager, isLoggedIn: $isLoggedIn)
                 .cornerRadius(CornerRadius.medium)

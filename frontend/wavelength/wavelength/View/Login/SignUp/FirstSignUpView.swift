@@ -27,11 +27,11 @@ struct FirstSignUpView: View {
         
         NavigationStack {
             VStack(spacing: Padding.xlarge) {
-                TextFieldInputView(title: Strings.form.email, placeholder: "jupyter@mars.com", binding: $email, isMultiLine: false)
+                TextFieldInputView(title: Strings.Profile.email, placeholder: Strings.Actions.tapToEdit, binding: $email, isMultiLine: false)
                 
                 DividerLineView()
                 
-                TextFieldInputView(title: Strings.form.username, placeholder: "smartypants", binding: $username, isMultiLine: false)
+                TextFieldInputView(title: Strings.Profile.username, placeholder: Strings.Actions.tapToEdit, binding: $username, isMultiLine: false)
                 Spacer()
             }
             .padding(Padding.large)
@@ -45,7 +45,7 @@ struct FirstSignUpView: View {
             }), trailing: NavigationLink(destination: SecondSignUpView(email: email, username: username, viewModel: viewModel, showModal: $showModal)) {
                 Text("Next")
             })
-            .navigationTitle(Strings.login.letsGetYouStarted)
+            .navigationTitle(Strings.Authentication.letsGetStarted)
             .navigationBarTitleDisplayMode(.inline)
         }
     }

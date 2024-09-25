@@ -47,7 +47,7 @@ class SignUpViewModel: ObservableObject {
             let fetchedUID = try await userService.createUser(newData: encodedUser)
             DispatchQueue.main.async {
                 self.uid = fetchedUID
-                self.contentToastManager.insertToast(style: .success, message: Strings.toast.createProfile)
+                self.contentToastManager.insertToast(style: .success, message: Strings.Profile.created)
             }
         } catch {
             throw error // Re-throw the error for caller handling

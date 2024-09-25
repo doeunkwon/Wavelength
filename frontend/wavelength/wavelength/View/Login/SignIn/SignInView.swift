@@ -17,7 +17,7 @@ struct SignInView: View {
     @State private var password: String = ""
     @State private var showSignUpViewModal: Bool = false
     
-    private let logo = UIImage(named: "wavelengthLogo")!
+    private let logo = UIImage(named: Strings.Images.wavelengthLogo) ?? UIImage()
     private let logoSize = 85.0
     
     var body: some View {
@@ -36,7 +36,7 @@ struct SignInView: View {
                     VStack(spacing: Padding.large) {
                         SignInFormView(username: $username, password: $password)
                         HStack (spacing: Padding.large) {
-                            ButtonView(title: Strings.login.signUp, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
+                            ButtonView(title: Strings.Authentication.signUp, color: .wavelengthText, backgroundColor: .wavelengthOffWhite, action: {
                                 showSignUpViewModal.toggle()
                             })
                             .disabled(viewModel.isLoading)
@@ -45,7 +45,7 @@ struct SignInView: View {
                                     .interactiveDismissDisabled()
                                 }
                             ButtonView(
-                                title: Strings.login.logIn,
+                                title: Strings.Authentication.login,
                                 color: (viewModel.isLoading || username.isEmpty || password.isEmpty) ? .wavelengthGrey : .wavelengthText,
                                 backgroundColor: .wavelengthOffWhite,
                                 action: {
@@ -55,10 +55,10 @@ struct SignInView: View {
                                     } catch let error as AuthenticationServiceError {
                                         switch error {
                                         case .invalidCredentials:
-                                            contentToastManager.insertToast(style: .error, message: "Incorrect username or password.")
+                                            contentToastManager.insertToast(style: .error, message: Strings.Authentication.incorrectCredentials)
                                         case .networkError(let underlyingError):
-                                            print("Network error: \(underlyingError)")
-                                            contentToastManager.insertToast(style: .error, message: "Network error")
+                                            print("\(Strings.Errors.network): \(underlyingError)")
+                                            contentToastManager.insertToast(style: .error, message: Strings.Errors.network)
                                         case .unknownError(let message):
                                             print("Unknown error: \(message)")
                                             contentToastManager.insertToast(style: .error, message: "Unknown error")
@@ -76,7 +76,7 @@ struct SignInView: View {
                     }
                     .padding(.bottom, logoSize)
                     Spacer()
-                    Text("Version 0.1 • Made with ❤️ by Doeun")
+                    Text(Strings.Authentication.incorrectCredentials)
                         .font(.system(size: Fonts.body2))
                         .foregroundStyle(.wavelengthGrey)
                         .padding(.top, Padding.large)

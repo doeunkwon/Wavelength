@@ -11,7 +11,7 @@ enum Mock {
     
     // MARK: - User
     
-    static let user: User = User(uid: "1", emoji: "🌎", color: .blue, firstName: "Doeun", lastName: "Kwon", username: "billthemuffer", email: "bkwon38@gmail.com", password: "Abc123", goals: "I aspire to be an entrepreneur who builds clever apps that address underserved problems in society. I love working out my body so while I build out apps, I still want to achieve athletic milestones, like running a marathon and building a beautiful physique.", interests: ["Programming", "Designing", "Boxing", "Muay Thai", "Running", "EDM", "Nature"], scorePercentage: 63, tokenCount: 25, memoryCount: 135, values: ["Discipline", "Hardwork", "Growth", "Integrity", "Learning", "Positivity"])
+    static let user: User = User(uid: "1", emoji: "🌎", color: .blue, firstName: "Drew", lastName: "Kasey", username: "drewkasey", email: "drewkasey@gmail.com", password: "Abc123", goals: "I aspire to be an entrepreneur who builds clever apps that address underserved problems in society. I love working out my body so while I build out apps, I still want to achieve athletic milestones, like running a marathon and building a beautiful physique.", interests: ["Programming", "Designing", "Boxing", "Muay Thai", "Running", "EDM", "Nature"], scorePercentage: 63, tokenCount: 25, memoryCount: 135, values: ["Discipline", "Hardwork", "Growth", "Integrity", "Learning", "Positivity"])
     
     // MARK: - Friend
     
@@ -25,12 +25,12 @@ enum Mock {
     
     // MARK: - Memory
 
-    static let memory1: Memory = Memory(mid: "1", date: Date(), title: "Text message during my Asia trip 2024 to Tokyo, Japan.", content: "He asked me to hang out after my Asia trip. I thought it was quite nice that he thought of me while I was on my trip because it’s easy to forget these things!", tokens: 2)
+    static let memory1: Memory = Memory(mid: "1", date: Date(), title: "Text message during my Africa trip 2024 to Nigeria.", content: "He asked me to hang out after my Africa trip. I thought it was quite nice that he thought of me while I was on my trip because it’s easy to forget these things!", tokens: 2)
     
     static let memory2: Memory = Memory(mid: "2", date: Date(), title: "Bought me a coffee.", content: "He’d already left the office when I realized I’d forgotten my wallet. Figuring I’d have to skip my usual coffee run, I was about to head back to my desk when he appeared in the doorway, grinning and holding out a steaming cup. It was a small gesture, but it made my day.", tokens: 1)
     
     static let memories: [Memory] = [
-        Memory(mid: "1", date: Date(), title: "Text message during my Asia trip 2024 to Tokyo, Japan.", content: "He asked me to hang out after my Asia trip. I thought it was quite nice that he thought of me while I was on my trip because it’s easy to forget these things!", tokens: 2),
+        Memory(mid: "1", date: Date(), title: "Text message during my Africa trip 2024 to Nigeria.", content: "He asked me to hang out after my Africa trip. I thought it was quite nice that he thought of me while I was on my trip because it’s easy to forget these things!", tokens: 2),
         Memory(mid: "2", date: Date(), title: "Bought me a coffee.", content: "He’d already left the office when I realized I’d forgotten my wallet. Figuring I’d have to skip my usual coffee run, I was about to head back to my desk when he appeared in the doorway, grinning and holding out a steaming cup. It was a small gesture, but it made my day.", tokens: 1)
     ]
     

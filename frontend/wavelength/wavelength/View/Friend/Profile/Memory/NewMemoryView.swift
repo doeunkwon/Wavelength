@@ -19,7 +19,7 @@ struct NewMemoryView: View {
     
     var body: some View {
         ZStack {
-            MemoryFormView(memory: memory, leadingButtonContent: AnyView(DownButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.form.create, action: newMemoryViewModel.completion), navTitle: Strings.memory.newMemory)
+            MemoryFormView(memory: memory, leadingButtonContent: AnyView(DownButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.Actions.create, action: newMemoryViewModel.completion), navTitle: Strings.Memory.new)
             if newMemoryViewModel.isLoading {
                 LoadingView()
             }

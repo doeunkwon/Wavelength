@@ -33,25 +33,28 @@ struct MemoryFormView: View {
             ZStack (alignment: .bottom) {
                 ScrollView {
                     
-                    VStack (alignment: .leading, spacing: Padding.xlarge) {
+                    VStack (alignment: .center, spacing: Padding.xlarge) {
                         
-                        Button(action: {
-                            showDatePicker.toggle()
-                        }) {
-                            HStack (alignment: .center) {
-                                Text(String(editedMemory.date.formatted(date: .long, time: .omitted)))
-                                    .foregroundColor(.wavelengthDarkGrey)
-                                if showDatePicker {
-                                    Image(systemName: Strings.icons.chevronUp)
-                                        .font(Font.body.weight(.regular))
-                                        .foregroundColor(.wavelengthGrey)
-                                } else {
-                                    Image(systemName: Strings.icons.chevronDown)
-                                        .font(Font.body.weight(.regular))
-                                        .foregroundColor(.wavelengthGrey)
+                        HStack {
+                            Button(action: {
+                                showDatePicker.toggle()
+                            }) {
+                                HStack (alignment: .center) {
+                                    Text(String(editedMemory.date.formatted(date: .long, time: .omitted)))
+                                        .foregroundColor(.wavelengthDarkGrey)
+                                    if showDatePicker {
+                                        Image(systemName: Strings.Icons.chevronUp)
+                                            .font(Font.body.weight(.regular))
+                                            .foregroundColor(.wavelengthGrey)
+                                    } else {
+                                        Image(systemName: Strings.Icons.chevronDown)
+                                            .font(Font.body.weight(.regular))
+                                            .foregroundColor(.wavelengthGrey)
+                                    }
                                 }
+                                .foregroundColor(.wavelengthText)
                             }
-                            .foregroundColor(.wavelengthText)
+                            Spacer()
                         }
 
                         if showDatePicker {
@@ -61,16 +64,16 @@ struct MemoryFormView: View {
                                 displayedComponents: .date
                             )
                             .labelsHidden()
-                            .datePickerStyle(GraphicalDatePickerStyle())
+                            .datePickerStyle(.wheel)
                         }
                         
                         DividerLineView()
                         
-                        TextFieldInputView(title: Strings.memory.title, placeholder: "Mini golf.", binding: $editedMemory.title, isMultiLine: false)
+                        TextFieldInputView(title: Strings.Memory.title, placeholder: Strings.Actions.tapToEdit, binding: $editedMemory.title, isMultiLine: false)
                         
                         DividerLineView()
                         
-                        TextFieldInputView(title: Strings.memory.content, placeholder: "One weekend, we were hanging out and he suggested a spontaneous game of mini-golf.", binding: $editedMemory.content, isMultiLine: true)
+                        TextFieldInputView(title: Strings.Memory.content, placeholder: Strings.Actions.tapToEdit, binding: $editedMemory.content, isMultiLine: true)
                         
                         Spacer()
                     }

@@ -35,6 +35,6 @@ struct ButtonView: View {
             RoundedRectangle(cornerRadius: CornerRadius.medium)
                 .stroke(.wavelengthWhite, lineWidth: Border.small))
         .cornerRadius(CornerRadius.medium) // Add corner radius
-        .disabled(title == String(-1) + Strings.profile.percentageScore)
+        .disabled(title == Strings.Profile.percentageScore(int: -1))
     }
 }

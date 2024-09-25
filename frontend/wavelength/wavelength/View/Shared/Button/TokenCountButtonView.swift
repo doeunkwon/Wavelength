@@ -35,13 +35,13 @@ struct TokenCountButtonView: View {
                         tokens -= 1
                     }
                 } label: {
-                    Image(systemName: Strings.icons.chevronLeft)
+                    Image(systemName: Strings.Icons.chevronLeft)
                         .font(Font.body.weight(.semibold))
                         .foregroundColor(tokens <= -5 ? .wavelengthGrey : .wavelengthTokenOrange)
                 }
                 .disabled(tokens <= -5)
                 
-                Text((tokens > 0 ? "+" : "") + "\($tokens.wrappedValue) \(Strings.general.tokens)")
+                Text((tokens > 0 ? "+" : "") + "\($tokens.wrappedValue) \(Strings.Dashboard.tokens)")
                     .font(.system(size: Fonts.body))
                     .foregroundColor(.wavelengthTokenOrange)
                 
@@ -50,7 +50,7 @@ struct TokenCountButtonView: View {
                         tokens += 1
                     }
                 } label: {
-                    Image(systemName: Strings.icons.chevronRight)
+                    Image(systemName: Strings.Icons.chevronRight)
                         .font(Font.body.weight(.semibold))
                         .foregroundColor(tokens >= 5 ? .wavelengthGrey : .wavelengthTokenOrange)
                 }

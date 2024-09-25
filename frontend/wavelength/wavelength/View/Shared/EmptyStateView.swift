@@ -28,5 +28,5 @@ struct EmptyStateView: View {
 }
 
 #Preview {
-    EmptyStateView(text: Strings.friend.addAFriend, icon: Strings.icons.person2)
+    EmptyStateView(text: Strings.Friends.add, icon: Strings.Icons.personTwo)
 }

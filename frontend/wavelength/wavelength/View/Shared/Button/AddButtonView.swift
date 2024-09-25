@@ -41,7 +41,7 @@ struct AddButtonView<Content: View>: View {
                 Button {
                     showModal.toggle()
                 } label: {
-                    Image(systemName: Strings.icons.plus)
+                    Image(systemName: Strings.Icons.plus)
                         .font(.system(size: fontSize))
                         .accentColor(color ?? .wavelengthGrey)
                 }

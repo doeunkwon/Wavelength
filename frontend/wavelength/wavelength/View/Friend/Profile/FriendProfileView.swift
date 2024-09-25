@@ -42,11 +42,11 @@ struct FriendProfileView: View {
                             
                             HStack(alignment: .center, spacing: Padding.large) {
                                 if friend.scorePercentage != -1 {
-                                    ButtonView(title: String(friend.scorePercentage) + Strings.profile.percentageScore, color: intToColor(value: friend.scorePercentage)) {
+                                    ButtonView(title: Strings.Profile.percentageScore(int: friend.scorePercentage), color: intToColor(value: friend.scorePercentage)) {
                                         showScoreViewSheet.toggle()
                                     }
                                 }
-                                ButtonView(title: String(friend.memoryCount) + " " + Strings.memory.memories, color: .wavelengthText) {
+                                ButtonView(title: Strings.Memory.memories(int: friend.memoryCount), color: .wavelengthText) {
                                     showMemoriesViewSheet.toggle()
                                 }
                             }
@@ -62,15 +62,15 @@ struct FriendProfileView: View {
                                 MemoriesView(friend: friend)
                             }
                             
-                            BasicFieldView(title: Strings.form.goals, content: friend.goals)
+                            BasicFieldView(title: Strings.Profile.goals, content: friend.goals)
                             
                             DividerLineView()
                             
-                            TagsFieldView(title: Strings.general.values, items: friend.values, tagColor: friend.color)
+                            TagsFieldView(title: Strings.Profile.values, items: friend.values, tagColor: friend.color)
                             
                             DividerLineView()
                             
-                            TagsFieldView(title: Strings.general.interests, items: friend.interests, tagColor: friend.color)
+                            TagsFieldView(title: Strings.Profile.interests, items: friend.interests, tagColor: friend.color)
                             
                             Spacer()
                             
@@ -83,27 +83,25 @@ struct FriendProfileView: View {
                     ScoreWavelengthButtonView(color: friend.color) {
                         showConfirmScoreAlert.toggle()
                     }
-                    .alert("Confirm score", isPresented: $showConfirmScoreAlert) {
-                        Button("Score!") {
+                    .alert(Strings.Score.buttonTitle, isPresented: $showConfirmScoreAlert, actions: {
+                        Button(Strings.Actions.score) {
                             Task {
                                 do {
                                     try await friendProfileViewModel.updateScore(fid: friend.fid)
                                     
                                     DispatchQueue.main.async {
-                                        friendProfileToastManager.insertToast(style: .success, message: Strings.toast.updateScore)
+                                        friendProfileToastManager.insertToast(style: .success, message: Strings.Score.updated)
                                     }
                                 } catch {
                                     print("Error:", error.localizedDescription)
                                     DispatchQueue.main.async {
-                                        friendProfileToastManager.insertToast(style: .error, message: "Network error.")
+                                        friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.network)
                                     }
                                 }
                             }
                         }
-                        Button(Strings.general.cancel, role: .cancel) {}
-                    } message: {
-                        Text("Would you like to score your wavelength with \(friend.firstName)?")
-                    }
+                        Button(Strings.Actions.cancel, role: .cancel) {}
+                    })
                     .padding(.vertical, Padding.large)
                     .shadow(
                         color: ShadowStyle.high.color,
@@ -124,42 +122,41 @@ struct FriendProfileView: View {
                 LeftButtonView()
             }), trailing: Menu {
                 Button(action: {
-                    print("Edit tapped!")
                     friendProfileViewModel.showProfileFormViewSheet.toggle()
                 }) {
-                    Label("Edit profile", systemImage: Strings.icons.person)
+                    Label(Strings.Profile.edit, systemImage: Strings.Icons.person)
                 }
                 Button(role: .destructive, action: {
                     showConfirmDeleteAlert.toggle()
                 }) {
-                    Label("Delete", systemImage: Strings.icons.trash)
+                    Label(Strings.Actions.delete, systemImage: Strings.Icons.trash)
                 }
             } label: {
                 EllipsisButtonView()
             })
-            .alert(Strings.friend.confirmDeleteProfile, isPresented: $showConfirmDeleteAlert) {
-                Button(Strings.friend.deleteProfile, role: .destructive) {
+            .alert(Strings.Settings.deleteMessage, isPresented: $showConfirmDeleteAlert) {
+                Button(Strings.Settings.delete, role: .destructive) {
                     Task {
                         do {
                             try await friendProfileViewModel.deleteFriend(fid: friend.fid, friendMemoryCount: friend.memoryCount, friendTokenCount: friend.tokenCount)
                             dismiss()
                         } catch {
-                            print("Error:", error.localizedDescription)
+                            print("\(Strings.Errors.generic):", error.localizedDescription)
                             DispatchQueue.main.async {
                     
-                                friendProfileToastManager.insertToast(style: .error, message: "Network error.")
+                                friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.network)
                                 
                             }
                         }
                     }
                 }
-                Button(Strings.general.cancel, role: .cancel) {}
+                Button(Strings.Actions.cancel, role: .cancel) {}
                 } message: {
-                    Text(Strings.friend.confirmDelete)
+                    Text(Strings.Settings.delete)
                 }
                 .sheet(isPresented: $friendProfileViewModel.showProfileFormViewSheet) {
                 ZStack {
-                    ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.form.save, action: friendProfileViewModel.completion), navTitle: Strings.settings.editProfile, toastManager: friendProfileToastManager)
+                    ProfileFormView(profileManager: ProfileManager(profile: friend), leadingButtonContent: AnyView(DownButtonView()), buttonConfig: ProfileFormTrailingButtonConfig(title: Strings.Actions.save, action: friendProfileViewModel.completion), navTitle: Strings.Settings.edit, toastManager: friendProfileToastManager)
                     if friendProfileViewModel.isLoading {
                         LoadingView()
                     }

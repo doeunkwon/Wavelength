@@ -33,7 +33,7 @@ struct FriendsView: View {
                     /// No friends
                     if friendsManager.friends.count == 0 {
                         
-                        EmptyStateView(text: Strings.friend.addAFriend, icon: Strings.icons.person2)
+                        EmptyStateView(text: Strings.Friends.add, icon: Strings.Icons.personTwo)
                         
                     } else {
                         
@@ -41,11 +41,11 @@ struct FriendsView: View {
                             VStack(alignment: .center, spacing: 0) {
                                 
                                 DashboardView(
-                                    firstEntry: (Strings.dashboard.overall, "\(user.scorePercentage)%"),
+                                    firstEntry: (Strings.Score.overall, "\(user.scorePercentage)%"),
                                     firstEntryColor: intToColor(value: user.scorePercentage),
-                                    secondEntry: (Strings.dashboard.tokens, (user.tokenCount > 0 ? "+" : "") + String(user.tokenCount)),
+                                    secondEntry: (Strings.Dashboard.tokens, (user.tokenCount > 0 ? "+" : "") + String(user.tokenCount)),
                                     secondEntryColor: .wavelengthTokenOrange,
-                                    thirdEntry: (Strings.dashboard.memories, String(user.memoryCount)),
+                                    thirdEntry: (Strings.Dashboard.memories, String(user.memoryCount)),
                                     thirdEntryColor: .wavelengthText,
                                     lineGraphColor: intToColor(value: user.scorePercentage),
                                     data: scoreChartData)
@@ -83,11 +83,11 @@ struct FriendsView: View {
                     }
                     HStack (alignment: .center) {
                         
-                        TabButtonView(selectedTab: $selectedTab, destinationTab: 0, icon: Strings.icons.gearshape, color: user.color)
+                        TabButtonView(selectedTab: $selectedTab, destinationTab: 0, icon: Strings.Icons.gearshape, color: user.color)
                         
                         Spacer()
                         
-                        Text(Strings.general.yourCircle)
+                        Text(Strings.Friends.yourCircle)
                             .font(.system(size: Fonts.subtitle, weight: .semibold))
                             .foregroundStyle(.wavelengthText)
                         
@@ -119,7 +119,7 @@ struct FriendsView: View {
 #Preview {
     
     @State var selectedTab = 1
-    var friendsManager = FriendsManager(friends: [])
+    let friendsManager = FriendsManager(friends: [])
     
     return FriendsView(scoreChartData: Mock.scoreChartData, selectedTab: $selectedTab)
         .environmentObject(Mock.user)

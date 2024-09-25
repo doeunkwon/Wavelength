@@ -10,7 +10,7 @@ import SwiftUI
 struct LeftButtonView: View {
 
     var body: some View {
-        Image(systemName: Strings.icons.chevronLeft)
+        Image(systemName: Strings.Icons.chevronLeft)
             .foregroundColor(.blue)
             .font(Font.body.weight(.semibold))
     }

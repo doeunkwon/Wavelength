@@ -10,7 +10,7 @@ import SwiftUI
 struct EllipsisButtonView: View {
 
     var body: some View {
-        Image(systemName: Strings.icons.ellipsis)
+        Image(systemName: Strings.Icons.ellipsis)
             .foregroundColor(.blue)
             .font(Font.body.weight(.semibold))
     }

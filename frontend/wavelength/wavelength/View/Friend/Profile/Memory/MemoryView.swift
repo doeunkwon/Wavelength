@@ -63,26 +63,26 @@ struct MemoryView: View {
                 NavigationLink(destination:
 
                     ZStack {
-                        MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.form.save, action: memoryViewModel.completion), navTitle: Strings.memory.editMemory)
+                        MemoryFormView(memory: memory, leadingButtonContent: AnyView(LeftButtonView()), buttonConfig: MemoryFormTrailingButtonConfig(title: Strings.Actions.save, action: memoryViewModel.completion), navTitle: Strings.Memory.edit)
                     
                         if memoryViewModel.isLoading {
                             LoadingView()
                         }
                     }
                 ) {
-                    Label("Edit memory", systemImage: Strings.icons.pencil)
+                    Label(Strings.Memory.edit, systemImage: Strings.Icons.pencil)
                 }
                 Button(role: .destructive, action: {
                     showConfirmDeleteAlert.toggle()
                 }) {
-                    Label("Delete", systemImage: Strings.icons.trash)
+                    Label(Strings.Actions.delete, systemImage: Strings.Icons.trash)
                 }
             } label: {
                 EllipsisButtonView()
             })
             .background(.wavelengthBackground)
-            .alert(Strings.memory.confirmDeleteMemory, isPresented: $showConfirmDeleteAlert) {
-                Button(Strings.memory.deleteMemory, role: .destructive) {
+            .alert(Strings.Memory.deleteMessage, isPresented: $showConfirmDeleteAlert) {
+                Button(Strings.Memory.delete, role: .destructive) {
                     Task {
                         do {
                             try await memoryViewModel.deleteMemory(mid: memory.mid, memoryTokenCount: memory.tokens)
@@ -93,9 +93,9 @@ struct MemoryView: View {
                         }
                     }
                 }
-                Button(Strings.general.cancel, role: .cancel) {}
+                Button(Strings.Actions.cancel, role: .cancel) {}
                 } message: {
-                    Text(Strings.memory.confirmDelete)
+                    Text(Strings.Memory.deleteMessage)
                 }
         }
     }

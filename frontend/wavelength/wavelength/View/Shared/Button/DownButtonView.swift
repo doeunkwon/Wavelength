@@ -10,7 +10,7 @@ import SwiftUI
 struct DownButtonView: View {
 
     var body: some View {
-        Image(systemName: Strings.icons.chevronDown)
+        Image(systemName: Strings.Icons.chevronDown)
             .foregroundColor(.blue)
             .font(Font.body.weight(.semibold))
     }

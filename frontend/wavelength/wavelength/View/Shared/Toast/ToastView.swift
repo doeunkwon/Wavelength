@@ -31,7 +31,7 @@ struct ToastView: View {
             Button {
                 onCancelTapped()
             } label: {
-                Image(systemName: Strings.icons.xmark)
+                Image(systemName: Strings.Icons.xmark)
                     .foregroundColor(.wavelengthGrey)
             }
         }
