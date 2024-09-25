@@ -15,7 +15,7 @@ class MemoryViewModel {
     
     @Binding private var memories: [Memory]
     
-    private var encodedMemory = EncodedMemory()
+    private var codableMemory = CodableMemory()
     @Published var isLoading = false
     
     private let memoryService = MemoryService()
@@ -44,10 +44,10 @@ class MemoryViewModel {
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            try await memoryService.updateMemory(mid: mid, newData: encodedMemory, bearerToken: bearerToken)
+            try await memoryService.updateMemory(mid: mid, newData: codableMemory, bearerToken: bearerToken)
             if oldTokens != newTokens {
-                try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount - oldTokens + newTokens), bearerToken: bearerToken)
-                try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount - oldTokens + newTokens), bearerToken: bearerToken)
+                try await userService.updateUser(newData: CodableUser(tokenCount: user.tokenCount - oldTokens + newTokens), bearerToken: bearerToken)
+                try await friendService.updateFriend(fid: friend.fid, newData: CodableFriend(tokenCount: friend.tokenCount - oldTokens + newTokens), bearerToken: bearerToken)
             }
         } catch {
             throw error // Re-throw the error for caller handling
@@ -73,8 +73,8 @@ class MemoryViewModel {
         do {
             
             try await memoryService.deleteMemory(mid: mid, bearerToken: bearerToken)
-            try await friendService.updateFriend(fid: friend.fid, newData: EncodedFriend(tokenCount: friend.tokenCount - memoryTokenCount, memoryCount: friend.memoryCount - 1), bearerToken: bearerToken)
-            try await userService.updateUser(newData: EncodedUser(tokenCount: user.tokenCount - memoryTokenCount, memoryCount: user.memoryCount - 1), bearerToken: bearerToken)
+            try await friendService.updateFriend(fid: friend.fid, newData: CodableFriend(tokenCount: friend.tokenCount - memoryTokenCount, memoryCount: friend.memoryCount - 1), bearerToken: bearerToken)
+            try await userService.updateUser(newData: CodableUser(tokenCount: user.tokenCount - memoryTokenCount, memoryCount: user.memoryCount - 1), bearerToken: bearerToken)
             
             DispatchQueue.main.async {
                 
@@ -103,10 +103,10 @@ class MemoryViewModel {
                 let oldTokens = memory.tokens
                 let newTokens = editedMemory.tokens
                 
-                encodedMemory.date = memory.date != editedMemory.date ? formattedDate : nil
-                encodedMemory.title = memory.title != editedMemory.title ? editedMemory.title : nil
-                encodedMemory.content = memory.content != editedMemory.content ? editedMemory.content : nil
-                encodedMemory.tokens = oldTokens != newTokens ? newTokens : nil
+                codableMemory.date = memory.date != editedMemory.date ? formattedDate : nil
+                codableMemory.title = memory.title != editedMemory.title ? editedMemory.title : nil
+                codableMemory.content = memory.content != editedMemory.content ? editedMemory.content : nil
+                codableMemory.tokens = oldTokens != newTokens ? newTokens : nil
                 
                 try await updateMemory(mid: memory.mid, oldTokens: oldTokens, newTokens: newTokens)
                 

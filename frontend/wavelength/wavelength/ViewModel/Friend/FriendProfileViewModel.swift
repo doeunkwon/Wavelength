@@ -18,7 +18,7 @@ class FriendProfileViewModel: ObservableObject {
     
     private let friends: [Friend]
     
-    private var encodedFriend = EncodedFriend()
+    private var codableFriend = CodableFriend()
     
     private let friendService = FriendService()
     private let userService = UserService()
@@ -76,11 +76,11 @@ class FriendProfileViewModel: ObservableObject {
                 newUserScore = (filteredFriendsScoreSum + newFriendScore) / (filteredFriendsCount + 1)
             }
             
-            _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: newUserScore), bearerToken: bearerToken)
-            _ = try await scoreService.createFriendScore(newData: EncodedScore(percentage: newFriendScore, analysis: trimmedWrittenAnalysis), fid: fid, bearerToken: bearerToken)
-            _ = try await breakdownService.updateBreakdown(fid: friend.fid, newData: EncodedBreakdown(goal:goalScore, value: valueScore, interest: interestScore, memory: memoryScore), bearerToken: bearerToken)
-            try await friendService.updateFriend(fid: fid, newData: EncodedFriend(scorePercentage: newFriendScore, scoreAnalysis: trimmedWrittenAnalysis), bearerToken: bearerToken)
-            try await userService.updateUser(newData: EncodedUser(scorePercentage: newUserScore), bearerToken: bearerToken)
+            _ = try await scoreService.createUserScore(newData: CodableScore(percentage: newUserScore), bearerToken: bearerToken)
+            _ = try await scoreService.createFriendScore(newData: CodableScore(percentage: newFriendScore, analysis: trimmedWrittenAnalysis), fid: fid, bearerToken: bearerToken)
+            _ = try await breakdownService.updateBreakdown(fid: friend.fid, newData: CodableBreakdown(goal:goalScore, value: valueScore, interest: interestScore, memory: memoryScore), bearerToken: bearerToken)
+            try await friendService.updateFriend(fid: fid, newData: CodableFriend(scorePercentage: newFriendScore, scoreAnalysis: trimmedWrittenAnalysis), bearerToken: bearerToken)
+            try await userService.updateUser(newData: CodableUser(scorePercentage: newUserScore), bearerToken: bearerToken)
             
             DispatchQueue.main.async {
                 
@@ -110,7 +110,7 @@ class FriendProfileViewModel: ObservableObject {
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            try await friendService.updateFriend(fid: fid, newData: encodedFriend, bearerToken: bearerToken)
+            try await friendService.updateFriend(fid: fid, newData: codableFriend, bearerToken: bearerToken)
             
         } catch {
             throw error // Re-throw the error for caller handling
@@ -146,8 +146,8 @@ class FriendProfileViewModel: ObservableObject {
             let newUserScore = filteredFriendsCount - 1 == 0 ? 0 : (filteredFriendsScoreSum - friendScore) / (filteredFriendsCount - 1)
             
             try await friendService.deleteFriend(fid: fid, bearerToken: bearerToken)
-            _ = try await scoreService.createUserScore(newData: EncodedScore(percentage: newUserScore), bearerToken: bearerToken)
-            try await userService.updateUser(newData: EncodedUser(scorePercentage: newUserScore, tokenCount: user.tokenCount - friendTokenCount, memoryCount: user.memoryCount - friendMemoryCount), bearerToken: bearerToken)
+            _ = try await scoreService.createUserScore(newData: CodableScore(percentage: newUserScore), bearerToken: bearerToken)
+            try await userService.updateUser(newData: CodableUser(scorePercentage: newUserScore, tokenCount: user.tokenCount - friendTokenCount, memoryCount: user.memoryCount - friendMemoryCount), bearerToken: bearerToken)
             
             DispatchQueue.main.async {
                 
@@ -167,13 +167,13 @@ class FriendProfileViewModel: ObservableObject {
         if let friend = profileManager.profile as? Friend {
             let editedProfile = editedProfileManager.profile
             
-            encodedFriend.emoji = friend.emoji != editedProfile.emoji ? editedProfile.emoji : nil
-            encodedFriend.color = friend.color != editedProfile.color ? editedProfile.color.toHex() : nil
-            encodedFriend.firstName = friend.firstName != editedProfile.firstName ? editedProfile.firstName : nil
-            encodedFriend.lastName = friend.lastName != editedProfile.lastName ? editedProfile.lastName : nil
-            encodedFriend.goals = friend.goals != editedProfile.goals ? editedProfile.goals : nil
-            encodedFriend.interests = friend.interests != tagManager.interests ? tagManager.interests : nil
-            encodedFriend.values = friend.values != tagManager.values ? tagManager.values : nil
+            codableFriend.emoji = friend.emoji != editedProfile.emoji ? editedProfile.emoji : nil
+            codableFriend.color = friend.color != editedProfile.color ? editedProfile.color.toHex() : nil
+            codableFriend.firstName = friend.firstName != editedProfile.firstName ? editedProfile.firstName : nil
+            codableFriend.lastName = friend.lastName != editedProfile.lastName ? editedProfile.lastName : nil
+            codableFriend.goals = friend.goals != editedProfile.goals ? editedProfile.goals : nil
+            codableFriend.interests = friend.interests != tagManager.interests ? tagManager.interests : nil
+            codableFriend.values = friend.values != tagManager.values ? tagManager.values : nil
             
             try await updateFriend(fid: friend.fid)
             

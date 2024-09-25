@@ -38,22 +38,22 @@ class UserService {
 
         do {
             let decoder = JSONDecoder()
-            let decodedUser = try decoder.decode(DecodedUser.self, from: data)
+            let codableUser = try decoder.decode(CodableUser.self, from: data)
             let user = User(
-                uid: decodedUser.uid,
-                emoji: decodedUser.emoji,
-                color: Color(hex: decodedUser.color) ?? .wavelengthOffWhite, // Assuming conversion from string
-                firstName: decodedUser.firstName,
-                lastName: decodedUser.lastName,
-                username: decodedUser.username,
-                email: decodedUser.email,
-                password: decodedUser.password,
-                goals: decodedUser.goals,
-                interests: decodedUser.interests,
-                scorePercentage: decodedUser.scorePercentage,
-                tokenCount: decodedUser.tokenCount,
-                memoryCount: decodedUser.memoryCount,
-                values: decodedUser.values
+                uid: codableUser.uid ?? "",
+                emoji: codableUser.emoji ?? "",
+                color: Color(hex: codableUser.color ?? "000000") ?? .wavelengthOffWhite, // Assuming conversion from string
+                firstName: codableUser.firstName ?? "",
+                lastName: codableUser.lastName ?? "",
+                username: codableUser.username ?? "",
+                email: codableUser.email ?? "",
+                password: codableUser.password ?? "",
+                goals: codableUser.goals ?? "",
+                interests: codableUser.interests ?? [],
+                scorePercentage: codableUser.scorePercentage ?? 0,
+                tokenCount: codableUser.tokenCount ?? 0,
+                memoryCount: codableUser.memoryCount ?? 0,
+                values: codableUser.values ?? []
             )
             return user
         } catch {
@@ -61,7 +61,7 @@ class UserService {
         }
     }
     
-    func updateUser(newData: EncodedUser, bearerToken: String) async throws {
+    func updateUser(newData: CodableUser, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {
             throw UserServiceError.unknownError("Failed to create URL")
         }
@@ -129,7 +129,7 @@ class UserService {
         print("Password updated successfully!")
     }
     
-    func createUser(newData: EncodedUser) async throws -> String {
+    func createUser(newData: CodableUser) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/public/users") else {
             throw UserServiceError.unknownError("Failed to create URL")

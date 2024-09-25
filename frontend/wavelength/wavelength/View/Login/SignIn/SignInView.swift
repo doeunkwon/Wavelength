@@ -76,7 +76,7 @@ struct SignInView: View {
                     }
                     .padding(.bottom, logoSize)
                     Spacer()
-                    Text(Strings.Authentication.incorrectCredentials)
+                    Text(Strings.General.versionInfo)
                         .font(.system(size: Fonts.body2))
                         .foregroundStyle(.wavelengthGrey)
                         .padding(.top, Padding.large)

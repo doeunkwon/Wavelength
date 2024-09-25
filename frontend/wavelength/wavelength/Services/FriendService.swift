@@ -32,22 +32,22 @@ class FriendService {
 
         do {
             let decoder = JSONDecoder()
-            let decodedFriends = try decoder.decode([DecodedFriend].self, from: data)
+            let codableFriend = try decoder.decode([CodableFriend].self, from: data)
             
-            let friends: [Friend] = decodedFriends.map { decodedFriend in
+            let friends: [Friend] = codableFriend.map { codableFriend in
                 Friend(
-                    fid: decodedFriend.fid,
-                    scorePercentage: decodedFriend.scorePercentage,
-                    scoreAnalysis: decodedFriend.scoreAnalysis,
-                    tokenCount: decodedFriend.tokenCount,
-                    memoryCount: decodedFriend.memoryCount,
-                    emoji: decodedFriend.emoji,
-                    color: Color(hex: decodedFriend.color) ?? .wavelengthOffWhite,
-                    firstName: decodedFriend.firstName,
-                    lastName: decodedFriend.lastName,
-                    goals: decodedFriend.goals,
-                    interests: decodedFriend.interests,
-                    values: decodedFriend.values)
+                    fid: codableFriend.fid ?? "",
+                    scorePercentage: codableFriend.scorePercentage ?? 0,
+                    scoreAnalysis: codableFriend.scoreAnalysis ?? "",
+                    tokenCount: codableFriend.tokenCount ?? 0,
+                    memoryCount: codableFriend.memoryCount ?? 0,
+                    emoji: codableFriend.emoji ?? "",
+                    color: Color(hex: codableFriend.color ?? "000000") ?? .wavelengthOffWhite,
+                    firstName: codableFriend.firstName ?? "",
+                    lastName: codableFriend.lastName ?? "",
+                    goals: codableFriend.goals ?? "",
+                    interests: codableFriend.interests ?? [],
+                    values: codableFriend.values ?? [])
             }
             
             return friends
@@ -56,7 +56,7 @@ class FriendService {
         }
     }
     
-    func updateFriend(fid: String, newData: EncodedFriend, bearerToken: String) async throws {
+    func updateFriend(fid: String, newData: CodableFriend, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends/\(fid)") else {
             throw FriendServiceError.unknownError("Failed to create URL")
         }
@@ -85,7 +85,7 @@ class FriendService {
         print("Friend updated successfully!")
     }
     
-    func createFriend(newData: EncodedFriend, bearerToken: String) async throws -> String {
+    func createFriend(newData: CodableFriend, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {
             throw FriendServiceError.unknownError("Failed to create URL")

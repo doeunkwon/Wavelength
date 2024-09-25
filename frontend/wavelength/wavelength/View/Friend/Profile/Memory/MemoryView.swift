@@ -81,7 +81,7 @@ struct MemoryView: View {
                 EllipsisButtonView()
             })
             .background(.wavelengthBackground)
-            .alert(Strings.Memory.deleteMessage, isPresented: $showConfirmDeleteAlert) {
+            .alert(Strings.Memory.delete, isPresented: $showConfirmDeleteAlert) {
                 Button(Strings.Memory.delete, role: .destructive) {
                     Task {
                         do {

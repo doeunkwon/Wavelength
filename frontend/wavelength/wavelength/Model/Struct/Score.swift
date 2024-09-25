@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class Score: Hashable, Equatable {
+struct Score: Hashable, Equatable {
     
     let sid: String
     let timestamp: Date

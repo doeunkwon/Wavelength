@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class LLMScore {
+struct LLMScore {
     
     let goal: Int
     let value: Int

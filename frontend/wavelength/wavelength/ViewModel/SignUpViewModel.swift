@@ -17,7 +17,7 @@ class SignUpViewModel: ObservableObject {
     
     @Binding private var showModal: Bool
     
-    private var encodedUser = EncodedUser()
+    private var codableUser = CodableUser()
     
     private let userService = UserService()
     
@@ -44,7 +44,7 @@ class SignUpViewModel: ObservableObject {
         }
 
         do {
-            let fetchedUID = try await userService.createUser(newData: encodedUser)
+            let fetchedUID = try await userService.createUser(newData: codableUser)
             DispatchQueue.main.async {
                 self.uid = fetchedUID
                 self.contentToastManager.insertToast(style: .success, message: Strings.Profile.created)
@@ -60,37 +60,37 @@ class SignUpViewModel: ObservableObject {
             
             let editedProfile = editedProfileManager.profile
             
-            encodedUser.emoji = editedProfile.emoji
-            encodedUser.color = editedProfile.color.toHex()
-            encodedUser.firstName = editedProfile.firstName
-            encodedUser.lastName = editedProfile.lastName
-            encodedUser.username = {
+            codableUser.emoji = editedProfile.emoji
+            codableUser.color = editedProfile.color.toHex()
+            codableUser.firstName = editedProfile.firstName
+            codableUser.lastName = editedProfile.lastName
+            codableUser.username = {
                 if let editedUser = editedProfile as? User {
                     return editedUser.username
                 } else {
                     return nil
                 }
                 }()
-            encodedUser.email = {
+            codableUser.email = {
                 if let editedUser = editedProfile as? User {
                     return editedUser.email
                 } else {
                     return nil
                 }
                 }()
-            encodedUser.password = {
+            codableUser.password = {
                 if let editedUser = editedProfile as? User {
                     return editedUser.password
                 } else {
                     return nil
                 }
                 }()
-            encodedUser.goals = editedProfile.goals
-            encodedUser.interests = tagManager.interests
-            encodedUser.values = tagManager.values
-            encodedUser.scorePercentage = 0
-            encodedUser.tokenCount = 0
-            encodedUser.memoryCount = 0
+            codableUser.goals = editedProfile.goals
+            codableUser.interests = tagManager.interests
+            codableUser.values = tagManager.values
+            codableUser.scorePercentage = 0
+            codableUser.tokenCount = 0
+            codableUser.memoryCount = 0
             
             try await createUser()
             

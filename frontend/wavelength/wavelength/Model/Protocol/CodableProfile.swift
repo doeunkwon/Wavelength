@@ -1,13 +1,13 @@
 //
-//  EncodedProfile.swift
+//  CodableProfile.swift
 //  wavelength
 //
-//  Created by Doeun Kwon on 2024-08-19.
+//  Created by Doeun Kwon on 2024-09-25.
 //
 
 import SwiftUI
 
-protocol EncodedProfile {
+protocol CodableProfile {
     var emoji: String? { get set }
     var color: String? { get set }
     var firstName: String? { get set }

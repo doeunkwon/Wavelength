@@ -12,7 +12,7 @@ class NewFriendViewModel: ObservableObject {
     
     @Published var fid: String = ""
     @Published var isLoading = false
-    private var encodedFriend = EncodedFriend()
+    private var codableFriend = CodableFriend()
     
     private let friendService = FriendService()
     private let scoreService = ScoreService()
@@ -43,8 +43,8 @@ class NewFriendViewModel: ObservableObject {
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            let fetchedFID = try await friendService.createFriend(newData: encodedFriend, bearerToken: bearerToken)
-            let _ = try await breakdownService.createBreakdown(newData: EncodedBreakdown(goal: 0, value: 0, interest: 0, memory: 0), fid: fetchedFID, bearerToken: bearerToken)
+            let fetchedFID = try await friendService.createFriend(newData: codableFriend, bearerToken: bearerToken)
+            let _ = try await breakdownService.createBreakdown(newData: CodableBreakdown(goal: 0, value: 0, interest: 0, memory: 0), fid: fetchedFID, bearerToken: bearerToken)
             DispatchQueue.main.async {
                 self.fid = fetchedFID
             }
@@ -58,17 +58,17 @@ class NewFriendViewModel: ObservableObject {
         if let friend = profileManager.profile as? Friend {
             let editedProfile = editedProfileManager.profile
             
-            encodedFriend.emoji = editedProfile.emoji
-            encodedFriend.color = editedProfile.color.toHex()
-            encodedFriend.firstName = editedProfile.firstName
-            encodedFriend.lastName = editedProfile.lastName
-            encodedFriend.goals = editedProfile.goals
-            encodedFriend.interests = tagManager.interests
-            encodedFriend.values = tagManager.values
-            encodedFriend.scorePercentage = -1
-            encodedFriend.scoreAnalysis = ""
-            encodedFriend.tokenCount = 0
-            encodedFriend.memoryCount = 0
+            codableFriend.emoji = editedProfile.emoji
+            codableFriend.color = editedProfile.color.toHex()
+            codableFriend.firstName = editedProfile.firstName
+            codableFriend.lastName = editedProfile.lastName
+            codableFriend.goals = editedProfile.goals
+            codableFriend.interests = tagManager.interests
+            codableFriend.values = tagManager.values
+            codableFriend.scorePercentage = -1
+            codableFriend.scoreAnalysis = ""
+            codableFriend.tokenCount = 0
+            codableFriend.memoryCount = 0
             
             try await createFriend()
             

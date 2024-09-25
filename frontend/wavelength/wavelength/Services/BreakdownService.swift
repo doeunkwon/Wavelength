@@ -33,9 +33,9 @@ class BreakdownService {
 
         do {
             let decoder = JSONDecoder()
-            let decodedBreakdown = try decoder.decode(DecodedBreakdown.self, from: data)
+            let codableBreakdown = try decoder.decode(CodableBreakdown.self, from: data)
             
-            let breakdown = Breakdown(bid: decodedBreakdown.bid, goal: decodedBreakdown.goal, value: decodedBreakdown.value, interest: decodedBreakdown.interest, memory: decodedBreakdown.memory)
+            let breakdown = Breakdown(bid: codableBreakdown.bid ?? "", goal: codableBreakdown.goal ?? 0, value: codableBreakdown.value ?? 0, interest: codableBreakdown.interest ?? 0, memory: codableBreakdown.memory ?? 0)
             
             return breakdown
         } catch {
@@ -43,7 +43,7 @@ class BreakdownService {
         }
     }
     
-    func createBreakdown(newData: EncodedBreakdown, fid: String, bearerToken: String) async throws -> String {
+    func createBreakdown(newData: CodableBreakdown, fid: String, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/breakdown/\(fid)") else {
             throw BreakdownServiceError.unknownError("Failed to create URL")
@@ -79,7 +79,7 @@ class BreakdownService {
         }
     }
     
-    func updateBreakdown(fid: String, newData: EncodedBreakdown, bearerToken: String) async throws {
+    func updateBreakdown(fid: String, newData: CodableBreakdown, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/breakdown/\(fid)") else {
             throw BreakdownServiceError.unknownError("Failed to create URL")
         }

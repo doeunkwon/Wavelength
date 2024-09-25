@@ -10,7 +10,7 @@ import SwiftKeychainWrapper
 
 class SettingsPanelViewModel: ObservableObject {
     
-    private var encodedUser = EncodedUser()
+    private var codableUser = CodableUser()
     @Published var isLoading = false
     @Published var showProfileFormViewSheet = false
 
@@ -33,7 +33,7 @@ class SettingsPanelViewModel: ObservableObject {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         
         do {
-            try await userService.updateUser(newData: encodedUser, bearerToken: bearerToken)
+            try await userService.updateUser(newData: codableUser, bearerToken: bearerToken)
         } catch {
             throw error // Re-throw the error for caller handling
         }
@@ -66,10 +66,10 @@ class SettingsPanelViewModel: ObservableObject {
         if let user = profileManager.profile as? User {
             let editedProfile = editedProfileManager.profile
             
-            encodedUser.emoji = user.emoji != editedProfile.emoji ? editedProfile.emoji : nil
-            encodedUser.color = user.color != editedProfile.color ? editedProfile.color.toHex() : nil
-            encodedUser.firstName = user.firstName != editedProfile.firstName ? editedProfile.firstName : nil
-            encodedUser.lastName = user.lastName != editedProfile.lastName ? editedProfile.lastName : nil
+            codableUser.emoji = user.emoji != editedProfile.emoji ? editedProfile.emoji : nil
+            codableUser.color = user.color != editedProfile.color ? editedProfile.color.toHex() : nil
+            codableUser.firstName = user.firstName != editedProfile.firstName ? editedProfile.firstName : nil
+            codableUser.lastName = user.lastName != editedProfile.lastName ? editedProfile.lastName : nil
 //                    encodedUser.username = {
 //                        if let editedUser = editedProfile as? User {
 //                            return user.username != editedUser.username ? editedUser.username : nil
@@ -84,9 +84,9 @@ class SettingsPanelViewModel: ObservableObject {
 //                            return nil
 //                        }
 //                        }()
-            encodedUser.goals = user.goals != editedProfile.goals ? editedProfile.goals : nil
-            encodedUser.interests = user.interests != tagManager.interests ? tagManager.interests : nil
-            encodedUser.values = user.values != tagManager.values ? tagManager.values : nil
+            codableUser.goals = user.goals != editedProfile.goals ? editedProfile.goals : nil
+            codableUser.interests = user.interests != tagManager.interests ? tagManager.interests : nil
+            codableUser.values = user.values != tagManager.values ? tagManager.values : nil
             
             try await updateUser()
             

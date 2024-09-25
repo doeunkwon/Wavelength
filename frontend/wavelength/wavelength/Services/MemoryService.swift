@@ -32,18 +32,18 @@ class MemoryService {
 
         do {
             let decoder = JSONDecoder()
-            let decodedMemories = try decoder.decode([DecodedMemory].self, from: data)
+            let codableMemories = try decoder.decode([CodableMemory].self, from: data)
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "HH:mm E, d MMM y"
             
-            let memories: [Memory] = decodedMemories.map { decodedMemory in
+            let memories: [Memory] = codableMemories.map { codableMemory in
                 Memory(
-                    mid: decodedMemory.mid,
-                    date: dateFormatter.date(from: decodedMemory.date) ?? Date(),
-                    title: decodedMemory.title,
-                    content: decodedMemory.content,
-                    tokens: decodedMemory.tokens)
+                    mid: codableMemory.mid ?? "",
+                    date: dateFormatter.date(from: codableMemory.date ?? "") ?? Date(),
+                    title: codableMemory.title ?? "",
+                    content: codableMemory.content ?? "",
+                    tokens: codableMemory.tokens ?? 0)
             }
             
             return memories
@@ -52,7 +52,7 @@ class MemoryService {
         }
     }
     
-    func updateMemory(mid: String, newData: EncodedMemory, bearerToken: String) async throws {
+    func updateMemory(mid: String, newData: CodableMemory, bearerToken: String) async throws {
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(mid)") else {
             throw MemoryServiceError.unknownError("Failed to create URL")
         }
@@ -79,7 +79,7 @@ class MemoryService {
         }
     }
     
-    func createMemory(newData: EncodedMemory, fid: String, bearerToken: String) async throws -> String {
+    func createMemory(newData: CodableMemory, fid: String, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {
             throw MemoryServiceError.unknownError("Failed to create URL")

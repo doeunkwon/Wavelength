@@ -134,7 +134,7 @@ struct FriendProfileView: View {
             } label: {
                 EllipsisButtonView()
             })
-            .alert(Strings.Settings.deleteMessage, isPresented: $showConfirmDeleteAlert) {
+            .alert(Strings.Settings.delete, isPresented: $showConfirmDeleteAlert) {
                 Button(Strings.Settings.delete, role: .destructive) {
                     Task {
                         do {
@@ -152,7 +152,7 @@ struct FriendProfileView: View {
                 }
                 Button(Strings.Actions.cancel, role: .cancel) {}
                 } message: {
-                    Text(Strings.Settings.delete)
+                    Text(Strings.Settings.deleteMessage)
                 }
                 .sheet(isPresented: $friendProfileViewModel.showProfileFormViewSheet) {
                 ZStack {

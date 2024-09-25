@@ -33,17 +33,17 @@ class ScoreService {
 
         do {
             let decoder = JSONDecoder()
-            let decodedScores = try decoder.decode([DecodedScore].self, from: data)
+            let codableScores = try decoder.decode([CodableScore].self, from: data)
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             
-            let scores: [Score] = decodedScores.map { decodedScore in
+            let scores: [Score] = codableScores.map { codableScore in
                 Score(
-                    sid: decodedScore.sid,
-                    timestamp: dateFormatter.date(from: decodedScore.timestamp) ?? Date(),
-                    percentage: decodedScore.percentage,
-                    analysis: decodedScore.analysis
+                    sid: codableScore.sid ?? "",
+                    timestamp: dateFormatter.date(from: codableScore.timestamp ?? "") ?? Date(),
+                    percentage: codableScore.percentage ?? 0,
+                    analysis: codableScore.analysis
                 )
             }
             
@@ -76,17 +76,17 @@ class ScoreService {
 
         do {
             let decoder = JSONDecoder()
-            let decodedScores = try decoder.decode([DecodedScore].self, from: data)
+            let codableScores = try decoder.decode([CodableScore].self, from: data)
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             
-            let scores: [Score] = decodedScores.map { decodedScore in
+            let scores: [Score] = codableScores.map { codableScore in
                 Score(
-                    sid: decodedScore.sid,
-                    timestamp: dateFormatter.date(from: decodedScore.timestamp) ?? Date(),
-                    percentage: decodedScore.percentage,
-                    analysis: decodedScore.analysis
+                    sid: codableScore.sid ?? "",
+                    timestamp: dateFormatter.date(from: codableScore.timestamp ?? "") ?? Date(),
+                    percentage: codableScore.percentage ?? 0,
+                    analysis: codableScore.analysis
                 )
             }
             
@@ -96,7 +96,7 @@ class ScoreService {
         }
     }
     
-    func createUserScore(newData: EncodedScore, bearerToken: String) async throws -> String {
+    func createUserScore(newData: CodableScore, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores") else {
             throw ScoreServiceError.unknownError("Failed to create URL")
@@ -132,7 +132,7 @@ class ScoreService {
         }
     }
     
-    func createFriendScore(newData: EncodedScore, fid: String, bearerToken: String) async throws -> String {
+    func createFriendScore(newData: CodableScore, fid: String, bearerToken: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores/\(fid)") else {
             throw ScoreServiceError.unknownError("Failed to create URL")
