@@ -62,9 +62,10 @@ def update_password(uid: str, new_data):
         )
 
     new_hashed_password = hash_password(new_data["newPassword"])
-    new_data["password"] = new_hashed_password
 
-    return merge_data(uid, existing_user, new_data)
+    new_password = {"password": new_hashed_password}
+
+    return merge_data(uid, existing_user, new_password)
 
 
 def delete_user(uid: str):
