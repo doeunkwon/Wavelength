@@ -49,7 +49,7 @@ struct Strings {
     
     // MARK: - Memory
     struct Memory {
-        static func memories(int: Int) -> String { return "\(int) Memories" }
+        static func memories(int: Int) -> String { return "\(int) memories" }
         static let memories = "Memories"
         static let new = "New memory"
         static let title = "Title"

@@ -74,9 +74,11 @@ def delete_user(uid: str):
     MATCH (u:User {{uid: $uid}})
     OPTIONAL MATCH (u)-[:HAS_MEMORY]->(m:Memory)
     OPTIONAL MATCH (u)-[:FRIENDS_WITH]->(f:Friend)
+    OPTIONAL MATCH (f)-[:HAS_SCORE]->(fs:Score)
+    OPTIONAL MATCH (f)-[:HAS_BREAKDOWN]->(fb:Breakdown)
     OPTIONAL MATCH (u)-[:HAS_SCORE]->(s:Score)
     OPTIONAL MATCH (u)-[:HAS_VALUE]->(v:Value)
-    DETACH DELETE u, m, f, s, v
+    DETACH DELETE u, m, f, fs, fb, s, v
     """
 
     # Execute the query with identifier

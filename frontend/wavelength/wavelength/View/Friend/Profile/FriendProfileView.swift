@@ -81,27 +81,41 @@ struct FriendProfileView: View {
                     }
                     
                     ScoreWavelengthButtonView(color: friend.color) {
-                        showConfirmScoreAlert.toggle()
-                    }
-                    .alert(Strings.Score.buttonTitle, isPresented: $showConfirmScoreAlert, actions: {
-                        Button(Strings.Actions.score) {
-                            Task {
-                                do {
-                                    try await friendProfileViewModel.updateScore(fid: friend.fid)
-                                    
-                                    DispatchQueue.main.async {
-                                        friendProfileToastManager.insertToast(style: .success, message: Strings.Score.updated)
-                                    }
-                                } catch {
-                                    print(Strings.Errors.online(message: error.localizedDescription))
-                                    DispatchQueue.main.async {
-                                        friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.online(message: error.localizedDescription))
-                                    }
+//                        showConfirmScoreAlert.toggle()
+                        Task {
+                            do {
+                                try await friendProfileViewModel.updateScore(fid: friend.fid)
+                                
+                                DispatchQueue.main.async {
+                                    friendProfileToastManager.insertToast(style: .success, message: Strings.Score.updated)
+                                }
+                            } catch {
+                                print(Strings.Errors.online(message: error.localizedDescription))
+                                DispatchQueue.main.async {
+                                    friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.online(message: error.localizedDescription))
                                 }
                             }
                         }
-                        Button(Strings.Actions.cancel, role: .cancel) {}
-                    })
+                    }
+//                    .alert(Strings.Score.buttonTitle, isPresented: $showConfirmScoreAlert, actions: {
+//                        Button(Strings.Actions.score) {
+//                            Task {
+//                                do {
+//                                    try await friendProfileViewModel.updateScore(fid: friend.fid)
+//                                    
+//                                    DispatchQueue.main.async {
+//                                        friendProfileToastManager.insertToast(style: .success, message: Strings.Score.updated)
+//                                    }
+//                                } catch {
+//                                    print(Strings.Errors.online(message: error.localizedDescription))
+//                                    DispatchQueue.main.async {
+//                                        friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.online(message: error.localizedDescription))
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        Button(Strings.Actions.cancel, role: .cancel) {}
+//                    })
                     .padding(.vertical, Padding.large)
                     .shadow(
                         color: ShadowStyle.high.color,
