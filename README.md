@@ -3,9 +3,8 @@
 An AI-powered iOS app that helps you curate your social circle based on personalized metrics.
 
 <p align="center">
-  <img width="1000" src="https://github.com/user-attachments/assets/edd62f2c-725f-4ab4-b520-979c1d22bedb">
+  <img width="1000" src="https://github.com/user-attachments/assets/e1f8402b-d9b7-447a-b953-894b429a342b">
 </p>
-
 
 ## Overview
 
