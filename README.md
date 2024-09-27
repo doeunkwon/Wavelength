@@ -2,9 +2,13 @@
 
 An AI-powered iOS app that helps you curate your social circle based on personalized metrics.
 
+<p align="center">
+  <img width="1000" src="https://github.com/user-attachments/assets/43d9ef34-7aa9-4399-9431-5a4cb07bd8a2">
+</p>
+
 ## Overview
 
-Wavelength is a full-stack application designed to help you build and maintain a social circle that aligns with your personal goals, values, and interests. By leveraging AI and a combination of objective and subjective metrics, Wavelength gamifies the process of surrounding yourself with the best group of people possible.
+Wavelength is a full-stack iOS app designed to help you build and maintain a social circle that aligns with your personal goals, values, and interests. By leveraging AI and a combination of objective and subjective metrics, Wavelength gamifies the process of surrounding yourself with the best group of people possible.
 
 ## Features
 
@@ -15,18 +19,24 @@ Wavelength is a full-stack application designed to help you build and maintain a
 - **Dashboard**: View your overall social circle alignment score.
 - **Progress Tracking**: Monitor your scores over time with interactive line graphs using Swift Charts.
 
+### User Profile Creation
 https://github.com/user-attachments/assets/0337eae0-b57e-4653-9c7b-137e58af29f9
 
+### Friend Profile Creation
+
+#### Low Alignment
 https://github.com/user-attachments/assets/c0bc2671-4918-4f2a-bb02-0867b30a1785
 
+#### High Alignment
 https://github.com/user-attachments/assets/3b4701e7-3519-4b81-bb2d-0e5ca5d3a4ac
 
+### Memory Creation
 https://github.com/user-attachments/assets/d30b912c-bbc7-4d34-af60-1c9f78edff3f
 
 ## Tech Stack
 
 - **Frontend**: SwiftUI
-- **Backend**: FastAPI (Python)
+- **Backend**: FastAPI (Python), LangChain
 - **Database**: Neo4j Graph Database
 - **AI Model**: Gemini-1.5-flash
 
