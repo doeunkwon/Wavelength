@@ -10,6 +10,10 @@ import Foundation
 
 class BreakdownService {
     
+    static let shared = BreakdownService()
+    
+    private init() {}
+    
     func getBreakdown(fid: String, bearerToken: String) async throws -> Breakdown {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/breakdown/\(fid)") else {

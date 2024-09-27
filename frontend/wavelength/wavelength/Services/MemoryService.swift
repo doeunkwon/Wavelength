@@ -10,6 +10,10 @@ import SwiftUI
 
 class MemoryService {
     
+    static let shared = MemoryService()
+    
+    private init() {}
+    
     func getMemories(fid: String, bearerToken: String) async throws -> [Memory] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/memories/\(fid)") else {

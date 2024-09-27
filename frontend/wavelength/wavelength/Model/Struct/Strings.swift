@@ -117,7 +117,7 @@ struct Strings {
     
     // MARK: - Dashboard
     struct Dashboard {
-        static func tokens(str: String) -> String { return "\(str) Tokens" }
+        static func tokens(str: String) -> String { return "\(str) tokens" }
         static let tokens = "Tokens"
         static let memories = "Memories"
     }

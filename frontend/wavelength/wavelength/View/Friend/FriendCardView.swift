@@ -44,15 +44,9 @@ struct FriendCardView: View {
                                 .lineLimit(1)
                                 .truncationMode(.tail)
                             Spacer()
-                            if friend.scorePercentage == -1 {
-                                Text("0%")
-                                    .font(.system(size: Fonts.body))
-                                    .foregroundColor(intToColor(value: 0))
-                            } else {
-                                Text(String(friend.scorePercentage) + "%")
-                                    .font(.system(size: Fonts.body))
-                                    .foregroundColor(intToColor(value: friend.scorePercentage))
-                            }
+                            Text(String(friend.scorePercentage) + "%")
+                                .font(.system(size: Fonts.body))
+                                .foregroundColor(intToColor(value: friend.scorePercentage))
                         }
                     }
                     .padding(Padding.medium)

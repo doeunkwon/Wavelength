@@ -23,9 +23,6 @@ class ScoreViewModel: ObservableObject {
     
     @Published var isLoading = false
     
-    private let scoreService = ScoreService()
-    private let breakdownService = BreakdownService()
-    
     func getFriendScores(fid: String, completion: @escaping (Bool) -> Void) {
         
         print("API CALL: GET FRIEND SCORES")
@@ -43,8 +40,8 @@ class ScoreViewModel: ObservableObject {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         Task {
             do {
-                let fetchedScores = try await scoreService.getFriendScores(fid: fid, bearerToken: bearerToken)
-                let fetchedBreakdown = try await breakdownService.getBreakdown(fid: fid, bearerToken: bearerToken)
+                let fetchedScores = try await ScoreService.shared.getFriendScores(fid: fid, bearerToken: bearerToken)
+                let fetchedBreakdown = try await BreakdownService.shared.getBreakdown(fid: fid, bearerToken: bearerToken)
                 DispatchQueue.main.async {
                     self.scores = fetchedScores
                     self.breakdown = fetchedBreakdown

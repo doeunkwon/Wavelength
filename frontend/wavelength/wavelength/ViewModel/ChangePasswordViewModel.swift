@@ -13,8 +13,6 @@ class ChangePasswordViewModel: ObservableObject {
     private var encodedPassword = EncodedPassword()
     @Published var isLoading = false
     
-    private let userService = UserService()
-    
     func updatePassword(oldPassword: String, newPassword: String) async throws {
         
         print("API CALL: UPDATE PASSWORD")
@@ -35,7 +33,7 @@ class ChangePasswordViewModel: ObservableObject {
         encodedPassword.newPassword = newPassword
         
         do {
-            try await userService.updatePassword(newData: encodedPassword, bearerToken: bearerToken)
+            try await UserService.shared.updatePassword(newData: encodedPassword, bearerToken: bearerToken)
         } catch {
             throw error // Re-throw the error for caller handling
         }

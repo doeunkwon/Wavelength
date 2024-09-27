@@ -76,27 +76,27 @@ struct FriendProfileView: View {
                             
                         }
                         .padding(Padding.large)
-                        .padding(.bottom, Frame.floatingButtonHeight) /// Additional bottom padding to account for floating wavelength button
+//                        .padding(.bottom, Frame.floatingButtonHeight) /// Additional bottom padding to account for floating wavelength button
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     
-                    ScoreWavelengthButtonView(color: friend.color) {
-//                        showConfirmScoreAlert.toggle()
-                        Task {
-                            do {
-                                try await friendProfileViewModel.updateScore(fid: friend.fid)
-                                
-                                DispatchQueue.main.async {
-                                    friendProfileToastManager.insertToast(style: .success, message: Strings.Score.updated)
-                                }
-                            } catch {
-                                print(Strings.Errors.online(message: error.localizedDescription))
-                                DispatchQueue.main.async {
-                                    friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.online(message: error.localizedDescription))
-                                }
-                            }
-                        }
-                    }
+//                    ScoreWavelengthButtonView(color: friend.color) {
+////                        showConfirmScoreAlert.toggle()
+//                        Task {
+//                            do {
+//                                try await friendProfileViewModel.updateScore(fid: friend.fid)
+//                                
+//                                DispatchQueue.main.async {
+//                                    friendProfileToastManager.insertToast(style: .success, message: Strings.Score.updated)
+//                                }
+//                            } catch {
+//                                print(Strings.Errors.online(message: error.localizedDescription))
+//                                DispatchQueue.main.async {
+//                                    friendProfileToastManager.insertToast(style: .error, message: Strings.Errors.online(message: error.localizedDescription))
+//                                }
+//                            }
+//                        }
+//                    }
 //                    .alert(Strings.Score.buttonTitle, isPresented: $showConfirmScoreAlert, actions: {
 //                        Button(Strings.Actions.score) {
 //                            Task {
@@ -116,12 +116,12 @@ struct FriendProfileView: View {
 //                        }
 //                        Button(Strings.Actions.cancel, role: .cancel) {}
 //                    })
-                    .padding(.vertical, Padding.large)
-                    .shadow(
-                        color: ShadowStyle.high.color,
-                        radius: ShadowStyle.high.radius,
-                        x: ShadowStyle.high.x,
-                        y: ShadowStyle.high.y)
+//                    .padding(.vertical, Padding.large)
+//                    .shadow(
+//                        color: ShadowStyle.high.color,
+//                        radius: ShadowStyle.high.radius,
+//                        x: ShadowStyle.high.x,
+//                        y: ShadowStyle.high.y)
                 }
                 
                 if friendProfileViewModel.isLoading {

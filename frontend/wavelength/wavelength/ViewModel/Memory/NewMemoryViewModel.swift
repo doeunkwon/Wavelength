@@ -19,25 +19,21 @@ class NewMemoryViewModel: ObservableObject {
     @ObservedObject private var user: User
     @ObservedObject private var friend: Friend
     
-    private let memoryService = MemoryService()
-    private let userService = UserService()
-    private let friendService = FriendService()
-    
     init(memories: Binding<[Memory]>, friend: Friend, user: User) {
         self._memories = memories
         self.friend = friend
         self.user = user
     }
     
-    func createMemory(addedTokens: Int) async throws {
+    private func createMemory(addedTokens: Int) async throws {
         
         print("API CALL: CREATE MEMORIES")
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            let fetchedMID = try await memoryService.createMemory(newData: codableMemory, fid: friend.fid, bearerToken: bearerToken)
-            try await userService.updateUser(newData: CodableUser(tokenCount: user.tokenCount + addedTokens, memoryCount: user.memoryCount + 1), bearerToken: bearerToken)
-            try await friendService.updateFriend(fid: friend.fid, newData: CodableFriend(tokenCount: friend.tokenCount + addedTokens, memoryCount: friend.memoryCount + 1), bearerToken: bearerToken)
+            let fetchedMID = try await MemoryService.shared.createMemory(newData: codableMemory, fid: friend.fid, bearerToken: bearerToken)
+            try await UserService.shared.updateUser(newData: CodableUser(tokenCount: user.tokenCount + addedTokens, memoryCount: user.memoryCount + 1), bearerToken: bearerToken)
+            try await FriendService.shared.updateFriend(fid: friend.fid, newData: CodableFriend(tokenCount: friend.tokenCount + addedTokens, memoryCount: friend.memoryCount + 1), bearerToken: bearerToken)
             DispatchQueue.main.async {
                 self.mid = fetchedMID
             }
@@ -70,6 +66,7 @@ class NewMemoryViewModel: ObservableObject {
             codableMemory.tokens = editedMemory.tokens
             
             try await createMemory(addedTokens: editedMemory.tokens)
+            try await updateScore(user: user, friend: friend)
             
             DispatchQueue.main.async {
                 

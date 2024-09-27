@@ -20,97 +20,19 @@ class FriendProfileViewModel: ObservableObject {
     
     private var codableFriend = CodableFriend()
     
-    private let friendService = FriendService()
-    private let userService = UserService()
-    private let llmService = LLMService()
-    private let breakdownService = BreakdownService()
-    private let scoreService = ScoreService()
-    
     init(user: User, friend: Friend, friends: [Friend]) {
         self.user = user
         self.friend = friend
         self.friends = friends
     }
     
-    func updateScore(fid: String) async throws {
+    private func updateFriend(fid: String) async throws {
         
         print("API CALL: UPDATE FRIEND")
-        
-        DispatchQueue.main.async {
-            self.isLoading = true
-        }
-        
-        defer {
-            DispatchQueue.main.async {
-                self.isLoading = false
-            }
-        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            
-            let llmScore: LLMScore = try await llmService.generateLLMScore(fid: fid, bearerToken: bearerToken)
-            
-            let goalScore = llmScore.goal
-            let valueScore = llmScore.value
-            let interestScore = llmScore.interest
-            let memoryScore = llmScore.memory
-            let writtenAnalysis = llmScore.analysis
-            let trimmedWrittenAnalysis = writtenAnalysis.trimmingCharacters(in: .whitespacesAndNewlines)
-            
-            let newFriendScore = (goalScore + valueScore + interestScore + memoryScore) / 4
-            
-            let filteredFriends = friends.filter { $0.scorePercentage >= 0 }
-            
-            let filteredFriendsCount = filteredFriends.count
-            
-            let filteredFriendsScoreSum = filteredFriends.reduce(0) { $0 + $1.scorePercentage }
-            
-            let oldFriendScore = friend.scorePercentage
-            
-            var newUserScore = 0
-            
-            if oldFriendScore >= 0 {
-                newUserScore = (filteredFriendsScoreSum - oldFriendScore + newFriendScore) / filteredFriendsCount
-            } else {
-                newUserScore = (filteredFriendsScoreSum + newFriendScore) / (filteredFriendsCount + 1)
-            }
-            
-            _ = try await scoreService.createUserScore(newData: CodableScore(percentage: newUserScore), bearerToken: bearerToken)
-            _ = try await scoreService.createFriendScore(newData: CodableScore(percentage: newFriendScore, analysis: trimmedWrittenAnalysis), fid: fid, bearerToken: bearerToken)
-            _ = try await breakdownService.updateBreakdown(fid: friend.fid, newData: CodableBreakdown(goal:goalScore, value: valueScore, interest: interestScore, memory: memoryScore), bearerToken: bearerToken)
-            try await friendService.updateFriend(fid: fid, newData: CodableFriend(scorePercentage: newFriendScore, scoreAnalysis: trimmedWrittenAnalysis), bearerToken: bearerToken)
-            try await userService.updateUser(newData: CodableUser(scorePercentage: newUserScore), bearerToken: bearerToken)
-            
-            DispatchQueue.main.async {
-                
-                self.friend.scorePercentage = newFriendScore
-                self.user.scorePercentage = newUserScore
-                
-            }
-        } catch {
-            throw error // Re-throw the error for caller handling
-        }
-    }
-
-    
-    func updateFriend(fid: String) async throws {
-        
-        print("API CALL: UPDATE FRIEND")
-        
-        DispatchQueue.main.async {
-            self.isLoading = true
-        }
-        
-        defer {
-            DispatchQueue.main.async {
-                self.isLoading = false
-            }
-        }
-
-        let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
-        do {
-            try await friendService.updateFriend(fid: fid, newData: codableFriend, bearerToken: bearerToken)
+            try await FriendService.shared.updateFriend(fid: fid, newData: codableFriend, bearerToken: bearerToken)
             
         } catch {
             throw error // Re-throw the error for caller handling
@@ -135,19 +57,15 @@ class FriendProfileViewModel: ObservableObject {
         
         do {
             
-            let filteredFriends = friends.filter { $0.scorePercentage >= 0 }
-            
-            let filteredFriendsCount = filteredFriends.count
-            
-            let filteredFriendsScoreSum = filteredFriends.reduce(0) { $0 + $1.scorePercentage }
+            let friendsScoreSum = friends.reduce(0) { $0 + $1.scorePercentage }
             
             let friendScore = friend.scorePercentage
             
-            let newUserScore = filteredFriendsCount - 1 == 0 ? 0 : (filteredFriendsScoreSum - friendScore) / (filteredFriendsCount - 1)
+            let newUserScore = friends.count - 1 == 0 ? 0 : (friendsScoreSum - friendScore) / (friends.count - 1)
             
-            try await friendService.deleteFriend(fid: fid, bearerToken: bearerToken)
-            _ = try await scoreService.createUserScore(newData: CodableScore(percentage: newUserScore), bearerToken: bearerToken)
-            try await userService.updateUser(newData: CodableUser(scorePercentage: newUserScore, tokenCount: user.tokenCount - friendTokenCount, memoryCount: user.memoryCount - friendMemoryCount), bearerToken: bearerToken)
+            try await FriendService.shared.deleteFriend(fid: fid, bearerToken: bearerToken)
+            _ = try await ScoreService.shared.createUserScore(newData: CodableScore(percentage: newUserScore), bearerToken: bearerToken)
+            try await UserService.shared.updateUser(newData: CodableUser(scorePercentage: newUserScore, tokenCount: user.tokenCount - friendTokenCount, memoryCount: user.memoryCount - friendMemoryCount), bearerToken: bearerToken)
             
             DispatchQueue.main.async {
                 
@@ -163,6 +81,16 @@ class FriendProfileViewModel: ObservableObject {
     }
     
     func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) async throws {
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
             
         if let friend = profileManager.profile as? Friend {
             let editedProfile = editedProfileManager.profile
@@ -175,7 +103,13 @@ class FriendProfileViewModel: ObservableObject {
             codableFriend.interests = friend.interests != tagManager.interests ? tagManager.interests : nil
             codableFriend.values = friend.values != tagManager.values ? tagManager.values : nil
             
+            let shouldUpdateScore = friend.goals != editedProfile.goals || friend.interests != tagManager.interests || friend.values != tagManager.values
+            
             try await updateFriend(fid: friend.fid)
+            
+            if shouldUpdateScore {
+                try await updateScore(user: user, friend: friend)
+            }
             
             DispatchQueue.main.async {
                 

@@ -19,8 +19,6 @@ class SignUpViewModel: ObservableObject {
     
     private var codableUser = CodableUser()
     
-    private let userService = UserService()
-    
     private let login: (String, String) async throws -> ()
     
     init(login: @escaping (String, String) async throws -> (), showModal: Binding<Bool>, contentToastManager: ToastManager) {
@@ -44,7 +42,7 @@ class SignUpViewModel: ObservableObject {
         }
 
         do {
-            let fetchedUID = try await userService.createUser(newData: codableUser)
+            let fetchedUID = try await UserService.shared.createUser(newData: codableUser)
             DispatchQueue.main.async {
                 self.uid = fetchedUID
                 self.contentToastManager.insertToast(style: .success, message: Strings.Profile.created)

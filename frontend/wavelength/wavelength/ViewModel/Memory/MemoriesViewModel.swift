@@ -11,8 +11,6 @@ import SwiftKeychainWrapper
 class MemoriesViewModel: ObservableObject {
     @Published var memories: [Memory] = []
     @Published var isLoading = false
-
-    let memoryService = MemoryService()
     
     func getMemories(fid: String, completion: @escaping (Bool) -> Void) {
         
@@ -31,7 +29,7 @@ class MemoriesViewModel: ObservableObject {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         Task {
             do {
-                let fetchedMemories = try await memoryService.getMemories(fid: fid, bearerToken: bearerToken)
+                let fetchedMemories = try await MemoryService.shared.getMemories(fid: fid, bearerToken: bearerToken)
                 DispatchQueue.main.async {
                     self.memories = fetchedMemories
                 }

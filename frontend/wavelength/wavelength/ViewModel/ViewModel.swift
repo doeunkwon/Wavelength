@@ -33,11 +33,6 @@ class ViewModel: ObservableObject {
     init() {
         isLoggedIn = hasBearerToken()
     }
-
-    let authenticationService = AuthenticationService()
-    let userService = UserService()
-    let friendService = FriendService()
-    let scoreService = ScoreService()
     
     func hasBearerToken() -> Bool {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
@@ -59,7 +54,7 @@ class ViewModel: ObservableObject {
         }
         
         do {
-            let token = try await authenticationService.signIn(username: username, password: password)
+            let token = try await AuthenticationService.shared.signIn(username: username, password: password)
             KeychainWrapper.standard.set(token, forKey: "bearerToken")
             DispatchQueue.main.async {
                 self.isLoggedIn = true
@@ -85,9 +80,9 @@ class ViewModel: ObservableObject {
         
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            let fetchedUser = try await userService.getUser(bearerToken: bearerToken)
-            let fetchedFriends = try await friendService.getFriends(bearerToken: bearerToken)
-            let fetchedScores = try await scoreService.getUserScores(bearerToken: bearerToken)
+            let fetchedUser = try await UserService.shared.getUser(bearerToken: bearerToken)
+            let fetchedFriends = try await FriendService.shared.getFriends(bearerToken: bearerToken)
+            let fetchedScores = try await ScoreService.shared.getUserScores(bearerToken: bearerToken)
             DispatchQueue.main.async {
                 self.user = fetchedUser
                 self.scores = fetchedScores

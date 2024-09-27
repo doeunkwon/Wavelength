@@ -10,6 +10,10 @@ import SwiftUI
 
 class FriendService {
     
+    static let shared = FriendService()
+    
+    private init() {}
+    
     func getFriends(bearerToken: String) async throws -> [Friend] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/friends") else {

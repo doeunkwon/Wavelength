@@ -10,6 +10,10 @@ import Foundation
 
 class LLMService {
     
+    static let shared = LLMService()
+    
+    private init() {}
+    
     func generateLLMScore(fid: String, bearerToken: String) async throws -> LLMScore {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/llm/score/\(fid)") else {

@@ -10,6 +10,10 @@ import SwiftUI
 
 class ScoreService {
     
+    static let shared = ScoreService()
+    
+    private init() {}
+    
     func getUserScores(bearerToken: String) async throws -> [Score] {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/scores") else {

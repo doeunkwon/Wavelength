@@ -10,6 +10,10 @@ import SwiftUI
 
 class UserService {
     
+    static let shared = UserService()
+    
+    private init() {}
+    
     func getUser(bearerToken: String) async throws -> User {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/users") else {

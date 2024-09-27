@@ -9,6 +9,10 @@ import SwiftUI
 
 class AuthenticationService {
     
+    static let shared = AuthenticationService()
+    
+    private init() {}
+    
     func signIn(username: String, password: String) async throws -> String {
         
         guard let url = URL(string: "\(ServiceUtils.baseUrl)/private/login") else {

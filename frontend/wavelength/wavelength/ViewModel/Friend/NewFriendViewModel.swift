@@ -14,37 +14,26 @@ class NewFriendViewModel: ObservableObject {
     @Published var isLoading = false
     private var codableFriend = CodableFriend()
     
-    private let friendService = FriendService()
-    private let scoreService = ScoreService()
-    private let breakdownService = BreakdownService()
-    
     @ObservedObject private var friendsManager: FriendsManager
     
     @Binding private var showNewFriendViewModal: Bool
     
-    init(friendsManager: FriendsManager, showNewFriendViewModal: Binding<Bool>) {
+    private var user: User
+    
+    init(friendsManager: FriendsManager, showNewFriendViewModal: Binding<Bool>, user: User) {
         self.friendsManager = friendsManager
         self._showNewFriendViewModal = showNewFriendViewModal
+        self.user = user
     }
     
-    func createFriend() async throws {
+    private func createFriend() async throws {
         
         print("API CALL: CREATE FRIEND")
-        
-        DispatchQueue.main.async {
-            self.isLoading = true
-        }
-        
-        defer {
-            DispatchQueue.main.async {
-                self.isLoading = false
-            }
-        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
-            let fetchedFID = try await friendService.createFriend(newData: codableFriend, bearerToken: bearerToken)
-            let _ = try await breakdownService.createBreakdown(newData: CodableBreakdown(goal: 0, value: 0, interest: 0, memory: 0), fid: fetchedFID, bearerToken: bearerToken)
+            let fetchedFID = try await FriendService.shared.createFriend(newData: codableFriend, bearerToken: bearerToken)
+            let _ = try await BreakdownService.shared.createBreakdown(newData: CodableBreakdown(goal: 0, value: 0, interest: 0, memory: 0), fid: fetchedFID, bearerToken: bearerToken)
             DispatchQueue.main.async {
                 self.fid = fetchedFID
             }
@@ -54,6 +43,10 @@ class NewFriendViewModel: ObservableObject {
     }
     
     func completion(profileManager: ProfileManager, editedProfileManager: ProfileManager, tagManager: TagManager) async throws {
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
             
         if let friend = profileManager.profile as? Friend {
             let editedProfile = editedProfileManager.profile
@@ -88,9 +81,19 @@ class NewFriendViewModel: ObservableObject {
                 friend.memoryCount = 0
                 
                 self.friendsManager.addFriend(friend: friend)
+                
+                DispatchQueue.global(qos: .userInteractive).async {
+                    Task {
+                        try await updateScore(user: self.user, friend: friend)
+                        DispatchQueue.main.async {
+                            self.isLoading = false
+                            self.showNewFriendViewModal.toggle()
+                        }
+                    }
+                }
+                
             }
             
-            showNewFriendViewModal.toggle()
         }
         
     }

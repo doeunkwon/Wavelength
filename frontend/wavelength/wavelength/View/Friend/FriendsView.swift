@@ -94,7 +94,7 @@ struct FriendsView: View {
                         Spacer()
                         
                         AddButtonView(showModal: $showNewFriendViewModal, size: Frame.xsmall, fontSize: Fonts.subtitle, color: user.color) {
-                            NewFriendView(friendsManager: friendsManager, showNewFriendViewModal: $showNewFriendViewModal)
+                            NewFriendView(friendsManager: friendsManager, showNewFriendViewModal: $showNewFriendViewModal, user: user)
                                 .interactiveDismissDisabled()
                         }
                     }

@@ -13,8 +13,8 @@ struct NewFriendView: View {
     @StateObject private var newFriendViewModel: NewFriendViewModel
     @StateObject private var newFriendToastManager = ToastManager()
     
-    init(friendsManager: FriendsManager, showNewFriendViewModal: Binding<Bool>) {
-        self._newFriendViewModel = StateObject(wrappedValue: NewFriendViewModel(friendsManager: friendsManager, showNewFriendViewModal: showNewFriendViewModal))
+    init(friendsManager: FriendsManager, showNewFriendViewModal: Binding<Bool>, user: User) {
+        self._newFriendViewModel = StateObject(wrappedValue: NewFriendViewModel(friendsManager: friendsManager, showNewFriendViewModal: showNewFriendViewModal, user: user))
     }
     
     /// Enter in an arbitrary 'fid' for now. 'fid' will be generated on the backend.

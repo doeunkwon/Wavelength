@@ -13,8 +13,6 @@ class SettingsPanelViewModel: ObservableObject {
     private var codableUser = CodableUser()
     @Published var isLoading = false
     @Published var showProfileFormViewSheet = false
-
-    private let userService = UserService()
     
     func updateUser() async throws {
         
@@ -33,7 +31,7 @@ class SettingsPanelViewModel: ObservableObject {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         
         do {
-            try await userService.updateUser(newData: codableUser, bearerToken: bearerToken)
+            try await UserService.shared.updateUser(newData: codableUser, bearerToken: bearerToken)
         } catch {
             throw error // Re-throw the error for caller handling
         }
@@ -56,7 +54,7 @@ class SettingsPanelViewModel: ObservableObject {
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         
         do {
-            try await userService.deleteUser(bearerToken: bearerToken)
+            try await UserService.shared.deleteUser(bearerToken: bearerToken)
         } catch {
             throw error // Re-throw the error for caller handling
         }
