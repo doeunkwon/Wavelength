@@ -54,7 +54,7 @@ https://github.com/user-attachments/assets/d30b912c-bbc7-4d34-af60-1c9f78edff3f
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/wavelength.git
+   git clone https://github.com/doeunkwon/wavelength.git
    cd wavelength
    ```
 
