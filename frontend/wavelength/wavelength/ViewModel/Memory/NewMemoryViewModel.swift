@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftKeychainWrapper
 
-class NewMemoryViewModel {
+class NewMemoryViewModel: ObservableObject {
     
     @Published var mid: String = ""
     private var codableMemory = CodableMemory()
@@ -32,16 +32,6 @@ class NewMemoryViewModel {
     func createMemory(addedTokens: Int) async throws {
         
         print("API CALL: CREATE MEMORIES")
-        
-        DispatchQueue.main.async {
-            self.isLoading = true
-        }
-        
-        defer {
-            DispatchQueue.main.async {
-                self.isLoading = false
-            }
-        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
@@ -56,41 +46,49 @@ class NewMemoryViewModel {
         }
     }
     
-    func completion(memory: Memory, editedMemory: Memory) {
+    func completion(memory: Memory, editedMemory: Memory) async throws {
         
-        Task {
-            do {
-                
-                let formatter = DateFormatter()
-                formatter.dateFormat = "HH:mm E, d MMM y"
-                let formattedDate = formatter.string(from: editedMemory.date)
-                
-                codableMemory.date = formattedDate
-                codableMemory.title = editedMemory.title
-                codableMemory.content = editedMemory.content
-                codableMemory.tokens = editedMemory.tokens
-                
-                try await createMemory(addedTokens: editedMemory.tokens)
-                
-                DispatchQueue.main.async {
-                    
-                    memory.mid = self.mid
-                    memory.date = editedMemory.date
-                    memory.title = editedMemory.title
-                    memory.content = editedMemory.content
-                    memory.tokens = editedMemory.tokens
-                    
-                    self.memories.append(memory)
-                    self.user.memoryCount += 1
-                    self.friend.memoryCount += 1
-                    self.user.tokenCount += editedMemory.tokens
-                    self.friend.tokenCount += editedMemory.tokens
-                    
-                }
-                
-            } catch {
-                print("Error updating memory: \(error)")
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
             }
+        }
+        
+        do {
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm E, d MMM y"
+            let formattedDate = formatter.string(from: editedMemory.date)
+            
+            codableMemory.date = formattedDate
+            codableMemory.title = editedMemory.title
+            codableMemory.content = editedMemory.content
+            codableMemory.tokens = editedMemory.tokens
+            
+            try await createMemory(addedTokens: editedMemory.tokens)
+            
+            DispatchQueue.main.async {
+                
+                memory.mid = self.mid
+                memory.date = editedMemory.date
+                memory.title = editedMemory.title
+                memory.content = editedMemory.content
+                memory.tokens = editedMemory.tokens
+                
+                self.memories.append(memory)
+                self.user.memoryCount += 1
+                self.friend.memoryCount += 1
+                self.user.tokenCount += editedMemory.tokens
+                self.friend.tokenCount += editedMemory.tokens
+                
+            }
+            
+        } catch {
+            print("Error updating memory: \(error)")
         }
         
     }

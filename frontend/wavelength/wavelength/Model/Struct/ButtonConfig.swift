@@ -14,5 +14,5 @@ struct ProfileFormTrailingButtonConfig {
 
 struct MemoryFormTrailingButtonConfig {
     let title: String
-    let action: (Memory, Memory) -> Void
+    let action: (Memory, Memory) async throws -> Void
 }

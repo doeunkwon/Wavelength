@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftKeychainWrapper
 
-class MemoryViewModel {
+class MemoryViewModel: ObservableObject {
     
     @ObservedObject private var user: User
     @ObservedObject private var friend: Friend
@@ -31,16 +31,6 @@ class MemoryViewModel {
     func updateMemory(mid: String, oldTokens: Int, newTokens: Int) async throws {
         
         print("API CALL: UPDATE MEMORY")
-        
-        DispatchQueue.main.async {
-            self.isLoading = true
-        }
-        
-        defer {
-            DispatchQueue.main.async {
-                self.isLoading = false
-            }
-        }
 
         let bearerToken = KeychainWrapper.standard.string(forKey: "bearerToken") ?? ""
         do {
@@ -92,38 +82,46 @@ class MemoryViewModel {
         }
     }
     
-    func completion(memory: Memory, editedMemory: Memory) {
+    func completion(memory: Memory, editedMemory: Memory) async throws {
         
-        Task {
-            do {
-                
-                let formatter = DateFormatter()
-                formatter.dateFormat = "HH:mm E, d MMM y"
-                let formattedDate = formatter.string(from: editedMemory.date)
-                let oldTokens = memory.tokens
-                let newTokens = editedMemory.tokens
-                
-                codableMemory.date = memory.date != editedMemory.date ? formattedDate : nil
-                codableMemory.title = memory.title != editedMemory.title ? editedMemory.title : nil
-                codableMemory.content = memory.content != editedMemory.content ? editedMemory.content : nil
-                codableMemory.tokens = oldTokens != newTokens ? newTokens : nil
-                
-                try await updateMemory(mid: memory.mid, oldTokens: oldTokens, newTokens: newTokens)
-                
-                DispatchQueue.main.async {
-                    
-                    memory.date = editedMemory.date
-                    memory.title = editedMemory.title
-                    memory.content = editedMemory.content
-                    memory.tokens = newTokens
-                    
-                    self.user.tokenCount += (newTokens - oldTokens)
-                    self.friend.tokenCount += (newTokens - oldTokens)
-                }
-                
-            } catch {
-                print("Error updating memory: \(error)")
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
             }
+        }
+        
+        do {
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm E, d MMM y"
+            let formattedDate = formatter.string(from: editedMemory.date)
+            let oldTokens = memory.tokens
+            let newTokens = editedMemory.tokens
+            
+            codableMemory.date = memory.date != editedMemory.date ? formattedDate : nil
+            codableMemory.title = memory.title != editedMemory.title ? editedMemory.title : nil
+            codableMemory.content = memory.content != editedMemory.content ? editedMemory.content : nil
+            codableMemory.tokens = oldTokens != newTokens ? newTokens : nil
+            
+            try await updateMemory(mid: memory.mid, oldTokens: oldTokens, newTokens: newTokens)
+            
+            DispatchQueue.main.async {
+                
+                memory.date = editedMemory.date
+                memory.title = editedMemory.title
+                memory.content = editedMemory.content
+                memory.tokens = newTokens
+                
+                self.user.tokenCount += (newTokens - oldTokens)
+                self.friend.tokenCount += (newTokens - oldTokens)
+            }
+            
+        } catch {
+            print("Error updating memory: \(error)")
         }
         
     }

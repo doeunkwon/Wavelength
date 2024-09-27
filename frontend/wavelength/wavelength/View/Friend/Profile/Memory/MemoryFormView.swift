@@ -89,8 +89,10 @@ struct MemoryFormView: View {
             .navigationBarItems(leading: Button(action: { dismiss() }) {
                 leadingButtonContent
             }, trailing: Button(action: { 
-                buttonConfig.action(memory, editedMemory)
-                dismiss()
+                Task {
+                    try await buttonConfig.action(memory, editedMemory)
+                    dismiss()
+                }
             }) {
                 Text(buttonConfig.title)
             })
