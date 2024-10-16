@@ -1,0 +1,209 @@
+from fastapi import APIRouter, Depends, HTTPException
+# Assuming you have a function to get the Neo4j driver
+from app.api.helpers.auth import get_current_user
+from database.neo4j import graph
+from app.api.helpers.friends import delete_friend as delete_friend_helper
+from app.api.helpers.relationships import get_memory_relationships as get_memory_relationships_helper, create_user_score_relationships as create_user_score_relationship_helper, create_friend_score_relationships as create_friend_score_relationship_helper
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
+import logging
+
+router = APIRouter()
+
+# Set up basic logging configuration
+logging.basicConfig(level=logging.ERROR)
+
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
+# Relationship endpoints related to MEMORY
+
+
+@router.post("/private/relationships/memory")
+async def create_memory_relationship(
+    relationship: dict[str, str],  # Capture data as a dictionary
+    token: str = Depends(get_current_user)
+):
+    try:
+        uid = token["uid"]
+        mid = relationship["mid"]
+        fid = relationship["fid"]
+
+        # This is checking whether or not Friend is FRIENDS_WITH User
+        # We don't allow a User to have a Memory about a Friend unless they're FRIENDS_WITH
+        cypher_query = """
+        MATCH (:User {uid: $uid})-[:FRIENDS_WITH]->(f:Friend {fid: $fid})
+        RETURN f
+        """
+
+        # Handle friend not found case
+        try:
+            result = graph.query(cypher_query, {"uid": uid, "fid": fid})
+            friend = result[0]["f"]
+
+            cypher_query = """
+            MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid}), (memory:Memory {mid: $mid})
+            CREATE (user)-[has:HAS_MEMORY]->(memory)-[about:ABOUT]->(friend)
+            """
+            graph.query(cypher_query, {"uid": uid, "mid": mid, "fid": fid})
+            return {"message": "Memory relationship successfully created."}
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=404, detail="Friend not found"
+            )
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
+    except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching user: {str(e)}"
+        )
+
+
+@router.get("/private/relationships/memory/{fid}")
+async def get_memory_relationships(
+    fid: str,
+    token: str = Depends(get_current_user)
+):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+
+        uid = token["uid"]
+
+        return get_memory_relationships_helper(uid, fid)
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
+    except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching user: {str(e)}"
+        )
+
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
+# Relationship endpoints related to Friendship
+
+
+@router.post("/private/relationships/friendship/{fid}")
+async def create_friendship_relationship(
+    # Capture data as a dictionary
+    fid: str,
+    token: str = Depends(get_current_user)
+):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+        uid = token["uid"]
+
+        # Handle friend not found case
+        try:
+            cypher_query = """
+            MATCH (f:Friend {fid: $fid})
+            RETURN f
+            """
+
+            result = graph.query(cypher_query, {"fid": fid})
+            friend = result[0]
+
+            cypher_query = """
+            MATCH (user:User {uid: $uid}), (friend:Friend {fid: $fid})
+            CREATE (user)-[:FRIENDS_WITH]->(friend)
+            """
+            graph.query(cypher_query, {"uid": uid, "fid": fid})
+            return {"message": "Friendship successfully created."}
+
+        except Exception as e:
+            raise HTTPException(status_code=404, detail="Friend not found.")
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
+    except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching user: {str(e)}"
+        )
+
+#
+# ________________________________________________________________________________________________________________________________________________________
+# ________________________________________________________________________________________________________________________________________________________
+#
+# Relationship endpoints related to SCORE
+
+
+@router.post("/private/relationships/score/{sid}")
+async def create_user_score_relationship(
+    sid: str,
+    token: str = Depends(get_current_user)
+):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+        uid = token["uid"]
+        return create_user_score_relationship_helper(uid, sid)
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
+    except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching user: {str(e)}"
+        )
+
+
+@router.post("/private/relationships/score")
+async def create_friend_score_relationship(
+    data: dict,
+    token: str = Depends(get_current_user)
+):
+
+    # Check if user is authorized
+    if not token.get("uid"):
+        return HTTPException(status_code=401, detail="Unauthorized access")
+
+    try:
+        sid = data["sid"]
+        fid = data["fid"]
+        return create_friend_score_relationship_helper(fid, sid)
+
+    except FastAPIHTTPException as e:
+        # Re-raise any HTTPExceptions (400, etc.)
+        logging.error(str(e))
+        raise e
+
+    except Exception as e:
+        # Handle other exceptions with a 500 error
+        logging.error(str(e), exc_info=True)
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching user: {str(e)}"
+        )
