@@ -11,29 +11,6 @@ An AI-powered iOS app that helps you curate your social circle based on personal
 
 Wavelength is a full-stack iOS app designed to help you build and maintain a social circle that aligns with your personal goals, values, and interests. By leveraging AI and a combination of objective and subjective metrics, Wavelength gamifies the process of surrounding yourself with the best group of people possible.
 
-## Features
-
-- **Personalized Profiles**: Create an account and enter your goals, values, and interests.
-- **Friend Alignment Scores**: Add friends and receive AI-generated analysis and scores indicating how aligned you are.
-- **Memory Logging**: Log shared memories with friends and assign sentiment scores ranging from -5 to 5.
-- **Dynamic Updates**: AI continuously updates alignment scores based on new memories and interactions.
-- **Dashboard**: View your overall social circle alignment score.
-- **Progress Tracking**: Monitor your scores over time with interactive line graphs using Swift Charts.
-
-### User Profile Creation
-https://github.com/user-attachments/assets/0337eae0-b57e-4653-9c7b-137e58af29f9
-
-### Friend Profile Creation
-
-#### Low Alignment
-https://github.com/user-attachments/assets/c0bc2671-4918-4f2a-bb02-0867b30a1785
-
-#### High Alignment
-https://github.com/user-attachments/assets/3b4701e7-3519-4b81-bb2d-0e5ca5d3a4ac
-
-### Memory Creation
-https://github.com/user-attachments/assets/d30b912c-bbc7-4d34-af60-1c9f78edff3f
-
 ## Tech Stack
 
 - **Frontend**: SwiftUI
@@ -50,41 +27,13 @@ https://github.com/user-attachments/assets/d30b912c-bbc7-4d34-af60-1c9f78edff3f
 - **Docker** (for Neo4j database)
 - **Git**
 
-### Backend Setup
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/doeunkwon/wavelength.git
-   cd wavelength
-   ```
-
-2. **Create a Virtual Environment (Optional but Recommended)**
-
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-
-3. **Install Requirements**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the Backend Server**
-
-   ```bash
-   python3 backend/main.py
-   ```
-
 ### Database Setup
 
 1. **Install Docker** (if not already installed)
 
    - [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-2. **Run Neo4j Instance**
+2. **Run Neo4j instance**
 
    ```bash
    docker run \
@@ -97,48 +46,65 @@ https://github.com/user-attachments/assets/d30b912c-bbc7-4d34-af60-1c9f78edff3f
 
    Replace `password` with a secure password of your choice.
 
-3. **Verify Neo4j is Running**
+3. **Verify Neo4j is running**
 
    - Open a web browser and navigate to `http://localhost:7474`.
    - Log in with username `neo4j` and the password you set.
 
+### Backend Setup
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/doeunkwon/wavelength.git
+   cd wavelength
+   ```
+
+2. **Create a virtual environment (optional but recommended)**
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install requirements**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. **Create config.py in the backend folder**
+   ```python
+   ACCESS_TOKEN_EXPIRE_MINUTES = 30
+   SECRET_KEY = "your_secret_key"
+   ```
+5. **Create .env in the backend folder**
+   ```
+   NEO4J_URI=bolt://localhost:7687
+   NEO4J_USERNAME=neo4j
+   NEO4J_PASSWORD=your_password
+   GEMINI_API_KEY=your_gemini_api_key
+   ALGORITHM=your_jwt_algorithm
+   ```
+
+4. **Run the backend server**
+
+   ```bash
+   python3 backend/main.py
+   ```
+
 ### Frontend Setup
 
-1. **Open the Project in Xcode**
+1. **Open the project in Xcode**
 
    - Navigate to the `frontend` directory.
    - Open `Wavelength.xcodeproj`.
 
-2. **Run the App**
+2. **Run the app**
 
    - Select your simulator or physical device.
    - Click the **Run** button in Xcode.
-
-## Usage
-
-1. **Create an Account**
-
-   - Open the app and sign up by entering your goals, values, and interests.
-
-2. **Add Friends**
-
-   - Create profiles for your friends to see how aligned you are.
-
-3. **Log Memories**
-
-   - Add shared memories with friends and assign sentiment scores from -5 to 5.
-
-4. **View Alignment Scores**
-
-   - Check the AI-generated alignment percentages on your dashboard.
-
-5. **Monitor Progress**
-
-   - Use the progress chart to track your social circle alignment over time.
 
 ## Contact
 
 - **Email**: [dekwooon@gmail.com](mailto:dekwooon@gmail.com)
 - **GitHub**: [doeunkwon](https://github.com/doeunkwon)
-# Wavelength
-# Wavelength
